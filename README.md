@@ -3,3 +3,11 @@
 #### Studiengang Wirtschaftsinformatik und digitale Medien an der Hochschule der Medien Stuttgart
 Das ist unser Repository für das Modul Software-Praktikum im Sommersemester 2021.
 Das Ziel ist die Entwicklung eines Systems zur Auffindung von Lernpartnern und -gruppen.
+
+Gruppe 02: \
+Leonard Baranski \
+Maxim Christmann \
+Deniz Karakoc \
+Julian Kulinsky \
+Moritz Mulser \
+Andreas Scheumann
