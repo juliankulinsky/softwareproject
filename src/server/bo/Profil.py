@@ -4,9 +4,12 @@
 
 
 class Profil("""bo.BusinessObject"""):
+    """Realisieren der Klasse Profil"""
 
     def __init__(self):
         super().__init__()
 
+# Wie realisieren wir das?
     def erstelle_profil(self, Lernvorliebe, Person):
+        """Erstellen des Profils"""
         pass
