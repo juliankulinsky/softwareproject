@@ -9,8 +9,8 @@ class Konversation(bo.BusinessObject):
     """
     def __init__(self):
         super().__init__()
-        self._teilnehmer = []
-        self._nachrichten = []
+        self._teilnehmer = []    # Teilnehmerliste der Konversation
+        self._nachrichten = []   # Liste der Nachrichten der Konversation
 
     def get_teilnehmer(self):
         """Auslesen der Teilnehmer als Liste"""
