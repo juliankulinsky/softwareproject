@@ -6,7 +6,7 @@
 class Profil("""bo.BusinessObject"""):
 
     def __init__(self):
-        """BO erben"""
+        super().__init__()
 
-    def erstelle_Profil(self, Lernvorliebe, Person):
+    def erstelle_profil(self, Lernvorliebe, Person):
         pass
