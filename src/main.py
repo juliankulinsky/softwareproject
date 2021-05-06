@@ -45,6 +45,15 @@ In beiden Fällen wird ein JSON als Response erwartet.
 
 profile = {}
 
+"""
+# Minimale API: Response unter http://127.0.0.2:5000/hello
+@api.route('/hello')
+class HelloWorld(Resource):
+    def get(self):
+        return {'hello': 'world'}
+"""
+
+
 @api.route('/<string:name>')
 class Profile(Resource):
     def get(self, name):
