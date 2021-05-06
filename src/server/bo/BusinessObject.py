@@ -23,3 +23,7 @@ class BusinessObject(ABC):
     def get_erstellungszeitpunkt(self):
         """Auslesen des Erstellungszeitpunkts"""
         return self._erstellungszeitpunkt
+
+    def set_erstellungszeitpunkt(self, zeitpunkt: str):
+        """Setzen des Erstellungszeitpunkts"""
+        self._erstellungszeitpunkt = zeitpunkt
