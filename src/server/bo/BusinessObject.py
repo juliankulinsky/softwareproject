@@ -10,7 +10,7 @@ class BusinessObject(ABC):
     """
     def __init__(self):
         self._id = 0   # Die eindeutige Identifikationsnummer einer Instanz dieser Klasse.
-        self._erstellungszeitpunkt = datetime.now()   # Das aktuelle Datum mit Uhrzeit
+        self._erstellungszeitpunkt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")   # Das aktuelle Datum mit Uhrzeit
 
     def get_id(self):
         """Auslesen der ID"""
