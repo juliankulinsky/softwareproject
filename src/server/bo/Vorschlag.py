@@ -2,7 +2,7 @@
 from server.bo import Profil
 
 
-class Vorschlag("""bo.BusinessObject"""):
+class Vorschlag(bo.BusinessObject):
     """Realisieren der Klasse Vorschlag, welche den Algorithmus zum Matches generien übernimmt"""
 
     def __init__(self):

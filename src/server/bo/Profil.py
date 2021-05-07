@@ -3,7 +3,7 @@ from server.bo import Lernvorliebe
 from server.bo import Person
 
 
-class Profil("""bo.BusinessObject"""):
+class Profil(bo.BusinessObject):
     """Realisieren der Klasse Profil"""
 
     def __init__(self):

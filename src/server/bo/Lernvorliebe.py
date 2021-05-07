@@ -1,15 +1,15 @@
 # from server.bo import BusinessObject as bo
 
 
-class Lernvorliebe("""bo.BusinessObject"""):
+class Lernvorliebe(bo.BusinessObject):
     """Realisierung der Klasse Lernvorlieben, welche die Grundbausteine für das Profil legt."""
 
     def __init__(self):
         super().__init__()
-        self._lerntyp = int
-        self._frequenz = int
-        self._extrovertiertheit = int
-        self._remote_praesenz = int
+        self._lerntyp = 0
+        self._frequenz = 0
+        self._extrovertiertheit = 0
+        self._remote_praesenz = 0
         self._vorkenntnisse = []
         self._lerninteressen = []
 
