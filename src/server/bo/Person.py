@@ -61,4 +61,3 @@ class Person(bo.BusinessObject):
 
     def chat_annehmen(self):
         pass
-

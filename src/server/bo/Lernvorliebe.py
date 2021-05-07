@@ -60,5 +60,3 @@ class Lernvorliebe(bo.BusinessObject):
     def set_lerninteressen(self, liste: list):
         """Festlegen der Lerninteressen"""
         self._lerninteressen = liste
-
-
