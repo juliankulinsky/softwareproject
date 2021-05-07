@@ -1,7 +1,6 @@
-#from bo.BusinessObject import BusinessObject
+from server.bo import BusinessObject as bo
 
-#class Person(bo.BusinessObject)
-class Person():
+class Person(bo.BusinessObject):
     def __init__(self):
         self._vorname = ""
         self._nachname = ""
