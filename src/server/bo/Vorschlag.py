@@ -9,7 +9,7 @@ class Vorschlag("""bo.BusinessObject"""):
         super().__init__()
         self._matches = []
         self._matches_gruppen = []
-        self.profile = Profil
+        self._profile = Profil
 
     def zeige_matches(self):
         """Ausgeben der vorhandenen Matches für ein Profil"""
@@ -21,6 +21,6 @@ class Vorschlag("""bo.BusinessObject"""):
 
     def generiere_matches(self, profil=Profil):
         """Algo verwirklichen"""
-        self.profile = profil
+        self._profile = profil
         # Wie realisieren?
 
