@@ -9,8 +9,8 @@ class Person():
         self._studiengang = ""
         self._wohnort = ""
         self._semester = 0
-        self._gruppen = ()
-        self._chats = ()
+        self._gruppen = []
+        self._chats = []
 
     def get_vorname(self):
         return self._vorname
