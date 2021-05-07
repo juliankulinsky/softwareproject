@@ -12,9 +12,9 @@ class Nachricht(bo.BusinessObject):
     """
     def __init__(self):
         super().__init__()
-        self._inhalt = str          # Inhalt der Nachricht
-        self._absender = int     # Absender der Nachricht
-        self._empfaenger = int   # Empfänger der Nachricht
+        self._inhalt = ""          # Inhalt der Nachricht
+        self._absender = 0     # Absender der Nachricht
+        self._empfaenger = 0   # Empfänger der Nachricht
 
     def get_inhalt(self):
         """Auslesen des Inhalts einer Nachricht"""
