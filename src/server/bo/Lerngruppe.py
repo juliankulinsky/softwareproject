@@ -12,8 +12,8 @@ class Lerngruppe(bo.BusinessObject):
     """
     def __init__(self):
         super().__init__()
-        self._name = str                      # Name der Lerngruppe als String
-        self._teilnehmer = list               # Teilnehmerliste der Lerngruppe
+        self._name = ""                       # Name der Lerngruppe als String
+        self._teilnehmer = []                 # Teilnehmerliste der Lerngruppe
         self._profil = Profil                 # Profil der Lerngruppe
         self._lernvorlieben = Lernvorliebe    # Lernvorlieben der Lerngruppe
         self._chat = Konversation             # Zur Lerngruppe zugehörige Konversation
