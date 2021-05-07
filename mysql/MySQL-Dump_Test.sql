@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `testproject`;
-USE `testproject`;
+CREATE DATABASE IF NOT EXISTS `studoo`;
+USE `studoo`;
 
 --
 -- Table structure for table `users`
