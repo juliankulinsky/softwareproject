@@ -1,4 +1,4 @@
-# from server.bo import BusinessObject as bo
+from server.bo import BusinessObject as bo
 from server.bo import Lernvorliebe
 from server.bo import Person
 

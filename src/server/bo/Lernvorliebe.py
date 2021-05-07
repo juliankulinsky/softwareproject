@@ -1,4 +1,4 @@
-# from server.bo import BusinessObject as bo
+from server.bo import BusinessObject as bo
 
 
 class Lernvorliebe(bo.BusinessObject):
