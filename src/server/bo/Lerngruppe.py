@@ -1,8 +1,4 @@
 from server.bo import BusinessObject as bo
-from server.bo import Konversation
-from server.bo import Profil
-from server.bo import Lernvorliebe
-
 
 
 class Lerngruppe(bo.BusinessObject):
@@ -12,35 +8,24 @@ class Lerngruppe(bo.BusinessObject):
     """
     def __init__(self):
         super().__init__()
-        self._name = ""                       # Name der Lerngruppe als String
-        self._teilnehmer = []                 # Teilnehmerliste der Lerngruppe
-        self._profil = Profil                 # Profil der Lerngruppe
-        self._lernvorlieben = Lernvorliebe    # Lernvorlieben der Lerngruppe
-        self._chat = Konversation             # Zur Lerngruppe zugehörige Konversation
+        self._gruppenname = ""          # Name der Lerngruppe als String
+        self._profil_id = 0             # Fremdschlüsselbeziehung zum zur Gruppe gehörenden Profil
+        self._konversation_id = 0       # Fremdschlüsselbeziehung zur zur Gruppe gehörenden Konversation
 
-    def get_teilnehmer(self):
-        """Auslesen der Teilnehmer als Liste"""
-        return self._teilnehmer
+    def get_gruppenname(self):
+        return self._gruppenname
 
-    def set_teilnehmer(self, teilnehmer: list):
-        """Teilnehmer einer Lerngruppe festlegen in einer Liste"""
-        self._teilnehmer = teilnehmer
+    def set_gruppenname(self, gruppenname: str):
+        self._gruppenname = gruppenname
 
-    def add_teilnehmer(self, teilnehmer: list):
-        """Eine Liste an Teilnehmern zu der Lerngruppe hinzufügen"""
-        self._teilnehmer += teilnehmer
+    def get_profil_id(self):
+        return self._profil_id
 
-    def delete_teilnehmer(self, teilnehmer: list):
-        """Eine Liste an Teilnehmern aus einer Lerngruppe entfernen"""
-        for name in teilnehmer:
-            self._teilnehmer.remove(name)
+    def set_profil_id(self, profil_id: int):
+        self._profil_id = profil_id
 
-    def gruppe_verwalten(self, lernvorliebe: Lernvorliebe, profil: Profil):
-        """Die Lernvorlieben und das Profil der Lerngruppe aktualisieren"""
-        self._lernvorlieben = lernvorliebe
-        self._profil = profil
+    def get_konversation_id(self):
+        return self._konversation_id
 
-    def create_chat(self, chat: Konversation):
-        """Erstellen einer Konversation zur Lengruppe"""
-        self._chat = chat
-
+    def set_konversation_id(self, konversation_id: int):
+        self._konversation_id = konversation_id

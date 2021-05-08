@@ -1,20 +1,19 @@
 from server.bo import BusinessObject as bo
-#from server.bo import Person
 
 
 class Nachricht(bo.BusinessObject):
     """Realisierung der Nachrichtenklasse
 
-    Baut auf BusinessObject auf und hat zusätzlich den Nachrichteninhalt, einen Absender
-    und einen Empfänger.
-
-    ##NOTE: nicht lieber auf eine Konversation verweisen statt Empfänger?
+    Baut auf BusinessObject auf und hat zusätzlich den Nachrichteninhalt, eine Absender_ID
+    und eine Konversation_ID, an welche die Nachricht gerichtet ist.
     """
     def __init__(self):
         super().__init__()
-        self._inhalt = ""          # Inhalt der Nachricht
-        self._absender = 0     # Absender der Nachricht
-        self._empfaenger = 0   # Empfänger der Nachricht
+        self._inhalt = ""           # Inhalt der Nachricht
+        self._absender_id = 0       # Fremdschlüsselbeziehung zur Absender-Person der Nachricht
+        self._konversation_id = 0   # Fremdschlüsselbeziehung zur Konversation, an die die Nachricht geht
+
+    """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
     def get_inhalt(self):
         """Auslesen des Inhalts einer Nachricht"""
@@ -24,27 +23,29 @@ class Nachricht(bo.BusinessObject):
         """Festlegen des Inhalts einer Nachricht"""
         self._inhalt = inhalt
 
-    def get_absender(self):
-        """Auslesen des Absenders einer Nachricht"""
-        return self._absender
+    def get_absender_id(self):
+        """Auslesen der Absender_ID einer Nachricht"""
+        return self._absender_id
 
-    def set_absender(self, absender_id: int):
-        """Festlegen des Absenders einer Nachricht"""
-        self._absender = absender_id
+    def set_absender_id(self, absender_id: int):
+        """Festlegen der Absender_ID einer Nachricht"""
+        self._absender_id = absender_id
 
-    def get_empfaenger(self):
-        """Auslesen des Empfängers einer Nachricht"""
-        return self._empfaenger
+    def get_konversation_id(self):
+        """Auslesen der Konversation_ID einer Nachricht"""
+        return self._konversation_id
 
-    def set_empfaenger(self, empfaenger_id: int):
-        """Festlegen des Empfängers einer Nachricht"""
-        self._empfaenger = empfaenger_id
+    def set_konversation(self, konversation_id: int):
+        """Festlegen der Konversation_ID einer Nachricht"""
+        self._konversation_id = konversation_id
+
+    """Im Folgenden werden weitere Funktionen definiert"""
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
 
-        Bestehend aus ID, Zeitpunkt, Absender, Empfänger und Inhalt"""
+        Bestehend aus ID, Zeitpunkt, Absender_ID, Konversation_ID und Inhalt"""
         return "Nachricht {}: Von {}, An {}, Inhalt: {}, Zeitpunkt: {}".format(
-            self.get_id(), self.get_absender(), self.get_empfaenger(), self.get_inhalt(),
+            self.get_id(), self.get_absender_id(), self.get_konversation_id(), self.get_inhalt(),
             self.get_erstellungszeitpunkt()
         )

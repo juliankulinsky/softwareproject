@@ -2,16 +2,16 @@ from server.bo import BusinessObject as bo
 
 
 class Lernvorliebe(bo.BusinessObject):
-    """Realisierung der Klasse Lernvorlieben, welche die Grundbausteine für das Profil legt."""
-
+    """Realisierung der Klasse Lernvorlieben, welche einem Profil zugeordnet wird.
+    """
     def __init__(self):
         super().__init__()
         self._lerntyp = 0
         self._frequenz = 0
         self._extrovertiertheit = 0
         self._remote_praesenz = 0
-        self._vorkenntnisse = []
-        self._lerninteressen = []
+        self._vorkenntnisse = ""
+        self._lerninteressen = ""
 
     def get_lerntyp(self):
         """Auslesen des Lerntyps"""
@@ -49,7 +49,7 @@ class Lernvorliebe(bo.BusinessObject):
         """Auslesen der Vorkenntnisse"""
         return self._vorkenntnisse
 
-    def set_vorkenntnisse(self, liste: list):
+    def set_vorkenntnisse(self, liste: str):
         """Festlegen der Vorkenntnisse"""
         self._vorkenntnisse = liste
 
@@ -57,6 +57,6 @@ class Lernvorliebe(bo.BusinessObject):
         """Auslesen der Lerninteressen"""
         return self._lerninteressen
 
-    def set_lerninteressen(self, liste: list):
+    def set_lerninteressen(self, liste: str):
         """Festlegen der Lerninteressen"""
         self._lerninteressen = liste

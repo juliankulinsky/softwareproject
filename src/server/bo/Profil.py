@@ -1,17 +1,15 @@
 from server.bo import BusinessObject as bo
-from server.bo import Lernvorliebe
-from server.bo import Person
 
 
 class Profil(bo.BusinessObject):
-    """Realisieren der Klasse Profil"""
+    """Realisierung der Klasse Profil"""
 
     def __init__(self):
         super().__init__()
-        self.lvl = Lernvorliebe
-        self.user = Person
+        self._lernvorlieben_id = 0
 
-# Wie realisieren wir das?
-    def erstelle_profil(self, lernvorlieben: Lernvorliebe, person: Person):
-        """Erstellen des Profils"""
-        pass
+    def get_lernvorlieben_id(self):
+        return self._lernvorlieben_id
+
+    def set_lernvorlieben_id(self, lernvorlieben_id: int):
+        self._lernvorlieben_id = lernvorlieben_id
