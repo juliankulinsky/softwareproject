@@ -9,21 +9,12 @@ class Konversation(bo.BusinessObject):
     """
     def __init__(self):
         super().__init__()
-        self._teilnehmer = []    # Teilnehmerliste der Konversation
-        self._nachrichten = []   # Liste der Nachrichten der Konversation
+        self._ist_gruppenchat = False
 
-    def get_teilnehmer(self):
-        """Auslesen der Teilnehmer als Liste"""
-        return self._teilnehmer
+    """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
-    def add_teilnehmer(self, teilnehmer):
-        """Einen Teilnehmer zur Konversation hinzufügen"""
-        self._teilnehmer.append(teilnehmer)
+    def get_ist_gruppenchat(self):
+        return self._ist_gruppenchat
 
-    def get_nachrichten(self):
-        """Auslesen der Nachrichten der Konversation"""
-        return self._nachrichten
-
-    def add_nachricht(self, nachricht):
-        """Eine Nachricht zur Konversation hinzufügen"""
-        self._nachrichten.append(nachricht)
+    def set_ist_gruppenchat(self, wert: bool):
+        self._ist_gruppenchat = wert
