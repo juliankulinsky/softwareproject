@@ -20,7 +20,7 @@ class PersonMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from person")
+        cursor.execute("SELECT * from personen")
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester) in tuples:
@@ -49,7 +49,7 @@ class PersonMapper (Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester FROM " \
-                  "person WHERE id={}"\
+                  "personen WHERE id={}"\
             .format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -91,7 +91,7 @@ class PersonMapper (Mapper):
         for (maxid) in tuples:
             person.set_id(maxid[0]+1)
 
-        command = "INSERT INTO person (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, " \
+        command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, " \
                   "semester) " \
                   "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (person.get_id(), person.get_erstellungszeitpunkt(), person.get_vorname(),
@@ -116,7 +116,7 @@ class PersonMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE person " + \
+        command = "UPDATE personen " + \
                   "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, alter=%s, studiengang=%s, wohnort=%s, " + \
                   "semester=%s WHERE id=%s"
         data = (person.get_erstellungszeitpunkt(), person.get_vorname(), person.get_nachname(),
@@ -133,7 +133,7 @@ class PersonMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM person WHERE id={}".format(person.get_id())
+        command = "DELETE FROM personen WHERE id={}".format(person.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
