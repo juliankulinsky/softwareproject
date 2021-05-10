@@ -22,6 +22,9 @@ from flask_cors import CORS
 
 # SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
 
+# Mapper implementieren
+from server.db import NachrichtMapper
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -41,17 +44,17 @@ Grundlegend: run main.py über IDE; dann ...
        put('http://localhost:50000/<name>', data={'data': '<name>'}  # analog mit get
 
 In beiden Fällen wird ein JSON als Response erwartet.
-"""
+
+# rudimentäre API
 
 profile = {}
 
-"""
+
 # Minimale API: Response unter http://127.0.0.2:5000/hello
 @api.route('/hello')
 class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
-"""
 
 
 @api.route('/<string:name>')
@@ -62,6 +65,30 @@ class Profile(Resource):
     def put(self, name):
         profile[name] = request.form['data']
         return {name: profile[name]}
+"""
+
+# Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
+model = api.model('Nachricht', {
+    'erstellungszeitpunkt': fields.String(attribute='_erstellungszeitpunkt'),
+    'inhalt': fields.String(attribute='_inhalt'),
+    'absender': fields.Integer(attribute='_absender'),
+    'empfaenger': fields.Integer(attribute='_empfaenger'),
+})
+
+# Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
+@api.route('/nachricht')
+class Nachricht(Resource):
+    # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
+    @api.marshal_with(model, envelope='resource')
+    # GET Method
+    def get(self, **kwargs):
+        # Instanziieren von NachrichtMapper
+        instance = NachrichtMapper.NachrichtMapper()
+        # In die db entern
+        instance.__enter__()
+        # Alle Objekte ausgeben und als Response zurückgeben
+        return instance.find_all()
+
 
 
 """
