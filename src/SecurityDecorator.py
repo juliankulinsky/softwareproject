@@ -6,18 +6,7 @@ import google.oauth2.id_token
 
 
 def secured(function):
-    """Decorator zur Google Firebase-basierten Authentifizierung von Benutzern
 
-    Da es sich bei diesem System um eine basale Fallstudie zu Lehrzwecken handelt, wurde hier
-    bewusst auf ein ausgefeiltes Berechtigungskonzept verzichtet. Vielmehr soll dieses Decorator
-    einen Weg aufzeigen, wie man technisch mit vertretbarem Aufwand in eine Authentifizierung
-    einsteigen kann.
-
-    POLICY: Die hier demonstrierte Policy ist, dass jeder, der einen durch Firebase akzeptierten
-    Account besitzt, sich an diesem System anmelden kann. Bei jeder Anmeldung werden Klarname,
-    Mail-Adresse sowie die Google User ID in unserem System gespeichert bzw. geupdated. Auf diese
-    Weise könnte dann für eine Erweiterung des Systems auf jene Daten zurückgegriffen werden.
-    """
     firebase_request_adapter = requests.Request()
 
     def wrapper(*args, **kwargs):
@@ -29,10 +18,7 @@ def secured(function):
 
         if id_token:
             try:
-                # Verify the token against the Firebase Auth API. This example
-                # verifies the token on each page load. For improved performance,
-                # some applications may wish to cache results in an encrypted
-                # session store (see for instance
+
                 # http://flask.pocoo.org/docs/1.0/quickstart/#sessions).
                 # Ist eine Anleitung wie man sessions erstellt und prüft, ob der user eingelogged ist.
                 # Weiß noch nicht wie ich es implementiere
@@ -48,19 +34,12 @@ def secured(function):
 
                     user = adm.get_user_by_google_user_id(google_user_id)
                     if user is not None:
-                        """Fall: Der Benutzer ist unserem System bereits bekannt.
-                        Wir gehen davon aus, dass die google_user_id sich nicht ändert.
-                        Wohl aber können sich der zugehörige Klarname (name) und die
-                        E-Mail-Adresse ändern. Daher werden diese beiden Daten sicherheitshalber
-                        in unserem System geupdated."""
+
                         user.set_name(name)
                         user.set_email(email)
                         adm.save_user(user)
                     else:
-                        """Fall: Der Benutzer war bislang noch nicht eingelogged. 
-                        Wir legen daher ein neues User-Objekt an, um dieses ggf. später
-                        nutzen zu können.
-                        """
+
                         user = adm.create_user(name, email, google_user_id)
 
                     print(request.method, request.path, "angefragt durch:", name, email)
