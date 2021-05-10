@@ -9,3 +9,4 @@ class LernvorliebenMapper(Mapper):
 
     def find_all(self):
         pass
+    # hier weiter
