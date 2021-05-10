@@ -35,7 +35,7 @@ class Nachricht(bo.BusinessObject):
         """Auslesen der Konversation_ID einer Nachricht"""
         return self._konversation_id
 
-    def set_konversation(self, konversation_id: int):
+    def set_konversation_id(self, konversation_id: int):
         """Festlegen der Konversation_ID einer Nachricht"""
         self._konversation_id = konversation_id
 

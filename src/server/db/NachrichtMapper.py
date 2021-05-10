@@ -23,13 +23,13 @@ class NachrichtMapper (Mapper):
         cursor.execute("SELECT * from nachrichten")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, inhalt, absender, empfaenger) in tuples:
+        for (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) in tuples:
             nachricht = Nachricht()
             nachricht.set_id(id)
             nachricht.set_erstellungszeitpunkt(erstellungszeitpunkt)
             nachricht.set_inhalt(inhalt)
-            nachricht.set_absender(absender)
-            nachricht.set_empfaenger(empfaenger)
+            nachricht.set_absender_id(absender_id)
+            nachricht.set_konversation_id(konversation_id)
             result.append(nachricht)
 
         self._cnx.commit()
@@ -45,7 +45,7 @@ class NachrichtMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, inhalt, absender, empfaenger FROM nachrichten WHERE id={}"\
+        command = "SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten WHERE id={}"\
             .format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -56,8 +56,8 @@ class NachrichtMapper (Mapper):
             nachricht.set_id(id)
             nachricht.set_erstellungszeitpunkt(erstellungszeitpunkt)
             nachricht.set_inhalt(inhalt)
-            nachricht.set_absender(absender)
-            nachricht.set_empfaenger(empfaenger)
+            nachricht.set_absender_id(absender)
+            nachricht.set_konversation_id(empfaenger)
             result = nachricht
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -84,10 +84,10 @@ class NachrichtMapper (Mapper):
         for (maxid) in tuples:
             nachricht.set_id(maxid[0]+1)
 
-        command = "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) " \
+        command = "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) " \
                   "VALUES (%s,%s,%s,%s,%s)"
         data = (nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(),
-                nachricht.get_absender(), nachricht.get_empfaenger())
+                nachricht.get_absender_id(), nachricht.get_konversation_id())
         cursor.execute(command, data)
 
         """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
@@ -108,9 +108,9 @@ class NachrichtMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE nachrichten " + \
-                  "SET erstellungszeitpunkt=%s, inhalt=%s, absender=%s, empfaenger=%s WHERE id=%s"
-        data = (nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(), nachricht.get_absender(),
-                nachricht.get_empfaenger(), nachricht.get_id())
+                  "SET erstellungszeitpunkt=%s, inhalt=%s, absender_id=%s, konversation_id=%s WHERE id=%s"
+        data = (nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(), nachricht.get_absender_id(),
+                nachricht.get_konversation_id(), nachricht.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -137,8 +137,8 @@ if (__name__ == "__main__"):
 
         neu = Nachricht()
         neu.set_inhalt("Kommt diese Nachricht an?")
-        neu.set_absender(2)
-        neu.set_empfaenger(1)
+        neu.set_absender_id(2)
+        neu.set_konversation_id(1)
         neu.set_id(2)
 
         mapper.insert(neu)
