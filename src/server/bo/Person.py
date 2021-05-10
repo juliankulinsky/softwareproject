@@ -74,7 +74,7 @@ class Person(bo.BusinessObject):
     def set_semester(self, semester: int):
         """ Festlegen von semester """
         self._semester = semester
-
+        
     def get_profil_id(self):
         return self._profil_id
 
