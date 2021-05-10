@@ -85,7 +85,7 @@ class PersonMapper (Mapper):
         :return: das bereits übergebene Objekt, jeodch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM person")
+        cursor.execute("SELECT MAX(id) AS maxid FROM personen")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
