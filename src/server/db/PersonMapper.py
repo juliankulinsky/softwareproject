@@ -23,18 +23,16 @@ class PersonMapper (Mapper):
         cursor.execute("SELECT * from personen")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, vorname, nachname, alter, gruppen, studiengang, wohnort, semester, chats) in tuples:
+        for (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester) in tuples:
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
             person.set_vorname(vorname)
             person.set_nachname(nachname)
             person.set_alter(alter)
-            person.set_gruppen(gruppen)
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
             person.set_semester(semester)
-            person.set_chat(chats)
             result.append(person)
 
         self._cnx.commit()
@@ -50,25 +48,23 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, alter, gruppen,studiengang, wohnort, semester, chats FROM " \
+        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`,studiengang, wohnort, semester FROM " \
                   "personen WHERE id={}"\
             .format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, vorname, nachname, alter, gruppen, studiengang, wohnort, semester, chats) = tuples[0]
+            (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
             person.set_vorname(vorname)
             person.set_nachname(nachname)
             person.set_alter(alter)
-            person.set_gruppen(gruppen)
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
             person.set_semester(semester)
-            person.set_chat(chats)
             result = person
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -95,13 +91,11 @@ class PersonMapper (Mapper):
         for (maxid) in tuples:
             person.set_id(maxid[0]+1)
 
-        command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, alter, gruppen, studiengang, " \
-                  "wohnort, semester, chats) VALUES (%s,%s,%s,%s,%d,%s,%s,%s,%d,%s)"
+        command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, `alter`, studiengang, " \
+                  "wohnort, semester) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (person.get_id(), person.get_erstellungszeitpunkt(), person.get_vorname(),
-                person.get_nachname(), person.get_alter(), person.get_gruppen(), person.get_studiengang(),
-                person.get_wohnort(), person.get_semester(), person.get_chats())
-        print(command)
-        print(data)
+                person.get_nachname(), person.get_alter(), person.get_studiengang(),
+                person.get_wohnort(), person.get_semester())
         cursor.execute(command, data)
 
         """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
@@ -122,11 +116,11 @@ class PersonMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE personen " + \
-                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, alter=%d, gruppen=%s, studiengang=%s, wohnort=%s, " + \
-                  "semester=%d, chats=%s WHERE id=%s"
+                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%d, studiengang=%s, wohnort=%s, " + \
+                  "semester=%d WHERE id=%s"
         data = (person.get_erstellungszeitpunkt(), person.get_vorname(), person.get_nachname(),
-                person.get_alter(), person.get_gruppen(), person.get_studiengang(), person.get_wohnort(),
-                person.get_semester(), person.get_chats())
+                person.get_alter(), person.get_studiengang(), person.get_wohnort(),
+                person.get_semester())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -152,22 +146,21 @@ if (__name__ == "__main__"):
     with PersonMapper() as mapper:
 
         neu = Person()
-        neu.set_id(3)
         neu.set_vorname("Moritz")
         neu.set_nachname("Mulser")
         neu.set_alter(23)
-        neu.set_gruppen("test")
         neu.set_wohnort("Böblingen")
         neu.set_studiengang("WI7")
         neu.set_semester(4)
-        neu.set_chat("test")
 
         mapper.insert(neu)
 
         print("Find all")
         result = mapper.find_all()
         for p in result:
-            print(p)
+            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_vorname(), p.get_nachname(),
+                p.get_alter(), p.get_studiengang(), p.get_wohnort(),
+                p.get_semester())
 
         """
         print("Delete")
