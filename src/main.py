@@ -22,6 +22,9 @@ from flask_cors import CORS
 
 # SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
 
+# Mapper implementieren
+from server.db import NachrichtMapper
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -41,17 +44,17 @@ Grundlegend: run main.py über IDE; dann ...
        put('http://localhost:50000/<name>', data={'data': '<name>'}  # analog mit get
 
 In beiden Fällen wird ein JSON als Response erwartet.
-"""
+
+# rudimentäre API
 
 profile = {}
 
-"""
+
 # Minimale API: Response unter http://127.0.0.2:5000/hello
 @api.route('/hello')
 class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
-"""
 
 
 @api.route('/<string:name>')
@@ -62,6 +65,23 @@ class Profile(Resource):
     def put(self, name):
         profile[name] = request.form['data']
         return {name: profile[name]}
+"""
+
+model = api.model('Model', {
+    'erstellungszeitpunkt': fields.String,
+    'inhalt': fields.String,
+    'absender': fields.Integer,
+    'empfaenger': fields.Integer,
+})
+
+@api.route('/nachricht')
+class Nachricht(Resource):
+    @api.marshal_with(model, envelope='resource')
+    def get(self, **kwargs):
+        instance = NachrichtMapper.NachrichtMapper()
+        instance.__enter__()
+        return instance.find_all()
+
 
 
 """
