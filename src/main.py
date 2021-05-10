@@ -67,19 +67,26 @@ class Profile(Resource):
         return {name: profile[name]}
 """
 
-model = api.model('Model', {
-    'erstellungszeitpunkt': fields.String,
-    'inhalt': fields.String,
-    'absender': fields.Integer,
-    'empfaenger': fields.Integer,
+# Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
+model = api.model('Nachricht', {
+    'erstellungszeitpunkt': fields.String(attribute='_erstellungszeitpunkt'),
+    'inhalt': fields.String(attribute='_inhalt'),
+    'absender': fields.Integer(attribute='_absender'),
+    'empfaenger': fields.Integer(attribute='_empfaenger'),
 })
 
+# Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
 @api.route('/nachricht')
 class Nachricht(Resource):
+    # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
     @api.marshal_with(model, envelope='resource')
+    # GET Method
     def get(self, **kwargs):
+        # Instanziieren von NachrichtMapper
         instance = NachrichtMapper.NachrichtMapper()
+        # In die db entern
         instance.__enter__()
+        # Alle Objekte ausgeben und als Response zurückgeben
         return instance.find_all()
 
 
