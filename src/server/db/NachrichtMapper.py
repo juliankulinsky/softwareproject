@@ -51,13 +51,13 @@ class NachrichtMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, inhalt, absender, empfaenger) = tuples[0]
+            (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) = tuples[0]
             nachricht = Nachricht()
             nachricht.set_id(id)
             nachricht.set_erstellungszeitpunkt(erstellungszeitpunkt)
             nachricht.set_inhalt(inhalt)
-            nachricht.set_absender_id(absender)
-            nachricht.set_konversation_id(empfaenger)
+            nachricht.set_absender_id(absender_id)
+            nachricht.set_konversation_id(konversation_id)
             result = nachricht
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -90,10 +90,11 @@ class NachrichtMapper (Mapper):
                 nachricht.get_absender_id(), nachricht.get_konversation_id())
         cursor.execute(command, data)
 
-        """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
+    # so könnte man es auch machen, wenn man Lust hat
+        """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) "
                        "VALUES ('{}','{}','{}','{}','{}')"
                        .format(nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(),
-                               nachricht.get_absender(), nachricht.get_empfaenger()))"""
+                               nachricht.get_absender_id(), nachricht.get_konversation_id()))"""
 
         self._cnx.commit()
         cursor.close()
