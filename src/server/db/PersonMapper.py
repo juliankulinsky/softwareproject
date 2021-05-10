@@ -23,7 +23,7 @@ class PersonMapper (Mapper):
         cursor.execute("SELECT * from personen")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester) in tuples:
+        for (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester, profil_id) in tuples:
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -33,6 +33,7 @@ class PersonMapper (Mapper):
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
             person.set_semester(semester)
+            person.set_profil_id(profil_id)
             result.append(person)
 
         self._cnx.commit()
@@ -48,14 +49,14 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`,studiengang, wohnort, semester FROM " \
+        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`,studiengang, wohnort, semester, profil_id FROM " \
                   "personen WHERE id={}"\
             .format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester) = tuples[0]
+            (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester, profil_id) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -65,6 +66,7 @@ class PersonMapper (Mapper):
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
             person.set_semester(semester)
+            person.set_profil_id(profil_id)
             result = person
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -92,10 +94,10 @@ class PersonMapper (Mapper):
             person.set_id(maxid[0]+1)
 
         command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, `alter`, studiengang, " \
-                  "wohnort, semester) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                  "wohnort, semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (person.get_id(), person.get_erstellungszeitpunkt(), person.get_vorname(),
                 person.get_nachname(), person.get_alter(), person.get_studiengang(),
-                person.get_wohnort(), person.get_semester())
+                person.get_wohnort(), person.get_semester(), person.get_profil_id())
         cursor.execute(command, data)
 
         """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
@@ -116,11 +118,11 @@ class PersonMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE personen " + \
-                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%d, studiengang=%s, wohnort=%s, " + \
-                  "semester=%d WHERE id=%s"
+                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%s, studiengang=%s, wohnort=%s, " + \
+                  "semester=%s, profil_id=%s WHERE id=%s"
         data = (person.get_erstellungszeitpunkt(), person.get_vorname(), person.get_nachname(),
                 person.get_alter(), person.get_studiengang(), person.get_wohnort(),
-                person.get_semester())
+                person.get_semester(), person.get_profil_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -152,15 +154,14 @@ if (__name__ == "__main__"):
         neu.set_wohnort("Böblingen")
         neu.set_studiengang("WI7")
         neu.set_semester(4)
-
+        neu.set_profil_id(5)
         mapper.insert(neu)
 
         print("Find all")
         result = mapper.find_all()
         for p in result:
             print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_vorname(), p.get_nachname(),
-                p.get_alter(), p.get_studiengang(), p.get_wohnort(),
-                p.get_semester())
+                  p.get_alter(), p.get_studiengang(), p.get_wohnort(), p.get_semester(), p.get_profil_id())
 
         """
         print("Delete")
