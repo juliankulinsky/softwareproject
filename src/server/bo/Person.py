@@ -67,9 +67,13 @@ class Person(bo.BusinessObject):
         """ Festlegen von semester """
         self._semester = semester
 
+    def set_gruppen(self, gruppe):
+        self._gruppen.append(gruppe)
+
     def get_gruppen(self):
         """ Auslesen von gruppen """
-        return self._gruppen
+        r = self._gruppen[0]
+        return r
 
     def gruppe_beitreten(self):
         """ Beitritt in Gruppen """
@@ -81,7 +85,11 @@ class Person(bo.BusinessObject):
 
     def get_chats(self):
         """ Auslesen von chats """
-        return self._chats
+        r = self._chats[0]
+        return r
+
+    def set_chat(self, chat):
+        self._chats.append(chat)
 
     def chat_annehmen(self):
         """ Annehmen von Chatanfragen """
