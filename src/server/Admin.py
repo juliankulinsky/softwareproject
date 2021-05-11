@@ -25,3 +25,19 @@ from .db.NachrichtMapper import NachrichtMapper
 from .db.PersonMapper import PersonMapper
 # from .db.ProfilMapper import ProfilMapper # (wip)
 # from .db.VorschlagMapper import VorschlagMapper # (wip)
+
+
+class Admin(object):
+    """Mithilfe dieser Klasse verbinden wir unsere Applikationslogik mit der Datenbank und
+    können darüber Daten ans Frontend übergeben, die diese via HTTP-Requests anfragen kann.
+    """
+
+    def __init__(self):
+        pass
+
+    def get_all_nachrichten(self):
+        """Alle Nachrichten auslesen"""
+        with NachrichtMapper() as mapper:
+            return mapper.find_all()
+
+
