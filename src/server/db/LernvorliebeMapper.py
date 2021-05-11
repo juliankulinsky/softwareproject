@@ -85,7 +85,7 @@ class LernvorliebeMapper(Mapper):
             lernvorliebe.set_id(maxid[0]+1)
 
         command = "INSERT INTO lernvorlieben (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, " \
-                  "remote_praesenz, vorkenntsnisse, lerninteressen VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                  "remote_praesenz, vorkenntnisse, lerninteressen) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
         data = (lernvorliebe.get_id(), lernvorliebe.get_erstellungszeitpunkt(), lernvorliebe.get_lerntyp(),
                 lernvorliebe.get_frequenz(), lernvorliebe.get_extrovertiertheit(), lernvorliebe.get_remote_praesenz(),
                 lernvorliebe.get_vorkenntnisse(), lernvorliebe.get_lerninteressen())
@@ -104,7 +104,7 @@ class LernvorliebeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE lernvorlieben SET erstellungszeitpunkt=%s, lerntyp=%s, frequenz=%s, extrovertiertheit=%s, " \
-                  "remote_praesenz=%s, vorkenntnisse=%s, lernvorlieben=%s WHERE id=%s"
+                  "remote_praesenz=%s, vorkenntnisse=%s, lerninteressen=%s WHERE id=%s"
         data = (lernvorliebe.get_erstellungszeitpunkt(), lernvorliebe.get_lerntyp(), lernvorliebe.get_frequenz(),
                 lernvorliebe.get_extrovertiertheit(), lernvorliebe.get_remote_praesenz(),
                 lernvorliebe.get_vorkenntnisse(), lernvorliebe.get_lerninteressen())
@@ -120,7 +120,7 @@ class LernvorliebeMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM lernvorlieben WHERE id{}".format(lernvorliebe.get_id())
+        command = "DELETE FROM lernvorlieben WHERE id={}".format(lernvorliebe.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -130,7 +130,7 @@ class LernvorliebeMapper(Mapper):
 """Testbereicht, ob Klasse funktioniert"""
 
 if (__name__ == "__main__"):
-    with LernvorliebeMapper as mapper:
+    with LernvorliebeMapper() as mapper:
 
         neu = Lernvorliebe()
         neu.set_lerntyp(3)
@@ -139,6 +139,7 @@ if (__name__ == "__main__"):
         neu.set_remote_praesenz(1)
         neu.set_vorkenntnisse("Mathe, Programmieren, Ptyhon")
         neu.set_lerninteressen("Wirtschaft")
+        neu.set_id(3)
 
         mapper.insert(neu)
 
