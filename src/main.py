@@ -25,6 +25,9 @@ from flask_cors import CORS
 # Mapper implementieren
 from server.db import NachrichtMapper
 
+
+from server.Admin import Admin
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -80,15 +83,17 @@ model = api.model('Nachricht', {
 class Nachricht(Resource):
     # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
     @api.marshal_with(model, envelope='resource')
-    # GET Method
-    def get(self, **kwargs):
+    def get(self):
+        adm = Admin()
+        return adm.get_all_nachrichten()
+
+    """def get(self, **kwargs):
         # Instanziieren von NachrichtMapper
         instance = NachrichtMapper.NachrichtMapper()
         # In die db entern
         instance.__enter__()
         # Alle Objekte ausgeben und als Response zurückgeben
-        return instance.find_all()
-
+        return instance.find_all()"""
 
 
 """
