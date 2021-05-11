@@ -32,41 +32,6 @@ Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Arg
 app = Flask(__name__)
 api = Api(app)
 
-"""
-Für den Anfang erstellen wir gemäß der Doku (https://flask-restx.readthedocs.io/en/latest/quickstart.html) 
-eine minimale Flask-RestX API inkl. Resourceful Routing mit jeweils einer GET und POST Method.
-Dieser Endpoint kann über zwei Wege getestet werden:
-Grundlegend: run main.py über IDE; dann ...
-    
-    a) Über das Terminal den Command "curl http://localhost:5000/<name> -d "data=<name>" -X PUT
-    b) Öffnen der integrierten Python Shell; 
-       from requests import put, get
-       put('http://localhost:50000/<name>', data={'data': '<name>'}  # analog mit get
-
-In beiden Fällen wird ein JSON als Response erwartet.
-
-# rudimentäre API
-
-profile = {}
-
-
-# Minimale API: Response unter http://127.0.0.2:5000/hello
-@api.route('/hello')
-class HelloWorld(Resource):
-    def get(self):
-        return {'hello': 'world'}
-
-
-@api.route('/<string:name>')
-class Profile(Resource):
-    def get(self, name):
-        return {name: profile[name]}
-
-    def put(self, name):
-        profile[name] = request.form['data']
-        return {name: profile[name]}
-"""
-
 # Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
 model = api.model('Nachricht', {
     'erstellungszeitpunkt': fields.String(attribute='_erstellungszeitpunkt'),
