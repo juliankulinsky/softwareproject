@@ -3,18 +3,16 @@ from server.db.Mapper import Mapper
 
 
 class LerngruppeMapper(Mapper):
-    """Mapper-Klasse, die Person-Objekte auf eine relationale
-        Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
-        gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
-        gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
-        in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden."""
+    """Mapper-Klasse, welche Lerngruppe-Objekte in eine relationale Datenbank (DB),
+        und umgekehrt von einer DB auf ein Objekt, abbilden kann.
+        Dazu werden die folgenden Methoden zur Verfügung gestellt,
+        mit denen Objekte gesucht, erzeugt, modifiziert und gelöscht werden können."""
 
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Auslesen aller Lerngruppe-Objekte
-        :return: Sammlung aller Lerngruppe-Objekte"""
+        """Auslesen aller Lerngruppe-Objekte."""
 
         result = []
         cursor = self._cnx.cursor()
@@ -33,12 +31,10 @@ class LerngruppeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-        return result
+        return result   # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
     def find_by_key(self, key):
-        """Suchen einer Lerngruppe mit vorgegebener ID
-        :param: key Primärschlüsselattribut
-        :return: Der ID entsprechendes Lerngruppe-Objekt, None bei nicht vorhandener DB-Tupel"""
+        """Suchen einer Lerngruppe mit vorgegebener ID."""
 
         result = None
         cursor = self._cnx.cursor()
@@ -66,14 +62,11 @@ class LerngruppeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-        return result
+        return result   # Der Rückgabe der ID entsprechendes Lerngruppe-Objekt (None bei fehlender DB-Tupel)
 
     def insert(self, lerngruppe):
         """Einfügen eines Lerngruppe-Objekts in die Datenbank.
-        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
-
-        :param: lerngruppe als das zu speichernde Objekt
-        :return: das bereits übergebene Objekt, ggf. mit korrigierter ID."""
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt."""
 
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM lerngruppen")
@@ -98,12 +91,10 @@ class LerngruppeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-        return lerngruppe
+        return lerngruppe   # Rückgabe des bereits übergebenen Objektes, ggf. mit korrigierter ID
 
     def update(self, lerngruppen):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
-
-        :param: lerngruppe als Objekt, welches in die DB geschrieben werden soll"""
+        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID."""
 
         cursor = self._cnx.cursor()
 
