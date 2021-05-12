@@ -21,3 +21,9 @@ class PartnerVorschlag(vo.Vorschlag):
 
     def set_entscheidung_partner(self, wert: float):
         self.entscheidung_partner = wert
+
+    def __str__(self):
+        return "Nr.{}: Person {} und Person {} mit Ähnl. {}: {} & {}".format(
+            self.get_id(),self.get_person_id(),self.get_partnervorschlag_id(),self.get_aehnlichkeit(),
+            self.get_entscheidung_person(),self.get_entscheidung_partner()
+        )

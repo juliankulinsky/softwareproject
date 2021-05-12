@@ -21,3 +21,13 @@ class GruppenVorschlag(vo.Vorschlag):
 
     def set_entscheidung_gruppe(self, wert: float):
         self.entscheidung_gruppe = wert
+
+    def __str__(self):
+        """
+
+        :return:
+        """
+        return "Nr.{}: Person {} und Gruppe {} mit Ähnl. {}: {} & {}".format(
+            self.get_id(),self.get_person_id(),self.get_gruppenvorschlag_id(),self.get_aehnlichkeit(),
+            self.get_entscheidung_person(),self.get_entscheidung_gruppe()
+        )
