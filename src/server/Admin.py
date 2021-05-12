@@ -23,6 +23,7 @@ from .db.LernvorliebeMapper import LernvorliebeMapper
 from .db.Mapper import Mapper
 from .db.NachrichtMapper import NachrichtMapper
 from .db.PersonMapper import PersonMapper
+
 # from .db.ProfilMapper import ProfilMapper # (wip)
 # from .db.VorschlagMapper import VorschlagMapper # (wip)
 
@@ -39,5 +40,3 @@ class Admin(object):
         """Alle Nachrichten auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_all()
-
-
