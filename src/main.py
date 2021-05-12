@@ -25,6 +25,9 @@ from flask_cors import CORS
 # Mapper implementieren
 from server.db import NachrichtMapper
 
+
+from server.Admin import Admin
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -33,27 +36,32 @@ app = Flask(__name__)
 api = Api(app)
 
 # Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
-model = api.model('Nachricht', {
-    'erstellungszeitpunkt': fields.String(attribute='_erstellungszeitpunkt'),
-    'inhalt': fields.String(attribute='_inhalt'),
-    'absender': fields.Integer(attribute='_absender'),
-    'empfaenger': fields.Integer(attribute='_empfaenger'),
-})
+model = api.model(
+    "Nachricht",
+    {
+        "erstellungszeitpunkt": fields.String(attribute="_erstellungszeitpunkt"),
+        "inhalt": fields.String(attribute="_inhalt"),
+        "absender": fields.Integer(attribute="_absender_id"),
+        "konversation": fields.Integer(attribute="_konversation_id"),
+    },
+)
 
 # Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
-@api.route('/nachricht')
+@api.route("/nachricht")
 class Nachricht(Resource):
     # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
-    @api.marshal_with(model, envelope='resource')
-    # GET Method
-    def get(self, **kwargs):
+    @api.marshal_with(model, envelope="resource")
+    def get(self):
+        adm = Admin()
+        return adm.get_all_nachrichten()
+
+    """def get(self, **kwargs):
         # Instanziieren von NachrichtMapper
         instance = NachrichtMapper.NachrichtMapper()
         # In die db entern
         instance.__enter__()
         # Alle Objekte ausgeben und als Response zurückgeben
-        return instance.find_all()
-
+        return instance.find_all()"""
 
 
 """
@@ -61,5 +69,5 @@ Der Service wird über app.run() gestartet.
 Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debuggen direkt im Browser anzeigen zu lassen.
 Warnung: In der Produktions-Umgebung muss debug auf False gesetzt werden.
 """
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
