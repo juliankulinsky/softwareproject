@@ -137,7 +137,7 @@ class KonversationMapper(Mapper):
 
         cursor = self._cnx.cursor()
         # Löschen von Konversation mit übergebener ID (durch parameter konversation)
-        command = "DELETE FROM konverationen WHERE id={}".format(konversation.get_id())
+        command = "DELETE FROM konversationen WHERE id={}".format(konversation.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -173,4 +173,10 @@ if __name__ == "__main__":
         print("TESTEN VON FIND_BY_KEY")
         chose = mapper.find_by_key(1)
         print(chose.__dict__)
+        print("--- BEENDET ---\n")
+
+        # testen von delete
+        print("TESTEN VON DELETE")
+        obj = mapper.find_by_key(3)
+        mapper.delete(obj)
         print("--- BEENDET ---\n")
