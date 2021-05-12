@@ -238,7 +238,7 @@ CREATE TABLE `gruppen_vorschlaege` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
     `person_id` int NOT NULL DEFAULT 0,
-    `gruppen_id` int NOT NULL DEFAULT 0,
+    `gruppenvorschlag_id` int NOT NULL DEFAULT 0,
     `aehnlichkeit` float DEFAULT 0.0,
     `entscheidung_person` bool DEFAULT NULL,
     `entscheidung_gruppe` bool DEFAULT NULL,
