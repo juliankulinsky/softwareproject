@@ -15,7 +15,6 @@ Anhand dieser Klasse können wir Konversationsobjekte:
 
 
 class KonversationMapper(Mapper):
-
     def __init__(self):
         super().__init__()
 
@@ -57,7 +56,9 @@ class KonversationMapper(Mapper):
         result = None
         cursor = self._cnx.cursor()
         # Definieren des SQL-Statements, der das Objekt anhand der ID filtert
-        sqlstatement = "SELECT id, erstellungszeitpunkt, ist_gruppenchat FROM konversationen WHERE id={}".format(key)
+        sqlstatement = "SELECT id, erstellungszeitpunkt, ist_gruppenchat FROM konversationen WHERE id={}".format(
+            key
+        )
         cursor.execute(sqlstatement)
         tuples = cursor.fetchall()
 
@@ -92,10 +93,14 @@ class KonversationMapper(Mapper):
 
         for maxid in tuples:
             # Wir erhöhen die ID um 1, damit die neue Objekt-ID nahtlos adaptiert und inkrementiert wird
-            konversation.set_id(maxid[0]+1)
+            konversation.set_id(maxid[0] + 1)
 
         command = "INSERT INTO konversationen (id, erstellungszeitpunkt, ist_gruppenchat) VALUES (%s,%s,%s)"
-        data = (konversation.get_id(), konversation.get_erstellungszeitpunkt(), konversation.get_ist_gruppenchat())
+        data = (
+            konversation.get_id(),
+            konversation.get_erstellungszeitpunkt(),
+            konversation.get_ist_gruppenchat(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -110,9 +115,15 @@ class KonversationMapper(Mapper):
         """
 
         cursor = self._cnx.cursor()
-        command = "UPDATE konversation" + \
-                  "SET erstellungszeitpunkt=%s, ist_gruppenchat=%s WHERE id=%s"
-        data = (konversation.get_erstellungszeitpunkt(), konversation.get_ist_gruppenchat(), konversation.get_id())
+        command = (
+            "UPDATE konversation"
+            + "SET erstellungszeitpunkt=%s, ist_gruppenchat=%s WHERE id=%s"
+        )
+        data = (
+            konversation.get_erstellungszeitpunkt(),
+            konversation.get_ist_gruppenchat(),
+            konversation.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -163,8 +174,3 @@ if __name__ == "__main__":
         chose = mapper.find_by_key(0)
         print(chose)
         print("--- BEENDET ---\n")
-
-
-
-
-
