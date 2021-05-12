@@ -166,11 +166,11 @@ if __name__ == "__main__":
         print("TESTEN VON FIND_ALL")
         result = mapper.find_all()
         for konversation in result:
-            print(konversation)
+            print(konversation.__dict__)
         print("--- BEENDET ---\n")
 
         # testen von find_by_key
         print("TESTEN VON FIND_BY_KEY")
-        chose = mapper.find_by_key(0)
-        print(chose)
+        chose = mapper.find_by_key(1)
+        print(chose.__dict__)
         print("--- BEENDET ---\n")
