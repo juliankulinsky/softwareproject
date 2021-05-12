@@ -3,7 +3,6 @@ from server.db.Mapper import Mapper
 
 
 class LernvorliebeMapper(Mapper):
-
     def __init__(self):
         super().__init__()
 
@@ -17,8 +16,16 @@ class LernvorliebeMapper(Mapper):
         cursor.execute("SELECT * FROM lernvorlieben")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, remote_praesenz, vorkenntsnisse,
-             lerninteressen) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            lerntyp,
+            frequenz,
+            extrovertiertheit,
+            remote_praesenz,
+            vorkenntsnisse,
+            lerninteressen,
+        ) in tuples:
             lernvorliebe = Lernvorliebe()
             lernvorliebe.set_id(id)
             lernvorliebe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -43,14 +50,24 @@ class LernvorliebeMapper(Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, remote_praesenz," \
-                  "vorkenntnisse, lerninteressen FROM lernvorlieben WHERE id={}".format(key)
+        command = (
+            "SELECT id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, remote_praesenz,"
+            "vorkenntnisse, lerninteressen FROM lernvorlieben WHERE id={}".format(key)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, remote_praesenz, vorkenntsnisse,
-             lerninteressen) = tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                lerntyp,
+                frequenz,
+                extrovertiertheit,
+                remote_praesenz,
+                vorkenntsnisse,
+                lerninteressen,
+            ) = tuples[0]
             lernvorliebe = Lernvorliebe()
             lernvorliebe.set_id(id)
             lernvorliebe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -81,14 +98,23 @@ class LernvorliebeMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM lernvorlieben")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            lernvorliebe.set_id(maxid[0]+1)
+        for maxid in tuples:
+            lernvorliebe.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO lernvorlieben (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, " \
-                  "remote_praesenz, vorkenntnisse, lerninteressen) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
-        data = (lernvorliebe.get_id(), lernvorliebe.get_erstellungszeitpunkt(), lernvorliebe.get_lerntyp(),
-                lernvorliebe.get_frequenz(), lernvorliebe.get_extrovertiertheit(), lernvorliebe.get_remote_praesenz(),
-                lernvorliebe.get_vorkenntnisse(), lernvorliebe.get_lerninteressen())
+        command = (
+            "INSERT INTO lernvorlieben (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, "
+            "remote_praesenz, vorkenntnisse, lerninteressen) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
+        )
+        data = (
+            lernvorliebe.get_id(),
+            lernvorliebe.get_erstellungszeitpunkt(),
+            lernvorliebe.get_lerntyp(),
+            lernvorliebe.get_frequenz(),
+            lernvorliebe.get_extrovertiertheit(),
+            lernvorliebe.get_remote_praesenz(),
+            lernvorliebe.get_vorkenntnisse(),
+            lernvorliebe.get_lerninteressen(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -103,11 +129,19 @@ class LernvorliebeMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE lernvorlieben SET erstellungszeitpunkt=%s, lerntyp=%s, frequenz=%s, extrovertiertheit=%s, " \
-                  "remote_praesenz=%s, vorkenntnisse=%s, lerninteressen=%s WHERE id=%s"
-        data = (lernvorliebe.get_erstellungszeitpunkt(), lernvorliebe.get_lerntyp(), lernvorliebe.get_frequenz(),
-                lernvorliebe.get_extrovertiertheit(), lernvorliebe.get_remote_praesenz(),
-                lernvorliebe.get_vorkenntnisse(), lernvorliebe.get_lerninteressen())
+        command = (
+            "UPDATE lernvorlieben SET erstellungszeitpunkt=%s, lerntyp=%s, frequenz=%s, extrovertiertheit=%s, "
+            "remote_praesenz=%s, vorkenntnisse=%s, lerninteressen=%s WHERE id=%s"
+        )
+        data = (
+            lernvorliebe.get_erstellungszeitpunkt(),
+            lernvorliebe.get_lerntyp(),
+            lernvorliebe.get_frequenz(),
+            lernvorliebe.get_extrovertiertheit(),
+            lernvorliebe.get_remote_praesenz(),
+            lernvorliebe.get_vorkenntnisse(),
+            lernvorliebe.get_lerninteressen(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -129,7 +163,7 @@ class LernvorliebeMapper(Mapper):
 
 """Testbereicht, ob Klasse funktioniert"""
 
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     with LernvorliebeMapper() as mapper:
 
         neu = Lernvorliebe()
