@@ -35,7 +35,6 @@ Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Arg
 app = Flask(__name__)
 api = Api(app)
 
-
 # Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
 model = api.model(
     "Nachricht",
