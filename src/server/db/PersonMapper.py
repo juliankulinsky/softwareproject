@@ -23,7 +23,7 @@ class PersonMapper (Mapper):
         cursor.execute("SELECT * from personen")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester, profil_id) in tuples:
+        for (id, erstellungszeitpunkt, vorname, nachname, alter, wohnort, studiengang, semester, profil_id) in tuples:
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -49,14 +49,14 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`,studiengang, wohnort, semester, profil_id FROM " \
+        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`, wohnort, studiengang, semester, profil_id FROM " \
                   "personen WHERE id={}"\
             .format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, vorname, nachname, alter, studiengang, wohnort, semester, profil_id) = tuples[0]
+            (id, erstellungszeitpunkt, vorname, nachname, alter, wohnort, studiengang, semester, profil_id) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -93,11 +93,11 @@ class PersonMapper (Mapper):
         for (maxid) in tuples:
             person.set_id(maxid[0]+1)
 
-        command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, `alter`, studiengang, " \
-                  "wohnort, semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, `alter`, wohnort, studiengang, " \
+                  "semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (person.get_id(), person.get_erstellungszeitpunkt(), person.get_vorname(),
-                person.get_nachname(), person.get_alter(), person.get_studiengang(),
-                person.get_wohnort(), person.get_semester(), person.get_profil_id())
+                person.get_nachname(), person.get_alter(), person.get_wohnort(),
+                person.get_studiengang(), person.get_semester(), person.get_profil_id())
         cursor.execute(command, data)
 
         """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
@@ -118,11 +118,13 @@ class PersonMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE personen " + \
-                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%s, studiengang=%s, wohnort=%s, " + \
+                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%s, wohnort=%s, studiengang=%s, " + \
                   "semester=%s, profil_id=%s WHERE id=%s"
         data = (person.get_erstellungszeitpunkt(), person.get_vorname(), person.get_nachname(),
-                person.get_alter(), person.get_studiengang(), person.get_wohnort(),
-                person.get_semester(), person.get_profil_id())
+                person.get_alter(), person.get_wohnort(), person.get_studiengang(),
+                person.get_semester(), person.get_profil_id(), person.get_id())
+        print(command)
+        print(data)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -161,20 +163,21 @@ if (__name__ == "__main__"):
         result = mapper.find_all()
         for p in result:
             print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_vorname(), p.get_nachname(),
-                  p.get_alter(), p.get_studiengang(), p.get_wohnort(), p.get_semester(), p.get_profil_id())
+                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
 
-        """
+
         print("Delete")
         mapper.delete(neu)
         result = mapper.find_all()
         for p in result:
-            print(p)
-                
+            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_vorname(), p.get_nachname(),
+                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
+
         auswahl = mapper.find_by_key(3)
-        auswahl.set_inhalt("yo ich hab das hier verändert")
+        auswahl.set_nachname("Musler")
         mapper.update(auswahl)
 
         result = mapper.find_all()
         for p in result:
-            print(p)
-        """
+            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_vorname(), p.get_nachname(),
+                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
