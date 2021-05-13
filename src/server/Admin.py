@@ -47,10 +47,6 @@ class Admin(object):
     def __init__(self):
         pass
 
-    def get_all_nachrichten(self):
-        """Alle Nachrichten auslesen"""
-        with NachrichtMapper() as mapper:
-            return mapper.find_all()
 
     """
         ChatTeilnahme - Spezifische Methoden
@@ -79,6 +75,35 @@ class Admin(object):
     """
         Nachricht - Spezifische Methoden
     """
+    def get_all_nachrichten(self):
+        """Alle Nachrichten auslesen"""
+        with NachrichtMapper() as mapper:
+            return mapper.find_all()
+
+    def create_nachricht(self, inhalt, absender_id, konversation_id):
+        """ Eine Nachricht erstellen """
+        nachricht = Nachricht()
+        nachricht.set_inhalt(inhalt)
+        nachricht.set_absender_id(absender_id)
+        nachricht.set_konversation_id(konversation_id)
+
+        with NachrichtMapper() as mapper:
+            return mapper.insert()
+
+    def get_nachricht_by_id(self, id):
+        """ Eine Nachricht anhand der ID auslesen """
+        with NachrichtMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def save_nachricht(self, nachricht):
+        """ Änderungen einer Nachricht speichern """
+        with NachrichtMapper() as mapper:
+            return mapper.update(nachricht)
+
+    def delete_nachricht(self, nachricht):
+        """ Löschen einer Nachricht """
+        with NachrichtMapper() as mapper:
+            return mapper.insert(nachricht)
 
     """
         PartnerVorschlag - Spezifische Methoden
@@ -88,6 +113,39 @@ class Admin(object):
         Person - Spezifische Methoden
     """
 
+    def get_all_personen(self):
+        """ Alle Personen auslesen """
+        with PersonMapper() as mapper:
+            return mapper.find_all()
+
+    def create_person(self, vorname, nachname, alter, studiengang, wohnort, semester, profil_id):
+        """ Eine Person erstellen """
+        person = Person()
+        person.set_vorname(vorname)
+        person.set_nachname(nachname)
+        person.set_alter(alter)
+        person.set_studiengang(studiengang)
+        person.set_wohnort(wohnort)
+        person.set_semester(semester)
+        person.set_profil_id(profil_id)
+
+        with PersonMapper() as mapper:
+            return mapper.insert()
+
+    def get_person_by_id(self, id):
+        """ Eine Person anhand der ID auslesen """
+        with PersonMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def save_person(self, person):
+        """ Änderungen einer Person speichern """
+        with PersonMapper() as mapper:
+            return mapper.update(person)
+
+    def delete_person(self, person):
+        """ Löschen einer Person """
+        with PersonMapper() as mapper:
+            return mapper.insert(person)
     """
         Profil - Spezifische Methoden
     """
