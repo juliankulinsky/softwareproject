@@ -104,9 +104,8 @@ class LerngruppeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = (
-            "UPDATE personen "
-            + "SET erstellungszeitpunkt=%s, gruppenname=%s, profil_id=%s, konversation_id=%s"
-            + "WHERE id=%s"
+            "UPDATE lerngruppen SET erstellungszeitpunkt=%s, gruppenname=%s, profil_id=%s, konversation_id=%s WHERE "
+            "id=%s "
         )
         data = (
             lerngruppe.get_erstellungszeitpunkt(),
