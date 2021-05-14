@@ -24,7 +24,7 @@ from .db.NachrichtMapper import NachrichtMapper
 from .db.PersonMapper import PersonMapper
 
 # from .db.ChatTeilnahmeMapper import ChatTeilnahmeMapper
-# from .db.GruppenTeilnahmeMapper import GruppenTeilnahmeMapper
+from .db.GruppenTeilnahmeMapper import GruppenTeilnahmeMapper
 from .db.GruppenVorschlagMapper import GruppenVorschlagMapper
 from .db.ProfilMapper import ProfilMapper
 from .db.PartnerVorschlagMapper import PartnerVorschlagMapper
@@ -59,6 +59,35 @@ class Admin(object):
     """
         GruppenTeilnahme - Spezifische Methoden
     """
+
+    def get_all_gruppen_teilnahme(self):
+        """Alle Gruppen_Teilnahmen auslesen"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_all()
+
+    def create_gruppen_teilnahme(self, person_id, gruppen_id):
+        """Gruppen_Teilnahme erstellen"""
+        gruppenteilnahme = GruppenTeilnahme()
+        gruppenteilnahme.set_person_id(person_id)
+        gruppenteilnahme.set_gruppen_id(gruppen_id)
+
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.insert(gruppenteilnahme)
+
+    def get_gruppen_teilnahme_by_id(self, value):
+        """Eine Gruppen_Teilnahme auswählen"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_by_key(value)
+
+    def save_gruppen_teilnahme(self, gruppen_teilnahme):
+        """Gruppen_Teilnahme speichern"""
+        with GruppenTeilnahmeMapper() as mapper:
+            mapper.update(gruppen_teilnahme)
+
+    def delete_gruppen_teilnahme(self, gruppen_teilnahme):
+        """Gruppen_Teilnahme löschen"""
+        with GruppenTeilnahmeMapper() as mapper:
+            mapper.delete(gruppen_teilnahme)
 
     """
         GruppenVorschlag - Spezifische Methoden
