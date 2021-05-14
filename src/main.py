@@ -15,7 +15,7 @@ die auf einer Domain eines anderen Server liegen.
 from flask import Flask, request
 
 # Wir nutzen RestX für das API
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource, fields, namespace
 
 # Um CORS zu ermöglichen benötigen wir das entsprechende Package
 from flask_cors import CORS
@@ -35,9 +35,15 @@ Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Arg
 app = Flask(__name__)
 api = Api(app)
 
-# Erstes API Model: Wir möchten folgende Columns von Nachricht ans API übergeben:
-model = api.model(
-    "Nachricht",
+bo = api.model(
+    'BusinessObject',
+    {
+    'id': fields.Integer(attribute='_id', description='Die ID eines Business Objects'),
+    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt")
+})
+
+nachricht = api.inherit(
+    "Nachricht", bo,
     {
         "erstellungszeitpunkt": fields.String(attribute="_erstellungszeitpunkt"),
         "inhalt": fields.String(attribute="_inhalt"),
@@ -50,18 +56,12 @@ model = api.model(
 @api.route("/nachricht")
 class Nachricht(Resource):
     # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
-    @api.marshal_with(model, envelope="resource")
+    @api.marshal_list_with(nachricht)
     def get(self):
         adm = Admin()
         return adm.get_all_nachrichten()
 
-    """def get(self, **kwargs):
-        # Instanziieren von NachrichtMapper
-        instance = NachrichtMapper.NachrichtMapper()
-        # In die db entern
-        instance.__enter__()
-        # Alle Objekte ausgeben und als Response zurückgeben
-        return instance.find_all()"""
+    # POST, PUT, DELETE ergänzen je nach fit
 
 
 """
