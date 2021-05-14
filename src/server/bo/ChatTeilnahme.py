@@ -20,3 +20,7 @@ class ChatTeilnahme(bo.BusinessObject):
 
     def set_konversation_id(self, konversation_id: int):
         self._konversation_id = konversation_id
+
+    def __str__(self):
+        return "Nr.{}: Person {} nimmt bei Chat {} teil (seit: {})"\
+            .format(self.get_id(),self.get_person_id(),self.get_konversation_id(),self.get_erstellungszeitpunkt())

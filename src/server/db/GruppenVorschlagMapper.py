@@ -106,10 +106,11 @@ class GruppenVorschlagMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE gruppen_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, gruppenvorschlag_id=%s, " \
-                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_gruppe=%s"
+                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
         data = (gruppen_vorschlag.get_erstellungszeitpunkt(), gruppen_vorschlag.get_person_id(),
                 gruppen_vorschlag.get_gruppenvorschlag_id(), gruppen_vorschlag.get_aehnlichkeit(),
-                gruppen_vorschlag.get_entscheidung_person(), gruppen_vorschlag.get_entscheidung_gruppe())
+                gruppen_vorschlag.get_entscheidung_person(), gruppen_vorschlag.get_entscheidung_gruppe(),
+                gruppen_vorschlag.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -134,19 +135,39 @@ class GruppenVorschlagMapper (Mapper):
 
 if (__name__ == "__main__"):
     with GruppenVorschlagMapper() as mapper:
+        print("--TESTING FIND_ALL")
         result = mapper.find_all()
-        print("los")
         for p in result:
             print(p)
+        print("--BEENDET")
 
+        print("--TESTING DELETE")
+        weg = mapper.find_by_key(1)
+        mapper.delete(weg)
+
+        result = mapper.find_all()
+        for p in result:
+            print(p)
+        print("--BEENDET")
+
+        print("--TESTING INSERT")
         neu = GruppenVorschlag()
-        neu.set_aehnlichkeit(90)
-        neu.set_gruppenvorschlag_id(6)
+        neu.set_person_id(4)
+        neu.set_gruppenvorschlag_id(3)
+        neu.set_aehnlichkeit(24)
         mapper.insert(neu)
 
-        weg = mapper.find_by_key(2)
-        mapper.delete(weg)
         result = mapper.find_all()
-        print("los")
         for p in result:
             print(p)
+        print("--BEENDET")
+
+        print("--TESTING UPDATE")
+        aktualisiert = mapper.find_by_key(2)
+        aktualisiert.set_aehnlichkeit(200)
+        mapper.update(aktualisiert)
+
+        result = mapper.find_all()
+        for p in result:
+            print(p)
+        print("--BEENDET")
