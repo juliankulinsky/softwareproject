@@ -43,11 +43,11 @@ class ProfilMapper(Mapper):
 
         try:
             (id, erstellungszeitpunkt, lernvorlieben_id) = tuples[0]
-            profile = Profil()
-            profile.set_id(id)
-            profile.set_erstellungszeitpunkt(erstellungszeitpunkt)
-            profile.set_lernvorlieben_id(lernvorlieben_id)
-            result = profile
+            profil = Profil()
+            profil.set_id(id)
+            profil.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            profil.set_lernvorlieben_id(lernvorlieben_id)
+            result = profil
         except IndexError:
 
             result = None
@@ -57,7 +57,7 @@ class ProfilMapper(Mapper):
 
         return result
 
-    def insert(self, profile):
+    def insert(self, profil):
         """Einfügen eines Profil-Objekts in die Datenbank.
 
 
@@ -70,23 +70,23 @@ class ProfilMapper(Mapper):
         tuples = cursor.fetchall()
 
         for maxid in tuples:
-            profile.set_id(maxid[0] + 1)
+            profil.set_id(maxid[0] + 1)
 
         command = "INSERT INTO profile (id, erstellungszeitpunkt, lernvorlieben_id) VALUES (%s,%s,%s)"
         data = (
 
-            profile.get_id(),
-            profile.get_erstellungszeitpunkt(),
-            profile.get_lernvorlieben_id()
+            profil.get_id(),
+            profil.get_erstellungszeitpunkt(),
+            profil.get_lernvorlieben_id()
         )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return profile
+        return profil
 
-    def update(self, profile):
+    def update(self, profil):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
         :param profile das Objekt, das in die DB geschrieben werden soll
@@ -95,23 +95,23 @@ class ProfilMapper(Mapper):
 
         command = "UPDATE profile" + "SET erstellungszeitpunkt=%s WHERE id=%s"
         data = (
-            profile.get_lernvorlieben_id(),
-            profile.get_erstellungszeitpunkt(),
-            profile.get_id()
+            profil.get_lernvorlieben_id(),
+            profil.get_erstellungszeitpunkt(),
+            profil.get_id()
         )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, profile):
+    def delete(self, profil):
         """Löschen der Daten eines User-Objekts aus der Datenbank.
 
         :param profil das aus der DB zu löschende "Objekt"
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM profile WHERE id={}".format(profile.get_id())
+        command = "DELETE FROM profile WHERE id={}".format(profil.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -134,8 +134,8 @@ if __name__ == "__main__":
         #testen von find_all
         print("TESTEN VON FIND_ALL")
         result = mapper.find_all()
-        for profile in result:
-            print(profile.__dict__)
+        for profil in result:
+            print(profil.__dict__)
         print("--- BEENDET ---\n")
 
         # testen von find_by_key
