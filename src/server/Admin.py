@@ -93,6 +93,37 @@ class Admin(object):
         Konversation - Spezifische Methoden
     """
 
+    def create_konversation(self, ist_gruppenchat):
+        """
+        Erstellen einer Konversation nach erfolgreichem Match.
+        :return: Konversation, an der n>1 Parteien teilnehmen können.
+        """
+        konversation = Konversation()
+        konversation.set_ist_gruppenchat(ist_gruppenchat)
+
+        with KonversationMapper() as mapper:
+            mapper.insert(konversation)
+
+    def get_all_konversationen(self):
+        """Alle Konversationen ausgeben"""
+        with KonversationMapper() as mapper:
+            mapper.find_all()
+
+    def get_konversation_by_id(self, id):
+        """Konversation mit gegebener ID ausgeben"""
+        with KonversationMapper() as mapper:
+            mapper.find_by_key(id)
+
+    def save_konversation(self, konversation: Konversation):
+        """Updaten einer Konversation"""
+        with KonversationMapper() as mapper:
+            mapper.update(konversation)
+
+    def delete_konversation(self, konversation: Konversation):
+        """Löschen einer Konversation"""
+        with KonversationMapper() as mapper:
+            mapper.delete(konversation)
+
     """
         Lerngruppe - Spezifische Methoden
     """
@@ -100,6 +131,41 @@ class Admin(object):
     """
         Lernvorliebe - Spezifische Methoden
     """
+
+    def create_lernvorliebe(self, lerntyp, wert, lerninteressen, extrovertiertheit, remote_praesenz, vorkenntnisse):
+        """
+        Lernvorlieben erstellen:
+        Diese Klasse wird bei der Profilerstellung instanziiert.
+        """
+        lv = Lernvorliebe()
+        lv.set_lerntyp(lerntyp)
+        lv.set_frequenz(wert)
+        lv.set_lerninteressen(lerninteressen)
+        lv.set_extrovertiertheit(extrovertiertheit)
+        lv.set_remote_praesenz(remote_praesenz)
+        lv.set_vorkenntnisse(vorkenntnisse)
+
+        with LernvorliebeMapper as mapper:
+            mapper.insert(lv)
+
+    def get_all_lernvorlieben(self):
+        """Auslesen aller Lernvorlieben"""
+        with LernvorliebeMapper() as mapper:
+            return mapper.find_all()
+
+    def get_lernvorliebe_by_id(self, key):
+        """Lernvorliebe einer bestimmten Person auslesen"""
+        with LernvorliebeMapper() as mapper:
+            return mapper.find_by_key(key)
+
+    def save_lernvorliebe(self, lernvorliebe: Lernvorliebe):
+        """Eine Lernvorliebe updaten"""
+        with LernvorliebeMapper() as mapper:
+            mapper.update(lernvorliebe)
+
+    def delete_lernvorliebe(self, lernvorliebe: Lernvorliebe):
+        with LernvorliebeMapper() as mapper:
+            mapper.delete(lernvorliebe)
 
     """
         Nachricht - Spezifische Methoden
