@@ -23,7 +23,7 @@ from .db.LernvorliebeMapper import LernvorliebeMapper
 from .db.NachrichtMapper import NachrichtMapper
 from .db.PersonMapper import PersonMapper
 
-# from .db.ChatTeilnahmeMapper import ChatTeilnahmeMapper
+from .db.ChatTeilnahmeMapper import ChatTeilnahmeMapper
 # from .db.GruppenTeilnahmeMapper import GruppenTeilnahmeMapper
 from .db.GruppenVorschlagMapper import GruppenVorschlagMapper
 from .db.ProfilMapper import ProfilMapper
