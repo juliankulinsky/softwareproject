@@ -127,6 +127,39 @@ class Admin(object):
     """
         Lerngruppe - Spezifische Methoden
     """
+    def create_lerngruppe(self, gruppenname, profil_id, konversation_id):
+        """
+            Lerngruppe erstellen:
+            Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
+        """
+        lerngruppe = Lerngruppe()
+        lerngruppe.set_gruppenname(gruppenname)
+        lerngruppe.set_profil_id(profil_id)
+        lerngruppe.set_konversation_id(konversation_id)
+
+        with LerngruppeMapper as mapper:
+            mapper.insert(lerngruppe)
+
+    def get_all_lerngruppen(self):
+        """Auslesen aller Lerngruppen."""
+        with LerngruppeMapper() as mapper:
+            mapper.find_all()
+
+    def get_lerngruppe_by_id(self, key):
+        """Lerngruppe nach einer spezifischen ID auslesen."""
+        with LerngruppeMapper() as mapper:
+            return mapper.find_by_key(key)
+
+    def save_lerngruppe(self, lerngruppe: Lerngruppe):
+        """Änderungen einer Lerngruppe speichern bzw. updaten."""
+        with LerngruppeMapper as mapper:
+            mapper.update(lerngruppe)
+
+    def delete_lerngruppe(self, lerngruppe: Lerngruppe):
+        """Eine Lerngruppe löschen."""
+        with LerngruppeMapper() as mapper:
+            mapper.delete(lerngruppe)
+
 
     """
         Lernvorliebe - Spezifische Methoden
@@ -145,7 +178,7 @@ class Admin(object):
         lv.set_remote_praesenz(remote_praesenz)
         lv.set_vorkenntnisse(vorkenntnisse)
 
-        with LernvorliebeMapper as mapper:
+        with LernvorliebeMapper() as mapper:
             mapper.insert(lv)
 
     def get_all_lernvorlieben(self):
