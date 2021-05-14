@@ -24,6 +24,7 @@ from flask_cors import CORS
 
 # Mapper implementieren
 from server.db import NachrichtMapper
+from server.bo import Nachricht
 
 
 from server.Admin import Admin
@@ -35,6 +36,8 @@ Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Arg
 app = Flask(__name__)
 api = Api(app)
 
+studoo = api.namespace("studoo", description="Lernapp SWP")
+
 bo = api.model(
     'BusinessObject',
     {
@@ -45,23 +48,32 @@ bo = api.model(
 nachricht = api.inherit(
     "Nachricht", bo,
     {
-        "erstellungszeitpunkt": fields.String(attribute="_erstellungszeitpunkt"),
-        "inhalt": fields.String(attribute="_inhalt"),
-        "absender": fields.Integer(attribute="_absender_id"),
-        "konversation": fields.Integer(attribute="_konversation_id"),
+        "inhalt": fields.String(attribute="_inhalt", description="Nachrichteninhalt"),
+        "absender": fields.Integer(attribute="_absender_id", description="Absender"),
+        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit"),
     },
 )
 
+### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+
+
+
+
+
+
+### Jetzt folgen die API Routes:
+
 # Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
-@api.route("/nachricht")
+@studoo.route("/nachricht")
+@studoo.response(500, "Falls es zu einem Fehler kommt")
 class Nachricht(Resource):
     # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
-    @api.marshal_list_with(nachricht)
+    @studoo.marshal_list_with(nachricht)
     def get(self):
         adm = Admin()
         return adm.get_all_nachrichten()
 
-    # POST, PUT, DELETE ergänzen je nach fit
+    # POST, PUT, DELETE ergänzen je nach fit (siehe Bankprojekt)
 
 
 """
