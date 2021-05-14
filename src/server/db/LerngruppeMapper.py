@@ -104,15 +104,15 @@ class LerngruppeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = (
-            "UPDATE personen "
-            + "SET erstellungszeitpunkt=%s, get_gruppenname=%s, profil_id=%s, konversation_id=%s"
-            + "WHERE id=%s"
+            "UPDATE lerngruppen SET erstellungszeitpunkt=%s, gruppenname=%s, profil_id=%s, konversation_id=%s WHERE "
+            "id=%s "
         )
         data = (
             lerngruppe.get_erstellungszeitpunkt(),
             lerngruppe.get_gruppenname(),
             lerngruppe.get_profil_id(),
             lerngruppe.get_konversation_id(),
+            lerngruppe.get_id()
         )
         cursor.execute(command, data)
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     with LerngruppeMapper() as mapper:
 
         test = Lerngruppe()
-        test.set_gruppenname("Funky Python Kurs")
+        test.set_gruppenname("Funky Java Kurs")
         test.set_profil_id(7)
         test.set_konversation_id(7)
 
@@ -145,23 +145,35 @@ if __name__ == "__main__":
         mapper.insert(test)
 
 
-        #  Methode find_all
+        #   Methode find_all
         print("Test der Methode: find_all")
         result = mapper.find_all()
         for r in result:
             print(r.__dict__)
 
-        # Methode find_by_key
+        #   Methode find_by_key
         print("Test der Methode: .find_by_key")
         lostkey = mapper.find_by_key(1)
         print(lostkey.__dict__)
 
-        # Methode delete
+        #   Methode update
+        print("Test der Methode: .update")
+        updt = mapper.find_by_key(3)
+        updt.set_gruppenname("Funky Python Kurs")
+        mapper.update(updt)
+
+        #   Nochmal find_all
+        print("Erneut Methode: find_all")
+        result = mapper.find_all()
+        for r in result:
+            print(r.__dict__)
+
+        #   Methode delete
         print("Test der Methode: .delete")
         weg = mapper.find_by_key(3)
         mapper.delete(weg)
 
-        # Nochmal find_all
+        #   Nochmal find_all
         print("Erneut Methode: find_all")
         result = mapper.find_all()
         for r in result:
