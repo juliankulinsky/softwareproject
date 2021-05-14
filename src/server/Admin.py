@@ -95,15 +95,15 @@ class Admin(object):
         with NachrichtMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def save_nachricht(self, nachricht):
+    def save_nachricht(self, nachricht: Nachricht):
         """ Änderungen einer Nachricht speichern """
         with NachrichtMapper() as mapper:
             return mapper.update(nachricht)
 
-    def delete_nachricht(self, nachricht):
+    def delete_nachricht(self, nachricht: Nachricht):
         """ Löschen einer Nachricht """
         with NachrichtMapper() as mapper:
-            return mapper.insert(nachricht)
+            return mapper.delete(nachricht)
 
     """
         PartnerVorschlag - Spezifische Methoden
@@ -137,15 +137,15 @@ class Admin(object):
         with PersonMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def save_person(self, person):
+    def save_person(self, person: Person):
         """ Änderungen einer Person speichern """
         with PersonMapper() as mapper:
             return mapper.update(person)
 
-    def delete_person(self, person):
+    def delete_person(self, person: Person):
         """ Löschen einer Person """
         with PersonMapper() as mapper:
-            return mapper.insert(person)
+            return mapper.delete(person)
     """
         Profil - Spezifische Methoden
     """
