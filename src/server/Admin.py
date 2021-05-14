@@ -68,7 +68,6 @@ class Admin(object):
         gruppenteilnahme = GruppenTeilnahme()
         gruppenteilnahme.set_person_id(person_id)
         gruppenteilnahme.set_gruppen_id(gruppen_id)
-        gruppenteilnahme.set_id(1)
 
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.insert(gruppenteilnahme)
@@ -83,12 +82,7 @@ class Admin(object):
 
     def delete_gruppen_teilnahme(self, gruppen_teilnahme):
         with GruppenTeilnahmeMapper() as mapper:
-            gruppen = self.get_gruppen_teilnahme_by_id(gruppen_teilnahme)
-
-            if not (gruppen is None):
-                for g in gruppen:
-                    pass
-                # Wie machen wir das hier?
+            mapper.delete(gruppen_teilnahme)
 
     """
         GruppenVorschlag - Spezifische Methoden
