@@ -83,12 +83,10 @@ class Admin(object):
     """
         PartnerVorschlag - Spezifische Methoden
     """
-    def create_partnervorschlag(self, id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit,
-                                entscheidung_person, entscheidung_partner   ):
+    def create_partnervorschlag(self, person_id, partnervorschlag_id, aehnlichkeit,
+                                entscheidung_person, entscheidung_partner ):
         """Ein PartnerVorschlag anlegen"""
         partner_vorschlag = PartnerVorschlag()
-        partner_vorschlag.set_id(id)
-        partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
         partner_vorschlag.set_person_id(person_id)
         partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
         partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
@@ -98,22 +96,22 @@ class Admin(object):
         with PartnerVorschlagMapper() as mapper:
             return mapper.insert(partner_vorschlag)
 
-    def get_all_profile(self, partner_vorschlag):
+    def get_all_partner_vorschlag(self, partner_vorschlag):
         """Alle PartnerVorschläge auslesen."""
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_all(partner_vorschlag)
 
-    def get_profile_by_id(self, id):
+    def get_partner_vorschlag_by_id(self, id):
         """PartnerVorschlag mit der gegebenen ID auslesen."""
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def save_profile(self, partner_vorschlag):
+    def save_partner_vorschlag(self, partner_vorschlag):
         """PartnerVorschlag speichern."""
         with PartnerVorschlagMapper() as mapper:
             mapper.update(partner_vorschlag)
 
-    def delete_user(self, partner_vorschlag):
+    def delete_partner_vorschlag(self, partner_vorschlag):
         """PartnerVorschlag aus unserem System löschen."""
         with PartnerVorschlag() as mapper:
             mapper.delete(partner_vorschlag)
@@ -126,31 +124,29 @@ class Admin(object):
         Profil - Spezifische Methoden
     """
 
-    def create_profile(self, id, erstellungszeitpunkt ):
+    def create_profil(self, ):
         """Ein Profil anlegen"""
-        profile = Profil()
-        profile.set_id(id)
-        profile.set_erstellungszeitpunkt(erstellungszeitpunkt)
+        profil = Profil()
 
         with ProfilMapper() as mapper:
-            return mapper.insert(profile)
+            return mapper.insert(profil)
 
-    def get_all_profile(self, profile):
+    def get_all_profile(self, profil):
         """Alle Profile auslesen."""
         with ProfilMapper() as mapper:
-            return mapper.find_all(profile)
+            return mapper.find_all(profil)
 
-    def get_profile_by_id(self, id):
+    def get_profil_by_id(self, id):
         """Das Profil mit der gegebenen ID auslesen."""
         with ProfilMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def save_profile(self, profile):
+    def save_profil(self, profil):
         """Das Profil speichern."""
         with ProfilMapper() as mapper:
-            mapper.update(profile)
+            mapper.update(profil)
 
-    def delete_user(self, profile):
+    def delete_profil(self, profil):
         """Das Profil aus unserem System löschen."""
         with ProfilMapper() as mapper:
-            mapper.delete(profile)
+            mapper.delete(profil)
