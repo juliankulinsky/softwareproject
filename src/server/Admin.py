@@ -60,7 +60,6 @@ class Admin(object):
         chat_teilnahme = ChatTeilnahme()
         chat_teilnahme.set_person_id(person_id)
         chat_teilnahme.set_konversation_id(konversation_id)
-        chat_teilnahme.set_id(1)
 
         with ChatTeilnahmeMapper as mapper:
             return mapper.insert(chat_teilnahme)
@@ -77,7 +76,7 @@ class Admin(object):
 
     def save_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
         """Die gegebene Chatteilnahme speichern."""
-        with ChatTeilnahmeMapper as mapper:
+        with ChatTeilnahmeMapper() as mapper:
             mapper.update(chat_teilnahme)
 
     def delete_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
@@ -97,7 +96,6 @@ class Admin(object):
         gruppenvorschlag = GruppenVorschlag()
         gruppenvorschlag.set_person_id(person_id)
         gruppenvorschlag.set_gruppenvorschlag_id(gruppenvorschlag_id)
-        gruppenvorschlag.set_id(1)
 
         with GruppenVorschlagMapper() as mapper:
             return mapper.insert(gruppenvorschlag)
@@ -114,7 +112,7 @@ class Admin(object):
 
     def save_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
         """Den gegebenen Gruppenvorschlag speichern."""
-        with GruppenVorschlagMapper as mapper:
+        with GruppenVorschlagMapper() as mapper:
             mapper.update(gruppenvorschlag)
 
     def delete_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
