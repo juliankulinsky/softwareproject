@@ -22,8 +22,7 @@ from .db.LerngruppeMapper import LerngruppeMapper
 from .db.LernvorliebeMapper import LernvorliebeMapper
 from .db.NachrichtMapper import NachrichtMapper
 from .db.PersonMapper import PersonMapper
-
-# from .db.ChatTeilnahmeMapper import ChatTeilnahmeMapper
+from .db.ChatTeilnahmeMapper import ChatTeilnahmeMapper
 from .db.GruppenTeilnahmeMapper import GruppenTeilnahmeMapper
 from .db.GruppenVorschlagMapper import GruppenVorschlagMapper
 from .db.ProfilMapper import ProfilMapper
@@ -51,6 +50,34 @@ class Admin(object):
     """
         ChatTeilnahme - Spezifische Methoden
     """
+    def create_chatteilnahme(self, person_id, konversation_id):
+        """Eine Chatteilnahme erstellen"""
+        chat_teilnahme = ChatTeilnahme()
+        chat_teilnahme.set_person_id(person_id)
+        chat_teilnahme.set_konversation_id(konversation_id)
+
+        with ChatTeilnahmeMapper as mapper:
+            return mapper.insert(chat_teilnahme)
+
+    def get_all_chatteilnahmen(self):
+        """Alle Chatteilnahmen ausgeben."""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_all()
+
+    def get_chatteilnahme_by_id(self, key):
+        """Die Chatteilnahme mit gegebener ID auslesen."""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_by_key(key)
+
+    def save_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
+        """Die gegebene Chatteilnahme speichern."""
+        with ChatTeilnahmeMapper() as mapper:
+            mapper.update(chat_teilnahme)
+
+    def delete_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
+        """Die gegebene Chatteilnahme aus dem System löschen"""
+        with ChatTeilnahmeMapper() as mapper:
+            mapper.delete(chat_teilnahme)
 
     """
         GruppenTeilnahme - Spezifische Methoden
@@ -88,6 +115,34 @@ class Admin(object):
     """
         GruppenVorschlag - Spezifische Methoden
     """
+    def create_gruppenvorschlag(self, person_id, gruppenvorschlag_id):
+        """Einen Gruppenvorschlag erstellen."""
+        gruppenvorschlag = GruppenVorschlag()
+        gruppenvorschlag.set_person_id(person_id)
+        gruppenvorschlag.set_gruppenvorschlag_id(gruppenvorschlag_id)
+
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.insert(gruppenvorschlag)
+
+    def get_all_gruppenvorschlaege(self):
+        """Alle Gruppenvorschläge ausgeben."""
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_all()
+
+    def get_gruppenvorschlag_by_id(self, key):
+        """Den Gruppenvorschlag mit gegebener ID auslesen."""
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_by_key(key)
+
+    def save_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
+        """Den gegebenen Gruppenvorschlag speichern."""
+        with GruppenVorschlagMapper() as mapper:
+            mapper.update(gruppenvorschlag)
+
+    def delete_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
+        """Den gegebenen Gruppenvorschlag aus dem System löschen"""
+        with GruppenVorschlagMapper() as mapper:
+            mapper.delete(gruppenvorschlag)
 
     """
         Konversation - Spezifische Methoden
