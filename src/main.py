@@ -38,11 +38,13 @@ api = Api(app)
 
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
+# CORS implementieren
+
 bo = api.model(
     'BusinessObject',
     {
     'id': fields.Integer(attribute='_id', description='Die ID eines Business Objects'),
-    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt")
+    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt", description='Timestamp des BO'),
 })
 
 nachricht = api.inherit(
@@ -54,14 +56,28 @@ nachricht = api.inherit(
     },
 )
 
-### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+konversation = api.inherit(
+    "Konversation", bo, {
+        "ist_gruppenchat": fields.Boolean(attribute="_ist_gruppenchat", description="Konversation einer Gruppe (True) oder zwischen zwei Personen (False)")
+    }
+)
+
+lernvorliebe = api.inherit(
+    "Lernvorliebe", bo, {
+        "lerntyp": fields.Integer(attribute="_lerntyp", description="Lerntyp"),
+        "frequenz": fields.Integer(attribute="_frequenz", description="Lernfrequenz des Studis"),
+        "extrovertiertheit": fields.Integer(attribute="_extrovertiertheit", description="Grad der Extrovertiertheit"),
+        "remote_praesenz": fields.Integer(attribute="_remote_praesenz", description="Definiert Präferenz, ob lieber von Zuhause oder vor Ort gelernt wird"),
+        "vorkenntnisse": fields.String(attribute="_vorkenntnisse", description="Angabe der Vorkenntnisse"),
+        "lerninteressen": fields.String(attribute="_lerninteressen", description="Angabe der Lerninteressen"),
+    }
+)
+
+#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
 
 
-
-
-
-### Jetzt folgen die API Routes:
+#  Jetzt folgen die API Routes:
 
 # Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
 @studoo.route("/nachricht")
