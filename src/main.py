@@ -40,11 +40,17 @@ studoo = api.namespace("studoo", description="Lernapp SWP")
 
 # CORS implementieren
 
+
+"""
+Implementation Flask REST
+"""
+#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+
 bo = api.model(
     'BusinessObject',
     {
     'id': fields.Integer(attribute='_id', description='Die ID eines Business Objects'),
-    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt", description='Timestamp des BO'),
+    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt", description='Timestamp des BO')
 })
 
 nachricht = api.inherit(
@@ -52,8 +58,8 @@ nachricht = api.inherit(
     {
         "inhalt": fields.String(attribute="_inhalt", description="Nachrichteninhalt"),
         "absender": fields.Integer(attribute="_absender_id", description="Absender"),
-        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit"),
-    },
+        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
+    }
 )
 
 konversation = api.inherit(
@@ -69,14 +75,22 @@ lernvorliebe = api.inherit(
         "extrovertiertheit": fields.Integer(attribute="_extrovertiertheit", description="Grad der Extrovertiertheit"),
         "remote_praesenz": fields.Integer(attribute="_remote_praesenz", description="Definiert Präferenz, ob lieber von Zuhause oder vor Ort gelernt wird"),
         "vorkenntnisse": fields.String(attribute="_vorkenntnisse", description="Angabe der Vorkenntnisse"),
-        "lerninteressen": fields.String(attribute="_lerninteressen", description="Angabe der Lerninteressen"),
+        "lerninteressen": fields.String(attribute="_lerninteressen", description="Angabe der Lerninteressen")
     }
 )
 
-#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+lerngruppe = api.inherit(
+    "Lerngruppe", bo, {
+        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname")
+        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID")
+        "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversation ID")
+    }
+)
 
 
-
+"""
+API Routes
+"""
 #  Jetzt folgen die API Routes:
 
 # Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
