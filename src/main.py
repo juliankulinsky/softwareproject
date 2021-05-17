@@ -23,10 +23,17 @@ from flask_cors import CORS
 # SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
 
 # Mapper implementieren
-from server.db import NachrichtMapper
 from server.bo.Nachricht import Nachricht
-
-
+from server.bo.ChatTeilnahme import ChatTeilnahme
+from server.bo.GruppenTeilnahme import GruppenTeilnahme
+from server.bo.GruppenVorschlag import GruppenVorschlag
+from server.bo.Konversation import Konversation
+from server.bo.Lerngruppe import Lerngruppe
+from server.bo.Lernvorliebe import Lernvorliebe
+from server.bo.Nachricht import Nachricht
+from server.bo.PartnerVorschlag import PartnerVorschlag
+from server.bo.Person import Person
+from server.bo.Profil import Profil
 from server.Admin import Admin
 
 """
@@ -171,6 +178,18 @@ class NachrichtenListOperations(Resource):
         else:
             return '', 500
 
+
+@studoo.route('/konversationen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class KonversationOperations(Resource):
+
+    @studoo.marshal_with(konversation, code=200)
+    @studoo.expect(konversation)
+    def delete(self, id):
+        adm = Admin()
+        conv = adm.get_konversation_by_id(id)
+        adm.delete_konversation(conv)
+        return '', 200
 
 """
 Der Service wird über app.run() gestartet.
