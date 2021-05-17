@@ -74,14 +74,6 @@ gruppenteilnahme = api.inherit(
     }
 )
 
-partnervorschlag = api.inherit(
-    "PartnerVorschlag", bo,
-    {
-        "partnervorschlag": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partnervorschlages"),
-        "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner", description="Entscheidung Partner")
-    }
-)
-
 konversation = api.inherit(
     "Konversation", bo, {
         "ist_gruppenchat": fields.Boolean(attribute="_ist_gruppenchat", description="Konversation einer Gruppe (True) oder zwischen zwei Personen (False)")
