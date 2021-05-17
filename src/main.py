@@ -100,6 +100,20 @@ lerngruppe = api.inherit(
     }
 )
 
+
+person = api.inherit(
+    "Person", bo,
+    {
+        "vorname": fields.String(attribute="_vorname", description="Der Vorname einer Person"),
+        "nachname": fields.String(attribute="_nachname", description="Der Nachname einer Person"),
+        "alter": fields.Integer(attribute="_alter", description="Das Alter einer Person"),
+        "studiengang": fields.String(attribute="_studiengang", description="Der Studiengang in welchem sich eine Person befindet"),
+        "wohnort": fields.String(attribute="_wohnort", description="Der Wohnort einer Person"),
+        "semester": fields.Integer(attribute="_semester", description=" Das Semester in dem sich eine Person befindet"),
+        "profil_id": fields.Integer(attribute="_profil_id", description="Fremdschlüsselbeziehung zum Profil der Person")
+    }
+)
+
 chatteilnahme = api.inherit(
     "ChatTeilnahme", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person, welche an einer Konversation teilnimmt"),
@@ -128,6 +142,7 @@ gruppenvorschlag = api.inherit(
 )
 
 
+
 """
 API Routes
 """
@@ -144,7 +159,6 @@ class Nachricht(Resource):
         return adm.get_all_nachrichten()
 
     # POST, PUT, DELETE ergänzen je nach fit (siehe Bankprojekt)
-
 
 """
 Der Service wird über app.run() gestartet.
