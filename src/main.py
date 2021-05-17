@@ -95,7 +95,7 @@ chatteilnahme = api.inherit(
 )
 
 partnervorschlag = api.inherit(
-    "GruppenVorschlag", bo, {
+    "PartnerVorschlag", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
         "partnervorschlag_id": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partners"),
         "aehnlichkeit": fields.Float(attribute="_aehnlichkeit", description="Berechnete Ähnlichkeit der Person zum potentiellen Partner"),
