@@ -60,3 +60,16 @@ class Lernvorliebe(bo.BusinessObject):
     def set_lerninteressen(self, liste: str):
         """Festlegen der Lerninteressen"""
         self._lerninteressen = liste
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Lernvorliebe()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_lerntyp(dictionary["lerntyp"])
+        obj.set_frequenz(dictionary["frequenz"])
+        obj.set_extrovertiertheit(dictionary["extrovertiertheit"])
+        obj.set_vorkenntnisse(dictionary["vorkenntnisse"])
+        obj.set_remote_praesenz(dictionary["remote_praesenz"])
+        obj.set_lerninteressen(dictionary["lerninteressen"])
+        return obj

@@ -27,3 +27,12 @@ class PartnerVorschlag(vo.Vorschlag):
             self.get_id(),self.get_person_id(),self.get_partnervorschlag_id(),self.get_aehnlichkeit(),
             self.get_entscheidung_person(),self.get_entscheidung_partner()
         )
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = PartnerVorschlag()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_partnervorschlag_id(dictionary["partnervorschlag_id"])
+        obj.set_entscheidung_partner(dictionary["entscheidung_partner"])
+        return obj

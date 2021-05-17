@@ -29,3 +29,13 @@ class Lerngruppe(bo.BusinessObject):
 
     def set_konversation_id(self, konversation_id: int):
         self._konversation_id = konversation_id
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Lerngruppe()
+        obj.set_id(dictionary["id"])
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_gruppenname(dictionary["gruppenname"])
+        obj.set_profil_id(dictionary["profil_id"])
+        obj.set_konversation_id(dictionary["konversation_id"])
+        return obj

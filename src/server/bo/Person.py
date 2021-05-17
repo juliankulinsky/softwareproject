@@ -46,9 +46,11 @@ class Person(bo.BusinessObject):
         self._alter = alter
 
     def get_wohnort(self):
+        """ Auslesen von wohnort """
         return self._wohnort
 
     def set_wohnort(self, wohnort: str):
+        """ Festlegen von wohnort """
         self._wohnort = wohnort
 
     def get_studiengang(self):
@@ -58,14 +60,6 @@ class Person(bo.BusinessObject):
     def set_studiengang(self, studiengang: str):
         """ Festlegen von studiengang """
         self._studiengang = studiengang
-
-    def get_wohnort(self):
-        """ Auslesen von wohnort """
-        return self._wohnort
-
-    def set_wohnort(self, wohnort: str):
-        """ Festlegen von wohnort """
-        self._wohnort = wohnort
 
     def get_semester(self):
         """ Auslesen von semester """
@@ -81,8 +75,16 @@ class Person(bo.BusinessObject):
     def set_profil_id(self, profil_id: int):
         self._profil_id = profil_id
 
-    """Im Folgenden werden ggf. erweiterte Methoden implementiert"""
-# braucht man wahrscheinlich nicht:
-   # def get_gruppen(self):
-   # def gruppe_beitreten(self):
-   #  def nachricht_schreiben(self):
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Person()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_vorname(dictionary["vorname"])
+        obj.set_nachname(dictionary["nachname"])
+        obj.set_alter(dictionary["alter"])
+        obj.set_wohnort(dictionary["wohnort"])
+        obj.set_studiengang(dictionary["studiengang"])
+        obj.set_semester(dictionary["semester"])
+        obj.set_profil_id(dictionary["profil_id"])
+        return obj
