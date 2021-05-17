@@ -88,6 +88,11 @@ lerngruppe = api.inherit(
 )
 
 
+profil = api.inherit(
+    "Profil", bo, {
+        "lernvorliben_id": fields.String(attribute="_lernvorlieben_id", description="Lernvorlieben_id")
+    }
+)
 """
 API Routes
 """
