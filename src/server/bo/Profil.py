@@ -13,3 +13,11 @@ class Profil(bo.BusinessObject):
 
     def set_lernvorlieben_id(self, lernvorlieben_id: int):
         self._lernvorlieben_id = lernvorlieben_id
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Profil()
+        obj.set_id(dictionary["id"])
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_lernvorlieben_id(dictionary["lernvorlieben_id"])
+        return obj

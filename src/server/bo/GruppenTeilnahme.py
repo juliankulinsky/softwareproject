@@ -27,3 +27,13 @@ class GruppenTeilnahme(bo.BusinessObject):
 
     def set_ist_admin(self, wert: bool):
         self._ist_admin = wert
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = GruppenTeilnahme()
+        obj.set_id(dictionary["id"])
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_person_id(dictionary["person_id"])
+        obj.set_gruppen_id(dictionary["gruppen_id"])
+        obj.set_ist_admin(dictionary["ist_admin"])
+        return obj

@@ -31,3 +31,13 @@ class Vorschlag(bo.BusinessObject, ABC):
 
     def set_entscheidung_person(self, entscheidung: bool):
         self._entscheidung_person = entscheidung
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Vorschlag()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_person_id(dictionary["person_id"])
+        obj.set_aehnlichkeit(dictionary["aehnlichkeit"])
+        obj.set_entscheidung_person(dictionary["entscheidung_person"])
+        return obj

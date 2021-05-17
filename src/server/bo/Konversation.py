@@ -18,3 +18,11 @@ class Konversation(bo.BusinessObject):
 
     def set_ist_gruppenchat(self, wert: bool):
         self._ist_gruppenchat = wert
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Konversation()
+        obj.set_id(dictionary["id"])
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_ist_gruppenchat(dictionary["ist_gruppenchat"])
+        return obj
