@@ -62,10 +62,23 @@ nachricht = api.inherit(
     }
 )
 
+
+### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+
+gruppenteilnahme = api.inherit(
+    "GruppenTeilnahme", bo,
+    {
+        "person": fields.Integer(attribute="_person_id", description="Useridentifikation"),
+        "gruppe": fields.Integer(attribute="_gruppen_id", description="Gruppenidentifikation"),
+        "istadmin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung")
+    }
+)
+
 konversation = api.inherit(
     "Konversation", bo, {
         "ist_gruppenchat": fields.Boolean(attribute="_ist_gruppenchat", description="Konversation einer Gruppe (True) oder zwischen zwei Personen (False)")
     }
+
 )
 
 lernvorliebe = api.inherit(
@@ -81,11 +94,12 @@ lernvorliebe = api.inherit(
 
 lerngruppe = api.inherit(
     "Lerngruppe", bo, {
-        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname")
-        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID")
+        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname"),
+        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID"),
         "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversation ID")
     }
 )
+
 
 person = api.inherit(
     "Person", bo,
@@ -99,6 +113,35 @@ person = api.inherit(
         "profil_id": fields.Integer(attribute="_profil_id", description="Fremdschlüsselbeziehung zum Profil der Person")
     }
 )
+
+chatteilnahme = api.inherit(
+    "ChatTeilnahme", bo, {
+        "person_id": fields.Integer(attribute="_person_id", description="ID der Person, welche an einer Konversation teilnimmt"),
+        "konversation_id": fields.Integer(attribute="_konversation_id", description="ID der Konversation, an welcher eine Person teilnimmt")
+    }
+)
+
+partnervorschlag = api.inherit(
+    "PartnerVorschlag", bo, {
+        "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
+        "partnervorschlag_id": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partners"),
+        "aehnlichkeit": fields.Float(attribute="_aehnlichkeit", description="Berechnete Ähnlichkeit der Person zum potentiellen Partner"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
+        "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner", description="Entscheidung des Partners")
+    }
+)
+
+gruppenvorschlag = api.inherit(
+    "GruppenVorschlag", bo, {
+        "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
+        "gruppenvorschlag_id": fields.Integer(attribute="_gruppenvorschlag_id", description="ID der Gruppe"),
+        "aehnlichkeit": fields.Float(attribute="_aehnlichkeit", description="Berechnete Ähnlichkeit der Person zur Gruppe"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
+        "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe", description="Entscheidung der Gruppe")
+    }
+)
+
+
 
 """
 API Routes
