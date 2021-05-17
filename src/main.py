@@ -100,6 +100,11 @@ lerngruppe = api.inherit(
     }
 )
 
+profil = api.inherit(
+    "Profil", bo, {
+        "lernvorlieben_id": fields.String(attribute="_lernvorlieben_id", description="Lernvorlieben_id")
+    }
+)
 
 person = api.inherit(
     "Person", bo,
@@ -140,6 +145,7 @@ gruppenvorschlag = api.inherit(
         "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe", description="Entscheidung der Gruppe")
     }
 )
+
 
 
 
