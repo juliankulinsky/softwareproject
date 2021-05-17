@@ -87,6 +87,18 @@ lerngruppe = api.inherit(
     }
 )
 
+person = api.inherit(
+    "Person", bo,
+    {
+        "vorname": fields.String(attribute="_vorname", description="Der Vorname einer Person"),
+        "nachname": fields.String(attribute="_nachname", description="Der Nachname einer Person"),
+        "alter": fields.Integer(attribute="_alter", description="Das Alter einer Person"),
+        "studiengang": fields.String(attribute="_studiengang", description="Der Studiengang in welchem sich eine Person befindet"),
+        "wohnort": fields.String(attribute="_wohnort", description="Der Wohnort einer Person"),
+        "semester": fields.Integer(attribute="_semester", description=" Das Semester in dem sich eine Person befindet"),
+        "profil_id": fields.Integer(attribute="_profil_id", description="Fremdschlüsselbeziehung zum Profil der Person")
+    }
+)
 
 """
 API Routes
@@ -105,6 +117,15 @@ class Nachricht(Resource):
 
     # POST, PUT, DELETE ergänzen je nach fit (siehe Bankprojekt)
 
+# Unter der Route 'localhost/person' soll nun das API Model zurückgegeben werden
+#@studoo.route("/person")
+#@studoo.response(500, "Falls es zu einem Fehler kommt")
+#class Person(Resource):
+    # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
+#    @studoo.marshal_list_with(person)
+#    def get(self):
+#        adm = Admin()
+#        return adm.get_all_personen()
 
 """
 Der Service wird über app.run() gestartet.
