@@ -62,10 +62,31 @@ nachricht = api.inherit(
     }
 )
 
+
+### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+
+gruppenteilnahme = api.inherit(
+    "GruppenTeilnahme", bo,
+    {
+        "person": fields.Integer(attribute="_person_id", description="Useridentifikation"),
+        "gruppe": fields.Integer(attribute="_gruppen_id", description="Gruppenidentifikation"),
+        "istadmin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung")
+    }
+)
+
+partnervorschlag = api.inherit(
+    "PartnerVorschlag", bo,
+    {
+        "partnervorschlag": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partnervorschlages"),
+        "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner", description="Entscheidung Partner")
+    }
+)
+
 konversation = api.inherit(
     "Konversation", bo, {
         "ist_gruppenchat": fields.Boolean(attribute="_ist_gruppenchat", description="Konversation einer Gruppe (True) oder zwischen zwei Personen (False)")
     }
+
 )
 
 lernvorliebe = api.inherit(
@@ -81,8 +102,8 @@ lernvorliebe = api.inherit(
 
 lerngruppe = api.inherit(
     "Lerngruppe", bo, {
-        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname")
-        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID")
+        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname"),
+        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID"),
         "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversation ID")
     }
 )
