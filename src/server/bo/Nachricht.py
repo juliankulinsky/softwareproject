@@ -49,3 +49,13 @@ class Nachricht(bo.BusinessObject):
             self.get_id(), self.get_absender_id(), self.get_konversation_id(), self.get_inhalt(),
             self.get_erstellungszeitpunkt()
         )
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Nachricht()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_inhalt(dictionary["inhalt"])
+        obj.set_konversation_id(dictionary["konversation_id"])
+        obj.set_absender_id(dictionary["absender_id"])
+        return obj
