@@ -250,7 +250,7 @@ class Admin(object):
         nachricht.set_konversation_id(konversation_id)
 
         with NachrichtMapper() as mapper:
-            return mapper.insert()
+            return mapper.insert(nachricht)
 
     def get_all_nachrichten(self):
         """Alle Nachrichten auslesen"""
@@ -323,7 +323,7 @@ class Admin(object):
         person.set_profil_id(profil_id)
 
         with PersonMapper() as mapper:
-            return mapper.insert()
+            return mapper.insert(person)
 
     def get_all_personen(self):
         """ Alle Personen auslesen """

@@ -24,7 +24,7 @@ from flask_cors import CORS
 
 # Mapper implementieren
 from server.db import NachrichtMapper
-from server.bo import Nachricht
+from server.bo.Nachricht import Nachricht
 
 
 from server.Admin import Admin
@@ -57,8 +57,8 @@ nachricht = api.inherit(
     "Nachricht", bo,
     {
         "inhalt": fields.String(attribute="_inhalt", description="Nachrichteninhalt"),
-        "absender": fields.Integer(attribute="_absender_id", description="Absender"),
-        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
+        "absender_id": fields.Integer(attribute="_absender_id", description="Absender"),
+        "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
     }
 )
 
@@ -147,24 +147,30 @@ gruppenvorschlag = api.inherit(
 )
 
 
-
-
 """
 API Routes
 """
-#  Jetzt folgen die API Routes:
 
-# Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
-@studoo.route("/nachricht")
-@studoo.response(500, "Falls es zu einem Fehler kommt")
-class Nachricht(Resource):
-    # Response Marshalling: Kontrolle welche Daten wie ausgegeben werden (Data formatting; siehe model)
+@studoo.route('/nachrichten')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class NachrichtenListOperations(Resource):
+
     @studoo.marshal_list_with(nachricht)
     def get(self):
         adm = Admin()
         return adm.get_all_nachrichten()
 
-    # POST, PUT, DELETE ergänzen je nach fit (siehe Bankprojekt)
+    @studoo.marshal_with(nachricht, code=200)
+    @studoo.expect(nachricht)
+    def post(self):
+        adm = Admin()
+        proposal = Nachricht.from_dict(api.payload)
+        if proposal is not None:
+            n = adm.create_nachricht(proposal.get_inhalt(), proposal.get_absender_id(), proposal.get_konversation_id())
+            return n, 200
+        else:
+            return '', 500
+
 
 """
 Der Service wird über app.run() gestartet.
