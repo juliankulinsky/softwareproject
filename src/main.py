@@ -38,11 +38,19 @@ api = Api(app)
 
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
+# CORS implementieren
+
+
+"""
+Implementation Flask REST
+"""
+#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
+
 bo = api.model(
     'BusinessObject',
     {
     'id': fields.Integer(attribute='_id', description='Die ID eines Business Objects'),
-    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt")
+    'erstellungszeitpunkt': fields.String(attribute="_erstellungszeitpunkt", description='Timestamp des BO')
 })
 
 nachricht = api.inherit(
@@ -50,9 +58,10 @@ nachricht = api.inherit(
     {
         "inhalt": fields.String(attribute="_inhalt", description="Nachrichteninhalt"),
         "absender": fields.Integer(attribute="_absender_id", description="Absender"),
-        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit"),
-    },
+        "konversation": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
+    }
 )
+
 
 ### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
@@ -61,22 +70,49 @@ gruppenteilnahme = api.inherit(
     {
         "person": fields.Integer(attribute="_person_id", description="Useridentifikation"),
         "gruppe": fields.Integer(attribute="_gruppen_id", description="Gruppenidentifikation"),
-        "istadmin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung"),
-    },
+        "istadmin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung")
+    }
 )
 
 partnervorschlag = api.inherit(
     "PartnerVorschlag", bo,
     {
         "partnervorschlag": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partnervorschlages"),
-        "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner", description="Entscheidung Partner"),
-    },
+        "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner", description="Entscheidung Partner")
+    }
+)
+
+konversation = api.inherit(
+    "Konversation", bo, {
+        "ist_gruppenchat": fields.Boolean(attribute="_ist_gruppenchat", description="Konversation einer Gruppe (True) oder zwischen zwei Personen (False)")
+    }
+
+)
+
+lernvorliebe = api.inherit(
+    "Lernvorliebe", bo, {
+        "lerntyp": fields.Integer(attribute="_lerntyp", description="Lerntyp"),
+        "frequenz": fields.Integer(attribute="_frequenz", description="Lernfrequenz des Studis"),
+        "extrovertiertheit": fields.Integer(attribute="_extrovertiertheit", description="Grad der Extrovertiertheit"),
+        "remote_praesenz": fields.Integer(attribute="_remote_praesenz", description="Definiert Präferenz, ob lieber von Zuhause oder vor Ort gelernt wird"),
+        "vorkenntnisse": fields.String(attribute="_vorkenntnisse", description="Angabe der Vorkenntnisse"),
+        "lerninteressen": fields.String(attribute="_lerninteressen", description="Angabe der Lerninteressen")
+    }
+)
+
+lerngruppe = api.inherit(
+    "Lerngruppe", bo, {
+        "gruppenname": fields.String(attribute="_gruppenname", description="Gruppenname"),
+        "profil_id": fields.Integer(attribute="_profil_id", description="Profil ID"),
+        "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversation ID")
+    }
 )
 
 
-
-
-### Jetzt folgen die API Routes:
+"""
+API Routes
+"""
+#  Jetzt folgen die API Routes:
 
 # Unter der Route 'localhost/nachricht' soll nun das API Model zurückgegeben werden
 @studoo.route("/nachricht")
