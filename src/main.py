@@ -102,7 +102,7 @@ lerngruppe = api.inherit(
 
 profil = api.inherit(
     "Profil", bo, {
-        "lernvorlieben_id": fields.String(attribute="_lernvorlieben_id", description="Lernvorlieben_id")
+        "lernvorlieben_id": fields.Integer(attribute="_lernvorlieben_id", description="Lernvorlieben_id")
     }
 )
 
