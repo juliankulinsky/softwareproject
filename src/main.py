@@ -203,17 +203,6 @@ class PersonOperations(Resource):
         adm = Admin()
         return adm.get_person_by_id(id)
 
-#    @studoo.marshal_with(person, code=200)
-#    @studoo.expect(person)
-#    def post(self):
-#        adm = Admin()
-#        proposal = Person.from_dict(api.payload)
-#        if proposal is not None:
-#            p = adm.create_person(proposal.get_vorname(), proposal.get_nachname(), proposal.get_alter(), proposal.get_studiengang(), proposal.get_wohnort(), proposal.get_semester(), proposal.get_profil_id())
-#            return p, 200
-#        else:
-#            return '', 500
-
     @studoo.marshal_with(person)
     @studoo.expect(person, validate=True)
     def put(self, id):
@@ -221,9 +210,6 @@ class PersonOperations(Resource):
         p = Person.from_dict(api.payload)
 
         if p is not None:
-            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Customer-Objekts gesetzt.
-            Siehe Hinweise oben.
-            """
             p.set_id(id)
             adm.save_person(p)
             return '', 200
