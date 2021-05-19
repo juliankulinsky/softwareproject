@@ -23,7 +23,7 @@ from flask_cors import CORS
 # SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
 
 # Mapper implementieren
-from server.bo.Nachricht import Nachricht
+
 from server.bo.ChatTeilnahme import ChatTeilnahme
 from server.bo.GruppenTeilnahme import GruppenTeilnahme
 from server.bo.GruppenVorschlag import GruppenVorschlag
@@ -188,6 +188,57 @@ class KonversationOperations(Resource):
         conv = adm.get_konversation_by_id(id)
         adm.delete_konversation(conv)
         return '', 200
+
+      
+@studoo.route('/personen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PersonenListOperations(Resource):
+
+    @studoo.marshal_list_with(person)
+    def get(self):
+        adm = Admin()
+        return adm.get_all_personen()
+
+    @studoo.marshal_with(person, code=200)
+    @studoo.expect(person)
+    def post(self):
+        adm = Admin()
+        proposal = Person.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_person(proposal.get_vorname(), proposal.get_nachname(), proposal.get_alter(), proposal.get_studiengang(), proposal.get_wohnort(), proposal.get_semester(), proposal.get_profil_id())
+            return p, 200
+        else:
+            return '', 500
+
+
+@studoo.route('/person/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PersonOperations(Resource):
+
+    @studoo.marshal_with(person)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_person_by_id(id)
+
+    @studoo.marshal_with(person)
+    @studoo.expect(person, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = Person.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_person(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        adm = Admin()
+        pers = adm.get_person_by_id(id)
+        adm.delete_person(pers)
+        return '', 200
+
 
 """
 Der Service wird über app.run() gestartet.
