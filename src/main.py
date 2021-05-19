@@ -179,12 +179,10 @@ class NachrichtenListOperations(Resource):
             return '', 500
 
 
-@studoo.route('/konversationen')
+@studoo.route('/konversationen/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class KonversationOperations(Resource):
 
-    @studoo.marshal_with(konversation, code=200)
-    @studoo.expect(konversation)
     def delete(self, id):
         adm = Admin()
         conv = adm.get_konversation_by_id(id)
