@@ -1,12 +1,12 @@
 import BusinessObject from './BusinessObject';
 
 /**
- * Represents a customer of the bank.
+ * Repräsentiert eine Person
  */
 export default class PersonBO extends BusinessObject {
 
   /**
-   * Constructs a CustomerBO object with a given firstname and lastname.
+   * Erstellt ein BO einer Person mit gegebenen Attributen.
    *
    * @param {String} aVorname - Der Vorname des PersonBO.
    * @param {String} aNachname - Der Nachname des PersonBO.
@@ -141,7 +141,7 @@ export default class PersonBO extends BusinessObject {
   }
 
   /**
-   * Returns an Array of CustomerBOs from a given JSON structure.
+   * Gibt das BO als String aus. Für Debugging-Zwecke.
    */
   static fromJSON(personen) {
     let result = [];
