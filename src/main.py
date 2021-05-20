@@ -74,9 +74,9 @@ nachricht = api.inherit(
 gruppenteilnahme = api.inherit(
     "GruppenTeilnahme", bo,
     {
-        "person": fields.Integer(attribute="_person_id", description="Useridentifikation"),
-        "gruppe": fields.Integer(attribute="_gruppen_id", description="Gruppenidentifikation"),
-        "istadmin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung")
+        "person_id": fields.Integer(attribute="_person_id", description="Useridentifikation"),
+        "gruppen_id": fields.Integer(attribute="_gruppen_id", description="Gruppenidentifikation"),
+        "ist_admin": fields.Boolean(attribute="_ist_admin", description="Berechtigunsüberprüfung")
     }
 )
 
@@ -321,15 +321,45 @@ class GruppenTeilnahmeListOperations(Resource):
     @studoo.expect(gruppenteilnahme)
     def post(self):
         """Anlegen eines neuen GruppenTeilnahme-Objektes"""
-        adm =Admin()
+        adm = Admin()
         proposal = GruppenTeilnahme.from_dict(api.payload)
-
         if proposal is not None:
             gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id())
             return gt, 200
         else:
             return '', 500
 
+
+@studoo.route('/gruppenteilnahme/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmeOperations(Resource):
+
+    @studoo.marshal_with(gruppenteilnahme)
+    def get(self, id):
+        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        return adm.get_gruppen_teilnahme_by_id(id)
+
+    @studoo.marshal_with(gruppenteilnahme)
+    @studoo.expect(gruppenteilnahme, validate=True)
+    def put(self, id):
+        """Update eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        gt = GruppenTeilnahme.from_dict(api.payload)
+
+        if gt is not None:
+            gt.set_id(id)
+            adm.save_gruppen_teilnahme(gt)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        """Löschen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        gruppenteil = adm.get_gruppen_teilnahme_by_id(id)
+        adm.delete_gruppen_teilnahme(gruppenteil)
+        return '', 200
 
 
 """     
