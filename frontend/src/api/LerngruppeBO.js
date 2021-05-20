@@ -11,3 +11,5 @@ export default class LerngruppeBO extends BusinessObject{
         this.konversation_id = aKonversationId;
     }
 }
+
+// Brauchen wir hier noch Getter & Setter?
