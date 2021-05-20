@@ -36,7 +36,7 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """
 
         :param key:
@@ -70,7 +70,7 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
-    def insert(self, partner_vorschlag):
+    def insert(self, partner_vorschlag: PartnerVorschlag):
         """
 
         :param partner_vorschlag:
@@ -86,10 +86,15 @@ class PartnerVorschlagMapper (Mapper):
         command = "INSERT INTO partner_vorschlaege (id, erstellungszeitpunkt, person_id, partnervorschlag_id, " \
                   "aehnlichkeit, entscheidung_person, entscheidung_partner) " \
                   "VALUES (%s,%s,%s,%s,%s,%s,%s)"
-        data = (partner_vorschlag.get_id(), partner_vorschlag.get_erstellungszeitpunkt(),
-                partner_vorschlag.get_person_id(), partner_vorschlag.get_partnervorschlag_id(),
-                partner_vorschlag.get_aehnlichkeit(), partner_vorschlag.get_entscheidung_person(),
-                partner_vorschlag.get_entscheidung_partner())
+        data = (
+            partner_vorschlag.get_id(),
+            partner_vorschlag.get_erstellungszeitpunkt(),
+            partner_vorschlag.get_person_id(),
+            partner_vorschlag.get_partnervorschlag_id(),
+            partner_vorschlag.get_aehnlichkeit(),
+            partner_vorschlag.get_entscheidung_person(),
+            partner_vorschlag.get_entscheidung_partner()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -97,7 +102,7 @@ class PartnerVorschlagMapper (Mapper):
 
         return partner_vorschlag
 
-    def update(self, partner_vorschlag):
+    def update(self, partner_vorschlag: PartnerVorschlag):
         """
 
         :param partner_vorschlag:
@@ -105,17 +110,21 @@ class PartnerVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE partner_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, partnervorschlag_id=%s, " \
+        command = "UPDATE partner_vorschlaege SET person_id=%s, partnervorschlag_id=%s, " \
                   "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s"
-        data = (partner_vorschlag.get_erstellungszeitpunkt(), partner_vorschlag.get_person_id(),
-                partner_vorschlag.get_partnervorschlag_id(), partner_vorschlag.get_aehnlichkeit(),
-                partner_vorschlag.get_entscheidung_person(), partner_vorschlag.get_entscheidung_partner())
+        data = (
+            partner_vorschlag.get_person_id(),
+            partner_vorschlag.get_partnervorschlag_id(),
+            partner_vorschlag.get_aehnlichkeit(),
+            partner_vorschlag.get_entscheidung_person(),
+            partner_vorschlag.get_entscheidung_partner()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, partner_vorschlag):
+    def delete(self, partner_vorschlag: PartnerVorschlag):
         """
 
         :param partner_vorschlag:

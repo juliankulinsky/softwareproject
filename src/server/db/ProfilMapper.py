@@ -25,7 +25,7 @@ class ProfilMapper(Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen eines Profils mit vorgegebener ID. Da diese eindeutig ist,
         wird genau ein Objekt zurückgegeben.
 
@@ -57,16 +57,14 @@ class ProfilMapper(Mapper):
 
         return result
 
-    def insert(self, profil):
+    def insert(self, profil: Profil):
         """Einfügen eines Profil-Objekts in die Datenbank.
 
-
-
-        :param Profil das zu speichernde Objekt
+        :param profil das zu speichernde Objekt
         :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM profile ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM profile")
         tuples = cursor.fetchall()
 
         for maxid in tuples:
@@ -74,7 +72,6 @@ class ProfilMapper(Mapper):
 
         command = "INSERT INTO profile (id, erstellungszeitpunkt, lernvorlieben_id) VALUES (%s,%s,%s)"
         data = (
-
             profil.get_id(),
             profil.get_erstellungszeitpunkt(),
             profil.get_lernvorlieben_id()
@@ -86,17 +83,16 @@ class ProfilMapper(Mapper):
 
         return profil
 
-    def update(self, profil):
+    def update(self, profil: Profil):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
-        :param profile das Objekt, das in die DB geschrieben werden soll
+        :param profil das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE profile" + "SET erstellungszeitpunkt=%s WHERE id=%s"
+        command = "UPDATE profile SET lernvorlieben_id=%s WHERE id=%s"
         data = (
             profil.get_lernvorlieben_id(),
-            profil.get_erstellungszeitpunkt(),
             profil.get_id()
         )
         cursor.execute(command, data)
@@ -104,7 +100,7 @@ class ProfilMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, profil):
+    def delete(self, profil: Profil):
         """Löschen der Daten eines User-Objekts aus der Datenbank.
 
         :param profil das aus der DB zu löschende "Objekt"
@@ -131,7 +127,7 @@ if __name__ == "__main__":
         mapper.insert(new_conv)
         print("--- BEENDET ---\n")
 
-        #testen von find_all
+        # testen von find_all
         print("TESTEN VON FIND_ALL")
         result = mapper.find_all()
         for profil in result:
