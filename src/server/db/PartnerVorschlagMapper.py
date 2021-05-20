@@ -97,7 +97,7 @@ class PartnerVorschlagMapper (Mapper):
 
         return partner_vorschlag
 
-    def update(self, partner_vorschlag):
+    def update(self, partner_vorschlag: PartnerVorschlag):
         """
 
         :param partner_vorschlag:
@@ -106,10 +106,11 @@ class PartnerVorschlagMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE partner_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, partnervorschlag_id=%s, " \
-                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s"
+                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s WHERE id=%s"
         data = (partner_vorschlag.get_erstellungszeitpunkt(), partner_vorschlag.get_person_id(),
                 partner_vorschlag.get_partnervorschlag_id(), partner_vorschlag.get_aehnlichkeit(),
-                partner_vorschlag.get_entscheidung_person(), partner_vorschlag.get_entscheidung_partner())
+                partner_vorschlag.get_entscheidung_person(), partner_vorschlag.get_entscheidung_partner(),
+                partner_vorschlag.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

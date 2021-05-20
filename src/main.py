@@ -240,6 +240,155 @@ class PersonOperations(Resource):
         return '', 200
 
 
+@studoo.route('/chatteilnahmen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ChatteilnahmenListOperations(Resource):
+
+    @studoo.marshal_list_with(chatteilnahme)
+    def get(self):
+        adm = Admin()
+        return adm.get_all_chatteilnahmen()
+
+    @studoo.marshal_with(chatteilnahme, code=200)
+    @studoo.expect(chatteilnahme)
+    def post(self):
+        adm = Admin()
+        proposal = ChatTeilnahme.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_chatteilnahme(proposal.get_person_id(), proposal.get_konversation_id())
+            return p, 200
+        else:
+            return '', 500
+
+
+@studoo.route('/chatteilnahme/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ChatteilnahmeOperations(Resource):
+
+    @studoo.marshal_with(chatteilnahme)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_chatteilnahme_by_id(id)
+
+    @studoo.marshal_with(chatteilnahme)
+    @studoo.expect(chatteilnahme, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = ChatTeilnahme.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_chatteilnahme(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        adm = Admin()
+        ct = adm.get_chatteilnahme_by_id(id)
+        adm.delete_chatteilnahme(ct)
+        return '', 200
+
+
+@studoo.route('/partnervorschlaege')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PartnervorschlaegeListOperations(Resource):
+
+    @studoo.marshal_list_with(partnervorschlag)
+    def get(self):
+        adm = Admin()
+        return adm.get_all_partner_vorschlag()
+
+    @studoo.marshal_with(partnervorschlag, code=200)
+    @studoo.expect(partnervorschlag)
+    def post(self):
+        adm = Admin()
+        proposal = PartnerVorschlag.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_partnervorschlag(proposal.get_person_id(), proposal.get_partnervorschlag_id(), proposal.get_aehnlichkeit(), proposal.get_entscheidung_person(), proposal.get_entscheidung_partner())
+            return p, 200
+        else:
+            return '', 500
+
+
+@studoo.route('/partnervorschlag/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PartnervorschlagOperations(Resource):
+
+    @studoo.marshal_with(partnervorschlag)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_partner_vorschlag_by_id(id)
+
+    @studoo.marshal_with(partnervorschlag)
+    @studoo.expect(partnervorschlag, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = PartnerVorschlag.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_partner_vorschlag(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        adm = Admin()
+        pv = adm.get_partner_vorschlag_by_id(id)
+        adm.delete_partner_vorschlag(pv)
+        return '', 200
+
+
+@studoo.route('/gruppenvorschlaege')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlaegeListOperations(Resource):
+
+    @studoo.marshal_list_with(gruppenvorschlag)
+    def get(self):
+        adm = Admin()
+        return adm.get_all_gruppenvorschlaege()
+
+    @studoo.marshal_with(gruppenvorschlag, code=200)
+    @studoo.expect(gruppenvorschlag)
+    def post(self):
+        adm = Admin()
+        proposal = GruppenVorschlag.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_gruppenvorschlag(proposal.get_person_id(), proposal.get_gruppenvorschlag_id())
+            return p, 200
+        else:
+            return '', 500
+
+
+@studoo.route('/gruppenvorschlag/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlagOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_gruppenvorschlag_by_id(id)
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @studoo.expect(gruppenvorschlag, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = GruppenVorschlag.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_gruppenvorschlag(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        adm = Admin()
+        pv = adm.get_gruppenvorschlag_by_id(id)
+        adm.delete_gruppenvorschlag(pv)
+        return '', 200
+
 """
 Der Service wird über app.run() gestartet.
 Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debuggen direkt im Browser anzeigen zu lassen.

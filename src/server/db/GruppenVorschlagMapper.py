@@ -70,7 +70,7 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
-    def insert(self, gruppen_vorschlag):
+    def insert(self, gruppen_vorschlag: GruppenVorschlag):
         """
 
         :param gruppen_vorschlag:
