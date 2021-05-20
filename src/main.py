@@ -246,12 +246,14 @@ class LerngruppenListOperations(Resource):
 
     @studoo.marshal_list_with(lerngruppe)
     def get(self):
+        """Auslesen aller Lerngruppen."""
         admin = Admin()
         return admin.get_all_lerngruppen()
 
     @studoo.marshal_with(lerngruppe, code=200)
     @studoo.expect(lerngruppe)
     def post(self):
+        """Anlegen einer bestimmten Lerngruppe."""
         admin = Admin()
         proposal = Lerngruppe.from_dict(api.payload)
         if proposal is not None:
@@ -266,12 +268,14 @@ class LerngruppenOperations(Resource):
 
     @studoo.marshal_with(lerngruppe)
     def get(self, id):
+        """Auslesen einer bestimmten Lerngruppe."""
         admin = Admin()
         return admin.get_lerngruppe_by_id(id)
 
     @studoo.marshal_with(lerngruppe)
     @studoo.expect(lerngruppe, validate=True)
     def put(self, id):
+        """Update einer bestimmten Lerngruppe."""
         admin = Admin()
         lg = Lerngruppe.from_dict(api.payload)
 
@@ -283,6 +287,7 @@ class LerngruppenOperations(Resource):
             return '', 500
 
     def delete(self, id):
+        """Löschen einer bestimmten Lerngruppe."""
         admin = Admin()
         lg = admin.get_lerngruppe_by_id(id)
         admin.delete_lerngruppe(lg)
