@@ -252,6 +252,7 @@ class PersonOperations(Resource):
 @studoo.route('/lernprofil')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class LernprofilListOperations(Resource):
+
     @studoo.marshal_list_with(lernvorliebe)
     def get(self):
         """Auslesen aller Lernprofile"""
@@ -273,7 +274,65 @@ class LernprofilListOperations(Resource):
             return '', 500
 
 
-"""
+@studoo.route('/lernprofil/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class LernprofilOperations(Resource):
+
+    @studoo.marshal_with(lernvorliebe)
+    def get(self, id):
+        """Auslesen eines bestimmten Lernprofils"""
+        adm = Admin()
+        return adm.get_lernvorliebe_by_id(id)
+
+    @studoo.marshal_with(lernvorliebe)
+    @studoo.expect(lernvorliebe, validate=True)
+    def put(self, id):
+        """Update eines bestimmten Lernprofils"""
+        adm = Admin()
+        lv = Lernvorliebe.from_dict(api.payload)
+
+        if lv is not None:
+            lv.set_id(id)
+            adm.save_lernvorliebe(lv)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        """Löschen eines bestimmten Lernprofils"""
+        adm = Admin()
+        lernprofil = adm.get_lernvorliebe_by_id(id)
+        adm.delete_lernvorliebe(lernprofil)
+        return '', 200
+
+
+@studoo.route('/gruppenteilnahme')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmeListOperations(Resource):
+
+    @studoo.marshal_list_with(gruppenteilnahme)
+    def get(self):
+        """Auslesen aller GruppenTeilnahme-Objekte"""
+        adm = Admin()
+        gt = adm.get_all_gruppen_teilnahme()
+        return gt
+
+    @studoo.marshal_with(gruppenteilnahme, code=200)
+    @studoo.expect(gruppenteilnahme)
+    def post(self):
+        """Anlegen eines neuen GruppenTeilnahme-Objektes"""
+        adm =Admin()
+        proposal = GruppenTeilnahme.from_dict(api.payload)
+
+        if proposal is not None:
+            gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id())
+            return gt, 200
+        else:
+            return '', 500
+
+
+
+"""     
 Der Service wird über app.run() gestartet.
 Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debuggen direkt im Browser anzeigen zu lassen.
 Warnung: In der Produktions-Umgebung muss debug auf False gesetzt werden.
