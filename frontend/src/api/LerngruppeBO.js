@@ -12,4 +12,4 @@ export default class LerngruppeBO extends BusinessObject{
     }
 }
 
-// Brauchen wir hier noch Getter & Setter?
+// Brauchen wir hier überhaupt Getter & Setter?
