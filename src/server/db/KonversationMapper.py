@@ -1,5 +1,3 @@
-import datetime
-
 from server.bo.Konversation import Konversation
 from server.db.Mapper import Mapper
 
@@ -46,7 +44,7 @@ class KonversationMapper(Mapper):
         # Die Liste mit den Konversations-Objekten wird zurückgegeben
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """
         Suchen einer Konversation mit vorgegebener ID.
         :param key: Primärschlüsselattribut der relationalen Datenbank Konversation
@@ -80,7 +78,7 @@ class KonversationMapper(Mapper):
 
         return result
 
-    def insert(self, konversation):
+    def insert(self, konversation: Konversation):
         """
         Einfügen eines Konverastion-Objektes in die DB
         :param konversation: Das zu speichernde Konversations-Objekt
@@ -108,7 +106,7 @@ class KonversationMapper(Mapper):
 
         return konversation
 
-    def update(self, konversation):
+    def update(self, konversation: Konversation):
         """
         Aktualisieren einer Konversation
         :param konversation: Konversations-objekt, das in DB geschrieben soll
@@ -116,20 +114,18 @@ class KonversationMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = (
-            "UPDATE konversation"
-            + "SET erstellungszeitpunkt=%s, ist_gruppenchat=%s WHERE id=%s"
+            "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
         )
         data = (
-            konversation.get_erstellungszeitpunkt(),
             konversation.get_ist_gruppenchat(),
-            konversation.get_id(),
+            konversation.get_id()
         )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, konversation):
+    def delete(self, konversation: Konversation):
         """
         Löschen einer Konversation
         :param konversation: Zu löschendes Konversations-objekt

@@ -42,7 +42,7 @@ class LernvorliebeMapper(Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen einer Nachricht mit vorgegebener Nachrichten-ID
 
         :param: key Primärschlüsselattribut
@@ -86,7 +86,7 @@ class LernvorliebeMapper(Mapper):
 
         return result
 
-    def insert(self, lernvorliebe):
+    def insert(self, lernvorliebe: Lernvorliebe):
         """Einfügen eines Nachricht-Objekts in die Datenbank.
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
@@ -122,7 +122,7 @@ class LernvorliebeMapper(Mapper):
 
         return lernvorliebe
 
-    def update(self, lernvorliebe):
+    def update(self, lernvorliebe: Lernvorliebe):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
         :param lernvorliebe: das Objekt, das in die DB geschrieben werden soll
@@ -130,11 +130,10 @@ class LernvorliebeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = (
-            "UPDATE lernvorlieben SET erstellungszeitpunkt=%s, lerntyp=%s, frequenz=%s, extrovertiertheit=%s, "
+            "UPDATE lernvorlieben SET lerntyp=%s, frequenz=%s, extrovertiertheit=%s, "
             "remote_praesenz=%s, vorkenntnisse=%s, lerninteressen=%s WHERE id=%s"
         )
         data = (
-            lernvorliebe.get_erstellungszeitpunkt(),
             lernvorliebe.get_lerntyp(),
             lernvorliebe.get_frequenz(),
             lernvorliebe.get_extrovertiertheit(),
@@ -148,7 +147,7 @@ class LernvorliebeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, lernvorliebe):
+    def delete(self, lernvorliebe: Lernvorliebe):
         """Löschen der Daten eines Nachricht-Objekts aus der Datenbank.
 
         :param lernvorliebe: das aus der Datenbank zu löschende Objekt

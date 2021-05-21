@@ -36,7 +36,7 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """
 
         :param key:
@@ -70,7 +70,7 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
-    def insert(self, gruppen_vorschlag):
+    def insert(self, gruppen_vorschlag: GruppenVorschlag):
         """
 
         :param gruppen_vorschlag:
@@ -86,10 +86,15 @@ class GruppenVorschlagMapper (Mapper):
         command = "INSERT INTO gruppen_vorschlaege (id, erstellungszeitpunkt, person_id, gruppenvorschlag_id, " \
                   "aehnlichkeit, entscheidung_person, entscheidung_gruppe) " \
                   "VALUES (%s,%s,%s,%s,%s,%s,%s)"
-        data = (gruppen_vorschlag.get_id(), gruppen_vorschlag.get_erstellungszeitpunkt(),
-                gruppen_vorschlag.get_person_id(), gruppen_vorschlag.get_gruppenvorschlag_id(),
-                gruppen_vorschlag.get_aehnlichkeit(), gruppen_vorschlag.get_entscheidung_person(),
-                gruppen_vorschlag.get_entscheidung_gruppe())
+        data = (
+            gruppen_vorschlag.get_id(),
+            gruppen_vorschlag.get_erstellungszeitpunkt(),
+            gruppen_vorschlag.get_person_id(),
+            gruppen_vorschlag.get_gruppenvorschlag_id(),
+            gruppen_vorschlag.get_aehnlichkeit(),
+            gruppen_vorschlag.get_entscheidung_person(),
+            gruppen_vorschlag.get_entscheidung_gruppe()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -97,7 +102,7 @@ class GruppenVorschlagMapper (Mapper):
 
         return gruppen_vorschlag
 
-    def update(self, gruppen_vorschlag):
+    def update(self, gruppen_vorschlag: GruppenVorschlag):
         """
 
         :param gruppen_vorschlag:
@@ -105,18 +110,22 @@ class GruppenVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE gruppen_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, gruppenvorschlag_id=%s, " \
+        command = "UPDATE gruppen_vorschlaege SET person_id=%s, gruppenvorschlag_id=%s, " \
                   "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
-        data = (gruppen_vorschlag.get_erstellungszeitpunkt(), gruppen_vorschlag.get_person_id(),
-                gruppen_vorschlag.get_gruppenvorschlag_id(), gruppen_vorschlag.get_aehnlichkeit(),
-                gruppen_vorschlag.get_entscheidung_person(), gruppen_vorschlag.get_entscheidung_gruppe(),
-                gruppen_vorschlag.get_id())
+        data = (
+            gruppen_vorschlag.get_person_id(),
+            gruppen_vorschlag.get_gruppenvorschlag_id(),
+            gruppen_vorschlag.get_aehnlichkeit(),
+            gruppen_vorschlag.get_entscheidung_person(),
+            gruppen_vorschlag.get_entscheidung_gruppe(),
+            gruppen_vorschlag.get_id()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, gruppen_vorschlag):
+    def delete(self, gruppen_vorschlag: GruppenVorschlag):
         """
 
         :param gruppen_vorschlag:
