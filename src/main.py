@@ -88,7 +88,7 @@ konversation = api.inherit(
 
 )
 
-lernvorliebe = api.inherit(
+lernvorlieben = api.inherit(
     "Lernvorliebe", bo, {
         "lerntyp": fields.Integer(attribute="_lerntyp", description="Lerntyp"),
         "frequenz": fields.Integer(attribute="_frequenz", description="Lernfrequenz des Studis"),
@@ -250,20 +250,20 @@ class PersonOperations(Resource):
         return '', 200
 
 
-@studoo.route('/lernprofil')
+@studoo.route('/lernvorlieben')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
-class LernprofilListOperations(Resource):
+class LernvorliebenListOperations(Resource):
 
-    @studoo.marshal_list_with(lernvorliebe)
+    @studoo.marshal_list_with(lernvorlieben)
     def get(self):
-        """Auslesen aller Lernprofile"""
+        """Auslesen aller Lernvorlieben"""
         adm = Admin()
         return adm.get_all_lernvorlieben()
 
-    @studoo.marshal_with(lernvorliebe, code=200)
-    @studoo.expect(lernvorliebe)
+    @studoo.marshal_with(lernvorlieben, code=200)
+    @studoo.expect(lernvorlieben)
     def post(self):
-        """Anlegen eines neuen Lernprofils"""
+        """Anlegen eines neuer Lernvorlieben"""
         adm = Admin()
         proposal = Lernvorliebe.from_dict(api.payload)
         if proposal is not None:
@@ -275,20 +275,20 @@ class LernprofilListOperations(Resource):
             return '', 500
 
 
-@studoo.route('/lernprofil/<int:id>')
+@studoo.route('/lernvorliebe/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
-class LernprofilOperations(Resource):
+class LernvorliebeOperations(Resource):
 
-    @studoo.marshal_with(lernvorliebe)
+    @studoo.marshal_with(lernvorlieben)
     def get(self, id):
-        """Auslesen eines bestimmten Lernprofils"""
+        """Auslesen einer bestimmten Lernvorliebe"""
         adm = Admin()
         return adm.get_lernvorliebe_by_id(id)
 
-    @studoo.marshal_with(lernvorliebe)
-    @studoo.expect(lernvorliebe, validate=True)
+    @studoo.marshal_with(lernvorlieben)
+    @studoo.expect(lernvorlieben, validate=True)
     def put(self, id):
-        """Update eines bestimmten Lernprofils"""
+        """Update einer bestimmten Lernvorliebe"""
         adm = Admin()
         lv = Lernvorliebe.from_dict(api.payload)
 
@@ -300,10 +300,10 @@ class LernprofilOperations(Resource):
             return '', 500
 
     def delete(self, id):
-        """Löschen eines bestimmten Lernprofils"""
+        """Löschen einer bestimmten Lernvorliebe"""
         adm = Admin()
-        lernprofil = adm.get_lernvorliebe_by_id(id)
-        adm.delete_lernvorliebe(lernprofil)
+        lv = adm.get_lernvorliebe_by_id(id)
+        adm.delete_lernvorliebe(lv)
         return '', 200
 
 
