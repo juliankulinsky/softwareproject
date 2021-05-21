@@ -38,7 +38,7 @@ class LerngruppeMapper(Mapper):
 
         return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen einer Lerngruppe mit vorgegebener ID."""
 
         result = None
@@ -66,7 +66,7 @@ class LerngruppeMapper(Mapper):
 
         return result  # Der Rückgabe der ID entsprechendes Lerngruppe-Objekt (None bei fehlender DB-Tupel)
 
-    def insert(self, lerngruppe):
+    def insert(self, lerngruppe: Lerngruppe):
         """Einfügen eines Lerngruppe-Objekts in die Datenbank.
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt."""
 
@@ -79,36 +79,29 @@ class LerngruppeMapper(Mapper):
 
         command = ("INSERT INTO lerngruppen (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
             "VALUES (%s,%s,%s,%s,%s)")
-        data = (lerngruppe.get_id(),
+        data = (
+            lerngruppe.get_id(),
             lerngruppe.get_erstellungszeitpunkt(),
             lerngruppe.get_gruppenname(),
             lerngruppe.get_profil_id(),
-            lerngruppe.get_konversation_id())
+            lerngruppe.get_konversation_id()
+        )
         cursor.execute(command, data)
-
-        """Optional:
-        cursor.execute("INSERT INTO lerngruppe (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
-                       "VALUES ('{}','{}','{}','{}','{}')"
-                       .format(nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_gruppenname(),
-                               nachricht.get_profil_id(), nachricht.get_konversation_id()))
-        """
 
         self._cnx.commit()
         cursor.close()
 
         return lerngruppe  # Rückgabe des bereits übergebenen Objektes, ggf. mit korrigierter ID
 
-    def update(self, lerngruppe):
+    def update(self, lerngruppe: Lerngruppe):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID."""
 
         cursor = self._cnx.cursor()
 
         command = (
-            "UPDATE lerngruppen SET erstellungszeitpunkt=%s, gruppenname=%s, profil_id=%s, konversation_id=%s WHERE "
-            "id=%s "
+            "UPDATE lerngruppen SET gruppenname=%s, profil_id=%s, konversation_id=%s WHERE id=%s "
         )
         data = (
-            lerngruppe.get_erstellungszeitpunkt(),
             lerngruppe.get_gruppenname(),
             lerngruppe.get_profil_id(),
             lerngruppe.get_konversation_id(),
@@ -119,7 +112,7 @@ class LerngruppeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, lerngruppe):
+    def delete(self, lerngruppe: Lerngruppe):
         """Löschen eines Lerngruppe-Objekts aus der Datenbank."""
         cursor = self._cnx.cursor()
 

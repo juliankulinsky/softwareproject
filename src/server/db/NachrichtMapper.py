@@ -37,7 +37,7 @@ class NachrichtMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen einer Nachricht mit vorgegebener Nachrichten-ID
 
         :param: key Primärschlüsselattribut
@@ -69,7 +69,7 @@ class NachrichtMapper (Mapper):
 
         return result
 
-    def insert(self, nachricht):
+    def insert(self, nachricht: Nachricht):
         """Einfügen eines Nachricht-Objekts in die Datenbank.
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
@@ -86,38 +86,41 @@ class NachrichtMapper (Mapper):
 
         command = "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) " \
                   "VALUES (%s,%s,%s,%s,%s)"
-        data = (nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(),
-                nachricht.get_absender_id(), nachricht.get_konversation_id())
+        data = (
+            nachricht.get_id(),
+            nachricht.get_erstellungszeitpunkt(),
+            nachricht.get_inhalt(),
+            nachricht.get_absender_id(),
+            nachricht.get_konversation_id()
+        )
         cursor.execute(command, data)
-
-    # so könnte man es auch machen, wenn man Lust hat
-        """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) "
-                       "VALUES ('{}','{}','{}','{}','{}')"
-                       .format(nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(),
-                               nachricht.get_absender_id(), nachricht.get_konversation_id()))"""
 
         self._cnx.commit()
         cursor.close()
 
         return nachricht
 
-    def update(self, nachricht):
+    def update(self, nachricht: Nachricht):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
         :param nachricht: das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE nachrichten " + \
-                  "SET erstellungszeitpunkt=%s, inhalt=%s, absender_id=%s, konversation_id=%s WHERE id=%s"
-        data = (nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(), nachricht.get_absender_id(),
-                nachricht.get_konversation_id(), nachricht.get_id())
+        command = "UPDATE nachrichten SET inhalt=%s, absender_id=%s, konversation_id=%s WHERE id=%s"
+        data = (
+            nachricht.get_erstellungszeitpunkt(),
+            nachricht.get_inhalt(),
+            nachricht.get_absender_id(),
+            nachricht.get_konversation_id(),
+            nachricht.get_id()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, nachricht):
+    def delete(self, nachricht: Nachricht):
         """Löschen der Daten eines Nachricht-Objekts aus der Datenbank.
 
         :param nachricht: das aus der Datenbank zu löschende Objekt

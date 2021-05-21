@@ -32,7 +32,7 @@ class ChatTeilnahmeMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """
 
         :param key:
@@ -78,8 +78,12 @@ class ChatTeilnahmeMapper (Mapper):
 
         command = "INSERT INTO chat_teilnahmen (id, erstellungszeitpunkt, person_id, konversation_id) " \
                   "VALUES (%s,%s,%s,%s)"
-        data = (chat_teilnahme.get_id(), chat_teilnahme.get_erstellungszeitpunkt(), chat_teilnahme.get_person_id(),
-                chat_teilnahme.get_konversation_id())
+        data = (
+            chat_teilnahme.get_id(),
+            chat_teilnahme.get_erstellungszeitpunkt(),
+            chat_teilnahme.get_person_id(),
+            chat_teilnahme.get_konversation_id()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -95,9 +99,12 @@ class ChatTeilnahmeMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE chat_teilnahmen SET erstellungszeitpunkt=%s, person_id=%s, konversation_id=%s WHERE id=%s"
-        data = (chat_teilnahme.get_erstellungszeitpunkt(), chat_teilnahme.get_person_id(),
-                chat_teilnahme.get_konversation_id(),chat_teilnahme.get_id())
+        command = "UPDATE chat_teilnahmen SET person_id=%s, konversation_id=%s WHERE id=%s"
+        data = (
+            chat_teilnahme.get_person_id(),
+            chat_teilnahme.get_konversation_id(),
+            chat_teilnahme.get_id()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()

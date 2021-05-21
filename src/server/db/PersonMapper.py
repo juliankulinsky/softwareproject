@@ -41,7 +41,7 @@ class PersonMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen einer Person mit vorgegebener Person-ID
 
         :param: key Primärschlüsselattribut
@@ -49,9 +49,8 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`, wohnort, studiengang, semester, profil_id FROM " \
-                  "personen WHERE id={}"\
-            .format(key)
+        command = "SELECT id, erstellungszeitpunkt, vorname, nachname, `alter`, wohnort, studiengang, semester, " \
+                  "profil_id FROM personen WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -78,7 +77,7 @@ class PersonMapper (Mapper):
 
         return result
 
-    def insert(self, person):
+    def insert(self, person: Person):
         """Einfügen eines Person-Objekts in die Datenbank.
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
@@ -95,42 +94,49 @@ class PersonMapper (Mapper):
 
         command = "INSERT INTO personen (id, erstellungszeitpunkt, vorname, nachname, `alter`, wohnort, studiengang, " \
                   "semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        data = (person.get_id(), person.get_erstellungszeitpunkt(), person.get_vorname(),
-                person.get_nachname(), person.get_alter(), person.get_wohnort(),
-                person.get_studiengang(), person.get_semester(), person.get_profil_id())
+        data = (
+            person.get_id(),
+            person.get_erstellungszeitpunkt(),
+            person.get_vorname(),
+            person.get_nachname(),
+            person.get_alter(),
+            person.get_wohnort(),
+            person.get_studiengang(),
+            person.get_semester(),
+            person.get_profil_id()
+        )
         cursor.execute(command, data)
-
-        """cursor.execute("INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender, empfaenger) "
-                       "VALUES ('{}','{}','{}','{}','{}')"
-                       .format(nachricht.get_id(), nachricht.get_erstellungszeitpunkt(), nachricht.get_inhalt(),
-                               nachricht.get_absender(), nachricht.get_empfaenger()))"""
 
         self._cnx.commit()
         cursor.close()
 
         return person
 
-    def update(self, person):
+    def update(self, person: Person):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
         :param person: das Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE personen " + \
-                  "SET erstellungszeitpunkt=%s, vorname=%s, nachname=%s, `alter`=%s, wohnort=%s, studiengang=%s, " + \
-                  "semester=%s, profil_id=%s WHERE id=%s"
-        data = (person.get_erstellungszeitpunkt(), person.get_vorname(), person.get_nachname(),
-                person.get_alter(), person.get_wohnort(), person.get_studiengang(),
-                person.get_semester(), person.get_profil_id(), person.get_id())
-        print(command)
-        print(data)
+        command = "UPDATE personen SET vorname=%s, nachname=%s, `alter`=%s, wohnort=%s, studiengang=%s, semester=%s, " \
+                  "profil_id=%s WHERE id=%s"
+        data = (
+            person.get_vorname(),
+            person.get_nachname(),
+            person.get_alter(),
+            person.get_wohnort(),
+            person.get_studiengang(),
+            person.get_semester(),
+            person.get_profil_id(),
+            person.get_id()
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, person):
+    def delete(self, person: Person):
         """Löschen der Daten eines Person-Objekts aus der Datenbank.
 
         :param person: das aus der Datenbank zu löschende Objekt
