@@ -44,7 +44,7 @@ class Admin(object):
         chat_teilnahme.set_person_id(person_id)
         chat_teilnahme.set_konversation_id(konversation_id)
 
-        with ChatTeilnahmeMapper as mapper:
+        with ChatTeilnahmeMapper() as mapper:
             return mapper.insert(chat_teilnahme)
 
     def get_all_chatteilnahmen(self):
@@ -305,7 +305,7 @@ class Admin(object):
 
     def delete_partner_vorschlag(self, partner_vorschlag: PartnerVorschlag):
         """PartnerVorschlag aus unserem System löschen."""
-        with PartnerVorschlag() as mapper:
+        with PartnerVorschlagMapper() as mapper:
             mapper.delete(partner_vorschlag)
 
     """

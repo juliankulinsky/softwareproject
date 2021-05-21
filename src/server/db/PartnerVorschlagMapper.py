@@ -36,7 +36,7 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
-    def find_by_key(self, key: int):
+    def find_by_key(self, key):
         """
 
         :param key:
@@ -111,13 +111,14 @@ class PartnerVorschlagMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE partner_vorschlaege SET person_id=%s, partnervorschlag_id=%s, " \
-                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s"
+                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s WHERE id=%s"
         data = (
             partner_vorschlag.get_person_id(),
             partner_vorschlag.get_partnervorschlag_id(),
             partner_vorschlag.get_aehnlichkeit(),
             partner_vorschlag.get_entscheidung_person(),
-            partner_vorschlag.get_entscheidung_partner()
+            partner_vorschlag.get_entscheidung_partner(),
+            partner_vorschlag.get_id()
         )
         cursor.execute(command, data)
 
