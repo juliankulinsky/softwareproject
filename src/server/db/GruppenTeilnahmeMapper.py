@@ -30,7 +30,7 @@ class GruppenTeilnahmeMapper(Mapper):
 
         return result
 
-    def find_by_key(self, key):
+    def find_by_key(self, key: int):
         """Suchen einer GruppenTeilnahme mit vorgegebener GruppenTeilnahme-ID
 
         :param: key Primärschlüsselattribut
@@ -62,7 +62,7 @@ class GruppenTeilnahmeMapper(Mapper):
 
         return result
 
-    def insert(self, gruppenteilnahme):
+    def insert(self, gruppenteilnahme: GruppenTeilnahme):
         """Einfügen eines GruppenTeilnahme-Objekts in die Datenbank.
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
@@ -96,7 +96,7 @@ class GruppenTeilnahmeMapper(Mapper):
 
         return gruppenteilnahme
 
-    def update(self, gruppenteilnahme):
+    def update(self, gruppenteilnahme: GruppenTeilnahme):
         """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
 
         :param gruppenteilnahme: das Objekt, das in die DB geschrieben werden soll
@@ -104,21 +104,21 @@ class GruppenTeilnahmeMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = (
-            "UPDATE gruppen_teilnahmen SET erstellungszeitpunkt=%s, person_id=%s, gruppen_id=%s, ist_admin=%s "
+            "UPDATE gruppen_teilnahmen SET person_id=%s, gruppen_id=%s, ist_admin=%s "
             "WHERE id=%s"
         )
         data = (
-            gruppenteilnahme.get_erstellungszeitpunkt(),
             gruppenteilnahme.get_person_id(),
             gruppenteilnahme.get_gruppen_id(),
             gruppenteilnahme.get_ist_admin(),
+            gruppenteilnahme.get_id()
         )
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, gruppenteilnahme):
+    def delete(self, gruppenteilnahme: GruppenTeilnahme):
         """Löschen der Daten eines GruppenTeilnahme-Objekts aus der Datenbank.
 
         :param gruppenteilnahme: das aus der Datenbank zu löschende Objekt

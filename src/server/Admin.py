@@ -44,7 +44,7 @@ class Admin(object):
         chat_teilnahme.set_person_id(person_id)
         chat_teilnahme.set_konversation_id(konversation_id)
 
-        with ChatTeilnahmeMapper as mapper:
+        with ChatTeilnahmeMapper() as mapper:
             return mapper.insert(chat_teilnahme)
 
     def get_all_chatteilnahmen(self):
@@ -204,7 +204,7 @@ class Admin(object):
     """
         Lernvorliebe - Spezifische Methoden
     """
-    def create_lernvorliebe(self, lerntyp, wert, lerninteressen, extrovertiertheit, remote_praesenz, vorkenntnisse):
+    def create_lernvorliebe(self, lerntyp, wert, extrovertiertheit, remote_praesenz, vorkenntnisse, lerninteressen):
         """
         Lernvorlieben erstellen:
         Diese Klasse wird bei der Profilerstellung instanziiert.
@@ -212,10 +212,10 @@ class Admin(object):
         lv = Lernvorliebe()
         lv.set_lerntyp(lerntyp)
         lv.set_frequenz(wert)
-        lv.set_lerninteressen(lerninteressen)
         lv.set_extrovertiertheit(extrovertiertheit)
         lv.set_remote_praesenz(remote_praesenz)
         lv.set_vorkenntnisse(vorkenntnisse)
+        lv.set_lerninteressen(lerninteressen)
 
         with LernvorliebeMapper() as mapper:
             return mapper.insert(lv)
@@ -305,7 +305,7 @@ class Admin(object):
 
     def delete_partner_vorschlag(self, partner_vorschlag: PartnerVorschlag):
         """PartnerVorschlag aus unserem System löschen."""
-        with PartnerVorschlag() as mapper:
+        with PartnerVorschlagMapper() as mapper:
             mapper.delete(partner_vorschlag)
 
     """

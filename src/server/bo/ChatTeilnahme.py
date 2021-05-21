@@ -24,3 +24,12 @@ class ChatTeilnahme(bo.BusinessObject):
     def __str__(self):
         return "Nr.{}: Person {} nimmt bei Chat {} teil (seit: {})"\
             .format(self.get_id(),self.get_person_id(),self.get_konversation_id(),self.get_erstellungszeitpunkt())
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = ChatTeilnahme()
+        obj.set_id(dictionary["id"])
+        obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_person_id(dictionary["person_id"])
+        obj.set_konversation_id(dictionary["konversation_id"])
+        return obj

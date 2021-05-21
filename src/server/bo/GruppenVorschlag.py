@@ -7,20 +7,20 @@ class GruppenVorschlag(vo.Vorschlag):
     """
     def __init__(self):
         super().__init__()
-        self.gruppenvorschlag_id = 0        # Fremdschlüsselbeziehung zur vorgeschlagenen Gruppe
-        self.entscheidung_gruppe = None
+        self._gruppenvorschlag_id = 0        # Fremdschlüsselbeziehung zur vorgeschlagenen Gruppe
+        self._entscheidung_gruppe = None
 
     def get_gruppenvorschlag_id(self):
-        return self.gruppenvorschlag_id
+        return self._gruppenvorschlag_id
 
     def set_gruppenvorschlag_id(self, gruppen_id: int):
-        self.gruppenvorschlag_id = gruppen_id
+        self._gruppenvorschlag_id = gruppen_id
 
     def get_entscheidung_gruppe(self):
-        return self.entscheidung_gruppe
+        return self._entscheidung_gruppe
 
     def set_entscheidung_gruppe(self, wert: float):
-        self.entscheidung_gruppe = wert
+        self._entscheidung_gruppe = wert
 
     def __str__(self):
         """Dunder-Method für GruppenVorschlag
@@ -36,6 +36,9 @@ class GruppenVorschlag(vo.Vorschlag):
         obj = GruppenVorschlag()
         obj.set_id(dictionary["id"])
         obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
+        obj.set_person_id(dictionary["person_id"])
         obj.set_gruppenvorschlag_id(dictionary["gruppenvorschlag_id"])
+        obj.set_aehnlichkeit(dictionary["aehnlichkeit"])
+        obj.set_entscheidung_person(dictionary["entscheidung_person"])
         obj.set_entscheidung_gruppe(dictionary["entscheidung_gruppe"])
         return obj
