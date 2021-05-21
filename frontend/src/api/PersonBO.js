@@ -16,7 +16,7 @@ export default class PersonBO extends BusinessObject {
    * @param {*} aSemester -Das Semester des PersonBO.
    * @param {*} aProfilId - Die Profil ID des PersonBO.
    */
-  constructor(aVorname, aNachname) {
+  constructor(aVorname, aNachname, aAlter, aWohnort, aStudiengang, aSemester, aProfilId) {
     super();
     this.vorname = aVorname;
     this.nachname = aNachname;
