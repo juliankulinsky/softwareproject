@@ -55,7 +55,7 @@ export default class GruppenTeilnahme extends BusinessObject {
     /**
      * Legt den Administratorenstatus fest.
      */
-    set_ist_admin(wert=Boolean) {
+    set_ist_admin(wert=false) {
         this.ist_admin = wert;
     }
 
