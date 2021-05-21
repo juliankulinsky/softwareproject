@@ -11,7 +11,7 @@ export default class LerngruppeBO extends BusinessObject{
         this.konversation_id = aKonversationId;
     }
 
-    // Nun die jeweiligen Getter & Setter der Lerngruppe:
+    // Nun die jeweiligen Getter & Setter:
     /** Setzt den Gruppennamen. */
     setGruppenname(aGruppenname) {
     this.gruppenname = aGruppenname;

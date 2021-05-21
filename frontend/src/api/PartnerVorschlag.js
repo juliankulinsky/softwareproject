@@ -1,9 +1,12 @@
-import BusinessObject from "./BusinessObject";
+import VorschlagBO from "./VorschlagBO";
+// Stammt von der Superklasse VorschlagBO ab,
+// welche seinerseits von der Superklasse BusinessObject abstammt.
 
-export default class PartnerVorschlag extends BusinessObject {
+/** Repräsentiert einen Partnervorschlag. */
+export default class PartnerVorschlag extends VorschlagBO {
 
     /**
-   * Constructs a new PartnerVorschlag object.
+   * Diese Klasse erstellt ein BusinessObject einer PartnerVorschlag.
    *
    * @param {*} partnervorschlag_id - the ID of the partner to be matched.
    * @param {*} entscheidung_partner - the decision of the potential match.
@@ -15,6 +18,7 @@ export default class PartnerVorschlag extends BusinessObject {
         this.entscheidung_partner = entscheidung_partner;
     }
 
+    // Nun die jeweiligen Getter & Setter:
     /*
     * Setzen der Partnervorschlag ID
     */
