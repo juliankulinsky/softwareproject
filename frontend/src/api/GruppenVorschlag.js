@@ -3,7 +3,7 @@ import VorschlagBO from "./VorschlagBO";
 // welche seinerseits von der Superklasse BusinessObject abstammt.
 
 /** Repräsentiert einen Gruppenvorschlag. */
-export default class GruppenVorschlag extends VorschlagBO{
+export default class GruppenVorschlag extends VorschlagBO {
 
     constructor(aGruppenvorschlagId, aEntscheidungGruppe) {
         super();
@@ -30,5 +30,39 @@ export default class GruppenVorschlag extends VorschlagBO{
     /** Gibt den boolean Wert von der Entscheidung der Gruppe aus. */
     getEntscheidungGruppe() {
         return this.entscheidung_gruppe;
+    }
+
+    // Debugging Methoden
+    /** Gibt die Entscheidung als String aus. */
+    toString() {
+    let result = '';
+
+    for (var prop in this) {
+      result += prop + ': ' + this[prop] + ' ';
+        }
+
+    return result;
+    }
+
+    // JSON Methoden
+    /** Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück. */
+    static fromJSON(gruppenvorschlaege) {
+        let result = [];
+
+        if (Array.isArray(gruppenvorschlaege)) {
+            gruppenvorschlaege.forEach((t) => {
+                Object.setPrototypeOf(t, GruppenVorschlag.prototype);
+                result.push(t);
+            })
+        }
+        else {
+            // Sollte es sich um ein singuläres Objekt handeln.
+            let t = gruppenvorschlaege;
+
+            Object.setPrototypeOf(t, GruppenVorschlag.prototype);
+            result.push(t);
+        }
+
+        return result;
     }
 }

@@ -47,35 +47,37 @@ export default class PartnerVorschlag extends VorschlagBO {
         return this.entscheidung_partner;
     }
 
-    /**
-   * Gibt die Entscheidung als String aus. Für Debugging-Zwecke.
-   */
+    // Debugging Methoden
+    /** Gibt die Entscheidung als String aus. */
     toString() {
     let result = '';
+
     for (var prop in this) {
       result += prop + ': ' + this[prop] + ' ';
-    }
-    return result;
-  }
-
-    /**
-   * Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück.
-   */
-  static fromJSON(partnervorschlaege) {
-    let result = [];
-
-    if (Array.isArray(partnervorschlaege)) {
-      partnervorschlaege.forEach((t) => {
-        Object.setPrototypeOf(t, PartnerVorschlag.prototype);
-        result.push(t);
-      })
-    } else {
-      // Es handelt sich offenbar um ein singuläres Objekt
-      let t = partnervorschlaege
-      Object.setPrototypeOf(t, PartnerVorschlag.prototype);
-      result.push(t);
-    }
+        }
 
     return result;
-  }
+    }
+
+    // JSON Methoden
+    /** Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück. */
+    static fromJSON(partnervorschlaege) {
+        let result = [];
+
+        if (Array.isArray(partnervorschlaege)) {
+            partnervorschlaege.forEach((t) => {
+                Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+                result.push(t);
+            })
+        }
+        else {
+            // Sollte es sich um ein singuläres Objekt handeln.
+            let t = partnervorschlaege;
+
+            Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+            result.push(t);
+        }
+
+        return result;
+    }
 }

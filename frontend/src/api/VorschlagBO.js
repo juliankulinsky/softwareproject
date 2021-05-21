@@ -1,7 +1,7 @@
 import BusinessObject from "./BusinessObject";
 
 /** Repräsentiert eine Lerngruppe */
-export default class VorschlagBO extends BusinessObject{
+export default class VorschlagBO extends BusinessObject {
     /** Diese Super-Klasse erstellt ein BusinessObject eines Vorschlags
      * und dient als Basis für die Klassen Partnervorschlag und Gruppenvorschlag. */
 
@@ -41,5 +41,39 @@ export default class VorschlagBO extends BusinessObject{
     /** Gibt den boolean Wert von der Entscheidung der Person aus. */
     getEntscheidungPerson() {
         return this.entscheidung_person;
+    }
+
+    // Debugging Methoden
+    /** Gibt die Entscheidung als String aus. */
+    toString() {
+    let result = '';
+
+    for (var prop in this) {
+      result += prop + ': ' + this[prop] + ' ';
+        }
+
+    return result;
+    }
+
+    // JSON Methoden
+    /** Gibt Array von VorschlagBO einer gegebenen JSON-Struktur zurück. */
+    static fromJSON(vorschlag) {
+        let result = [];
+
+        if (Array.isArray(vorschlag)) {
+            vorschlag.forEach((t) => {
+                Object.setPrototypeOf(t, VorschlagBO.prototype);
+                result.push(t);
+            })
+        }
+        else {
+            // Sollte es sich um ein singuläres Objekt handeln.
+            let t = vorschlag;
+
+            Object.setPrototypeOf(t, Vorschlag.prototype);
+            result.push(t);
+        }
+
+        return result;
     }
 }
