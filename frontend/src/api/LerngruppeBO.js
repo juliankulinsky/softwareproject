@@ -1,6 +1,6 @@
 import BusinessObject from "./BusinessObject";
 
-/** Repräsentiert eine Person */
+/** Repräsentiert eine Lerngruppe */
 export default class LerngruppeBO extends BusinessObject{
     /** Diese Klasse erstellt ein BusinessObject einer Lerngruppe. */
 
