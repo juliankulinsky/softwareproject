@@ -10,37 +10,37 @@ export default class PartnerVorschlag extends BusinessObject {
    */
 
     constructor(partnervorschlag_id, entscheidung_partner) {
-        super()
-        this.partnervorschlag_id = partnervorschlag_id
-        this.entscheidung_partner = entscheidung_partner
+        super();
+        this.partnervorschlag_id = partnervorschlag_id;
+        this.entscheidung_partner = entscheidung_partner;
     }
 
     /*
     * Setzen der Partnervorschlag ID
     */
     setPartnerVorschlagID(aPVID){
-        this.person_id = aPVID
+        this.person_id = aPVID;
     }
 
     /*
     * Auslesen der PartnerVorschlag ID
     */
     getPartnerVorschlagID() {
-        return this.partnervorschlag_id
+        return this.partnervorschlag_id;
     }
 
     /*
     * Setzen der Entscheidung des Partner
     */
     setEntscheidungPartner(aDecision){
-        this.entscheidung_partner = aDecision
+        this.entscheidung_partner = aDecision;
     }
 
     /*
     * Auslesen der Entscheidung
     */
     getEntscheidungPartner() {
-        return this.entscheidung_partner
+        return this.entscheidung_partner;
     }
 
     /**

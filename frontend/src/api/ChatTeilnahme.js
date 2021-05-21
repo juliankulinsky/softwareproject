@@ -10,37 +10,37 @@ export default class ChatTeilnahme extends BusinessObject {
    */
 
     constructor(person_id, konversation_id) {
-        super()
-        this.person_id = person_id
-        this.konversation_id = konversation_id
+        super();
+        this.person_id = person_id;
+        this.konversation_id = konversation_id;
     }
 
     /*
     * Setzen der Person ID
     */
     setPersonID(aPersonID){
-        this.person_id = aPersonID
+        this.person_id = aPersonID;
     }
 
     /*
     * Auslesen der Person ID
     */
     getPersonID() {
-        return this.person_id
+        return this.person_id;
     }
 
     /*
     * Setzen der Konversation ID
     */
     setKonversationID(aKonversationID){
-        this.person_id = aKonversationID
+        this.person_id = aKonversationID;
     }
 
     /*
     * Auslesen der Konversation ID
     */
     getKonversationID() {
-        return this.konversation_id
+        return this.konversation_id;
     }
 
     /**
