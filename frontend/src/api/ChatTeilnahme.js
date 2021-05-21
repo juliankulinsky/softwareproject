@@ -57,17 +57,17 @@ export default class ChatTeilnahme extends BusinessObject {
   /**
    *Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück.
    */
-  static fromJSON(ChatTeilnahme) {
+  static fromJSON(Chatteilnahme) {
     let result = [];
 
-    if (Array.isArray(ChatTeilnahme)) {
-      ChatTeilnahme.forEach((t) => {
+    if (Array.isArray(Chatteilnahme)) {
+      Chatteilnahme.forEach((t) => {
         Object.setPrototypeOf(t, ChatTeilnahme.prototype);
         result.push(t);
       })
     } else {
       // Es handelt sich offenbar um ein singuläres Objekt
-      let t = ChatTeilnahme
+      let t = Chatteilnahme
       Object.setPrototypeOf(t, ChatTeilnahme.prototype);
       result.push(t);
     }
