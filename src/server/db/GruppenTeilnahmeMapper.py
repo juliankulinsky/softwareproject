@@ -112,6 +112,7 @@ class GruppenTeilnahmeMapper(Mapper):
             gruppenteilnahme.get_person_id(),
             gruppenteilnahme.get_gruppen_id(),
             gruppenteilnahme.get_ist_admin(),
+            gruppenteilnahme.get_id()
         )
         cursor.execute(command, data)
 

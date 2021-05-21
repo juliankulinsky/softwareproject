@@ -69,7 +69,7 @@ class Lernvorliebe(bo.BusinessObject):
         obj.set_lerntyp(dictionary["lerntyp"])
         obj.set_frequenz(dictionary["frequenz"])
         obj.set_extrovertiertheit(dictionary["extrovertiertheit"])
-        obj.set_vorkenntnisse(dictionary["vorkenntnisse"])
         obj.set_remote_praesenz(dictionary["remote_praesenz"])
+        obj.set_vorkenntnisse(dictionary["vorkenntnisse"])
         obj.set_lerninteressen(dictionary["lerninteressen"])
         return obj

@@ -141,6 +141,7 @@ class LernvorliebeMapper(Mapper):
             lernvorliebe.get_remote_praesenz(),
             lernvorliebe.get_vorkenntnisse(),
             lernvorliebe.get_lerninteressen(),
+            lernvorliebe.get_id()
         )
         cursor.execute(command, data)
 
