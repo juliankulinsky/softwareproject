@@ -513,7 +513,61 @@ class GruppenvorschlagOperations(Resource):
         return '', 200
 
 
-"""     
+@studoo.route('/lerngruppen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class LerngruppenListOperations(Resource):
+
+    @studoo.marshal_list_with(lerngruppe)
+    def get(self):
+        """Auslesen aller Lerngruppen."""
+        admin = Admin()
+        return admin.get_all_lerngruppen()
+
+    @studoo.marshal_with(lerngruppe, code=200)
+    @studoo.expect(lerngruppe)
+    def post(self):
+        """Anlegen einer bestimmten Lerngruppe."""
+        admin = Admin()
+        proposal = Lerngruppe.from_dict(api.payload)
+        if proposal is not None:
+            lg = admin.create_lerngruppe(proposal.get_gruppenname(), proposal.get_profil_id(), proposal.get_konversation_id())
+            return lg, 200
+        else:
+            return '', 500
+
+@studoo.route('/lerngruppe/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class LerngruppenOperations(Resource):
+
+    @studoo.marshal_with(lerngruppe)
+    def get(self, id):
+        """Auslesen einer bestimmten Lerngruppe."""
+        admin = Admin()
+        return admin.get_lerngruppe_by_id(id)
+
+    @studoo.marshal_with(lerngruppe)
+    @studoo.expect(lerngruppe, validate=True)
+    def put(self, id):
+        """Update einer bestimmten Lerngruppe."""
+        admin = Admin()
+        lg = Lerngruppe.from_dict(api.payload)
+
+        if lg is not None:
+            lg.set_id(id)
+            admin.save_lerngruppe(lg)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        """Löschen einer bestimmten Lerngruppe."""
+        admin = Admin()
+        lg = admin.get_lerngruppe_by_id(id)
+        admin.delete_lerngruppe(lg)
+        return '', 200
+
+
+"""
 Der Service wird über app.run() gestartet.
 Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debuggen direkt im Browser anzeigen zu lassen.
 Warnung: In der Produktions-Umgebung muss debug auf False gesetzt werden.
