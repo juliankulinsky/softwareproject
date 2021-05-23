@@ -567,6 +567,62 @@ class LerngruppenOperations(Resource):
         return '', 200
 
 
+@studoo.route('/profil')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ProfilListOperations(Resource):
+
+    @studoo.marshal_list_with(profil)
+    def get(self):
+        """Auslesen aller Profil-Objekte"""
+        adm = Admin()
+        p = adm.get_all_profile()
+        return p
+
+    @studoo.marshal_with(profil, code=200)
+    @studoo.expect(profil)
+    def post(self):
+        """Anlegen eines neuen Profil-Objektes"""
+        adm = Admin()
+        proposal = Profil.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_profil(proposal.get_lernvorlieben_id())
+            return p, 200
+        else:
+            return '', 500
+
+
+@studoo.route('/profil/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ProfilOperations(Resource):
+
+    @studoo.marshal_with(profil)
+    def get(self, id):
+        """Auslesen eines bestimmten Profil-Objektes"""
+        adm = Admin()
+        return adm.get_profil_by_id(id)
+
+    @studoo.marshal_with(profil)
+    @studoo.expect(profil, validate=True)
+    def put(self, id):
+        """Update eines bestimmten Profil-Objektes"""
+        adm = Admin()
+        p = Profil.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_profil(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        """Löschen eines bestimmten Profil-Objektes"""
+        adm = Admin()
+        pr = adm.get_profil_by_id(id)
+        adm.delete_profil(pr)
+        return '', 200
+
+
 """
 Der Service wird über app.run() gestartet.
 Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debuggen direkt im Browser anzeigen zu lassen.
