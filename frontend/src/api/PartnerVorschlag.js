@@ -1,9 +1,12 @@
-import BusinessObject from "./BusinessObject";
+import VorschlagBO from "./VorschlagBO";
+// Stammt von der Superklasse VorschlagBO ab,
+// welche seinerseits von der Superklasse BusinessObject abstammt.
 
-export default class PartnerVorschlag extends BusinessObject {
+/** Repräsentiert einen Partnervorschlag. */
+export default class PartnerVorschlag extends VorschlagBO {
 
     /**
-   * Constructs a new PartnerVorschlag object.
+   * Diese Klasse erstellt ein BusinessObject einer PartnerVorschlag.
    *
    * @param {*} partnervorschlag_id - the ID of the partner to be matched.
    * @param {*} entscheidung_partner - the decision of the potential match.
@@ -15,6 +18,7 @@ export default class PartnerVorschlag extends BusinessObject {
         this.entscheidung_partner = entscheidung_partner;
     }
 
+    // Nun die jeweiligen Getter & Setter:
     /*
     * Setzen der Partnervorschlag ID
     */
@@ -43,35 +47,37 @@ export default class PartnerVorschlag extends BusinessObject {
         return this.entscheidung_partner;
     }
 
-    /**
-   * Gibt die Entscheidung als String aus. Für Debugging-Zwecke.
-   */
+    // Debugging Methoden
+    /** Gibt die Entscheidung als String aus. */
     toString() {
     let result = '';
+
     for (var prop in this) {
       result += prop + ': ' + this[prop] + ' ';
-    }
-    return result;
-  }
-
-    /**
-   * Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück.
-   */
-  static fromJSON(partnervorschlaege) {
-    let result = [];
-
-    if (Array.isArray(partnervorschlaege)) {
-      partnervorschlaege.forEach((t) => {
-        Object.setPrototypeOf(t, PartnerVorschlag.prototype);
-        result.push(t);
-      })
-    } else {
-      // Es handelt sich offenbar um ein singuläres Objekt
-      let t = partnervorschlaege
-      Object.setPrototypeOf(t, PartnerVorschlag.prototype);
-      result.push(t);
-    }
+        }
 
     return result;
-  }
+    }
+
+    // JSON Methoden
+    /** Gibt Array von PartnerVorschlagBO einer gegebenen JSON-Struktur zurück. */
+    static fromJSON(partnervorschlaege) {
+        let result = [];
+
+        if (Array.isArray(partnervorschlaege)) {
+            partnervorschlaege.forEach((t) => {
+                Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+                result.push(t);
+            })
+        }
+        else {
+            // Sollte es sich um ein singuläres Objekt handeln.
+            let t = partnervorschlaege;
+
+            Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+            result.push(t);
+        }
+
+        return result;
+    }
 }
