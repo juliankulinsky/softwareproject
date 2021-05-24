@@ -114,6 +114,13 @@ export default class BankAPI {
         })
     }
 
+  /**
+   * Adds a profile and returns a Promise, which resolves to a new ProfilBO object with the
+   * lernvorliebenID of the parameter profilBO object.
+   *
+   * @param {ProfilBO} profilBO to be added. The ID of the new profile is set by the backend
+   * @public
+   */
     // Lernvorliebe-bezogene Methoden
 
     // Lerngruppe-bezogene Methoden
