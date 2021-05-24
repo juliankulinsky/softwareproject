@@ -114,13 +114,67 @@ export default class BankAPI {
         })
     }
 
-  /**
-   * Adds a profile and returns a Promise, which resolves to a new ProfilBO object with the
-   * lernvorliebenID of the parameter profilBO object.
-   *
-   * @param {ProfilBO} profilBO to be added. The ID of the new profile is set by the backend
-   * @public
-   */
+    /**
+     * Adds a profile and returns a Promise, which resolves to a new ProfilBO object with the
+     * lernvorliebenID of the parameter profilBO object.
+     *
+     * @param {ProfilBO} profilBO to be added. The ID of the new profile is set by the backend
+     * @public
+     */
+    addProfil(profilBO) {
+        return this.#fetchAdvanced(this.#addProfilURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(profilBO)
+        }).then((responseJSON) => {
+            let responseProfilBO = ProfilBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProfilBO);
+            })
+        })
+    }
+
+    /**
+     * Updates a profileand returns a Promise, which resolves to a ProfilBO.
+     *
+     * @param {ProfilBO} profilBO to be updated.
+     * @public
+     */
+    updateProfil(profilBO) {
+        return this.#fetchAdvanced(this.#updateProfilURL(profilBO.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(profilBO)
+        }).then((responseJSON) => {
+            let responseProfilBO = ProfilBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProfilBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of ProfilBOs
+     *
+     * @param {Number} profilID to be deleted.
+     * @public
+     */
+    deleteProfil(profilID) {
+        return this.#fetchAdvanced(this.#deleteProfilURL(profilID), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProfilBO = ProfilBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProfilBO);
+            })
+        })
+    }
     // Lernvorliebe-bezogene Methoden
 
     // Lerngruppe-bezogene Methoden
