@@ -58,4 +58,37 @@ export default class BankAPI {
         return this.#api
     }
 
+    /**
+     *  Returns a Promise which resolves to a json object.
+     *  The Promise returned from fetch() won’t reject on HTTP error status even if the response is an HTTP 404 or 500.
+     *  fetchAdvanced throws an Error also an server status errors
+     */
+    #fetchAdvanced = (url, init) => fetch(url, init)
+        .then(res => {
+            if (!res.ok) {
+                throw Error(`${res.status} ${res.statusText}`);
+            }
+            return res.json();
+        })
+
+    // Person-bezogene Methoden
+
+    // Profil-bezogene Methoden
+
+    // Lernvorliebe-bezogene Methoden
+
+    // Lerngruppe-bezogene Methoden
+
+    // Konversation-bezogene Methoden
+
+    // Nachricht-bezogene Methoden
+
+    // ChatTeilnahme-bezogene Methoden
+
+    // GruppenTeilnahme-bezogene Methoden
+
+    // GruppenVorschlag-bezogene Methoden
+
+    // PartnerVorschlag-bezogene Methoden
+
 }
