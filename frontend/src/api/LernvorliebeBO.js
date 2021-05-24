@@ -110,16 +110,16 @@ export default class LernvorliebeBO extends BusinessObject {
     /**
      * Gibt das BO als String zurück (Für Debugging Zwecke).
      */
-    static fromJSON(lernprofil) {
+    static fromJSON(lernvorliebe) {
         let result = [];
 
-        if (Array.isArray(lernprofil)) {
-            lernprofil.forEach((l) => {
+        if (Array.isArray(lernvorliebe)) {
+            lernvorliebe.forEach((l) => {
                 Object.setPrototypeOf(l, LernvorliebeBO.prototype);
                 result.push(l);
             })
         }   else {
-            let l = lernprofil
+            let l = lernvorliebe
             Object.setPrototypeOf(l, LernvorliebeBO.prototype);
             result.push(l);
         }
