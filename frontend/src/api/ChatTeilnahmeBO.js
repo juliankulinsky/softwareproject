@@ -1,6 +1,6 @@
 import BusinessObject from "./BusinessObject";
 
-export default class ChatTeilnahme extends BusinessObject {
+export default class ChatTeilnahmeBO extends BusinessObject {
 
     /**
    * Constructs a new ChatTeilnahme object.
