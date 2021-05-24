@@ -113,6 +113,7 @@ export default class BankAPI {
             })
         })
     }
+
     // Lernvorliebe-bezogene Methoden
 
     // Lerngruppe-bezogene Methoden
