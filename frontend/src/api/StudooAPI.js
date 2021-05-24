@@ -8,6 +8,7 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
+import {StudooAPI} from "./index";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
@@ -29,8 +30,18 @@ export default class BankAPI {
     #deletePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
 
     // Profil-bezogen
+    #getProfileURL = () => `${this.#studooServerBaseURL}/profile`;
+    #addProfilURL = () => `${this.#studooServerBaseURL}/profil`;
+    #getProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
+    #updateProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
+    #deleteProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
 
     // Lernvorliebe-bezogen
+    #getLernvorliebenURL = () => `${this.#studooServerBaseURL}/lernvorlieben`;
+    #addLernvorliebeURL = () => `${this.#studooServerBaseURL}/lernvorlieben`;
+    #getLernvorliebeURL = (id) => `${this.#studooServerBaseURL}/lernvorliebe/${id}`;
+    #updateLernvorliebeURL = (id) => `${this.#studooServerBaseURL}/lernvorliebe/${id}`;
+    #deleteLernvorliebeURL = (id) => `${this.#studooServerBaseURL}/lernvorliebe/${id}`;
 
     // Lerngruppe-bezogen
 
@@ -53,7 +64,7 @@ export default class BankAPI {
      */
     static getAPI() {
         if (this.#api == null) {
-            this.#api = new BankAPI()
+            this.#api = new StudooAPI();
         }
         return this.#api
     }
@@ -74,7 +85,34 @@ export default class BankAPI {
     // Person-bezogene Methoden
 
     // Profil-bezogene Methoden
+    /**
+     * Returns a Promise, which resolves to an Array of ProfilBOs
+     *
+     * @public
+     */
+    getProfile() {
+        return this.#fetchAdvanced(this.#getProfileURL()).then((responseJSON) => {
+            let profilBOs = ProfilBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(profilBOs);
+            })
+        })
+    }
 
+    /**
+     * Returns a Promise, which resolves to a ProfilBO
+     *
+     * @public
+     * @param {Number} profilID to be retrieved
+     */
+    getProfil(profilID) {
+        return this.#fetchAdvanced(this.#getProfilURL(profilID)).then((responseJSON) => {
+            let responseProfilBO = ProfilBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProfilBO);
+            })
+        })
+    }
     // Lernvorliebe-bezogene Methoden
 
     // Lerngruppe-bezogene Methoden
