@@ -3,7 +3,7 @@ import VorschlagBO from "./VorschlagBO";
 // welche seinerseits von der Superklasse BusinessObject abstammt.
 
 /** Repräsentiert einen Gruppenvorschlag. */
-export default class GruppenVorschlag extends VorschlagBO {
+export default class GruppenVorschlagBO extends VorschlagBO {
 
     constructor(aGruppenvorschlagId, aEntscheidungGruppe) {
         super();
@@ -51,7 +51,7 @@ export default class GruppenVorschlag extends VorschlagBO {
 
         if (Array.isArray(gruppenvorschlaege)) {
             gruppenvorschlaege.forEach((t) => {
-                Object.setPrototypeOf(t, GruppenVorschlag.prototype);
+                Object.setPrototypeOf(t, GruppenVorschlagBO.prototype);
                 result.push(t);
             })
         }
@@ -59,7 +59,7 @@ export default class GruppenVorschlag extends VorschlagBO {
             // Sollte es sich um ein singuläres Objekt handeln.
             let t = gruppenvorschlaege;
 
-            Object.setPrototypeOf(t, GruppenVorschlag.prototype);
+            Object.setPrototypeOf(t, GruppenVorschlagBO.prototype);
             result.push(t);
         }
 

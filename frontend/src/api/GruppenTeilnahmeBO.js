@@ -1,7 +1,7 @@
 import BusinessObject from "./BusinessObject";
 
 
-export default class GruppenTeilnahme extends BusinessObject {
+export default class GruppenTeilnahmeBO extends BusinessObject {
     /**
        * Erstellt ein BO einer GruppenTeilnahme mit den gegebenen Parametern.
        *

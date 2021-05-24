@@ -3,10 +3,10 @@ import VorschlagBO from "./VorschlagBO";
 // welche seinerseits von der Superklasse BusinessObject abstammt.
 
 /** Repräsentiert einen Partnervorschlag. */
-export default class PartnerVorschlag extends VorschlagBO {
+export default class PartnerVorschlagBO extends VorschlagBO {
 
     /**
-   * Diese Klasse erstellt ein BusinessObject einer PartnerVorschlag.
+   * Diese Klasse erstellt ein BusinessObject einer PartnerVorschlagBO.
    *
    * @param {*} partnervorschlag_id - the ID of the partner to be matched.
    * @param {*} entscheidung_partner - the decision of the potential match.
@@ -27,7 +27,7 @@ export default class PartnerVorschlag extends VorschlagBO {
     }
 
     /*
-    * Auslesen der PartnerVorschlag ID
+    * Auslesen der PartnerVorschlagBO ID
     */
     getPartnerVorschlagID() {
         return this.partnervorschlag_id;
@@ -66,7 +66,7 @@ export default class PartnerVorschlag extends VorschlagBO {
 
         if (Array.isArray(partnervorschlaege)) {
             partnervorschlaege.forEach((t) => {
-                Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+                Object.setPrototypeOf(t, PartnerVorschlagBO.prototype);
                 result.push(t);
             })
         }
@@ -74,7 +74,7 @@ export default class PartnerVorschlag extends VorschlagBO {
             // Sollte es sich um ein singuläres Objekt handeln.
             let t = partnervorschlaege;
 
-            Object.setPrototypeOf(t, PartnerVorschlag.prototype);
+            Object.setPrototypeOf(t, PartnerVorschlagBO.prototype);
             result.push(t);
         }
 
