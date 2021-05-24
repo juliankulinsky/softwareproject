@@ -187,15 +187,83 @@ class NachrichtenListOperations(Resource):
             return '', 500
 
 
+@studoo.route('/nachrichten/<int:id>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class NachrichtOperations(Resource):
+
+    @studoo.marshal_with(nachricht)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_nachricht_by_id(id)
+
+    @studoo.marshal_with(nachricht)
+    @studoo.expect(nachricht, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = Nachricht.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_nachricht(p)
+            return '', 200
+        else:
+            return '', 500
+
+    def delete(self, id):
+        adm = Admin()
+        message = adm.get_nachricht_by_id(id)
+        adm.delete_nachricht(message)
+        return '', 200
+
+
 @studoo.route('/konversationen/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class KonversationOperations(Resource):
+
+    @studoo.marshal_with(konversation)
+    def get(self, id):
+        adm = Admin()
+        return adm.get_konversation_by_id(id)
+
+    @studoo.marshal_with(konversation)
+    @studoo.expect(konversation, validate=True)
+    def put(self, id):
+        adm = Admin()
+        p = Konversation.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_konversation(p)
+            return '', 200
+        else:
+            return '', 500
 
     def delete(self, id):
         adm = Admin()
         conv = adm.get_konversation_by_id(id)
         adm.delete_konversation(conv)
         return '', 200
+
+
+@studoo.route('/konversationen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class KonversationListOperations(Resource):
+
+    @studoo.marshal_list_with(konversation)
+    def get(self):
+        adm = Admin()
+        return adm.get_all_konversationen()
+
+    @studoo.marshal_with(konversation, code=200)
+    @studoo.expect(konversation)
+    def post(self):
+        adm = Admin()
+        proposal = Konversation.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_konversation(proposal.get_ist_gruppenchat())
+            return p, 200
+        else:
+            return '', 500
 
 
 @studoo.route('/personen')
