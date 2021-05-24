@@ -14,7 +14,7 @@ import {StudooAPI} from "./index";
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
  * Diese Klasse wurde als Singleton implementiert, das bedeutet, dass genau ein Objekt dieser Klasse existiert.
  */
-export default class BankAPI {
+export default class StudooAPI {
 
     // Singleton-Instanz
     static #api = null;
@@ -138,7 +138,7 @@ export default class BankAPI {
     }
 
     /**
-     * Updates a profileand returns a Promise, which resolves to a ProfilBO.
+     * Updates a profile and returns a Promise, which resolves to a ProfilBO.
      *
      * @param {ProfilBO} profilBO to be updated.
      * @public
@@ -175,7 +175,99 @@ export default class BankAPI {
             })
         })
     }
+
     // Lernvorliebe-bezogene Methoden
+    /**
+     * Returns a Promise, which resolves to an Array of LernvorliebeBOs
+     *
+     * @public
+     */
+    getLernvorlieben() {
+        return this.#fetchAdvanced(this.#getLernvorliebenURL()).then((responseJSON) => {
+            let lernvorliebeBOs = LernvorliebeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(lernvorliebeBOs);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to a LernvorliebeBO
+     *
+     * @public
+     * @param {Number} lernvorliebeID to be retrieved
+     */
+    getLernvorliebe(lernvorliebeID) {
+        return this.#fetchAdvanced(this.#getLernvorliebeURL(lernvorliebeID)).then((responseJSON) => {
+            let responseLernvorliebeBO = LernvorliebeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLernvorliebeBO);
+            })
+        })
+    }
+
+    /**
+     * Adds a lernvorliebe and returns a Promise, which resolves to a new LernvorliebeBO object with the
+     * lerntyp, frequenz, extrovertiertheit, remote_praesenz, vorkenntnisse and lerninteressen
+     * of the parameter profilBO object.
+     *
+     * @param {LernvorliebeBO} lernvorliebeBO to be added. The ID of the new lernvorliebe is set by the backend
+     * @public
+     */
+    addLernvorliebe(lernvorliebeBO) {
+        return this.#fetchAdvanced(this.#addLernvorliebeURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(lernvorliebeBO)
+        }).then((responseJSON) => {
+            let responseLernvorliebeBO = LernvorliebeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLernvorliebeBO);
+            })
+        })
+    }
+
+    /**
+     * Updates a lernvorliebe and returns a Promise, which resolves to a LernvorliebeBO.
+     *
+     * @param {LernvorliebeBO} lernvorliebeBO to be updated.
+     * @public
+     */
+    updateLernvorliebe(lernvorliebeBO) {
+        return this.#fetchAdvanced(this.#updateLernvorliebeURL(lernvorliebeBO.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(lernvorliebeBO)
+        }).then((responseJSON) => {
+            let responseLernvorliebeBO = LernvorliebeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLernvorliebeBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of LernvorliebeBOs
+     *
+     * @param {Number} lernvorliebeID to be deleted.
+     * @public
+     */
+    deleteLernvorliebe(lernvorliebeID) {
+        return this.#fetchAdvanced(this.#deleteLernvorliebeURL(lernvorliebeID), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseLernvorliebeBO = LernvorliebeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLernvorliebeBO);
+            })
+        })
+    }
 
     // Lerngruppe-bezogene Methoden
 
