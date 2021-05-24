@@ -196,18 +196,6 @@ class NachrichtOperations(Resource):
         adm = Admin()
         return adm.get_nachricht_by_id(id)
 
-    @studoo.marshal_with(nachricht, code=200)
-    @studoo.expect(nachricht)
-    def post(self):
-        adm = Admin()
-        proposal = Nachricht.from_dict(api.payload)
-        if proposal is not None:
-            p = adm.create_nachricht(proposal.get_inhalt(), proposal.get_absender_id(),
-                                     proposal.get_konversation_id())
-            return p, 200
-        else:
-            return '', 500
-
     @studoo.marshal_with(nachricht)
     @studoo.expect(nachricht, validate=True)
     def put(self, id):
