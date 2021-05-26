@@ -36,7 +36,19 @@ export default class BankAPI {
 
     // Konversation-bezogen
 
+    #getKonversationenURL = () => `${this.#studooServerBaseURL}/konversationen`;
+    #addKonversationURL = () => `${this.#studooServerBaseURL}/konversationen`;
+    #getKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
+    #updateKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
+    #deleteKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
+
     // Nachricht-bezogen
+
+    #getNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
+    #addNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
+    #getNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
+    #updateNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
+    #deleteNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
 
     // ChatTeilnahme-bezogen
 
