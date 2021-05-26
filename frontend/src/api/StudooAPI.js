@@ -31,7 +31,7 @@ export default class StudooAPI {
 
     // Profil-bezogen
     #getProfileURL = () => `${this.#studooServerBaseURL}/profile`;
-    #addProfilURL = () => `${this.#studooServerBaseURL}/profil`;
+    #addProfilURL = () => `${this.#studooServerBaseURL}/profile`;
     #getProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
     #updateProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
     #deleteProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
@@ -62,13 +62,21 @@ export default class StudooAPI {
     #deleteNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
 
     // ChatTeilnahme-bezogen
-
+    #getChatTeilnahmenURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
+    #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
+    #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+    #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+    #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     // GruppenTeilnahme-bezogen
 
     // GruppenVorschlag-bezogen
 
     // PartnerVorschlag-bezogen
-
+    #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
+    #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
+    #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+    #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+    #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     /**
      * Getter für die Instanz dieser Klasse (Singleton)
      *
@@ -552,11 +560,188 @@ export default class StudooAPI {
         })
     }
     // ChatTeilnahme-bezogene Methoden
+    /**
+     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
+     *
+     * @public
+     */
+    getChatTeilnahmen() {
+        return this.#fetchAdvanced(this.#getChatTeilnahmenURL()).then((responseJSON) => {
+            let chatteilnahmeBOs = ChatteilnahmeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(chatteilnahmeBOs);
+            })
+        })
+    }
+
+    /**
+     * Adds a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
+     *
+     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
+     * @public
+     */
+    addChatTeilnahmen(chatteilnahmeBO) {
+        return this.#fetchAdvanced(this.#addChatTeilnahmeURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(chatteilnahmeBO)
+        }).then((responseJSON) => {
+            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseChatteilnahmeBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to a ChatteilnahmeBO
+     *
+     * @param {Number} chatteilnahmeID to be retrieved
+     * @public
+     */
+    getChatTeilnahme(chatteilnahmeID) {
+        return this.#fetchAdvanced(this.#getChatTeilnahmeURL(chatteilnahmeID)).then((responseJSON) => {
+            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseChatteilnahmeBO);
+            })
+        })
+    }
+
+    /**
+     * Updates a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
+     *
+     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
+     * @public
+     */
+    updateChatTeilnahme(chatteilnahmeBO) {
+        return this.#fetchAdvanced(this.#updateChatTeilnahmeURL(), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(chatteilnahmeBO)
+        }).then((responseJSON) => {
+            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseChatteilnahmeBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
+     *
+     * @param {Number} chatteilnahmeID to be deleted
+     * @public
+     */
+    deleteChatTeilnahme(chatteilnahmeID) {
+        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(chatteilnahmeID), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseChatteilnahmeBO);
+            })
+        })
+    }
 
     // GruppenTeilnahme-bezogene Methoden
 
     // GruppenVorschlag-bezogene Methoden
 
     // PartnerVorschlag-bezogene Methoden
+    /**
+     * Returns a Promise, which resolves to an Array of PartnervorschlagBO
+     *
+     * @public
+     */
+    getPartnerVorschlaege() {
+        return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
+            let partnervorschlagBOs = PartnervorschlagBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(partnervorschlagBOs);
+            })
+        })
+    }
 
-}
+    /**
+     * Adds a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
+     *
+     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
+     * @public
+     */
+    addPartnerVorschlaege(partnervorschlagBO) {
+        return this.#fetchAdvanced(this.#addPartnerVorschlagURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(partnervorschlagBO)
+        }).then((responseJSON) => {
+            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responsePartnervorschlagBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to a PartnervorschlagBO
+     *
+     * @param {Number} partnervorschlagID to be retrieved
+     * @public
+     */
+    getPartnerVorschlag(partnervorschlagID) {
+        return this.#fetchAdvanced(this.#getPartnerVorschlagURL(partnervorschlagID)).then((responseJSON) => {
+            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responsePartnervorschlagBO);
+            })
+        })
+    }
+
+    /**
+     * Updates a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
+     *
+     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
+     * @public
+     */
+    updatePartnerVorschlag(partnervorschlagBO) {
+        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(partnervorschlagBO)
+        }).then((responseJSON) => {
+            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responsePartnervorschlagBO);
+            })
+        })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of PartnervorschlagBO
+     *
+     * @param {Number} partnervorschlagID to be deleted
+     * @public
+     */
+    deletePartnerVorschlag(partnervorschlagID) {
+        return this.#fetchAdvanced(this.#deletePartnerVorschlagURL(partnervorschlagID), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responsePartnervorschlagBO);
+            })
+        })
+    }
+
