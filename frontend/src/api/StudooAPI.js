@@ -44,9 +44,13 @@ export default class StudooAPI {
     #deleteLernvorliebeURL = (id) => `${this.#studooServerBaseURL}/lernvorliebe/${id}`;
 
     // Lerngruppe-bezogen
+    #getLerngruppenURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #addLerngruppeURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #getLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #updateLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #deleteLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
 
     // Konversation-bezogen
-
     #getKonversationenURL = () => `${this.#studooServerBaseURL}/konversationen`;
     #addKonversationURL = () => `${this.#studooServerBaseURL}/konversationen`;
     #getKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
@@ -54,7 +58,6 @@ export default class StudooAPI {
     #deleteKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
 
     // Nachricht-bezogen
-
     #getNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
     #addNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
     #getNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
@@ -67,9 +70,20 @@ export default class StudooAPI {
     #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+
     // GruppenTeilnahme-bezogen
+    #getLerngruppenURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #addLerngruppeURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #getLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #updateLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #deleteLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
 
     // GruppenVorschlag-bezogen
+    #getGruppenVorschlaegeURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
+    #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
+    #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #deleteGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
 
     // PartnerVorschlag-bezogen
     #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
