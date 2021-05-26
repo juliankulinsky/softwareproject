@@ -43,7 +43,7 @@ export default class VorschlagBO extends BusinessObject {
         return this.entscheidung_person;
     }
 
-    // Debugging Methoden
+    // Debugging Methode
     /** Gibt die Entscheidung als String aus. */
     toString() {
     let result = '';
@@ -55,7 +55,7 @@ export default class VorschlagBO extends BusinessObject {
     return result;
     }
 
-    // JSON Methoden
+    // JSON Methode
     /** Gibt Array von VorschlagBO einer gegebenen JSON-Struktur zurück. */
     static fromJSON(vorschlag) {
         let result = [];
