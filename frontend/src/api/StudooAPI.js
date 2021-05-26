@@ -136,7 +136,7 @@ export default class BankAPI {
      *
      * @public
      */
-    getChatteilnahmen() {
+    getChatTeilnahmen() {
         return this.#fetchAdvanced(this.#getChatTeilnahmenURL()).then((responseJSON) => {
             let chatteilnahmeBOs = ChatteilnahmeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
@@ -151,7 +151,7 @@ export default class BankAPI {
      * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
-    addChatteilnahme(chatteilnahmeBO) {
+    addChatTeilnahmen(chatteilnahmeBO) {
         return this.#fetchAdvanced(this.#addChatTeilnahmeURL(), {
             method: 'POST',
             headers: {
@@ -173,7 +173,7 @@ export default class BankAPI {
      * @param {Number} chatteilnahmeID to be retrieved
      * @public
      */
-    getChatteilnahme(chatteilnahmeID) {
+    getChatTeilnahme(chatteilnahmeID) {
         return this.#fetchAdvanced(this.#getChatTeilnahmeURL(chatteilnahmeID)).then((responseJSON) => {
             let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
@@ -188,7 +188,7 @@ export default class BankAPI {
      * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
      * @public
      */
-    updateChatteilnahme(chatteilnahmeBO) {
+    updateChatTeilnahme(chatteilnahmeBO) {
         return this.#fetchAdvanced(this.#updateChatTeilnahmeURL(), {
             method: 'PUT',
             headers: {
@@ -210,8 +210,8 @@ export default class BankAPI {
      * @param {Number} chatteilnahmeID to be deleted
      * @public
      */
-    deleteChatteilnahme(chatteilnahmeID) {
-        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(partnervorschlagID), {
+    deleteChatTeilnahme(chatteilnahmeID) {
+        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(chatteilnahmeID), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
@@ -231,7 +231,7 @@ export default class BankAPI {
      *
      * @public
      */
-    getPartnervorschlag() {
+    getPartnerVorschlaege() {
         return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
             let partnervorschlagBOs = PartnervorschlagBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
@@ -246,7 +246,7 @@ export default class BankAPI {
      * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
-    addPartnervorschlag(partnervorschlagBO) {
+    addPartnerVorschlaege(partnervorschlagBO) {
         return this.#fetchAdvanced(this.#addPartnerVorschlagURL(), {
             method: 'POST',
             headers: {
@@ -268,7 +268,7 @@ export default class BankAPI {
      * @param {Number} partnervorschlagID to be retrieved
      * @public
      */
-    getPartnervorschlag(partnervorschlagID) {
+    getPartnerVorschlag(partnervorschlagID) {
         return this.#fetchAdvanced(this.#getPartnerVorschlagURL(partnervorschlagID)).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
@@ -283,7 +283,7 @@ export default class BankAPI {
      * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
-    updatePartnervorschlag(partnervorschlagBO) {
+    updatePartnerVorschlag(partnervorschlagBO) {
         return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(), {
             method: 'PUT',
             headers: {
@@ -305,7 +305,7 @@ export default class BankAPI {
      * @param {Number} partnervorschlagID to be deleted
      * @public
      */
-    deletePartnervorschlag(partnervorschlagID) {
+    deletePartnerVorschlag(partnervorschlagID) {
         return this.#fetchAdvanced(this.#deletePartnerVorschlagURL(partnervorschlagID), {
             method: 'DELETE'
         }).then((responseJSON) => {
