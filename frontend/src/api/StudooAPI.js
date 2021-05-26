@@ -567,7 +567,7 @@ export default class StudooAPI {
      */
     getChatTeilnahmen() {
         return this.#fetchAdvanced(this.#getChatTeilnahmenURL()).then((responseJSON) => {
-            let chatteilnahmeBOs = ChatteilnahmeBO.fromJSON(responseJSON);
+            let chatteilnahmeBOs = ChatTeilnahmeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(chatteilnahmeBOs);
             })
@@ -577,7 +577,7 @@ export default class StudooAPI {
     /**
      * Adds a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
      *
-     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
+     * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
     addChatTeilnahmen(chatteilnahmeBO) {
@@ -589,7 +589,7 @@ export default class StudooAPI {
             },
             body: JSON.stringify(chatteilnahmeBO)
         }).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseChatteilnahmeBO);
             })
@@ -604,7 +604,7 @@ export default class StudooAPI {
      */
     getChatTeilnahme(chatteilnahmeID) {
         return this.#fetchAdvanced(this.#getChatTeilnahmeURL(chatteilnahmeID)).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseChatteilnahmeBO);
             })
@@ -614,7 +614,7 @@ export default class StudooAPI {
     /**
      * Updates a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
      *
-     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
+     * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
      * @public
      */
     updateChatTeilnahme(chatteilnahmeBO) {
@@ -626,7 +626,7 @@ export default class StudooAPI {
             },
             body: JSON.stringify(chatteilnahmeBO)
         }).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseChatteilnahmeBO);
             })
@@ -643,7 +643,7 @@ export default class StudooAPI {
         return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(chatteilnahmeID), {
             method: 'DELETE'
         }).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
+            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseChatteilnahmeBO);
             })
@@ -662,7 +662,7 @@ export default class StudooAPI {
      */
     getPartnerVorschlaege() {
         return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
-            let partnervorschlagBOs = PartnervorschlagBO.fromJSON(responseJSON);
+            let partnervorschlagBOs = PartnerVorschlagBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(partnervorschlagBOs);
             })
@@ -672,7 +672,7 @@ export default class StudooAPI {
     /**
      * Adds a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
      *
-     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
+     * @param {PartnerVorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
     addPartnerVorschlaege(partnervorschlagBO) {
@@ -684,7 +684,7 @@ export default class StudooAPI {
             },
             body: JSON.stringify(partnervorschlagBO)
         }).then((responseJSON) => {
-            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
@@ -699,7 +699,7 @@ export default class StudooAPI {
      */
     getPartnerVorschlag(partnervorschlagID) {
         return this.#fetchAdvanced(this.#getPartnerVorschlagURL(partnervorschlagID)).then((responseJSON) => {
-            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
@@ -709,7 +709,7 @@ export default class StudooAPI {
     /**
      * Updates a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
      *
-     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
+     * @param {PartnerVorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
     updatePartnerVorschlag(partnervorschlagBO) {
@@ -721,7 +721,7 @@ export default class StudooAPI {
             },
             body: JSON.stringify(partnervorschlagBO)
         }).then((responseJSON) => {
-            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
@@ -738,10 +738,15 @@ export default class StudooAPI {
         return this.#fetchAdvanced(this.#deletePartnerVorschlagURL(partnervorschlagID), {
             method: 'DELETE'
         }).then((responseJSON) => {
-            let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
+            let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
         })
     }
+
+}
+
+
+
 
