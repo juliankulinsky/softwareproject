@@ -31,7 +31,7 @@ export default class BankAPI {
 
     // Profil-bezogen
     #getProfileURL = () => `${this.#studooServerBaseURL}/profile`;
-    #addProfilURL = () => `${this.#studooServerBaseURL}/profil`;
+    #addProfilURL = () => `${this.#studooServerBaseURL}/profile`;
     #getProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
     #updateProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
     #deleteProfilURL = (id) => `${this.#studooServerBaseURL}/profil/${id}`;
@@ -50,8 +50,8 @@ export default class BankAPI {
     // Nachricht-bezogen
 
     // ChatTeilnahme-bezogen
-    #getChatTeilnahmenURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
-    #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
+    #getChatTeilnahmenURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
+    #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
     #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
@@ -60,8 +60,8 @@ export default class BankAPI {
     // GruppenVorschlag-bezogen
 
     // PartnerVorschlag-bezogen
-    #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
-    #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
+    #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
+    #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
