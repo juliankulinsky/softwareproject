@@ -50,13 +50,21 @@ export default class BankAPI {
     // Nachricht-bezogen
 
     // ChatTeilnahme-bezogen
-
+    #getChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
+    #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
+    #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+    #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+    #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     // GruppenTeilnahme-bezogen
 
     // GruppenVorschlag-bezogen
 
     // PartnerVorschlag-bezogen
-
+    #getPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
+    #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
+    #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+    #updatePartnerVorschlagRL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+    #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     /**
      * Getter für die Instanz dieser Klasse (Singleton)
      *
