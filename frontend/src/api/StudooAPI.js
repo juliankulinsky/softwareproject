@@ -136,9 +136,9 @@ export default class BankAPI {
      *
      * @public
      */
-    getKonversationen() {
+    getChatteilnahme() {
         return this.#fetchAdvanced(this.#getChatTeilnahmeURL()).then((responseJSON) => {
-            let chatteilnahmeBOs = ChatTeilnahmeBO.fromJSON(responseJSON);
+            let chatteilnahmeBOs = ChatteilnahmeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(chatteilnahmeBOs);
             })
@@ -152,7 +152,7 @@ export default class BankAPI {
      * @public
      */
     addChatteilnahme(chatteilnahmeBO) {
-        return this.#fetchAdvanced(this.#addKChatTeilnahmeURL(), {
+        return this.#fetchAdvanced(this.#addChatTeilnahmeURL(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -160,7 +160,7 @@ export default class BankAPI {
             },
             body: JSON.stringify(chatteilnahmeBO)
         }).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
+            let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseChatteilnahmeBO);
             })
@@ -188,7 +188,7 @@ export default class BankAPI {
      * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
      * @public
      */
-    updateKonversation(chatteilnahmeBO) {
+    updateChatteilnahme(chatteilnahmeBO) {
         return this.#fetchAdvanced(this.#updateChatTeilnahmeURL(), {
             method: 'PUT',
             headers: {
@@ -210,8 +210,8 @@ export default class BankAPI {
      * @param {Number} chatteilnahmeID to be deleted
      * @public
      */
-    deleteKonversation(chatteilnahmeID) {
-        return this.#fetchAdvanced(this.#deleteChatteilnahmeURL(konversationID), {
+    deleteChatteilnahme(chatteilnahmeID) {
+        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(konversationID), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
@@ -268,7 +268,7 @@ export default class BankAPI {
      * @param {Number} partnervorschlagID to be retrieved
      * @public
      */
-    getKonversation(partnervorschlagID) {
+    getPartnervorschlag(partnervorschlagID) {
         return this.#fetchAdvanced(this.#getPartnervorschlagURL(partnervorschlagID)).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
@@ -300,9 +300,9 @@ export default class BankAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of KonversationBO
+     * Returns a Promise, which resolves to an Array of PartnervorschlagBO
      *
-     * @param {Number} konversationID to be deleted
+     * @param {Number} partnervorschlagID to be deleted
      * @public
      */
     deletePartnervorschlag(partnervorschlagID) {
