@@ -84,6 +84,9 @@ export default class BankAPI {
 
     // Person-bezogene Methoden
 
+    /**
+     *
+     */
     getPersonenURL(){
             return this.#fetchAdvanced(this.#getPersonenURL().then((responseJSON) => {
           let personBOs = PersonBO.fromJSON(responseJSON);
@@ -95,6 +98,9 @@ export default class BankAPI {
         )
     }
 
+    /**
+    *   @param {PersonBO} personBO - Object von PersonBO
+    */
     addPersonURL(personBO) {
         return this.#fetchAdvanced(this.#addPersonURL(), {
           method: 'POST',
@@ -112,7 +118,9 @@ export default class BankAPI {
           })
         })
       }
-
+    /**
+    *   @param {*} personenID - ID von PersonBO
+    */
     getPersonURL(personenID) {
     return this.#fetchAdvanced(this.#getPersonURL(personenID)).then((responseJSON) => {
       // We always get an array of CustomerBOs.fromJSON, but only need one object
@@ -124,6 +132,9 @@ export default class BankAPI {
     })
   }
 
+    /**
+    *   @param {PersonBO} personBO - Object von PersonBO
+    */
     updatePersonURL(personBO) {
     return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
       method: 'PUT',
@@ -142,6 +153,9 @@ export default class BankAPI {
     })
   }
 
+    /**
+    *   @param {*} personID -
+    */
     deletePersonURL(personID) {
     return this.#fetchAdvanced(this.#deletePersonURL(personID), {
       method: 'DELETE'
