@@ -93,8 +93,187 @@ export default class BankAPI {
 
     // Konversation-bezogene Methoden
 
+    /**
+     * Returns a Promise, which resolves to an Array of KonversationBO
+     *
+     * @public
+     */
+    getKonversationen() {
+        return this.#fetchAdvanced(this.#getKonversationenURL()).then((responseJSON) => {
+            let konversationenBOs = KonversationBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(konversationenBOs);
+            })
+        })
+    }
+
+    /**
+     * Adds a conversation and returns a Promise, which resolves to a new KonversationBO object.
+     *
+     * @param {KonversationBO} konversationBO to be added. The ID of the new conversation is set by the backend
+     * @public
+     */
+    addKonversation(konversationBO) {
+    return this.#fetchAdvanced(this.#addKonversationURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(konversationBO)
+    }).then((responseJSON) => {
+        let responseKonversationBO = KonversationBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseKonversationBO);
+    })
+    })
+    }
+
+    /**
+   * Returns a Promise, which resolves to a KonversationBO
+   *
+   * @param {Number} konversationID to be retrieved
+   * @public
+   */
+    getKonversation(konversationID) {
+        return this.#fetchAdvanced(this.#getKonversationURL(konversationID)).then((responseJSON) => {
+            let responseKonversationBO = KonversationBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseKonversationBO);
+          })
+        })
+      }
+
+    /**
+     * Updates a conversation and returns a Promise, which resolves to a new KonversationBO object.
+     *
+     * @param {KonversationBO} konversationBO to be added. The ID of the new conversation is set by the backend
+     * @public
+     */
+    updateKonversation(konversationBO) {
+    return this.#fetchAdvanced(this.#updateKonversationURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(konversationBO)
+    }).then((responseJSON) => {
+        let responseKonversationBO = KonversationBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseKonversationBO);
+    })
+    })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of KonversationBO
+     *
+     * @param {Number} konversationID to be deleted
+     * @public
+     */
+    deleteKonversation(konversationID) {
+        return this.#fetchAdvanced(this.#deleteKonversationURL(konversationID), {
+            method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseKonversationBO = KonversationBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseKonversationBO);
+        })
+    })
+}
+
     // Nachricht-bezogene Methoden
 
+    /**
+     * Returns a Promise, which resolves to an Array of NachrichtBO
+     *
+     * @public
+     */
+    getNachrichten() {
+        return this.#fetchAdvanced(this.#getNachrichtenURL()).then((responseJSON) => {
+            let nachrichtenBOs = NachrichtBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(nachrichtenBOs);
+            })
+        })
+    }
+
+    /**
+     * Adds a message and returns a Promise, which resolves to a new NachrichtBO object.
+     *
+     * @param {NachrichtBO} nachrichtBO to be added. The ID of the new message is set by the backend
+     * @public
+     */
+    addNachricht(nachrichtBO) {
+    return this.#fetchAdvanced(this.#addNachrichtenURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(nachrichtBO)
+    }).then((responseJSON) => {
+        let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseNachrichtBO);
+    })
+    })
+    }
+
+    /**
+   * Returns a Promise, which resolves to a NachrichtBO
+   *
+   * @param {Number} nachrichtID to be retrieved
+   * @public
+   */
+    getNachricht(nachrichtID) {
+        return this.#fetchAdvanced(this.#getNachrichtURL(nachrichtID)).then((responseJSON) => {
+            let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseNachrichtBO);
+          })
+        })
+      }
+
+    /**
+     * Updates a message and returns a Promise, which resolves to a new NachrichtBO object.
+     *
+     * @param {NachrichtBO} nachrichtBO to be added. The ID of the new message is set by the backend
+     * @public
+     */
+    updateNachricht(nachrichtBO) {
+    return this.#fetchAdvanced(this.#updateNachrichtURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(nachrichtBO)
+    }).then((responseJSON) => {
+        let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseNachrichtBO);
+    })
+    })
+    }
+
+    /**
+     * Returns a Promise, which resolves to an Array of NachrichtBO
+     *
+     * @param {Number} nachrichtID to be deleted
+     * @public
+     */
+    deleteNachricht(nachrichtID) {
+        return this.#fetchAdvanced(this.#deleteNachrichtURL(nachrichtID), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseNachrichtBO = NachrichtBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseNachrichtBO);
+            })
+        })
+    }
     // ChatTeilnahme-bezogene Methoden
 
     // GruppenTeilnahme-bezogene Methoden
