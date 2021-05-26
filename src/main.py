@@ -187,7 +187,7 @@ class NachrichtenListOperations(Resource):
             return '', 500
 
 
-@studoo.route('/nachrichten/<int:id>')
+@studoo.route('/nachricht/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class NachrichtOperations(Resource):
 
@@ -216,7 +216,7 @@ class NachrichtOperations(Resource):
         return '', 200
 
 
-@studoo.route('/konversationen/<int:id>')
+@studoo.route('/konversation/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class KonversationOperations(Resource):
 
