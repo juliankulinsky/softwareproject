@@ -91,6 +91,8 @@ export default class StudooAPI {
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+
+
     /**
      * Getter für die Instanz dieser Klasse (Singleton)
      *
@@ -116,8 +118,8 @@ export default class StudooAPI {
             return res.json();
         })
 
-    // Person-bezogene Methoden
 
+    // Person-bezogene Methoden
     /**
      *
      */
@@ -164,7 +166,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
@@ -185,7 +187,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     /**
     *   @param {*} personID -
@@ -201,7 +203,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     // Profil-bezogene Methoden
     /**
@@ -389,9 +391,83 @@ export default class StudooAPI {
     }
 
     // Lerngruppe-bezogene Methoden
+    /** Returns a Promise, which resolves to an Array of LerngruppeBO.
+     * @public */
+    getLerngruppen() {
+        return this.#fetchAdvanced(this.#getLerngruppenURL()).then((responseJSON) => {
+            let lerngruppenBOs = LerngruppeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(lerngruppenBOs);
+            })
+        })
+    }
+
+    /** Adds a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
+     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
+     * @public */
+    addLerngruppe(lerngruppeBO) {
+    return this.#fetchAdvanced(this.#addLerngruppeURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(lerngruppeBO)
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to a LerngruppeBO
+   * @param {Number} lerngruppeID to be retrieved
+   * @public */
+    getLerngruppe(lerngruppeID) {
+        return this.#fetchAdvanced(this.#getLerngruppeURL(lerngruppeID)).then((responseJSON) => {
+            let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLerngruppeBO);
+          })
+        })
+      }
+
+    /** Updates a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
+     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new conversation is set by the backend
+     * @public */
+    updateLerngruppe(lerngruppeBO) {
+    return this.#fetchAdvanced(this.#updateLerngruppeURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(lerngruppeBO)
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to an Array of KonversationBO
+     * @param {Number} lerngruppeID to be deleted
+     * @public  */
+    deleteLerngruppe(lerngruppeID) {
+        return this.#fetchAdvanced(this.#deleteLerngruppeURL(lerngruppeID), {
+            method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+        })
+    })
+    }
+
 
     // Konversation-bezogene Methoden
-
     /**
      * Returns a Promise, which resolves to an Array of KonversationBO
      *
@@ -480,10 +556,9 @@ export default class StudooAPI {
             resolve(responseKonversationBO);
         })
     })
-}
+    }
 
     // Nachricht-bezogene Methoden
-
     /**
      * Returns a Promise, which resolves to an Array of NachrichtBO
      *
@@ -573,6 +648,7 @@ export default class StudooAPI {
             })
         })
     }
+
     // ChatTeilnahme-bezogene Methoden
     /**
      * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
@@ -666,7 +742,11 @@ export default class StudooAPI {
 
     // GruppenTeilnahme-bezogene Methoden
 
+
+
     // GruppenVorschlag-bezogene Methoden
+
+
 
     // PartnerVorschlag-bezogene Methoden
     /**
