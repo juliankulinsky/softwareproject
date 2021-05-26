@@ -84,6 +84,77 @@ export default class BankAPI {
 
     // Person-bezogene Methoden
 
+    getPersonenURL(){
+            return this.#fetchAdvanced(this.#getPersonenURL().then((responseJSON) => {
+          let personBOs = PersonBO.fromJSON(responseJSON);
+          // console.info(customerBOs);
+          return new Promise(function (resolve) {
+            resolve(personBOs);
+          })
+        })
+        )
+    }
+
+    addPersonURL(personBO) {
+        return this.#fetchAdvanced(this.#addPersonURL(), {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(personBO)
+        }).then((responseJSON) => {
+          // We always get an array of CustomerBOs.fromJSON, but only need one object
+          let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+          // console.info(accountBOs);
+          return new Promise(function (resolve) {
+            resolve(responsePersonBO);
+          })
+        })
+      }
+
+    getPersonURL(personenID) {
+    return this.#fetchAdvanced(this.#getPersonURL(personenID)).then((responseJSON) => {
+      // We always get an array of CustomerBOs.fromJSON, but only need one object
+      let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+      // console.info(responseCustomerBO);
+      return new Promise(function (resolve) {
+        resolve(responsePersonBO);
+      })
+    })
+  }
+
+    updatePersonURL(personBO) {
+    return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(personBO)
+    }).then((responseJSON) => {
+      // We always get an array of CustomerBOs.fromJSON
+      let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+      // console.info(accountBOs);
+      return new Promise(function (resolve) {
+        resolve(responsePersonBO);
+      })
+    })
+  }
+
+    deletePersonURL(personID) {
+    return this.#fetchAdvanced(this.#deletePersonURL(personID), {
+      method: 'DELETE'
+    }).then((responseJSON) => {
+      // We always get an array of CustomerBOs.fromJSON
+      let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+      // console.info(accountBOs);
+      return new Promise(function (resolve) {
+        resolve(responsePersonBO);
+      })
+    })
+  }
+
     // Profil-bezogene Methoden
     /**
      * Returns a Promise, which resolves to an Array of ProfilBOs
