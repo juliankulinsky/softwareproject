@@ -50,7 +50,7 @@ export default class BankAPI {
     // Nachricht-bezogen
 
     // ChatTeilnahme-bezogen
-    #getChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
+    #getChatTeilnahmenURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
     #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahme`;
     #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
@@ -60,10 +60,10 @@ export default class BankAPI {
     // GruppenVorschlag-bezogen
 
     // PartnerVorschlag-bezogen
-    #getPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
+    #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
     #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlag`;
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
-    #updatePartnerVorschlagRL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+    #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     /**
      * Getter für die Instanz dieser Klasse (Singleton)
@@ -136,8 +136,8 @@ export default class BankAPI {
      *
      * @public
      */
-    getChatteilnahme() {
-        return this.#fetchAdvanced(this.#getChatTeilnahmeURL()).then((responseJSON) => {
+    getChatteilnahmen() {
+        return this.#fetchAdvanced(this.#getChatTeilnahmenURL()).then((responseJSON) => {
             let chatteilnahmeBOs = ChatteilnahmeBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(chatteilnahmeBOs);
@@ -148,7 +148,7 @@ export default class BankAPI {
     /**
      * Adds a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
      *
-     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
+     * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
     addChatteilnahme(chatteilnahmeBO) {
@@ -183,7 +183,7 @@ export default class BankAPI {
     }
 
     /**
-     * Updates a conversation and returns a Promise, which resolves to a new ChatteilnahmeBO object.
+     * Updates a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
      *
      * @param {ChatteilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
      * @public
@@ -211,7 +211,7 @@ export default class BankAPI {
      * @public
      */
     deleteChatteilnahme(chatteilnahmeID) {
-        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(konversationID), {
+        return this.#fetchAdvanced(this.#deleteChatTeilnahmeURL(partnervorschlagID), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseChatteilnahmeBO = ChatteilnahmeBO.fromJSON(responseJSON)[0];
@@ -232,7 +232,7 @@ export default class BankAPI {
      * @public
      */
     getPartnervorschlag() {
-        return this.#fetchAdvanced(this.#getPartnerVorschlagURL()).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
             let partnervorschlagBOs = PartnervorschlagBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(partnervorschlagBOs);
@@ -241,9 +241,9 @@ export default class BankAPI {
     }
 
     /**
-     * Adds a conversation and returns a Promise, which resolves to a new PartnervorschlagBO object.
+     * Adds a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
      *
-     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new conversation is set by the backend
+     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
     addPartnervorschlag(partnervorschlagBO) {
@@ -269,7 +269,7 @@ export default class BankAPI {
      * @public
      */
     getPartnervorschlag(partnervorschlagID) {
-        return this.#fetchAdvanced(this.#getPartnervorschlagURL(partnervorschlagID)).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getPartnerVorschlagURL(partnervorschlagID)).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnervorschlagBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
@@ -278,13 +278,13 @@ export default class BankAPI {
     }
 
     /**
-     * Updates a conversation and returns a Promise, which resolves to a new PartnervorschlagBO object.
+     * Updates a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
      *
-     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new conversation is set by the backend
+     * @param {PartnervorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
      */
     updatePartnervorschlag(partnervorschlagBO) {
-        return this.#fetchAdvanced(this.#updatePartnervorschlagURL(), {
+        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
