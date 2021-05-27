@@ -74,7 +74,7 @@ class PersonenList extends Component {
    * Handles onExpandedStateChange events from the CustomerListEntry component. Toggels the expanded state of
    * the CustomerListEntry of the given CustomerBO.
    *
-   * @param {person} CustomerBO of the CustomerListEntry to be toggeled
+   * @param {person} personBO of the CustomerListEntry to be toggeled
    */
   onExpandedStateChange = person => {
     // console.log(personID);
@@ -110,7 +110,7 @@ class PersonenList extends Component {
   addPersonButtonClicked = event => {
     // Do not toggle the expanded state
     event.stopPropagation();
-    //Show the CustmerForm
+    //Show the PersonForm
     this.setState({
       showPersonForm: true
     });
@@ -138,9 +138,9 @@ class PersonenList extends Component {
     const value = event.target.value.toLowerCase();
     this.setState({
       filteredPersonen: this.state.personen.filter(person => {
-        let firstNameContainsValue = person.getVorname().toLowerCase().includes(value);
-        let lastNameContainsValue = person.getNachname().toLowerCase().includes(value);
-        return firstNameContainsValue || lastNameContainsValue;
+        let vornameContainsValue = person.getVorname().toLowerCase().includes(value);
+        let nachnameContainsValue = person.getNachname().toLowerCase().includes(value);
+        return vornameContainsValue || nachnameContainsValue;
       }),
       personFilter: value
     });
