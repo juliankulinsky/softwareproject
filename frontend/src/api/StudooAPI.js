@@ -8,7 +8,7 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
-import {StudooAPI} from "./index";
+//import {StudooAPI} from "./index";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
@@ -101,27 +101,25 @@ export default class StudooAPI {
             }
             return res.json();
         })
-
     // Person-bezogene Methoden
 
     /**
-     *
+     * @public
      */
-    getPersonenURL(){
-            return this.#fetchAdvanced(this.#getPersonenURL().then((responseJSON) => {
+    getPersonen(){
+        return this.#fetchAdvanced(this.#getPersonenURL()).then((responseJSON) => {
           let personBOs = PersonBO.fromJSON(responseJSON);
-          // console.info(customerBOs);
+
           return new Promise(function (resolve) {
             resolve(personBOs);
           })
         })
-        )
-    }
 
+    }
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
     */
-    addPersonURL(personBO) {
+    addPerson(personBO) {
         return this.#fetchAdvanced(this.#addPersonURL(), {
           method: 'POST',
           headers: {
@@ -141,7 +139,7 @@ export default class StudooAPI {
     /**
     *   @param {*} personenID - ID von PersonBO
     */
-    getPersonURL(personenID) {
+    getPerson(personenID) {
     return this.#fetchAdvanced(this.#getPersonURL(personenID)).then((responseJSON) => {
       // We always get an array of CustomerBOs.fromJSON, but only need one object
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
@@ -155,7 +153,7 @@ export default class StudooAPI {
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
     */
-    updatePersonURL(personBO) {
+    updatePerson(personBO) {
     return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
       method: 'PUT',
       headers: {

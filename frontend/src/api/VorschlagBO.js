@@ -70,7 +70,7 @@ export default class VorschlagBO extends BusinessObject {
             // Sollte es sich um ein singuläres Objekt handeln.
             let t = vorschlag;
 
-            Object.setPrototypeOf(t, Vorschlag.prototype);
+            Object.setPrototypeOf(t, VorschlagBO.prototype);
             result.push(t);
         }
 
