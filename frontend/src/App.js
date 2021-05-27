@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
 import PersonenList from './components/PersonenList';
 import PersonListEntry from "./components/PersonListEntry";
-import AllPersonenList from "./components/AllPersonenList";
-import PersonDetail from "./components/PersonDetail";
 /*import firebase from 'firebase/app';
 import 'firebase/auth';
 import Header from './components/layout/Header';
