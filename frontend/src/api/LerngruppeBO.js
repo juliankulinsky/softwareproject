@@ -42,7 +42,7 @@ export default class LerngruppeBO extends BusinessObject {
         return this.konversation_id;
     }
 
-    // Debugging Methoden
+    // Debugging Methode
     /** Gibt die Lerngruppe als String aus. */
     toString() {
     let result = '';
@@ -54,7 +54,7 @@ export default class LerngruppeBO extends BusinessObject {
     return result;
     }
 
-    // JSON Methoden
+    // JSON Methode
     /** Gibt Array von LerngruppeBO einer gegebenen JSON-Struktur zurück. */
     static fromJSON(lerngruppe) {
         let result = [];

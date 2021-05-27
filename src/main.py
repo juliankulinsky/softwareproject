@@ -375,7 +375,7 @@ class LernvorliebeOperations(Resource):
         return '', 200
 
 
-@studoo.route('/gruppenteilnahme')
+@studoo.route('/gruppenteilnahmen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class GruppenTeilnahmeListOperations(Resource):
 

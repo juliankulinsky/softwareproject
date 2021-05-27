@@ -44,9 +44,13 @@ export default class StudooAPI {
     #deleteLernvorliebeURL = (id) => `${this.#studooServerBaseURL}/lernvorliebe/${id}`;
 
     // Lerngruppe-bezogen
+    #getLerngruppenURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #addLerngruppeURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
+    #getLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #updateLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
+    #deleteLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
 
     // Konversation-bezogen
-
     #getKonversationenURL = () => `${this.#studooServerBaseURL}/konversationen`;
     #addKonversationURL = () => `${this.#studooServerBaseURL}/konversationen`;
     #getKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
@@ -54,7 +58,6 @@ export default class StudooAPI {
     #deleteKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
 
     // Nachricht-bezogen
-
     #getNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
     #addNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
     #getNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
@@ -67,9 +70,20 @@ export default class StudooAPI {
     #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+
     // GruppenTeilnahme-bezogen
+    #getGruppenTeilnahmenURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
+    #addGruppenTeilnahmeURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
+    #getGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
+    #updateGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
+    #deleteGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
 
     // GruppenVorschlag-bezogen
+    #getGruppenVorschlaegeURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
+    #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
+    #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #deleteGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
 
     // PartnerVorschlag-bezogen
     #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
@@ -77,6 +91,8 @@ export default class StudooAPI {
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #deletePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
+
+
     /**
      * Getter für die Instanz dieser Klasse (Singleton)
      *
@@ -102,8 +118,8 @@ export default class StudooAPI {
             return res.json();
         })
 
-    // Person-bezogene Methoden
 
+    // Person-bezogene Methoden
     /**
      *
      */
@@ -150,7 +166,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
@@ -171,7 +187,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     /**
     *   @param {*} personID -
@@ -187,7 +203,7 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
-  }
+    }
 
     // Profil-bezogene Methoden
     /**
@@ -375,9 +391,83 @@ export default class StudooAPI {
     }
 
     // Lerngruppe-bezogene Methoden
+    /** Returns a Promise, which resolves to an Array of LerngruppeBO.
+     * @public */
+    getLerngruppen() {
+        return this.#fetchAdvanced(this.#getLerngruppenURL()).then((responseJSON) => {
+            let lerngruppenBOs = LerngruppeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(lerngruppenBOs);
+            })
+        })
+    }
+
+    /** Adds a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
+     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
+     * @public */
+    addLerngruppe(lerngruppeBO) {
+    return this.#fetchAdvanced(this.#addLerngruppeURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(lerngruppeBO)
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to a LerngruppeBO.
+   * @param {Number} lerngruppeID to be retrieved.
+   * @public */
+    getLerngruppe(lerngruppeID) {
+        return this.#fetchAdvanced(this.#getLerngruppeURL(lerngruppeID)).then((responseJSON) => {
+            let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseLerngruppeBO);
+          })
+        })
+      }
+
+    /** Updates a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
+     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
+     * @public */
+    updateLerngruppe(lerngruppeBO) {
+    return this.#fetchAdvanced(this.#updateLerngruppeURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(lerngruppeBO)
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to an Array of LerngruppeBO
+     * @param {Number} lerngruppeID to be deleted.
+     * @public  */
+    deleteLerngruppe(lerngruppeID) {
+        return this.#fetchAdvanced(this.#deleteLerngruppeURL(lerngruppeID), {
+            method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseLerngruppeBO);
+        })
+    })
+    }
+
 
     // Konversation-bezogene Methoden
-
     /**
      * Returns a Promise, which resolves to an Array of KonversationBO
      *
@@ -466,10 +556,9 @@ export default class StudooAPI {
             resolve(responseKonversationBO);
         })
     })
-}
+    }
 
     // Nachricht-bezogene Methoden
-
     /**
      * Returns a Promise, which resolves to an Array of NachrichtBO
      *
@@ -559,6 +648,7 @@ export default class StudooAPI {
             })
         })
     }
+
     // ChatTeilnahme-bezogene Methoden
     /**
      * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
@@ -634,7 +724,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
+     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO.
      *
      * @param {Number} chatteilnahmeID to be deleted
      * @public
@@ -651,8 +741,160 @@ export default class StudooAPI {
     }
 
     // GruppenTeilnahme-bezogene Methoden
+    /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
+     * @public */
+    getGruppenTeilnahmen() {
+        return this.#fetchAdvanced(this.#getGruppenTeilnahmenURL()).then((responseJSON) => {
+            let gruppenteilnahmenBOs = GruppenTeilnahmeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(gruppenteilnahmenBOs);
+            })
+        })
+    }
+
+    /** Adds a groupparticipation and returns a Promise, which resolves to a new GruppenTeilnahmeBO object.
+     * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation
+     * is set by the backend.
+     * @public */
+    addGruppenTeilnahme(gruppenteilnahmeBO) {
+    return this.#fetchAdvanced(this.#addGruppenTeilnahmeURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(gruppenteilnahmeBO)
+    }).then((responseJSON) => {
+        let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenTeilnahmeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to a GruppenTeilnahmeBO.
+   * @param {Number} gruppenteilnahmeID to be retrieved.
+   * @public */
+    getGruppenTeilnahme(gruppenteilnahmeID) {
+        return this.#fetchAdvanced(this.#getGruppenTeilnahmeURL(gruppenteilnahmeID)).then((responseJSON) => {
+            let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenTeilnahmeBO);
+          })
+        })
+      }
+
+    /** Updates a groupparticipation and returns a Promise, which resolves to a new GruppenTeilnahmeBO object.
+     * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.
+     * @public */
+    updateGruppenTeilnahme(gruppenteilnahmeBO) {
+    return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(gruppenteilnahmeBO)
+    }).then((responseJSON) => {
+        let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenTeilnahmeBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
+     * @param {Number} gruppenteilnahmeID to be deleted.
+     * @public  */
+    deleteGruppenTeilnahme(gruppenteilnahmeID) {
+        return this.#fetchAdvanced(this.#deleteGruppenTeilnahmeURL(gruppenteilnahmeID), {
+            method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenTeilnahmeBO);
+        })
+    })
+    }
+
 
     // GruppenVorschlag-bezogene Methoden
+    /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
+     * @public */
+    getGruppenVorschlaege() {
+        return this.#fetchAdvanced(this.#getGruppenVorschlaegeURL()).then((responseJSON) => {
+            let gruppenvorschlaegeBOs = GruppenVorschlagBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(gruppenvorschlaegeBOs);
+            })
+        })
+    }
+
+    /** Adds a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
+     * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion
+     * is set by the backend.
+     * @public */
+    addGruppenVorschlag(gruppenvorschlagBO) {
+    return this.#fetchAdvanced(this.#addGruppenVorschlagURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(gruppenteilnahmeBO)
+    }).then((responseJSON) => {
+        let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenVorschlagBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to a GruppenVorschlagBO.
+   * @param {Number} gruppenvorschlagID to be retrieved.
+   * @public */
+    getGruppenVorschlag(gruppenvorschlagID) {
+        return this.#fetchAdvanced(this.#getGruppenVorschlagURL(gruppenvorschlagID)).then((responseJSON) => {
+            let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenVorschlagBO);
+          })
+        })
+      }
+
+    /** Updates a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
+     * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion is set by the backend.
+     * @public */
+    updateGruppenVorschlag(gruppenvorschlagBO) {
+    return this.#fetchAdvanced(this.#updateGruppenVorschlagURL(), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(gruppenvorschlagBO)
+    }).then((responseJSON) => {
+        let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenVorschlagBO);
+    })
+    })
+    }
+
+    /** Returns a Promise, which resolves to an Array of GruppenVorschlagBO.
+     * @param {Number} gruppenvorschlagID to be deleted.
+     * @public  */
+    deleteGruppenVorschlag(gruppenvorschlagID) {
+        return this.#fetchAdvanced(this.#deleteGruppenVorschlagURL(gruppenvorschlagID), {
+            method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseGruppenVorschlagBO);
+        })
+    })
+    }
+
 
     // PartnerVorschlag-bezogene Methoden
     /**
