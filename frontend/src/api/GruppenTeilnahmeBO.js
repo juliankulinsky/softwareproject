@@ -67,12 +67,12 @@ export default class GruppenTeilnahmeBO extends BusinessObject {
 
         if (Array.isArray(gruppenteilnahme)) {
             gruppenteilnahme.forEach((g) => {
-                Object.setPrototypeOf(g, GruppenTeilnahme.prototype);
+                Object.setPrototypeOf(g, GruppenTeilnahmeBO.prototype);
                 result.push(g);
             })
         }   else {
             let g = gruppenteilnahme
-            Object.setPrototypeOf(g, GruppenTeilnahme.prototype);
+            Object.setPrototypeOf(g, GruppenTeilnahmeBO.prototype);
             result.push(g);
         }
 
