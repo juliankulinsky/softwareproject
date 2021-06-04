@@ -52,7 +52,7 @@ class App extends React.Component {
         return {appError: error};
     }
 
-
+    //Automatisches Weiterleiten <Redirect from='/' to='/studoo/lerngruppen'/>
     /** Renders the whole app */
     render() {
         const {currentUser, appError, authError, authLoading} = this.state;
@@ -60,9 +60,11 @@ class App extends React.Component {
         return (
                 <Router basename={process.env.PUBLIC_URL}>
                     <Container maxWidth='md'>
-                        <Redirect from='/' to='/studoo/lerngruppen'/>
                         <Route path='/studoo/lerngruppen'>
                             <TestList />
+                        </Route>
+                        <Route path='/studoo/personen'>
+                            <PersonenList />
                         </Route>
 
                     </Container>
