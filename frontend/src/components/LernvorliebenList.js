@@ -32,7 +32,7 @@ class LernvorliebenList extends Component {
                     loadingInProgress: false
                 });
             }).catch(e => this.setState({
-            lernvorlieben: ["error"],
+            personen: ["wtf"],
             error: e,
             loadingInProgress: false
         }));
@@ -73,7 +73,7 @@ class LernvorliebenList extends Component {
                     show={loadingInProgress}
                 </LoadingProgress>
                 <ContextErrorMessage>
-                    error={error} contextErrorMsg={'Hat nicht funktioniert'}
+                    error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getLernvorlieben}
                 </ContextErrorMessage>
             </div>
