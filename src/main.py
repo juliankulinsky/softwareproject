@@ -41,12 +41,14 @@ Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
 """
 app = Flask(__name__)
+
+CORS(app, resources=r'/studoo/*')
+
 api = Api(app)
 
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
 # CORS implementieren
-
 
 """
 Implementation Flask REST
@@ -589,7 +591,8 @@ class LerngruppenListOperations(Resource):
     def get(self):
         """Auslesen aller Lerngruppen."""
         admin = Admin()
-        return admin.get_all_lerngruppen()
+        lerngruppen = admin.get_all_lerngruppen()
+        return lerngruppen
 
     @studoo.marshal_with(lerngruppe, code=200)
     @studoo.expect(lerngruppe)

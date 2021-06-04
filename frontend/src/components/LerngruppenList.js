@@ -9,7 +9,6 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
 import PersonListEntry from './PersonListEntry';
-import TestListEntry from './TestListEntry';
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -26,9 +25,9 @@ class PersonenList extends Component {
     // console.log(props);
     let expandedID = null;
 
-    if (this.props.location.expandPerson) {
+    /**if (this.props.location.expandPerson) {
       expandedID = this.props.location.expandPerson.getID();
-    }
+    }*/
 
     // Init an empty state
     this.state = {

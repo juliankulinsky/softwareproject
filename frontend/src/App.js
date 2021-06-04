@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
 import PersonenList from './components/PersonenList';
 import PersonListEntry from "./components/PersonListEntry";
+import LerngruppenList from "./components/LerngruppenList";
 /*import firebase from 'firebase/app';
 import 'firebase/auth';
 import Header from './components/layout/Header';
@@ -15,6 +16,7 @@ import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 */
+import TestList from './components/TestList';
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -58,9 +60,9 @@ class App extends React.Component {
         return (
                 <Router basename={process.env.PUBLIC_URL}>
                     <Container maxWidth='md'>
-                        <Redirect from='/' to='/studoo/personen'/>
-                        <Route path='/studoo/personen'>
-                            <PersonenList />
+                        <Redirect from='/' to='/studoo/lerngruppen'/>
+                        <Route path='/studoo/lerngruppen'>
+                            <TestList />
                         </Route>
 
                     </Container>

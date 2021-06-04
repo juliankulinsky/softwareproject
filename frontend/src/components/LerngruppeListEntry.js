@@ -35,10 +35,10 @@ class PersonListEntry extends Component {
   }
 
   /** Handles onAccountDelete events from an AccountListEntry */
-  deletePersonHandler = (deletedPerson) => {
+  deleteAccountHandler = (deletedAccount) => {
     // console.log(deletedAccount.getID());
     this.setState({
-      personen: this.state.person.filter(person => person.getID() !== deletedPerson.getID())
+      accounts: this.state.accounts.filter(account => account.getID() !== deletedAccount.getID())
     })
   }
 
@@ -78,7 +78,7 @@ class PersonListEntry extends Component {
     // if customer is not null, delete it
     if (person) {
       this.props.onPersonDeleted(person);
-    }
+    };
 
     // Don´t show the dialog
     this.setState({
@@ -102,8 +102,7 @@ class PersonListEntry extends Component {
           >
             <Grid container spacing={1} justify='flex-start' alignItems='center'>
               <Grid item>
-                <Typography variant='body1' className={classes.heading}>
-                  {person.getNachname()}, {person.getVorname()}
+                <Typography variant='body1' className={classes.heading}>{person.getNachname()}, {person.getVorname()}
                 </Typography>
               </Grid>
               <Grid item>

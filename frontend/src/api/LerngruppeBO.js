@@ -4,6 +4,12 @@ import BusinessObject from "./BusinessObject";
 export default class LerngruppeBO extends BusinessObject {
     /** Diese Klasse erstellt ein BusinessObject einer Lerngruppe. */
 
+    /**
+     *
+     * @param {String} aGruppenname
+     * @param {*} aProfilId
+     * @param {*} aKonversationId
+     */
     constructor(aGruppenname, aProfilId, aKonversationId) {
         super();
         this.gruppenname = aGruppenname;
@@ -56,18 +62,16 @@ export default class LerngruppeBO extends BusinessObject {
 
     // JSON Methode
     /** Gibt Array von LerngruppeBO einer gegebenen JSON-Struktur zurück. */
-    static fromJSON(lerngruppe) {
+    static fromJSON(lerngruppen) {
         let result = [];
-
-        if (Array.isArray(lerngruppe)) {
-            lerngruppe.forEach((t) => {
+        if (Array.isArray(lerngruppen)) {
+            lerngruppen.forEach((t) => {
                 Object.setPrototypeOf(t, LerngruppeBO.prototype);
                 result.push(t);
             })
-        }
-        else {
+        } else {
             // Sollte es sich um ein singuläres Objekt handeln.
-            let t = lerngruppe;
+            let t = lerngruppen;
 
             Object.setPrototypeOf(t, LerngruppeBO.prototype);
             result.push(t);
