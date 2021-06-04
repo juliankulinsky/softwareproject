@@ -35,10 +35,10 @@ class PersonListEntry extends Component {
   }
 
   /** Handles onAccountDelete events from an AccountListEntry */
-  deletePersonHandler = (deletedPerson) => {
+  deleteAccountHandler = (deletedAccount) => {
     // console.log(deletedAccount.getID());
     this.setState({
-      personen: this.state.person.filter(person => person.getID() !== deletedPerson.getID())
+      accounts: this.state.accounts.filter(account => account.getID() !== deletedAccount.getID())
     })
   }
 
@@ -78,7 +78,7 @@ class PersonListEntry extends Component {
     // if customer is not null, delete it
     if (person) {
       this.props.onPersonDeleted(person);
-    }
+    };
 
     // Don´t show the dialog
     this.setState({
@@ -94,16 +94,16 @@ class PersonListEntry extends Component {
 
      console.log(this.state);
     return (
-      <div>
+        <div>
       <Accordion defaultExpanded={false} expanded={expandedState} onChange={this.expansionPanelStateChanged}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            id={`person${person.getID()}personpanel-header`}
-          >
             <Grid container spacing={1} justify='flex-start' alignItems='center'>
               <Grid item>
-                <Typography variant='body1' className={classes.heading}>
-                  {person.getNachname()}, {person.getVorname()}
+                <Typography className={classes.heading}>
+                            Nachname:
+                            {
+                                person.getNachname()
+                            }
+
                 </Typography>
               </Grid>
               <Grid item>
@@ -121,7 +121,6 @@ class PersonListEntry extends Component {
                 <Typography variant='body2' color={'textSecondary'}>List of accounts</Typography>
               </Grid>
             </Grid>
-        </AccordionSummary>
         </Accordion>
         <PersonForm show={showPersonForm} person={person} onClose={this.personFormClosed} />
         <PersonDeleteDialog show={showPersonDeleteDialog} person={person} onClose={this.deletePersonDialogClosed} />
