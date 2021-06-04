@@ -123,24 +123,22 @@ export default class StudooAPI {
     /**
      *
      */
-    getPersonen(){
+    getPersonen() {
         var requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
+            method: 'GET',
+            redirect: 'follow'
         };
-        fetch("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
-          .then(response => response.json())
-          .then(responsejson => console.log(responsejson))
-            .catch(error => console.log('error', error))
-        /**
-        return this.#fetchAdvanced(this.#getPersonenURL()).then((responseJSON) => {
-          let personBOs = PersonBO.fromJSON(responseJSON);
-          // console.info(customerBOs);
-          return new Promise(function (resolve) {
-            resolve(personBOs);
-          })
-        })*/
 
+        return fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
+            .then(response => response.json())
+            .then((response) => {
+                console.log(PersonBO.fromJSON(response))
+                let res = PersonBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })
+            .catch(error => console.log('error', error));
+            })
     }
 
     /**

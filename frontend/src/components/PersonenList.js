@@ -9,7 +9,6 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
 import PersonListEntry from './PersonListEntry';
-import TestListEntry from './TestListEntry';
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -44,11 +43,20 @@ class PersonenList extends Component {
 
   /** Fetches all PersonenBO from the backend */
   getPersonen = () => {
+
+    //console.log("Personlist", StudooAPI.getAPI().getPersonen())
     StudooAPI.getAPI().getPersonen()
-      .then(personBOs =>
+        .then(personenBOs => this.setState({
+        personen: personenBOs,
+        filteredCustomers: [...personenBOs], // store a copy
+        loadingInProgress: false,
+        error: null
+      }));
+        /*
+      .then(personenBOs =>
         this.setState({               // Set new state when CustomerBOs have been fetched
-          personen: personBOs,
-          filteredPersonen: [...personBOs], // store a copy
+          personen: personenBOs,
+          filteredPersonen: [...personenBOs], // store a copy
           loadingInProgress: false,   // disable loading indicator
           error: null
         })).catch(e =>
@@ -58,6 +66,31 @@ class PersonenList extends Component {
             error: e
           })
         );
+    var requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
+          .then(response => response.text())
+          .then(result => this.setState({               // Set new state when CustomerBOs have been fetched
+            personen: result,
+            filteredPersonen: [...result], // store a copy
+            loadingInProgress: false,   // disable loading indicator
+            error: null
+        }))
+          .catch(error => console.log('error', error));
+
+        fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
+          .then(response => response.json())
+          .then(result => {this.setState({               // Set new state when CustomerBOs have been fetched
+            personen: result,
+            filteredPersonen: [...result], // store a copy
+            loadingInProgress: false,   // disable loading indicator
+            error: null
+        });console.log(personen)})
+          .catch(error => console.log('error', error));*/
+
 
     // set loading to true
     this.setState({
@@ -66,19 +99,18 @@ class PersonenList extends Component {
     });
   }
 
-  /** Lifecycle method, which is called when the component gets inserted into the browsers DOM
+  /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
     this.getPersonen();
   }
-*/
+
   /**
    * Handles onExpandedStateChange events from the CustomerListEntry component. Toggels the expanded state of
    * the CustomerListEntry of the given CustomerBO.
    *
-   * @param {PersonBO} person of the CustomerListEntry to be toggeled
+   * @param {person} personBO of the CustomerListEntry to be toggeled
    */
   onExpandedStateChange = person => {
-    // console.log(personID);
     // Set expandend person entry to null by default
     let newID = null;
 
@@ -96,7 +128,7 @@ class PersonenList extends Component {
   /**
    * Handles onCustomerDeleted events from the CustomerListEntry component
    *
-   * @param {PersonBO} person of the CustomerListEntry to be deleted
+   * @param {person} CustomerBO of the CustomerListEntry to be deleted
    */
   personDeleted = person => {
     const newPersonList = this.state.personen.filter(personFromState => personFromState.getID() !== person.getID());
@@ -138,7 +170,7 @@ class PersonenList extends Component {
   filterFieldValueChange = event => {
     const value = event.target.value.toLowerCase();
     this.setState({
-      filteredPersonen: this.state.personen.filter(person => {
+      filteredPersonen: this.personen.filter(person => {
         let vornameContainsValue = person.getVorname().toLowerCase().includes(value);
         let nachnameContainsValue = person.getNachname().toLowerCase().includes(value);
         return vornameContainsValue || nachnameContainsValue;
@@ -159,7 +191,7 @@ class PersonenList extends Component {
   /** Renders the component */
   render() {
     const { classes } = this.props;
-    const { filteredPersonen, personFilter, expandedPersonID, loadingInProgress, error, showPersonForm } = this.state;
+    const { personen, filteredPersonen, personFilter, expandedPersonID, loadingInProgress, error, showPersonForm } = this.state;
 
     return (
       <div className={classes.root}>
@@ -194,13 +226,19 @@ class PersonenList extends Component {
           </Grid>
         </Grid>
         {
-          // Show the list of CustomerListEntry components
+           //Show the list of CustomerListEntry components
           // Do not use strict comparison, since expandedCustomerID maybe a string if given from the URL parameters
-          filteredPersonen.map(person =>
+          /*filteredPersonen.map(person =>
             <PersonListEntry key={person.getID()} person={person} expandedState={expandedPersonID === person.getID()}
               onExpandedStateChange={this.onExpandedStateChange}
               onPersonDeleted={this.personDeleted}
-            />)
+            />)*/
+            personen.map(person =>
+            <PersonListEntry key={person.getID()}
+              person ={person}
+            />
+
+          )
         }
         <LoadingProgress show={loadingInProgress} />
         <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`} onReload={this.getPersonen} />
