@@ -50,7 +50,7 @@ export default class PersonBO extends BusinessObject {
    * @param {*} aNachname - Der Nachname des PersonBO.
    */
   setNachname(aNachname) {
-    this.last_name = aNachname;
+    this.nachname = aNachname;
   }
 
   /**

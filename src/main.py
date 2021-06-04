@@ -41,12 +41,14 @@ Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
 """
 app = Flask(__name__)
+
+CORS(app, resources=r'/studoo/*')
+
 api = Api(app)
 
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
 # CORS implementieren
-
 
 """
 Implementation Flask REST
@@ -115,16 +117,16 @@ profil = api.inherit(
 )
 
 person = api.inherit(
-    "Person", bo,
+    'Person', bo,
     {
-        "vorname": fields.String(attribute="_vorname", description="Der Vorname einer Person"),
-        "nachname": fields.String(attribute="_nachname", description="Der Nachname einer Person"),
-        "alter": fields.Integer(attribute="_alter", description="Das Alter einer Person"),
-        "studiengang": fields.String(attribute="_studiengang",
+        'vorname': fields.String(attribute="_vorname", description="Der Vorname einer Person"),
+        'nachname': fields.String(attribute="_nachname", description="Der Nachname einer Person"),
+        'alter': fields.Integer(attribute="_alter", description="Das Alter einer Person"),
+        'studiengang': fields.String(attribute="_studiengang",
                                      description="Der Studiengang in welchem sich eine Person befindet"),
-        "wohnort": fields.String(attribute="_wohnort", description="Der Wohnort einer Person"),
-        "semester": fields.Integer(attribute="_semester", description=" Das Semester in dem sich eine Person befindet"),
-        "profil_id": fields.Integer(attribute="_profil_id", description="Fremdschlüsselbeziehung zum Profil der Person")
+        'wohnort': fields.String(attribute="_wohnort", description="Der Wohnort einer Person"),
+        'semester': fields.Integer(attribute="_semester", description=" Das Semester in dem sich eine Person befindet"),
+        'profil_id': fields.Integer(attribute="_profil_id", description="Fremdschlüsselbeziehung zum Profil der Person")
     }
 )
 
@@ -589,7 +591,8 @@ class LerngruppenListOperations(Resource):
     def get(self):
         """Auslesen aller Lerngruppen."""
         admin = Admin()
-        return admin.get_all_lerngruppen()
+        lerngruppen = admin.get_all_lerngruppen()
+        return lerngruppen
 
     @studoo.marshal_with(lerngruppe, code=200)
     @studoo.expect(lerngruppe)

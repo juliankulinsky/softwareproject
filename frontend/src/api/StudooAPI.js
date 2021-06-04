@@ -8,7 +8,7 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
-import {StudooAPI} from "./index";
+//import {StudooAPI} from "./index";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
@@ -20,7 +20,7 @@ export default class StudooAPI {
     static #api = null;
 
     // Lokales Python-Backend
-    #studooServerBaseURL = "/studoo";
+    #studooServerBaseURL = '/studoo';
 
     // Person-bezogen
     #getPersonenURL = () => `${this.#studooServerBaseURL}/personen`;
@@ -123,21 +123,30 @@ export default class StudooAPI {
     /**
      *
      */
-    getPersonenURL(){
-            return this.#fetchAdvanced(this.#getPersonenURL().then((responseJSON) => {
+    getPersonen(){
+        var requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+        fetch("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
+          .then(response => response.json())
+          .then(responsejson => console.log(responsejson))
+            .catch(error => console.log('error', error))
+        /**
+        return this.#fetchAdvanced(this.#getPersonenURL()).then((responseJSON) => {
           let personBOs = PersonBO.fromJSON(responseJSON);
           // console.info(customerBOs);
           return new Promise(function (resolve) {
             resolve(personBOs);
           })
-        })
-        )
+        })*/
+
     }
 
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
     */
-    addPersonURL(personBO) {
+    addPerson(personBO) {
         return this.#fetchAdvanced(this.#addPersonURL(), {
           method: 'POST',
           headers: {
@@ -155,9 +164,9 @@ export default class StudooAPI {
         })
       }
     /**
-    *   @param {*} personenID - ID von PersonBO
+    *   @param {Number} personenID - ID von PersonBO
     */
-    getPersonURL(personenID) {
+    getPerson(personenID) {
     return this.#fetchAdvanced(this.#getPersonURL(personenID)).then((responseJSON) => {
       // We always get an array of CustomerBOs.fromJSON, but only need one object
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
@@ -171,7 +180,7 @@ export default class StudooAPI {
     /**
     *   @param {PersonBO} personBO - Object von PersonBO
     */
-    updatePersonURL(personBO) {
+    updatePerson(personBO) {
     return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
       method: 'PUT',
       headers: {
@@ -190,9 +199,9 @@ export default class StudooAPI {
     }
 
     /**
-    *   @param {*} personID -
+    *   @param {Number} personID -
     */
-    deletePersonURL(personID) {
+    deletePerson(personID) {
     return this.#fetchAdvanced(this.#deletePersonURL(personID), {
       method: 'DELETE'
     }).then((responseJSON) => {
@@ -391,15 +400,24 @@ export default class StudooAPI {
     }
 
     // Lerngruppe-bezogene Methoden
-    /** Returns a Promise, which resolves to an Array of LerngruppeBO.
-     * @public */
+    /**
+     * Returns a Promise, which resolves to an Array of LerngruppeBO.
+     *
+     * @public
+     * */
     getLerngruppen() {
-        return this.#fetchAdvanced(this.#getLerngruppenURL()).then((responseJSON) => {
-            let lerngruppenBOs = LerngruppeBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(lerngruppenBOs);
-            })
-        })
+        let requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
+          .then((responseJSON) => {
+              let lerngruppenBOS = LerngruppeBO.fromJSON(responseJSON);
+              return new Promise(function (resolve) {
+                resolve(lerngruppenBOS);
+              })
+          })
     }
 
     /** Adds a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
@@ -841,7 +859,7 @@ export default class StudooAPI {
             'Accept': 'application/json, text/plain',
             'Content-type': 'application/json',
         },
-        body: JSON.stringify(gruppenteilnahmeBO)
+        body: JSON.stringify(gruppenvorschlagBO)
     }).then((responseJSON) => {
         let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
         return new Promise(function (resolve) {

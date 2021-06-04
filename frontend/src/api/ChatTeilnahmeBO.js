@@ -17,6 +17,7 @@ export default class ChatTeilnahmeBO extends BusinessObject {
 
     /*
     * Setzen der Person ID
+    * @param {*} aPersonID -
     */
     setPersonID(aPersonID){
         this.person_id = aPersonID;
@@ -62,13 +63,13 @@ export default class ChatTeilnahmeBO extends BusinessObject {
 
     if (Array.isArray(Chatteilnahme)) {
       Chatteilnahme.forEach((t) => {
-        Object.setPrototypeOf(t, ChatTeilnahme.prototype);
+        Object.setPrototypeOf(t, ChatTeilnahmeBO.prototype);
         result.push(t);
       })
     } else {
       // Es handelt sich offenbar um ein singuläres Objekt
       let t = Chatteilnahme
-      Object.setPrototypeOf(t, ChatTeilnahme.prototype);
+      Object.setPrototypeOf(t, ChatTeilnahmeBO.prototype);
       result.push(t);
     }
 
