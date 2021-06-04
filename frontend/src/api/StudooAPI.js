@@ -581,7 +581,7 @@ export default class StudooAPI {
      * @public
      */
     getNachrichten() {
-        return this.#fetchAdvanced(this.#getNachrichtenURL()).then((responseJSON) => {
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/nachrichten").then((responseJSON) => {
             let nachrichtenBOs = NachrichtBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(nachrichtenBOs);

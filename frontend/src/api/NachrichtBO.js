@@ -49,7 +49,7 @@ export default class NachrichtBO extends BusinessObject {
    * Gibt die AbsenderID aus.
    */
   getAbsenderID() {
-    return this.absender;
+    return this.absender_id;
   }
 
     /**
