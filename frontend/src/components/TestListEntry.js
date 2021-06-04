@@ -21,6 +21,7 @@ class TestListEntry extends Component {
         const { classes } = this.props;
         const { lerngruppe } = this.state;
 
+        console.log("Aus TestListEntry das aktuelle Lerngruppen-Objekt:")
         console.log(this.state);
 
         return (
@@ -36,7 +37,7 @@ class TestListEntry extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                teststetst
+                Ende von einem Entry
             </div>
         )
     }

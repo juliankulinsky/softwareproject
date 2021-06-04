@@ -26,28 +26,6 @@ class TestList extends Component {
     }
 
     getLerngruppen = () => {
-        /**
-    var requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
-        };
-
-        fetch("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
-          .then(response => response.json())
-          .then(result => this.setState({               // Set new state when CustomerBOs have been fetched
-            lerngruppen: result,
-            loadingInProgress: false,   // disable loading indicator
-            error: null
-        }))
-          .catch(error => console.log('error', error));
-    console.log(this.personen)
-    // set loading to true
-    this.setState({
-      loadingInProgress: true,
-      error: null
-    });
-         */
-        console.log(StudooAPI.getAPI().getLerngruppen())
         StudooAPI.getAPI().getLerngruppen()
             .then(lerngruppeBOs => {
                 this.setState({
@@ -55,16 +33,11 @@ class TestList extends Component {
                     error: null,
                     loadingInProgress: false
                 });
-                console.log("fast geschafft");
-                console.log(lerngruppeBOs)
             }).catch(e => this.setState({
             personen: ["wtf"],
             error: e,
             loadingInProgress: false
         }));
-
-        console.log(this.state.lerngruppen)
-        console.log("yo")
 
         this.setState({
             loadingInProgress: true,

@@ -102,7 +102,6 @@ export default class StudooAPI {
         if (this.#api == null) {
             this.#api = new StudooAPI();
         }
-        console.log("jo die studoo getter");
         return this.#api
     }
 
@@ -407,41 +406,18 @@ export default class StudooAPI {
      * @public
      * */
     getLerngruppen() {
-        var requestOptions = {
+        let requestOptions = {
           method: 'GET',
           redirect: 'follow'
         };
 
         return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
-          //.then(response => response.json())
           .then((responseJSON) => {
               let lerngruppenBOS = LerngruppeBO.fromJSON(responseJSON);
               return new Promise(function (resolve) {
                 resolve(lerngruppenBOS);
               })
           })
-
-              /**this.setState({               // Set new state when CustomerBOs have been fetched
-            lerngruppen: result,
-            loadingInProgress: false,   // disable loading indicator
-            error: null
-        }))*/
-          .catch(error => console.log('error', error));
-    /**return new Promise(function (resolve) {
-                resolve(result);
-            })*/
-
-/**
-        console.log("in Studoo yooo anfang aber");
-        return this.#fetchAdvanced(this.#getLerngruppenURL()).then((responseJSON) => {
-            console.log("vorm fromjson im getter");
-            let lerngruppenBOs = LerngruppeBO.fromJSON(responseJSON);
-            console.log(lerngruppenBOs);
-            console.info("in Studoo yooo");
-            return new Promise(function (resolve) {
-                resolve(lerngruppenBOs);
-            })
-        })*/
     }
 
     /** Adds a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
