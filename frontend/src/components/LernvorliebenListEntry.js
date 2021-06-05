@@ -28,7 +28,7 @@ class LernvorliebenListEntry extends Component {
                         <Typography className={classes.heading}>
                             Lernvorliebe:
                             {
-                                lernvorliebe.get_lerntyp()
+                                lernvorliebe.get_extrovertiertheit()
                             }
                         </Typography>
                     </Grid>

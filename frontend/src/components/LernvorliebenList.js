@@ -49,7 +49,7 @@ class LernvorliebenList extends Component {
 
     render() {
         const {classes} = this.props;
-        const {lernvorlieben, error, loadingInProgress} = this.state;
+        const {lernvorlieben=[], error, loadingInProgress} = this.state;
 
         return (
             <div className={classes.root}>
@@ -60,12 +60,13 @@ class LernvorliebenList extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                Lernvorlieben 2:
+                Lernvorlieben 1:
 
                 {
                     lernvorlieben.map(lernvorliebe =>
                         <LernvorliebenListEntry key={lernvorliebe.getID()}
                                                 lernvorliebe={lernvorliebe}
+
                         />
                     )
                 }

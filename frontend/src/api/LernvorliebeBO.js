@@ -55,6 +55,7 @@ export default class LernvorliebeBO extends BusinessObject {
      * Gibt die Extrovertiertheit aus.
      */
     get_extrovertiertheit() {
+        console.log("Extro")
         return this.extrovert;
     }
 
