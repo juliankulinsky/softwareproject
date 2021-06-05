@@ -30,9 +30,25 @@ class LernvorliebenListEntry extends Component {
                             {
                                 lernvorliebe.get_lerntyp()
                             }
+                            Frequenz:
+                            {
+                                lernvorliebe.get_frequenz()
+                            }
                             Extro:
                             {
                                 lernvorliebe.get_extrovertiertheit()
+                            }
+                            RemPra:
+                            {
+                                lernvorliebe.get_remote_praesenz()
+                            }
+                            Vorkenntnisse:
+                            {
+                                lernvorliebe.get_vorkenntnisse()
+                            }
+                            Lerninteressen:
+                            {
+                                lernvorliebe.get_lerninteressen()
                             }
                         </Typography>
                     </Grid>
