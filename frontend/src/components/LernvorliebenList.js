@@ -8,7 +8,7 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import LernvorliebenListEntry from "./LernvorliebenListEntry";
-import TestListEntry from "./TestListEntry";
+
 
 
 class LernvorliebenList extends Component {
@@ -48,11 +48,11 @@ class LernvorliebenList extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const { lernvorlieben, error, loadingInProgress } = this.state;
+        const {classes} = this.props;
+        const {lernvorlieben, error, loadingInProgress} = this.state;
 
         return (
-            <div>
+            <div className={classes.root}>
                 <Grid>
                     <Grid item>
                         <Typography>
@@ -60,22 +60,22 @@ class LernvorliebenList extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                Lernvorlieben2:
+                Lernvorlieben 2:
 
                 {
                     lernvorlieben.map(lernvorliebe =>
-                    <TestListEntry>
-                        key={lernvorliebe.getID()}
-                        lernvorliebe={lernvorliebe}
-                    </TestListEntry>)
+                        <LernvorliebenListEntry key={lernvorliebe.getID()}
+                                                lernvorliebe={lernvorliebe}
+                        />
+                    )
                 }
                 <LoadingProgress>
                     show={loadingInProgress}
                 </LoadingProgress>
-                <ContextErrorMessage>
+                <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getLernvorlieben}
-                </ContextErrorMessage>
+                />
             </div>
         )
     }
