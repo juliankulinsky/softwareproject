@@ -838,7 +838,7 @@ export default class StudooAPI {
     /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
      * @public */
     getGruppenVorschlaege() {
-        return this.#fetchAdvanced(this.#getGruppenVorschlaegeURL()).then((responseJSON) => {
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/gruppenvorschlaege").then((responseJSON) => {
             let gruppenvorschlaegeBOs = GruppenVorschlagBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(gruppenvorschlaegeBOs);
@@ -919,7 +919,7 @@ export default class StudooAPI {
      * @public
      */
     getPartnerVorschlaege() {
-        return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/partnervorschlaege").then((responseJSON) => {
             let partnervorschlagBOs = PartnerVorschlagBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(partnervorschlagBOs);
