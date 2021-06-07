@@ -70,9 +70,7 @@ class LernvorliebenList extends Component {
                         />
                     )
                 }
-                <LoadingProgress>
-                    show={loadingInProgress}
-                </LoadingProgress>
+                <LoadingProgress show={loadingInProgress}/>
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getLernvorlieben}
