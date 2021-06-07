@@ -17,6 +17,8 @@ import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 */
 import TestList from './components/TestList';
+import AllProfile from './components/AllProfile';
+import ProfilEntry from "./components/ProfilEntry";
 import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
 import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
@@ -68,23 +70,21 @@ class App extends React.Component {
                         <Route path='/studoo/lerngruppen'>
                             <TestList />
                         </Route>
-
                         <Route path='/studoo/personen'>
                             <PersonenList />
                         </Route>
-
+                        <Route path='/studoo/profil'>
+                            <AllProfile />
+                        </Route>
                         <Route path='/studoo/gruppenvorschlaege'>
                             <AllGruppenvorschlaege />
                         </Route>
-
                         <Route path='/studoo/partnervorschlaege'>
                             <AllPartnervorschlaege />
                         </Route>
-
                         <Route path='/studoo/lernvorlieben'>
                             <LernvorliebenList />
                         </Route>
-
                         <Route path='/studoo/nachrichten'>
                             <AllNachrichten />
                         </Route>

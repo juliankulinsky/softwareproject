@@ -218,13 +218,22 @@ export default class StudooAPI {
      *
      * @public
      */
-    getProfile() {
-        return this.#fetchAdvanced(this.#getProfileURL()).then((responseJSON) => {
-            let profilBOs = ProfilBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(profilBOs);
+   getProfile() {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        return fetch("http://127.0.0.1:5000/studoo/profil", requestOptions)
+            .then(response => response.json())
+            .then((response) => {
+                console.log(ProfilBO.fromJSON(response))
+                let res = ProfilBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
             })
-        })
+            .catch(error => console.log('error', error));
+            })
     }
 
     /**
