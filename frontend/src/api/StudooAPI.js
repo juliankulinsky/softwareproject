@@ -320,12 +320,18 @@ export default class StudooAPI {
      * @public
      */
     getLernvorlieben() {
-        return this.#fetchAdvanced(this.#getLernvorliebenURL()).then((responseJSON) => {
-            let lernvorliebeBOs = LernvorliebeBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(lernvorliebeBOs);
-            })
-        })
+        let requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lernvorlieben", requestOptions)
+          .then((responseJSON) => {
+              let lernvorliebenBOS = LernvorliebeBO.fromJSON(responseJSON);
+              return new Promise(function (resolve) {
+                resolve(lernvorliebenBOS);
+              })
+          })
     }
 
     /**
@@ -590,7 +596,7 @@ export default class StudooAPI {
      * @public
      */
     getNachrichten() {
-        return this.#fetchAdvanced(this.#getNachrichtenURL()).then((responseJSON) => {
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/nachrichten").then((responseJSON) => {
             let nachrichtenBOs = NachrichtBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(nachrichtenBOs);
@@ -847,12 +853,21 @@ export default class StudooAPI {
     /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
      * @public */
     getGruppenVorschlaege() {
-        return this.#fetchAdvanced(this.#getGruppenVorschlaegeURL()).then((responseJSON) => {
-            let gruppenvorschlaegeBOs = GruppenVorschlagBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(gruppenvorschlaegeBOs);
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        return fetch("http://127.0.0.1:5000/studoo/gruppenvorschlaege", requestOptions)
+            .then(response => response.json())
+            .then((response) => {
+                console.log(GruppenVorschlagBO.fromJSON(response))
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
             })
-        })
+            .catch(error => console.log('error', error));
+            })
     }
 
     /** Adds a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
@@ -928,13 +943,24 @@ export default class StudooAPI {
      * @public
      */
     getPartnerVorschlaege() {
-        return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL()).then((responseJSON) => {
-            let partnervorschlagBOs = PartnerVorschlagBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(partnervorschlagBOs);
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        return fetch("http://127.0.0.1:5000/studoo/partnervorschlaege", requestOptions)
+            .then(response => response.json())
+            .then((response) => {
+                console.log(PartnerVorschlagBO.fromJSON(response))
+                let res = PartnerVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
             })
-        })
+            .catch(error => console.log('error', error));
+            })
     }
+
+
 
     /**
      * Adds a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.

@@ -17,10 +17,10 @@ export default class LernvorliebeBO extends BusinessObject {
         super();
         this.lerntyp = lerntyp;
         this.frequenz = frequenz;
-        this.extrovert= extrovertiertheit;
-        this.remprae = remote_praesenz;
-        this.kenntniss = vorkenntnisse;
-        this.interesse = lerninteressen;
+        this.extrovertierteit= extrovertiertheit;
+        this.remote_praesenz = remote_praesenz;
+        this.vorkenntnisse = vorkenntnisse;
+        this.lerninteressen = lerninteressen;
     }
 
     /**
@@ -55,56 +55,56 @@ export default class LernvorliebeBO extends BusinessObject {
      * Gibt die Extrovertiertheit aus.
      */
     get_extrovertiertheit() {
-        return this.extrovert;
+        return this.extrovertierteit;
     }
 
     /**
      * Legt die Extrovertiertheit fest.
      */
     set_extrovertiertheit(wert=0) {
-        this.extrovert = wert;
+        this.extrovertierteit = wert;
     }
 
     /**
      * Gibt den gewünschten Lernort aus.
      */
     get_remote_praesenz() {
-        return this.remprae;
+        return this.remote_praesenz;
     }
 
     /**
      * Legt den gewünschten Lernort fest.
      */
     set_remote_praesenz(wert=0) {
-        this.remprae = wert;
+        this.remote_praesenz = wert;
     }
 
     /**
      * Gibt die Vorkenntnisse aus.
      */
     get_vorkenntnisse() {
-        return this.kenntniss;
+        return this.vorkenntnisse;
     }
 
     /**
      * Legt die Vorkenntnisse fest.
      */
     set_vorkenntnisse(liste="") {
-        this.kenntniss = liste;
+        this.vorkenntnisse = liste;
     }
 
     /**
      * Gibt die Lerninteressen aus.
      */
     get_lerninteressen() {
-        return this.interesse;
+        return this.lerninteressen;
     }
 
     /**
      * Legt die Lerninteressen fest.
      */
     set_lerninteressen(liste="") {
-        this.interesse = liste;
+        this.lerninteressen = liste;
     }
 
     /**
