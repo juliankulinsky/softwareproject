@@ -17,7 +17,9 @@ import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 */
 import TestList from './components/TestList';
+import LernvorliebenList from "./components/LernvorliebenList";
 import AllNachrichten from "./components/AllNachrichten";
+
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -64,9 +66,15 @@ class App extends React.Component {
                         <Route path='/studoo/lerngruppen'>
                             <TestList />
                         </Route>
+
                         <Route path='/studoo/personen'>
                             <PersonenList />
                         </Route>
+
+                        <Route path='/studoo/lernvorlieben'>
+                            <LernvorliebenList />
+                        </Route>
+
                         <Route path='/studoo/nachrichten'>
                             <AllNachrichten />
                         </Route>

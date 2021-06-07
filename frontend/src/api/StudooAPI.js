@@ -311,12 +311,18 @@ export default class StudooAPI {
      * @public
      */
     getLernvorlieben() {
-        return this.#fetchAdvanced(this.#getLernvorliebenURL()).then((responseJSON) => {
-            let lernvorliebeBOs = LernvorliebeBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(lernvorliebeBOs);
-            })
-        })
+        let requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lernvorlieben", requestOptions)
+          .then((responseJSON) => {
+              let lernvorliebenBOS = LernvorliebeBO.fromJSON(responseJSON);
+              return new Promise(function (resolve) {
+                resolve(lernvorliebenBOS);
+              })
+          })
     }
 
     /**
