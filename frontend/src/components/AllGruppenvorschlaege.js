@@ -25,14 +25,14 @@ class AllGruppenvorschlaege extends Component {
         super(props);
 
         this.state = {
-            gruppenvorschlaege: GruppenvorschlaegeEntry,
+            gruppenvorschlaege: [],
             error: null,
             loadingInProgress: false
         }
     }
 
     getGruppenvorschlaege = () => {
-        StudooAPI.getAPI().getGruppenvorschlaege()
+        StudooAPI.getAPI().getGruppenVorschlaege()
         .then(gruppenvorschlaegeBOs => {
             this.setState({
                 gruppenvorschlaege: gruppenvorschlaegeBOs,
@@ -77,13 +77,13 @@ class AllGruppenvorschlaege extends Component {
                 </Grid>
                 Ich wurde zumindest bis hierhin geladen.
 
-                Jetzt kommen Gruppenvorschlaege:
+                Jetzt kommen Gruppenvorschläge:
 
                 {
-                    gruppenvorschlaege.map(gruppenvorschlaege =>
-                    <AllGruppenvorschlaege
-                        key={gruppenvorschlaege.getID()}
-                        gruppenvorschlaege={gruppenvorschlaege}
+                    gruppenvorschlaege.map(gruppenvorschlag =>
+                    <GruppenvorschlaegeEntry
+                        key={gruppenvorschlag.getID()}
+                        gruppenvorschlaege={gruppenvorschlag}
                     />)
                 }
                 <ContextErrorMessage

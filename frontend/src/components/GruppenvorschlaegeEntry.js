@@ -19,9 +19,9 @@ class GruppenvorschlaegeEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { gruppenvorschlag } = this.state;
+        const { gruppenvorschlaege } = this.state;
 
-        console.log("Ausgabe alle Gruppenvorschlaege:")
+        console.log("Ausgabe aller Gruppenvorschlaege:")
         console.log(this.state);
 
         return (
@@ -31,8 +31,10 @@ class GruppenvorschlaegeEntry extends Component {
                         <Typography className={classes.heading}>
                             Gruppenvorschläge:
                             {
-                                gruppenvorschlaege.getGruppenVorschlaege()
-                            }
+                                gruppenvorschlaege.getGruppenvorschlagId()}
+                            Entscheidung:
+                            {
+                                gruppenvorschlaege.getEntscheidungGruppe()}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -54,7 +56,7 @@ GruppenvorschlaegeEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   /** The CustomerBO to be rendered */
-  nachricht: PropTypes.object.isRequired,
+  gruppenvorschlaege: PropTypes.object.isRequired,
 
 }
 
