@@ -2,7 +2,7 @@ from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
 
-#administration muss importiert werden, ist aber noch nicht erstellt.
+from server.Admin import Admin
 
 
 def secured(function):
@@ -26,21 +26,21 @@ def secured(function):
                     id_token, firebase_request_adapter)
 
                 if claims is not None:
-                    #adm = ()  administrations Objekt benötigt
+                    adm = Admin()
 
                     google_user_id = claims.get("user_id")
                     email = claims.get("email")
                     name = claims.get("name")
 
-                    user = adm.get_user_by_google_user_id(google_user_id)
+                    user = adm.get_person_by_google_user_id(google_user_id)
                     if user is not None:
 
                         user.set_name(name)
                         user.set_email(email)
-                        adm.save_user(user)
+                        adm.save_person(user)
                     else:
 
-                        user = adm.create_user(name, email, google_user_id)
+                        user = adm.create_person(name, email, google_user_id)
 
                     print(request.method, request.path, "angefragt durch:", name, email)
 
