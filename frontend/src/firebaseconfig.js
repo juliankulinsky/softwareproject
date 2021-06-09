@@ -1,12 +1,12 @@
 /** The firebase config structure for the Python Bank Project as provided by the firebase admin website */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAksPDsDpZdTOWKUQQ26IiEWebl2uxeF1E",
-  authDomain: "bankprojekt-d8417.firebaseapp.com",
-  projectId: "bankprojekt-d8417",
-  storageBucket: "bankprojekt-d8417.appspot.com",
-  messagingSenderId: "460489310530",
-  appId: "1:460489310530:web:12dd0b119722d8581348db"
+    apiKey: "AIzaSyBy7D6M2GpF6gBmwuEUeoA3BWFODWA_7Bw",
+    authDomain: "chat-8a6bf.firebaseapp.com",
+    projectId: "chat-8a6bf",
+    storageBucket: "chat-8a6bf.appspot.com",
+    messagingSenderId: "371820359838",
+    appId: "1:371820359838:web:8ccdf25d4a056053d64b8f"
 };
 
 export default firebaseConfig;
