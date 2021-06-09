@@ -50,7 +50,7 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, name, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
+        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
                   "profil_id FROM personen WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -79,28 +79,28 @@ class PersonMapper (Mapper):
 
         return result
 
-    def find_by_google_user_id(self, google_user_id: str):
+    def find_by_google_user_id(self, key: str):
         """Suchen eines Person-Objekts mit der angegebenen Google-User-ID
 
-        :param google_user_id:
+        :param key:
         :return: das gesuchte Person-Objekt
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, name, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
-                  "profil_id FROM personen WHERE id={}".format(google_user_id)
+        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
+                  "profil_id FROM personen WHERE google_user_id='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = \
+            (id, erstellungszeitpunkt, name, email, key, alter, wohnort, studiengang, semester, profil_id) = \
             tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
             person.set_name(name)
             person.set_email(email)
-            person.set_google_user_id(google_user_id)
+            person.set_google_user_id(key)
             person.set_alter(alter)
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
