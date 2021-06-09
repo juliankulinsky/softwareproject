@@ -311,11 +311,12 @@ class Admin(object):
     """
         Person - Spezifische Methoden
     """
-    def create_person(self, vorname, nachname, alter, studiengang, wohnort, semester, profil_id):
+    def create_person(self, name, email, google_user_id, alter=0, studiengang="", wohnort="", semester=0, profil_id=0):
         """ Eine Person erstellen """
         person = Person()
-        person.set_vorname(vorname)
-        person.set_nachname(nachname)
+        person.set_name(name)
+        person.set_email(email)
+        person.set_google_user_id(google_user_id)
         person.set_alter(alter)
         person.set_studiengang(studiengang)
         person.set_wohnort(wohnort)
@@ -334,6 +335,11 @@ class Admin(object):
         """ Eine Person anhand der ID auslesen """
         with PersonMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_person_by_google_user_id(self, google_user_id):
+        """ Eine Person anhand der Google_User_ID auslesen """
+        with PersonMapper() as mapper:
+            return mapper.find_by_google_user_id(google_user_id)
 
     def save_person(self, person: Person):
         """ Änderungen einer Person speichern """
