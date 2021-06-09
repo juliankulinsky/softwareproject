@@ -24,7 +24,7 @@ import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
 import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
 import AllNachrichten from "./components/AllNachrichten";
-import Navbar from "./components/header/Navbar";
+import HeaderNew from "./components/header/HeaderNew";
 
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
@@ -139,10 +139,11 @@ class App extends React.Component {
         return (
                 <Router basename={process.env.PUBLIC_URL}>
                     <Container maxWidth='md'>
-						<Navbar user={currentUser} />
+
 						{
 							currentUser ?
 								<>
+									<HeaderNew user={currentUser} />
 									<Route path='/studoo/lerngruppen'>
 										<TestList />
 									</Route>

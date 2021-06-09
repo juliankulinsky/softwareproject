@@ -101,9 +101,7 @@ class ProfileDropDown extends Component {
 
 /** Component specific styles */
 const styles = theme => ({
-  avatarButton: {
-    float: 'right'
-  },
+
   divider: {
     margin: theme.spacing(1),
   },
