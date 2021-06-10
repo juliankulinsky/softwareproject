@@ -6,7 +6,6 @@ import PersonListEntry from "./components/PersonListEntry";
 import LerngruppenList from "./components/LerngruppenList";
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import Header from './components/layout/Header';
 /*import TransactionList from './components/TransactionList';
 import About from './components/pages/About';
 import AllAccountList from './components/AllAccountList';
@@ -24,8 +23,8 @@ import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
 import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
 import AllNachrichten from "./components/AllNachrichten";
-import HeaderNew from "./components/header/HeaderNew";
-
+import HeaderComplete from "./components/header/HeaderComplete";
+import theme from "./components/header/theme";
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -38,30 +37,30 @@ import HeaderNew from "./components/header/HeaderNew";
  */
 class App extends React.Component {
 
-    /** Constructor of the app, which initializes firebase  */
-    constructor(props) {
-        super(props);
+	/** Constructor of the app, which initializes firebase  */
+	constructor(props) {
+		super(props);
 
-        // Init an empty state
-        this.state = {
-            currentUser: null,
-            appError: null,
-            authError: null,
-            authLoading: false
-        };
-    }
+		// Init an empty state
+		this.state = {
+			currentUser: null,
+			appError: null,
+			authError: null,
+			authLoading: false
+		};
+	}
 
-    /**
-     * Create an error boundary for this app and recieve all errors from below the component tree.
-     *
-     * @See See Reacts [Error Boundaries](https://reactjs.org/docs/error-boundaries.html)
-     */
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return {appError: error};
-    }
+	/**
+	 * Create an error boundary for this app and recieve all errors from below the component tree.
+	 *
+	 * @See See Reacts [Error Boundaries](https://reactjs.org/docs/error-boundaries.html)
+	 */
+	static getDerivedStateFromError(error) {
+		// Update state so the next render will show the fallback UI.
+		return {appError: error};
+	}
 
-    /** Handles firebase users logged in state changes  */
+	/** Handles firebase users logged in state changes  */
 	handleAuthStateChange = user => {
 		if (user) {
 			console.log("im HANDLEAUTHSTATECHANGE WTF")
@@ -106,7 +105,7 @@ class App extends React.Component {
 	}
 
 	/**
-   * Handles the sign in request of the SignIn component uses the firebase.auth() component to sign in.
+	 * Handles the sign in request of the SignIn component uses the firebase.auth() component to sign in.
 	 * @see See Google [firebase.auth()](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
 	 * @see See Google [firebase.auth().signInWithRedirect](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithredirect)
 	 */
@@ -131,51 +130,50 @@ class App extends React.Component {
 	}
 
 
-    //Automatisches Weiterleiten <Redirect from='/' to='/studoo/lerngruppen'/>
-    /** Renders the whole app */
-    render() {
-        const {currentUser, appError, authError, authLoading} = this.state;
+	//Automatisches Weiterleiten <Redirect from='/' to='/studoo/lerngruppen'/>
+	/** Renders the whole app */
+	render() {
+		const {currentUser, appError, authError, authLoading} = this.state;
 
-        return (
-                <Router basename={process.env.PUBLIC_URL}>
-                    <Container maxWidth='md'>
+		return (
+				<Router basename={process.env.PUBLIC_URL}>
+					<Container maxWidth='md'>
 
 						{
 							currentUser ?
 								<>
-									<HeaderNew user={currentUser} />
+									<HeaderComplete user={currentUser}/>
 									<Route path='/studoo/lerngruppen'>
-										<TestList />
+										<TestList/>
 									</Route>
 									<Route path='/studoo/personen'>
-										<PersonenList />
+										<PersonenList/>
 									</Route>
 									<Route path='/studoo/profil'>
-										<AllProfile />
+										<AllProfile/>
 									</Route>
 									<Route path='/studoo/gruppenvorschlaege'>
-										<AllGruppenvorschlaege />
+										<AllGruppenvorschlaege/>
 									</Route>
 									<Route path='/studoo/partnervorschlaege'>
-										<AllPartnervorschlaege />
+										<AllPartnervorschlaege/>
 									</Route>
 									<Route path='/studoo/lernvorlieben'>
-										<LernvorliebenList />
+										<LernvorliebenList/>
 									</Route>
 									<Route path='/studoo/nachrichten'>
-										<AllNachrichten />
+										<AllNachrichten/>
 									</Route>
 								</>
 								:
 								<>
-									<Redirect to='/index.html' />
-									<SignIn onSignIn={this.handleSignIn} />
+									<Redirect to='/index.html'/>
+									<SignIn onSignIn={this.handleSignIn}/>
 								</>
 						}
-
-                    </Container>
-                </Router>
-        );
-    }
+					</Container>
+				</Router>
+		);
+	}
 }
 export default App;
