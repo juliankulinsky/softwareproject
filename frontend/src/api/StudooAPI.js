@@ -25,6 +25,7 @@ export default class StudooAPI {
     #getPersonenURL = () => `${this.#studooServerBaseURL}/personen`;
     #addPersonURL = () => `${this.#studooServerBaseURL}/personen`;
     #getPersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
+    #getUIDPersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
     #updatePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
     #deletePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
 
@@ -165,6 +166,18 @@ export default class StudooAPI {
       // console.info(responseCustomerBO);
       return new Promise(function (resolve) {
         resolve(responsePersonBO);
+      })
+    })
+    }
+
+    getPersonByUID(personenUID) {
+    return this.#fetchAdvanced(this.#getUIDPersonURL(personenUID)).then((responseJSON) => {
+      // We always get an array of PersonBOs.fromJSON, but only need one object
+      let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+
+      return new Promise(function (resolve) {
+        resolve(responsePersonBO);
+        console.log(responsePersonBO)
       })
     })
     }

@@ -336,6 +336,15 @@ class PersonOperations(Resource):
         adm.delete_person(pers)
         return '', 200
 
+@studoo.route('/person/<uid>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PersonIDOperations(Resource):
+
+    @studoo.marshal_with(person)
+    @secured
+    def get(self, uid):
+        adm = Admin()
+        return adm.get_person_by_google_user_id(uid)
 
 @studoo.route('/lernvorlieben')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -685,7 +694,7 @@ class LerngruppenOperations(Resource):
         return '', 200
 
 
-@studoo.route('/profil')
+@studoo.route('/profile')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class ProfilListOperations(Resource):
 

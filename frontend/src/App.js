@@ -24,6 +24,7 @@ import LernvorliebenList from "./components/LernvorliebenList";
 import AllNachrichten from "./components/AllNachrichten";
 import HeaderComplete from "./components/header/HeaderComplete";
 import theme from "./components/header/theme";
+import ProfilVorschau from "./components/ProfilVorschau";
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -146,10 +147,10 @@ class App extends React.Component {
 										<LerngruppenList />
 									</Route>
 									<Route path='/personen'>
-										<PersonenList/>
+										<PersonenList />
 									</Route>
 									<Route path='/profil'>
-										<AllProfile/>
+										<ProfilVorschau user={currentUser}/>
 									</Route>
 									<Route path='/gruppenvorschlaege'>
 										<AllGruppenvorschlaege/>
