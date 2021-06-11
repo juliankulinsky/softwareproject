@@ -27,15 +27,15 @@ class HeaderComplete extends Component {
                             </div>
 
                             <div>
-                                <Link to="/studoo/partnervorschlaege">
+                                <Link to="/partnervorschlaege">
                                     <BottomNavigationAction label={"Explore"} icon={<SearchIcon style={theme.iconcss}/>}/>
                                 </Link>
 
-                                <Link to="/studoo/nachrichten">
+                                <Link to="/nachrichten">
                                     <BottomNavigationAction label={"Nachrichten"} icon={<ChatIcon style={theme.iconcss}/>}/>
                                 </Link>
 
-                                <Link to="/studoo/gruppen">
+                                <Link to="/gruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
                             </div>

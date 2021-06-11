@@ -143,25 +143,25 @@ class App extends React.Component {
 							currentUser ?
 								<>
 									<HeaderComplete user={currentUser}/>
-									<Route path='/studoo/lerngruppen'>
+									<Route path='/lerngruppen'>
 										<TestList/>
 									</Route>
-									<Route path='/studoo/personen'>
+									<Route path='/personen'>
 										<PersonenList/>
 									</Route>
-									<Route path='/studoo/profil'>
+									<Route path='/profil'>
 										<AllProfile/>
 									</Route>
-									<Route path='/studoo/gruppenvorschlaege'>
+									<Route path='/gruppenvorschlaege'>
 										<AllGruppenvorschlaege/>
 									</Route>
-									<Route path='/studoo/partnervorschlaege'>
+									<Route path='/partnervorschlaege'>
 										<AllPartnervorschlaege/>
 									</Route>
-									<Route path='/studoo/lernvorlieben'>
+									<Route path='/lernvorlieben'>
 										<LernvorliebenList/>
 									</Route>
-									<Route path='/studoo/nachrichten'>
+									<Route path='/nachrichten'>
 										<AllNachrichten/>
 									</Route>
 								</>

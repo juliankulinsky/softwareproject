@@ -82,7 +82,7 @@ class ProfileDropDown extends Component {
             }}>
             <ClickAwayListener onClickAway={this.handleClose}>
               <Paper className={classes.profileBox}>
-                <Link to="/studoo/profil">
+                <Link to="/profil">
                   <Typography align='center'>Zum Profil</Typography>
                 </Link>
                 <Divider className={classes.divider} />
