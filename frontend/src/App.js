@@ -21,7 +21,8 @@ import ProfilEntry from "./components/ProfilEntry";
 import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
 import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
-import AllNachrichten from "./components/AllNachrichten";
+import KonversationenList from "./components/KonversationenList";
+import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
 import theme from "./components/header/theme";
 import {StudooAPI} from "./api";
@@ -171,7 +172,10 @@ class App extends React.Component {
 										<LernvorliebenList/>
 									</Route>
 									<Route path='/nachrichten'>
-										<AllNachrichten/>
+										<NachrichtenList/>
+									</Route>
+									<Route path='/konversationen'>
+										<KonversationenList person={currentPersonBO}/>
 									</Route>
 								</>
 								:

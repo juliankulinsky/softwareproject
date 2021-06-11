@@ -17,22 +17,24 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import NachrichtEntry from "./NachrichtEntry";
+import NachrichtListEntry from "./NachrichtListEntry";
 
-class AllNachrichten extends Component {
+class NachrichtenList extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            inhalt: "",
+            konversation: props.konversation,
+            nachrichten: [],
             error: null,
             loadingInProgress: false
         }
     }
 
     getNachrichten = () => {
-        StudooAPI.getAPI().getNachrichten()
+        console.log(this.props.konversation)
+        StudooAPI.getAPI().getNachrichtenByKonversationID(this.props.konversation.getID())
         .then(nachrichtenBOs => {
             this.setState({
                 nachrichten: nachrichtenBOs,
@@ -41,7 +43,7 @@ class AllNachrichten extends Component {
             });
             // console.log(this.state.nachrichten)
         }).catch(e => this.setState({
-            personen: "No person received.",
+            nachrichten: [],
             error: e,
             loadingInProgress: false
         }));
@@ -69,21 +71,28 @@ class AllNachrichten extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                Ich wurde zumindest bis hierhin geladen.
+                <div>
+                    nachrichten ?
+                        Ich wurde zumindest bis hierhin geladen.
 
-                Jetzt kommen Nachrichten:
+                        Jetzt kommen Nachrichten:
 
-                {
-                    nachrichten.map(nachricht =>
-                    <NachrichtEntry
-                        key={nachricht.getID()}
-                        nachricht={nachricht}
-                    />)
-                }
-                <ContextErrorMessage
-                    error={error} contextErrorMsg={`Nicht geklappt`}
-                    onReload={this.getNachrichten}
-                />
+                        {
+                            nachrichten.map(nachricht =>
+                            <NachrichtListEntry
+                                key={nachricht.getID()}
+                                nachricht={nachricht}
+                                currentPerson={this.props.currentPerson}
+                            />)
+                        }
+                        <ContextErrorMessage
+                            error={error} contextErrorMsg={`Nicht geklappt`}
+                            onReload={this.getNachrichten}
+                        />
+                    :
+                    Keine Nachrichten
+                </div>
+
             </div>
         )
     }
@@ -102,9 +111,9 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-AllNachrichten.propTypes = {
+NachrichtenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(AllNachrichten));
+export default withRouter(withStyles(styles)(NachrichtenList));

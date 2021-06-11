@@ -8,18 +8,19 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 //import AccountList from './AccountList';
 
 
-class NachrichtEntry extends Component {
+class NachrichtListEntry extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            nachricht: props.nachricht
+            nachricht: props.nachricht,
+            currentPerson: props.currentPerson
         }
     }
 
     render() {
         const { classes } = this.props;
-        const { nachricht } = this.state;
+        const { nachricht, currentPerson } = this.state;
 
         return (
             <div>
@@ -48,7 +49,7 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-NachrichtEntry.propTypes = {
+NachrichtListEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   /** The CustomerBO to be rendered */
@@ -56,4 +57,4 @@ NachrichtEntry.propTypes = {
 
 }
 
-export default withStyles(styles)(NachrichtEntry);
+export default withStyles(styles)(NachrichtListEntry);

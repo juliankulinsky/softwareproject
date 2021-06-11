@@ -224,6 +224,16 @@ class NachrichtOperations(Resource):
         adm.delete_nachricht(message)
         return '', 200
 
+@studoo.route('/konversation/<int:konversation_id>/nachrichten')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class NachrichtenByKonversationIDOperations(Resource):
+
+    @studoo.marshal_with(nachricht)
+    @secured
+    def get(self, konversation_id):
+        adm = Admin()
+        return adm.get_nachrichten_by_konversation_id(konversation_id)
+
 
 @studoo.route('/konversation/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -278,6 +288,17 @@ class KonversationListOperations(Resource):
             return p, 200
         else:
             return '', 500
+
+@studoo.route('/person/<person_id>/konversationen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class KonversationenByPersonIDOperations(Resource):
+
+    @studoo.marshal_with(konversation)
+    @secured
+    def get(self, person_id):
+        """Auslesen einer bestimmten Lerngruppe."""
+        admin = Admin()
+        return admin.get_konversationen_by_person_id(person_id)
 
 
 @studoo.route('/personen')
@@ -335,6 +356,16 @@ class PersonOperations(Resource):
         pers = adm.get_person_by_id(id)
         adm.delete_person(pers)
         return '', 200
+
+@studoo.route('/person/<uid>')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PersonIDOperations(Resource):
+
+    @studoo.marshal_with(person)
+    @secured
+    def get(self, uid):
+        adm = Admin()
+        return adm.get_person_by_google_user_id(uid)
 
 
 @studoo.route('/lernvorlieben')
@@ -684,6 +715,16 @@ class LerngruppenOperations(Resource):
         admin.delete_lerngruppe(lg)
         return '', 200
 
+@studoo.route('/person/<uid>/lerngruppen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class LerngruppenByPersonIDOperations(Resource):
+
+    @studoo.marshal_with(lerngruppe)
+    @secured
+    def get(self, uid):
+        """Auslesen einer bestimmten Lerngruppe."""
+        admin = Admin()
+        return admin.get_lerngruppen_by_person_id(uid)
 
 @studoo.route('/profil')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')

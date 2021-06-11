@@ -150,6 +150,11 @@ class Admin(object):
         with KonversationMapper() as mapper:
             return mapper.find_all()
 
+    def get_konversationen_by_person_id(self, person_id):
+        """alle Konversationen, an denen die Person mit der ID person_id teilnimmt"""
+        with KonversationMapper() as mapper:
+            return mapper.find_by_person_id(person_id)
+
     def get_konversation_by_id(self, id):
         """Konversation mit gegebener ID ausgeben"""
         with KonversationMapper() as mapper:
@@ -185,6 +190,10 @@ class Admin(object):
         """Auslesen aller Lerngruppen."""
         with LerngruppeMapper() as mapper:
             return mapper.find_all()
+
+    def get_lerngruppen_by_person_id(self, person_id: int):
+        with LerngruppeMapper() as mapper:
+            return mapper.find_by_person_id(person_id)
 
     def get_lerngruppe_by_id(self, key):
         """Lerngruppe nach einer spezifischen ID auslesen."""
@@ -256,6 +265,11 @@ class Admin(object):
         """Alle Nachrichten auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_all()
+
+    def get_nachrichten_by_konversation_id(self, konversation_id):
+        """Alle Nachrichten einer Konversation mit der ID konversation_id ausgeben"""
+        with NachrichtMapper() as mapper:
+            return mapper.find_by_konversation_id(konversation_id)
 
     def get_nachricht_by_id(self, id):
         """ Eine Nachricht anhand der ID auslesen """

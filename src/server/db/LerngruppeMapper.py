@@ -66,6 +66,36 @@ class LerngruppeMapper(Mapper):
 
         return result  # Der Rückgabe der ID entsprechendes Lerngruppe-Objekt (None bei fehlender DB-Tupel)
 
+    def find_by_person_id(self, person_key: int):
+        """Suchen von Lerngruppen, an denen eine bestimmte Person mit einer ID teilnimmt"""
+
+        result = []
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.gruppenname, L.profil_id, L.konversation_id "
+                       "FROM lerngruppen AS L LEFT OUTER JOIN gruppen_teilnahmen AS R "
+                       "ON R.gruppen_id=L.id "
+                       "WHERE R.person_id={}".format(person_key))
+        tuples = cursor.fetchall()
+
+        for (id,
+             erstellungszeitpunkt,
+             gruppenname,
+             profil_id,
+             konversation_id
+             ) in tuples:
+            lerngruppe = Lerngruppe()
+            lerngruppe.set_id(id)
+            lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            lerngruppe.set_gruppenname(gruppenname)
+            lerngruppe.set_profil_id(profil_id)
+            lerngruppe.set_konversation_id(konversation_id)
+            result.append(lerngruppe)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
+
     def insert(self, lerngruppe: Lerngruppe):
         """Einfügen eines Lerngruppe-Objekts in die Datenbank.
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt."""

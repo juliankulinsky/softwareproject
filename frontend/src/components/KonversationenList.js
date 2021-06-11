@@ -4,37 +4,33 @@ import { withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typogr
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
-//import { StudooAPI } from '../api';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import PersonForm from './dialogs/PersonForm';
-import PersonListEntry from './PersonListEntry';
-import LerngruppeListEntry from "./LerngruppeListEntry";
+import KonversationListEntry from "./KonversationListEntry";
 
-
-class LerngruppenList extends Component {
+class KonversationenList extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            lerngruppen: [],
+            konversationen: [],
             error: null,
             loadingInProgress: false
         };
     }
 
-    getLerngruppen = () => {
-        StudooAPI.getAPI().getLerngruppenForPersonID(this.props.person.getID())
-            .then(lerngruppenBOs => {
+    getKonversationen = () => {
+        StudooAPI.getAPI().getKonversationenForPersonID(this.props.person.getID())
+            .then(konversationenBOs => {
                 this.setState({
-                    lerngruppen: lerngruppenBOs,
+                    konversationen: konversationenBOs,
                     error: null,
                     loadingInProgress: false
                 });
             }).catch(e => this.setState({
-            personen: [],
+            konversationen: [],
             error: e,
             loadingInProgress: false
         }));
@@ -42,49 +38,43 @@ class LerngruppenList extends Component {
         this.setState({
             loadingInProgress: true,
             error: null
-        });
+        })
     }
 
     componentDidMount() {
-        this.getLerngruppen();
+        this.getKonversationen();
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppen, error, loadingInProgress } = this.state;
+        const { konversationen, error, loadingInProgress } = this.state;
 
         return (
             <div className={classes.root}>
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test test
-                            {
-                                this.props.person.getEmail()
-                            }
-                        </Typography>
-                    </Grid>
-                </Grid>
-                Lerngruppen:
-
+                <Typography>
+                    Das sind die Konversationen von:&nbsp;
+                    {
+                        this.props.person.getName()
+                    }
+                </Typography>
                 {
-                    lerngruppen.map(lerngruppe =>
-                    <LerngruppeListEntry
-                        key={lerngruppe.getID()}
-                        lerngruppe={lerngruppe}
-                    />)
+                    konversationen.map(konversation =>
+                    <KonversationListEntry
+                        key={konversation.getID()}
+                        konversation={konversation}
+                        person={this.props.person}
+                        />)
                 }
                 <LoadingProgress show={loadingInProgress} />
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
-                    onReload={this.getLerngruppen}
+                    onReload={this.getKonversationen}
                 />
             </div>
         )
     }
 }
 
-/** Component specific styles */
 const styles = theme => ({
   root: {
     width: '100%',
@@ -92,9 +82,9 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-LerngruppenList.propTypes = {
+KonversationenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(LerngruppenList));
+export default withRouter(withStyles(styles)(KonversationenList));

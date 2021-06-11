@@ -31,12 +31,16 @@ class HeaderComplete extends Component {
                                     <BottomNavigationAction label={"Explore"} icon={<SearchIcon style={theme.iconcss}/>}/>
                                 </Link>
 
-                                <Link to="/nachrichten">
-                                    <BottomNavigationAction label={"Nachrichten"} icon={<ChatIcon style={theme.iconcss}/>}/>
+                                <Link to="/konversationen">
+                                    <BottomNavigationAction label={"Konversationen"} icon={<ChatIcon style={theme.iconcss}/>}/>
                                 </Link>
 
                                 <Link to="/lerngruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
+                                </Link>
+
+                                <Link to="/personen">
+                                    <BottomNavigationAction label={"Person"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
                             </div>
 
