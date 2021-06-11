@@ -21,6 +21,7 @@ from flask_restx import Api, Resource, fields, namespace
 from flask_cors import CORS
 
 # SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
+from SecurityDecorator import secured
 
 # Mapper implementieren
 
@@ -119,8 +120,9 @@ profil = api.inherit(
 person = api.inherit(
     'Person', bo,
     {
-        'vorname': fields.String(attribute="_vorname", description="Der Vorname einer Person"),
-        'nachname': fields.String(attribute="_nachname", description="Der Nachname einer Person"),
+        'name': fields.String(attribute="_name", description="Der Name einer Person"),
+        'email': fields.String(attribute="_email", description="Die Email einer Person"),
+        'google_user_id': fields.String(attribute="_google_user_id", description="Die Google-User-ID einer Person"),
         'alter': fields.Integer(attribute="_alter", description="Das Alter einer Person"),
         'studiengang': fields.String(attribute="_studiengang",
                                      description="Der Studiengang in welchem sich eine Person befindet"),
@@ -173,12 +175,14 @@ API Routes
 class NachrichtenListOperations(Resource):
 
     @studoo.marshal_list_with(nachricht)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_nachrichten()
 
     @studoo.marshal_with(nachricht, code=200)
     @studoo.expect(nachricht)
+    @secured
     def post(self):
         adm = Admin()
         proposal = Nachricht.from_dict(api.payload)
@@ -194,12 +198,14 @@ class NachrichtenListOperations(Resource):
 class NachrichtOperations(Resource):
 
     @studoo.marshal_with(nachricht)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_nachricht_by_id(id)
 
     @studoo.marshal_with(nachricht)
     @studoo.expect(nachricht, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = Nachricht.from_dict(api.payload)
@@ -211,6 +217,7 @@ class NachrichtOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         message = adm.get_nachricht_by_id(id)
@@ -223,12 +230,14 @@ class NachrichtOperations(Resource):
 class KonversationOperations(Resource):
 
     @studoo.marshal_with(konversation)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_konversation_by_id(id)
 
     @studoo.marshal_with(konversation)
     @studoo.expect(konversation, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = Konversation.from_dict(api.payload)
@@ -240,6 +249,7 @@ class KonversationOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         conv = adm.get_konversation_by_id(id)
@@ -252,12 +262,14 @@ class KonversationOperations(Resource):
 class KonversationListOperations(Resource):
 
     @studoo.marshal_list_with(konversation)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_konversationen()
 
     @studoo.marshal_with(konversation, code=200)
     @studoo.expect(konversation)
+    @secured
     def post(self):
         adm = Admin()
         proposal = Konversation.from_dict(api.payload)
@@ -273,19 +285,21 @@ class KonversationListOperations(Resource):
 class PersonenListOperations(Resource):
 
     @studoo.marshal_list_with(person)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_personen()
 
     @studoo.marshal_with(person, code=200)
     @studoo.expect(person)
+    @secured
     def post(self):
         adm = Admin()
         proposal = Person.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_person(proposal.get_vorname(), proposal.get_nachname(), proposal.get_alter(),
-                                  proposal.get_studiengang(), proposal.get_wohnort(), proposal.get_semester(),
-                                  proposal.get_profil_id())
+            p = adm.create_person(proposal.get_name(), proposal.get_email(), proposal.get_google_user_id(),
+                                  proposal.get_alter(), proposal.get_studiengang(), proposal.get_wohnort(),
+                                  proposal.get_semester(), proposal.get_profil_id())
             return p, 200
         else:
             return '', 500
@@ -296,12 +310,14 @@ class PersonenListOperations(Resource):
 class PersonOperations(Resource):
 
     @studoo.marshal_with(person)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_person_by_id(id)
 
     @studoo.marshal_with(person)
     @studoo.expect(person, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = Person.from_dict(api.payload)
@@ -313,6 +329,7 @@ class PersonOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         pers = adm.get_person_by_id(id)
@@ -325,6 +342,7 @@ class PersonOperations(Resource):
 class LernvorliebenListOperations(Resource):
 
     @studoo.marshal_list_with(lernvorlieben)
+    @secured
     def get(self):
         """Auslesen aller Lernvorlieben"""
         adm = Admin()
@@ -332,6 +350,7 @@ class LernvorliebenListOperations(Resource):
 
     @studoo.marshal_with(lernvorlieben, code=200)
     @studoo.expect(lernvorlieben)
+    @secured
     def post(self):
         """Anlegen eines neuer Lernvorlieben"""
         adm = Admin()
@@ -350,6 +369,7 @@ class LernvorliebenListOperations(Resource):
 class LernvorliebeOperations(Resource):
 
     @studoo.marshal_with(lernvorlieben)
+    @secured
     def get(self, id):
         """Auslesen einer bestimmten Lernvorliebe"""
         adm = Admin()
@@ -357,6 +377,7 @@ class LernvorliebeOperations(Resource):
 
     @studoo.marshal_with(lernvorlieben)
     @studoo.expect(lernvorlieben, validate=True)
+    @secured
     def put(self, id):
         """Update einer bestimmten Lernvorliebe"""
         adm = Admin()
@@ -369,6 +390,7 @@ class LernvorliebeOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         """Löschen einer bestimmten Lernvorliebe"""
         adm = Admin()
@@ -382,6 +404,7 @@ class LernvorliebeOperations(Resource):
 class GruppenTeilnahmeListOperations(Resource):
 
     @studoo.marshal_list_with(gruppenteilnahme)
+    @secured
     def get(self):
         """Auslesen aller GruppenTeilnahme-Objekte"""
         adm = Admin()
@@ -390,6 +413,7 @@ class GruppenTeilnahmeListOperations(Resource):
 
     @studoo.marshal_with(gruppenteilnahme, code=200)
     @studoo.expect(gruppenteilnahme)
+    @secured
     def post(self):
         """Anlegen eines neuen GruppenTeilnahme-Objektes"""
         adm = Admin()
@@ -406,6 +430,7 @@ class GruppenTeilnahmeListOperations(Resource):
 class GruppenTeilnahmeOperations(Resource):
 
     @studoo.marshal_with(gruppenteilnahme)
+    @secured
     def get(self, id):
         """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
         adm = Admin()
@@ -413,6 +438,7 @@ class GruppenTeilnahmeOperations(Resource):
 
     @studoo.marshal_with(gruppenteilnahme)
     @studoo.expect(gruppenteilnahme, validate=True)
+    @secured
     def put(self, id):
         """Update eines bestimmten GruppenTeilnahme-Objektes"""
         adm = Admin()
@@ -425,6 +451,7 @@ class GruppenTeilnahmeOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         """Löschen eines bestimmten GruppenTeilnahme-Objektes"""
         adm = Admin()
@@ -438,12 +465,14 @@ class GruppenTeilnahmeOperations(Resource):
 class ChatteilnahmenListOperations(Resource):
 
     @studoo.marshal_list_with(chatteilnahme)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_chatteilnahmen()
 
     @studoo.marshal_with(chatteilnahme, code=200)
     @studoo.expect(chatteilnahme)
+    @secured
     def post(self):
         adm = Admin()
         proposal = ChatTeilnahme.from_dict(api.payload)
@@ -459,12 +488,14 @@ class ChatteilnahmenListOperations(Resource):
 class ChatteilnahmeOperations(Resource):
 
     @studoo.marshal_with(chatteilnahme)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_chatteilnahme_by_id(id)
 
     @studoo.marshal_with(chatteilnahme)
     @studoo.expect(chatteilnahme, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = ChatTeilnahme.from_dict(api.payload)
@@ -476,6 +507,7 @@ class ChatteilnahmeOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         ct = adm.get_chatteilnahme_by_id(id)
@@ -488,12 +520,14 @@ class ChatteilnahmeOperations(Resource):
 class PartnervorschlaegeListOperations(Resource):
 
     @studoo.marshal_list_with(partnervorschlag)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_partner_vorschlag()
 
     @studoo.marshal_with(partnervorschlag, code=200)
     @studoo.expect(partnervorschlag)
+    @secured
     def post(self):
         adm = Admin()
         proposal = PartnerVorschlag.from_dict(api.payload)
@@ -509,12 +543,14 @@ class PartnervorschlaegeListOperations(Resource):
 class PartnervorschlagOperations(Resource):
 
     @studoo.marshal_with(partnervorschlag)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_partner_vorschlag_by_id(id)
 
     @studoo.marshal_with(partnervorschlag)
     @studoo.expect(partnervorschlag, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = PartnerVorschlag.from_dict(api.payload)
@@ -526,6 +562,7 @@ class PartnervorschlagOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         pv = adm.get_partner_vorschlag_by_id(id)
@@ -538,12 +575,14 @@ class PartnervorschlagOperations(Resource):
 class GruppenvorschlaegeListOperations(Resource):
 
     @studoo.marshal_list_with(gruppenvorschlag)
+    @secured
     def get(self):
         adm = Admin()
         return adm.get_all_gruppenvorschlaege()
 
     @studoo.marshal_with(gruppenvorschlag, code=200)
     @studoo.expect(gruppenvorschlag)
+    @secured
     def post(self):
         adm = Admin()
         proposal = GruppenVorschlag.from_dict(api.payload)
@@ -559,12 +598,14 @@ class GruppenvorschlaegeListOperations(Resource):
 class GruppenvorschlagOperations(Resource):
 
     @studoo.marshal_with(gruppenvorschlag)
+    @secured
     def get(self, id):
         adm = Admin()
         return adm.get_gruppenvorschlag_by_id(id)
 
     @studoo.marshal_with(gruppenvorschlag)
     @studoo.expect(gruppenvorschlag, validate=True)
+    @secured
     def put(self, id):
         adm = Admin()
         p = GruppenVorschlag.from_dict(api.payload)
@@ -576,6 +617,7 @@ class GruppenvorschlagOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         adm = Admin()
         pv = adm.get_gruppenvorschlag_by_id(id)
@@ -588,6 +630,7 @@ class GruppenvorschlagOperations(Resource):
 class LerngruppenListOperations(Resource):
 
     @studoo.marshal_list_with(lerngruppe)
+    @secured
     def get(self):
         """Auslesen aller Lerngruppen."""
         admin = Admin()
@@ -596,6 +639,7 @@ class LerngruppenListOperations(Resource):
 
     @studoo.marshal_with(lerngruppe, code=200)
     @studoo.expect(lerngruppe)
+    @secured
     def post(self):
         """Anlegen einer bestimmten Lerngruppe."""
         admin = Admin()
@@ -611,6 +655,7 @@ class LerngruppenListOperations(Resource):
 class LerngruppenOperations(Resource):
 
     @studoo.marshal_with(lerngruppe)
+    @secured
     def get(self, id):
         """Auslesen einer bestimmten Lerngruppe."""
         admin = Admin()
@@ -618,6 +663,7 @@ class LerngruppenOperations(Resource):
 
     @studoo.marshal_with(lerngruppe)
     @studoo.expect(lerngruppe, validate=True)
+    @secured
     def put(self, id):
         """Update einer bestimmten Lerngruppe."""
         admin = Admin()
@@ -630,6 +676,7 @@ class LerngruppenOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         """Löschen einer bestimmten Lerngruppe."""
         admin = Admin()
@@ -643,6 +690,7 @@ class LerngruppenOperations(Resource):
 class ProfilListOperations(Resource):
 
     @studoo.marshal_list_with(profil)
+    @secured
     def get(self):
         """Auslesen aller Profil-Objekte"""
         adm = Admin()
@@ -651,6 +699,7 @@ class ProfilListOperations(Resource):
 
     @studoo.marshal_with(profil, code=200)
     @studoo.expect(profil)
+    @secured
     def post(self):
         """Anlegen eines neuen Profil-Objektes"""
         adm = Admin()
@@ -667,6 +716,7 @@ class ProfilListOperations(Resource):
 class ProfilOperations(Resource):
 
     @studoo.marshal_with(profil)
+    @secured
     def get(self, id):
         """Auslesen eines bestimmten Profil-Objektes"""
         adm = Admin()
@@ -674,6 +724,7 @@ class ProfilOperations(Resource):
 
     @studoo.marshal_with(profil)
     @studoo.expect(profil, validate=True)
+    @secured
     def put(self, id):
         """Update eines bestimmten Profil-Objektes"""
         adm = Admin()
@@ -686,6 +737,7 @@ class ProfilOperations(Resource):
         else:
             return '', 500
 
+    @secured
     def delete(self, id):
         """Löschen eines bestimmten Profil-Objektes"""
         adm = Admin()

@@ -10,8 +10,9 @@ class Person(bo.BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self._vorname = ""
-        self._nachname = ""
+        self._name = ""
+        self._email = ""
+        self._google_user_id = ""
         self._alter = 0
         self._wohnort = ""
         self._studiengang = ""
@@ -20,26 +21,30 @@ class Person(bo.BusinessObject):
 
     """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
-    def get_vorname(self):
+    def get_name(self):
+        """ Auslesen des Namens"""
+        return self._name
+
+    def set_name(self, name: str):
+        self._name = name
+
+    def get_email(self):
+        """ Auslesen von email"""
+        return self._email
+
+    def set_email(self, email: str):
+        self._email = email
+
+    def get_google_user_id(self):
         """ Auslesen von vorname"""
-        return self._vorname
+        return self._google_user_id
 
-
-    def set_vorname(self, vorname: str):
-        self._vorname = vorname
-
-    def get_nachname(self):
-        """ Auslesen von nachname"""
-        return self._nachname
-
-    def set_nachname(self, nachname: str):
-        """ Festlegen von nachname """
-        self._nachname = nachname
+    def set_google_user_id(self, google_user_id: str):
+        self._google_user_id = google_user_id
 
     def get_alter(self):
         """ Auslesen von alter """
         return self._alter
-
 
     def set_alter(self, alter: int):
         """ Festlegen von alter """
@@ -80,8 +85,9 @@ class Person(bo.BusinessObject):
         obj = Person()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
-        obj.set_vorname(dictionary["vorname"])
-        obj.set_nachname(dictionary["nachname"])
+        obj.set_name(dictionary["name"])
+        obj.set_email(dictionary["email"])
+        obj.set_google_user_id(dictionary["google_user_id"])
         obj.set_alter(dictionary["alter"])
         obj.set_wohnort(dictionary["wohnort"])
         obj.set_studiengang(dictionary["studiengang"])

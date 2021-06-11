@@ -14,8 +14,9 @@ DROP TABLE IF EXISTS `personen`;
 CREATE TABLE `personen` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
-    `vorname` varchar(255) NOT NULL DEFAULT '',
-    `nachname` varchar(255) NOT NULL DEFAULT '',
+    `name` varchar(255) NOT NULL DEFAULT '',
+    `email` varchar(256) NOT NULL DEFAULT '',
+    `google_user_id` varchar(128) NOT NULL DEFAULT '',
     `alter` int NOT NULL DEFAULT 0,
     `wohnort` varchar(255) NOT NULL DEFAULT '',
     `studiengang` varchar(255) NOT NULL DEFAULT '',
@@ -30,9 +31,9 @@ CREATE TABLE `personen` (
 
 LOCK TABLES `personen` WRITE;
 INSERT INTO `personen`
-VALUES (1,'2021-04-02 18:21:26','Richard','Müller',28,'Stuttgart','WI7',2,1),
-       (2,'2021-04-21 15:36:01','Otto','Roller',39,'Stuttgart','IM7',3,2),
-       (3,'2021-05-08 10:36:01','Lisa','Ritter',22,'Filderstadt','OM',1,3);
+VALUES (1,'2021-04-02 18:21:26','Richard Müller', 'richi.mülli@gmail.com', 'useridlululul', 28,'Stuttgart','WI7',2,1),
+       (2,'2021-04-21 15:36:01','Otto Roller', 'derotto@gmail.com', '1234otto4321',39,'Stuttgart','IM7',3,2),
+       (3,'2021-05-08 10:36:01','Lisa Ritter', 'l.ritter@gmail.com', 'l1i2s3a4', 22,'Filderstadt','OM',1,3);
 UNLOCK TABLES;
 
 --

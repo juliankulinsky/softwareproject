@@ -8,18 +8,20 @@ export default class PersonBO extends BusinessObject {
   /**
    * Erstellt ein BO einer Person mit gegebenen Attributen.
    *
-   * @param {String} aVorname - Der Vorname des PersonBO.
-   * @param {String} aNachname - Der Nachname des PersonBO.
+   * @param {String} aName - Der Name des PersonBO.
+   * @param {String} aEmail - Der Email des PersonBO.
+   * @param {String} aGoogle_user_id - Die Google-User-ID des PersonBO
    * @param {*} aAlter - Das Alter des PersonBO.
    * @param {String} aWohnort - Der Wohnort des PersonBO.
    * @param {String} aStudiengang - Der Studiengang des PersonBO.
    * @param {*} aSemester -Das Semester des PersonBO.
    * @param {*} aProfilId - Die Profil ID des PersonBO.
    */
-  constructor(aVorname, aNachname, aAlter, aWohnort, aStudiengang, aSemester, aProfilId) {
+  constructor(aName, aEmail, aGoogle_user_id, aAlter, aWohnort, aStudiengang, aSemester, aProfilId) {
     super();
-    this.vorname = aVorname;
-    this.nachname = aNachname;
+    this.name = aName;
+    this.email = aEmail;
+    this.google_user_id = aGoogle_user_id;
     this.alter = aAlter;
     this.wohnort = aWohnort;
     this.studiengang = aStudiengang;
@@ -29,35 +31,51 @@ export default class PersonBO extends BusinessObject {
   }
 
   /**
-   * Setzt den Vornamen.
+   * Setzt den Namen.
    *
-   * @param {String} aVorname - Der Vorname des PersonBO.
+   * @param {String} aName - Der Name des PersonBO.
    */
-  setVorname(aVorname) {
-    this.first_name = aVorname;
+  setName(aName) {
+    this.name = aName;
   }
 
   /**
-   * Gibt den Vorname aus.
+   * Gibt den Name aus.
    */
-  getVorname() {
-    return this.vorname;
+  getName() {
+    return this.name;
   }
 
   /**
-   * Setzt den Nachnamen.
+   * Setzt die Email.
    *
-   * @param {*} aNachname - Der Nachname des PersonBO.
+   * @param {*} aEmail - Die Email des PersonBO.
    */
-  setNachname(aNachname) {
-    this.nachname = aNachname;
+  setEmail(aEmail) {
+    this.email = aEmail;
   }
 
   /**
-   * Gibt den Nachnamen aus.
+   * Gibt die Email aus.
    */
-  getNachname() {
-    return this.nachname;
+  getEmail() {
+    return this.email;
+  }
+
+  /**
+   * Setzt die Google-User-ID.
+   *
+   * @param {*} aGoogleUserID - Die Google-User-ID des PersonBO.
+   */
+  setGoogleUserID(aGoogleUserID) {
+    this.google_user_id = aGoogleUserID;
+  }
+
+  /**
+   * Gibt die GoogleUserID aus.
+   */
+  getGoogleUserID() {
+    return this.google_user_id;
   }
 
     /**

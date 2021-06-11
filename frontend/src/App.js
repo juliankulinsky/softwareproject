@@ -17,7 +17,6 @@ import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
-import TestList from './components/TestList';
 import AllProfile from './components/AllProfile';
 import ProfilEntry from "./components/ProfilEntry";
 import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
@@ -63,7 +62,6 @@ class App extends React.Component {
     /** Handles firebase users logged in state changes  */
 	handleAuthStateChange = user => {
 		if (user) {
-			console.log("im HANDLEAUTHSTATECHANGE WTF")
 			this.setState({
 				authLoading: true
 			});
@@ -75,10 +73,10 @@ class App extends React.Component {
 				// token (which is verified server-side) in a cookie; do not add other
 				// user information.
 				document.cookie = `token=${token};path=/`;
-				console.log("Vorm setstate mit User: " + user);
-				console.log(user)
-				console.log("Token:")
+				console.log("-------------")
+				console.log("Das ist der Token: (aus handleAuthState in App.js")
 				console.log(token)
+				console.log("-------------")
 
 				// Set the user not before the token arrived
 				this.setState({
@@ -142,25 +140,26 @@ class App extends React.Component {
 						{
 							currentUser ?
 								<>
-									<Route path='/studoo/lerngruppen'>
-										<TestList />
+									<Redirect from='/' to='/partnervorschlaege' />
+									<Route path='/lerngruppen'>
+										<LerngruppenList />
 									</Route>
-									<Route path='/studoo/personen'>
+									<Route path='/personen'>
 										<PersonenList />
 									</Route>
-									<Route path='/studoo/profil'>
+									<Route path='/profile'>
 										<AllProfile />
 									</Route>
-									<Route path='/studoo/gruppenvorschlaege'>
+									<Route path='/gruppenvorschlaege'>
 										<AllGruppenvorschlaege />
 									</Route>
-									<Route path='/studoo/partnervorschlaege'>
+									<Route path='/partnervorschlaege'>
 										<AllPartnervorschlaege />
 									</Route>
-									<Route path='/studoo/lernvorlieben'>
+									<Route path='/lernvorlieben'>
 										<LernvorliebenList />
 									</Route>
-									<Route path='/studoo/nachrichten'>
+									<Route path='/nachrichten'>
 										<AllNachrichten />
 									</Route>
 								</>

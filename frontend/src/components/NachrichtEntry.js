@@ -21,9 +21,6 @@ class NachrichtEntry extends Component {
         const { classes } = this.props;
         const { nachricht } = this.state;
 
-        console.log("Aus NachrichtEntry das aktuelle Lerngruppen-Objekt:")
-        console.log(this.state);
-
         return (
             <div>
                 <Grid>

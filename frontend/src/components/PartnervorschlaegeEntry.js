@@ -21,9 +21,6 @@ class PartnervorschlaegeEntry extends Component {
         const { classes } = this.props;
         const { partnervorschlaege } = this.state;
 
-        console.log("Ausgabe aller Partnervorschlaege:")
-        console.log(this.state);
-
         return (
             <div>
                 <Grid>
