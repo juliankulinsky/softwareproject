@@ -16,7 +16,6 @@ import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
-import TestList from './components/TestList';
 import AllProfile from './components/AllProfile';
 import ProfilEntry from "./components/ProfilEntry";
 import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
@@ -63,7 +62,6 @@ class App extends React.Component {
 	/** Handles firebase users logged in state changes  */
 	handleAuthStateChange = user => {
 		if (user) {
-			console.log("im HANDLEAUTHSTATECHANGE WTF")
 			this.setState({
 				authLoading: true
 			});
@@ -75,10 +73,10 @@ class App extends React.Component {
 				// token (which is verified server-side) in a cookie; do not add other
 				// user information.
 				document.cookie = `token=${token};path=/`;
-				console.log("Vorm setstate mit User: " + user);
-				console.log(user)
-				console.log("Token:")
+				console.log("-------------")
+				console.log("Das ist der Token: (aus handleAuthState in App.js")
 				console.log(token)
+				console.log("-------------")
 
 				// Set the user not before the token arrived
 				this.setState({
@@ -143,8 +141,9 @@ class App extends React.Component {
 							currentUser ?
 								<>
 									<HeaderComplete user={currentUser}/>
+									<Redirect from='/' to='/partnervorschlaege' />
 									<Route path='/lerngruppen'>
-										<TestList/>
+										<LerngruppenList />
 									</Route>
 									<Route path='/personen'>
 										<PersonenList/>

@@ -1,12 +1,12 @@
-/** The firebase config structure for the Python Bank Project as provided by the firebase admin website */
+/** The firebase config structure for the Studoo Project as provided by the firebase admin website */
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBy7D6M2GpF6gBmwuEUeoA3BWFODWA_7Bw",
-    authDomain: "chat-8a6bf.firebaseapp.com",
-    projectId: "chat-8a6bf",
-    storageBucket: "chat-8a6bf.appspot.com",
-    messagingSenderId: "371820359838",
-    appId: "1:371820359838:web:8ccdf25d4a056053d64b8f"
+  apiKey: "AIzaSyBIENqfuxPFAJ4rC8IOnAlvK7xtVLaprfc",
+  authDomain: "studooswp.firebaseapp.com",
+  projectId: "studooswp",
+  storageBucket: "studooswp.appspot.com",
+  messagingSenderId: "517699666438",
+  appId: "1:517699666438:web:a4e1501230efb0ba577987"
 };
 
 export default firebaseConfig;

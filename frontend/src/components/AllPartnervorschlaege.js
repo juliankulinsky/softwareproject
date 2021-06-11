@@ -39,7 +39,7 @@ class AllPartnervorschlaege extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log(this.state.partnervorschlaege)
+            // console.log(this.state.partnervorschlaege)
 
         }).catch(e => this.setState({
             partnervorschlaege: "Nothing received.",
@@ -61,10 +61,6 @@ class AllPartnervorschlaege extends Component {
     render() {
         const {classes} = this.props;
         const {partnervorschlaege=[], error, loadingInProgress} = this.state;
-
-        console.log("Test-Render für partnervorschlaege")
-        console.log(partnervorschlaege)
-        console.log("partnervorschlaege hat Typ:" + typeof(partnervorschlaege))
 
         return (
             <div className={classes.root} >

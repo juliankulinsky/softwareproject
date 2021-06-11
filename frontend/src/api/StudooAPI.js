@@ -8,7 +8,6 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
-//import {StudooAPI} from "./index";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
@@ -124,12 +123,7 @@ export default class StudooAPI {
      *
      */
     getPersonen() {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        return fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
+        return fetch(this.#getPersonenURL())
             .then(response => response.json())
             .then((response) => {
                 console.log(PersonBO.fromJSON(response))
@@ -219,12 +213,7 @@ export default class StudooAPI {
      * @public
      */
    getProfile() {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        return fetch("http://127.0.0.1:5000/studoo/profil", requestOptions)
+        return fetch(this.#getProfileURL())
             .then(response => response.json())
             .then((response) => {
                 console.log(ProfilBO.fromJSON(response))
@@ -320,12 +309,7 @@ export default class StudooAPI {
      * @public
      */
     getLernvorlieben() {
-        let requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
-        };
-
-        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lernvorlieben", requestOptions)
+        return this.#fetchAdvanced(this.#getLernvorliebenURL())
           .then((responseJSON) => {
               let lernvorliebenBOS = LernvorliebeBO.fromJSON(responseJSON);
               return new Promise(function (resolve) {
@@ -419,12 +403,7 @@ export default class StudooAPI {
      * @public
      * */
     getLerngruppen() {
-        let requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
-        };
-
-        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/lerngruppen", requestOptions)
+        return this.#fetchAdvanced(this.#getLerngruppenURL())
           .then((responseJSON) => {
               let lerngruppenBOS = LerngruppeBO.fromJSON(responseJSON);
               return new Promise(function (resolve) {
@@ -596,7 +575,7 @@ export default class StudooAPI {
      * @public
      */
     getNachrichten() {
-        return this.#fetchAdvanced("http://127.0.0.1:5000/studoo/nachrichten").then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getNachrichtenURL()).then((responseJSON) => {
             let nachrichtenBOs = NachrichtBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(nachrichtenBOs);
@@ -853,12 +832,7 @@ export default class StudooAPI {
     /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
      * @public */
     getGruppenVorschlaege() {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        return fetch("http://127.0.0.1:5000/studoo/gruppenvorschlaege", requestOptions)
+        return fetch(this.#getGruppenVorschlaegeURL())
             .then(response => response.json())
             .then((response) => {
                 console.log(GruppenVorschlagBO.fromJSON(response))
@@ -943,15 +917,9 @@ export default class StudooAPI {
      * @public
      */
     getPartnerVorschlaege() {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        return fetch("http://127.0.0.1:5000/studoo/partnervorschlaege", requestOptions)
+        return fetch(this.#getPartnerVorschlaegeURL())
             .then(response => response.json())
             .then((response) => {
-                console.log(PartnerVorschlagBO.fromJSON(response))
                 let res = PartnerVorschlagBO.fromJSON(response)
                 return new Promise(function (resolve) {
                     resolve(res);

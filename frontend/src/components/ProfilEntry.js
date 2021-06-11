@@ -54,7 +54,7 @@ ProfilEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   /** The CustomerBO to be rendered */
-  nachricht: PropTypes.object.isRequired,
+  //nachricht: PropTypes.object.isRequired,
 
 }
 

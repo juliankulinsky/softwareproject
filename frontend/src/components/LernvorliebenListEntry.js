@@ -18,9 +18,6 @@ class LernvorliebenListEntry extends Component {
         const { classes } = this.props;
         const { lernvorliebe } = this.state;
 
-        console.log("LV Entry das LV Objekt")
-        console.log(this.state);
-
         return (
             <div>
                 <Grid>

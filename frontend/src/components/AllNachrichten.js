@@ -17,7 +17,6 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import TestListEntry from "./TestListEntry";
 import NachrichtEntry from "./NachrichtEntry";
 
 class AllNachrichten extends Component {
@@ -40,7 +39,7 @@ class AllNachrichten extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log(this.state.nachrichten)
+            // console.log(this.state.nachrichten)
         }).catch(e => this.setState({
             personen: "No person received.",
             error: e,
@@ -61,8 +60,6 @@ class AllNachrichten extends Component {
     render() {
         const {classes} = this.props;
         const {nachrichten=[], error, loadingInProgress} = this.state;
-        console.log("ich bin in render und nachrichten ist " + typeof(nachrichten))
-        console.log(nachrichten)
         return (
             <div className={classes.root} >
                 <Grid>

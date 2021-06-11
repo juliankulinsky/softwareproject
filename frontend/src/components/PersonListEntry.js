@@ -101,7 +101,7 @@ class PersonListEntry extends Component {
                 <Typography className={classes.heading}>
                             Nachname:
                             {
-                                person.getNachname()
+                                person.getName()
                             }
 
                 </Typography>
