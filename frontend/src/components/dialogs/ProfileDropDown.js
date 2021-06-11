@@ -2,6 +2,8 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Popover, IconButton, Avatar, ClickAwayListener, withStyles, Typography, Paper, Button, Grid, Divider } from '@material-ui/core';
 import firebase from 'firebase/app';
+import {Link} from "react-router-dom";
+
 
 /**
  * Shows a drop down list for the account infos and a possibility to log out. For closing the pop up menu if
@@ -80,8 +82,11 @@ class ProfileDropDown extends Component {
             }}>
             <ClickAwayListener onClickAway={this.handleClose}>
               <Paper className={classes.profileBox}>
-                <Typography align='center'>Hello</Typography>
+                <Link to="/profil">
+                  <Typography align='center'>Zum Profil</Typography>
+                </Link>
                 <Divider className={classes.divider} />
+                <Typography align='center'>Du bist eingeloggt als:</Typography>
                 <Typography align='center' variant='body2'>{user.displayName}</Typography>
                 <Typography align='center' variant='body2'>{user.email}</Typography>
                 <Divider className={classes.divider} />
@@ -94,16 +99,17 @@ class ProfileDropDown extends Component {
             </ClickAwayListener>
           </Popover>
         </div>
-        : null
+          :
+          <Typography>
+            <h6>Loading Error</h6>
+          </Typography>
     )
   }
 }
 
 /** Component specific styles */
 const styles = theme => ({
-  avatarButton: {
-    float: 'right'
-  },
+
   divider: {
     margin: theme.spacing(1),
   },
