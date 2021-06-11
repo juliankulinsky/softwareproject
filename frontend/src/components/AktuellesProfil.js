@@ -38,7 +38,6 @@ class AktuellesProfil extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log(this.state.profile)
         }).catch(e => this.setState({
             profil: "No profil received.",
             error: e,
@@ -58,9 +57,7 @@ class AktuellesProfil extends Component {
 
     render() {
         const {classes} = this.props;
-        const {profile=[], profil,  error, loadingInProgress} = this.state;
-        console.log("ich bin in render und profile ist " + typeof(profile))
-        console.log(profile)
+        const {profil,  error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
                 <Grid>

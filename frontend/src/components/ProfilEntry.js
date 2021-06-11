@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LernvorliebenList from "./LernvorliebenList";
 
 
 
@@ -28,7 +29,12 @@ class ProfilEntry extends Component {
                 <Grid>
                     <Grid item>
                         <Typography className={classes.heading}>
-                            Profil:
+                            Profil ID:
+                            {
+                                profil.getID()
+                            }
+                            }
+                            Lernvorliebe ID:
                             {
                                 profil.getLernvorliebeID()
                             }

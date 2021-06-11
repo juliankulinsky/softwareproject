@@ -37,30 +37,15 @@ class ProfilVorschau extends Component {
 
     // Init an empty state
     this.state = {
-      person: null,
+      person: props.person,
       error: null,
       loadingInProgress: false
     };
   }
 
-  getPerson = () => {
-      StudooAPI.getAPI().getPersonByUID(this.props.user.uid).then(personenBO =>
-        this.setState({
-          person: personenBO,
-          loadingInProgress: false,
-          error: null
-        }));
-
-    // set loading to true
-    this.setState({
-      loadingInProgress: true,
-      error: null
-    });
-  }
-
   /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
-      this.getPerson();
+
   }
 
   /** Renders the component */
@@ -81,14 +66,14 @@ class ProfilVorschau extends Component {
             {
             person ?
                 <PersonEntry key={person.getID()}
-                                 person={person}
+                    person={person}
                 />
                 : null
           }
-          {
+          {/*
             person ?
                 <AktuellesProfil person={person}/>
-                : null
+                : null*/
           }
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}

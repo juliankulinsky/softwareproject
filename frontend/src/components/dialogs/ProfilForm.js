@@ -20,14 +20,16 @@ import LoadingProgress from './LoadingProgress';
  *
  * @author [Christoph Kunz](https://github.com/christophkunz)
  */
-class PersonForm extends Component {
+class ProfilForm extends Component {
 
   constructor(props) {
     super(props);
 
-    let vn = '', alt = 0, wo = '', sg = '', sm = 0, pID = 0;
+    let vn = '', em = '', gid= '', alt = 0, wo = '', sg = '', sm = 0, pID = 0;
     if (props.person) {
       vn = props.person.getName();
+      em = props.person.getEmail();
+      gid = props.person.getGoogleUserID();
       alt = props.person.getAlter();
       wo = props.person.getWohnort();
       sg = props.person.getStudiengang();
@@ -40,6 +42,12 @@ class PersonForm extends Component {
       name: vn,
       nameValidationFailed: false,
       nameEdited: false,
+      email: em,
+      emailValidationFailed: false,
+      emailEdited: false,
+      gid: gid,
+      gidValidationFailed: false,
+      gidEdited: false,
       alter : alt,
       alterValidationFailed: false,
       alterEdited: false,
@@ -66,7 +74,7 @@ class PersonForm extends Component {
 
   /** Adds the Person */
   addPerson = () => {
-    let newPerson = new PersonBO(this.state.vorname, this.state.nachname, this.state.alter, this.state.wohnort,
+    let newPerson = new PersonBO(this.state.name, this.state.alter, this.state.wohnort,
         this.state.studiengang, this.state.semester, this.state.profilID);
     StudooAPI.getAPI().addPerson(newPerson).then(person => {
       // Backend call sucessfull
@@ -93,10 +101,12 @@ class PersonForm extends Component {
     let updatedPerson = Object.assign(new PersonBO(), this.props.person);
     // set the new attributes from our dialog
     updatedPerson.setName(this.state.name);
-    updatedPerson.setAlter(this.state.alter);
+    updatedPerson.setEmail(this.state.email);
+    updatedPerson.setGoogleUserID(this.state.gid);
+    updatedPerson.setAlter(parseInt(this.state.alter));
     updatedPerson.setWohnort(this.state.wohnort);
     updatedPerson.setStudiengang(this.state.studiengang);
-    updatedPerson.setSemester(this.state.semester);
+    updatedPerson.setSemester(parseInt(this.state.semester));
     updatedPerson.setProfilId(this.state.profilID);
     StudooAPI.getAPI().updatePerson(updatedPerson).then(person => {
       this.setState({
@@ -104,8 +114,9 @@ class PersonForm extends Component {
         updatingError: null                     // no error message
       });
       // keep the new state as base state
-      this.baseState.vorname = this.state.vorname;
-      this.baseState.nachname = this.state.nachname;
+      this.baseState.name = this.state.name;
+      this.baseState.email = this.state.email;
+      this.baseState.gid = this.state.gid;
       this.baseState.alter = this.state.alter;
       this.baseState.wohnort = this.state.wohnort;
       this.baseState.studiengang = this.state.studiengang;
@@ -152,18 +163,17 @@ class PersonForm extends Component {
   /** Renders the component */
   render() {
     const { classes, person, show } = this.props;
-    const { vorname, vornameValidationFailed, vornameEdited, nachname, nachnameValidationFailed, nachnameEdited,
-      alter, alterValidationFailed, alterEdited, wohnort, wohnortValidationFailed, wohnortEdited, studiengang,
-      studiengangValidationFailed, studiengangEdited, semester, semesterValidationFailed, semesterEdited, profilID,
-      profilIDValidationFailed, profilIDEdited, addingInProgress, addingError, updatingInProgress,
-      updatingError } = this.state;
+    const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
+        wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
+        semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
+        addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
 
     let title = '';
     let header = '';
 
     if (person) {
       // person defindet, so ist an edit dialog
-      title = 'Update a Person';
+      title = 'Update Profil';
       header = `Person ID: ${person.getID()}`;
     } else {
       title = 'Create a new Person';
@@ -183,13 +193,10 @@ class PersonForm extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField autoFocus type='text' required fullWidth margin='normal' id='vorname' label='First name:' value={vorname}
-                onChange={this.textFieldValueChange} error={vornameValidationFailed}
-                helperText={vornameValidationFailed ? 'The first name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='nachname' label='Last name:' value={nachname}
-                onChange={this.textFieldValueChange} error={nachnameValidationFailed}
-                helperText={nachnameValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
+              <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
+                onChange={this.textFieldValueChange} error={nameValidationFailed}
+                helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
                 onChange={this.textFieldValueChange} error={alterValidationFailed}
                 helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
               <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
@@ -198,12 +205,9 @@ class PersonForm extends Component {
               <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
                 onChange={this.textFieldValueChange} error={studiengangValidationFailed}
                 helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
+              <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
                 onChange={this.textFieldValueChange} error={semesterValidationFailed}
                 helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='profilId' label='ProfilID:' value={profilID}
-                onChange={this.textFieldValueChange} error={profilIDValidationFailed}
-                helperText={profilIDValidationFailed ? 'The last name must contain at least one character' : ' '} />
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
@@ -221,12 +225,12 @@ class PersonForm extends Component {
             {
               // If a customer is given, show an update button, else an add button
               person ?
-                <Button disabled={vornameValidationFailed || nachnameValidationFailed || alterValidationFailed ||
+                <Button disabled={ nameValidationFailed || alterValidationFailed ||
                 wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
                 profilIDValidationFailed} variant='contained' onClick={this.updatePerson} color='primary'>
                   Update
               </Button>
-                : <Button disabled={vornameValidationFailed || nachnameValidationFailed || alterValidationFailed ||
+                : <Button disabled={ nameValidationFailed || alterValidationFailed ||
                 wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
                 profilIDValidationFailed} variant='contained' onClick={this.addPerson} color='primary'>
                   Add
@@ -253,7 +257,7 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-PersonForm.propTypes = {
+ProfilForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   /** The CustomerBO to be edited */
@@ -269,4 +273,4 @@ PersonForm.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(PersonForm);
+export default withStyles(styles)(ProfilForm);

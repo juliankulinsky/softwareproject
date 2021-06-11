@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import ProfilForm from "./dialogs/ProfilForm";
 //import AccountList from './AccountList';
 
 
@@ -16,7 +16,7 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
  *
  * @author [Christoph Kunz](https://github.com/christophkunz)
  */
-class PersonListEntry extends Component {
+class PersonEntry extends Component {
 
   constructor(props) {
     super(props);
@@ -24,8 +24,8 @@ class PersonListEntry extends Component {
     // Init the state
     this.state = {
       person: props.person,
-      showPersonForm: false,
-      showPersonDeleteDialog: false,
+      showProfilForm: false,
+      showProfilDeleteDialog: false,
     };
   }
 
@@ -43,38 +43,38 @@ class PersonListEntry extends Component {
   }
 
   /** Handles the onClick event of the edit customer button */
-  editPersonButtonClicked = (event) => {
+  editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
-      showPersonForm: true
+      showProfilForm: true
     });
   }
 
   /** Handles the onClose event of the CustomerForm */
-  personFormClosed = (person) => {
+  profilFormClosed = (person) => {
     // customer is not null and therefor changed
     if (person) {
       this.setState({
         person: person,
-        showPersonForm: false
+        showProfilForm: false
       });
     } else {
       this.setState({
-        showPersonForm: false
+        showProfilForm: false
       });
     }
   }
 
   /** Handles the onClick event of the delete customer button */
-  deletePersonButtonClicked = (event) => {
+  deleteProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
-      showPersonDeleteDialog: true
+      showProfilDeleteDialog: true
     });
   }
 
   /** Handles the onClose event of the CustomerDeleteDialog */
-  deletePersonDialogClosed = (person) => {
+  deleteProfilDialogClosed = (person) => {
     // if customer is not null, delete it
     if (person) {
       this.props.onPersonDeleted(person);
@@ -82,7 +82,7 @@ class PersonListEntry extends Component {
 
     // Don´t show the dialog
     this.setState({
-      showPersonDeleteDialog: false
+      showProfilDeleteDialog: false
     });
   }
 
@@ -90,17 +90,30 @@ class PersonListEntry extends Component {
   render() {
     const { classes, expandedState } = this.props;
     // Use the states customer
-    const { person, showPersonForm, showPersonDeleteDialog } = this.state;
+    const { person, showProfilForm, showProfilDeleteDialog } = this.state;
 
      console.log(this.state);
     return (
         <div>
+          <div>
+            <ButtonGroup variant='text' size='small'>
+                  <Button color='primary' onClick={this.editProfilButtonClicked}>
+                    edit
+                  </Button>
+                  <Button color='secondary' onClick={this.deleteProfilButtonClicked}>
+                    delete
+                  </Button>
+                </ButtonGroup>
+          </div>
+          Nachname:
+          {
+            person.getName()
+          }
 
-                            Nachname:
-                            {
-                                person.getName()
-                            }
+          <ProfilForm show={showProfilForm} person={person} onClose={this.profilFormClosed} />
+          <PersonDeleteDialog show={showProfilDeleteDialog} person={person} onClose={this.deleteProfilDialogClosed} />
       </div>
+
     );
   }
 }
@@ -113,7 +126,7 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-PersonListEntry.propTypes = {
+PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   /** The CustomerBO to be rendered */
@@ -130,7 +143,7 @@ PersonListEntry.propTypes = {
    *
    * Signature: onCustomerDelete(CustomerBO customer)
    */
-  onPersonDeleted: PropTypes.func.isRequired
+  onProfilDeleted: PropTypes.func.isRequired
 }
 
-export default withStyles(styles)(PersonListEntry);
+export default withStyles(styles)(PersonEntry);
