@@ -8,7 +8,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import GroupIcon from "@material-ui/icons/Group";
 import theme from "./theme";
 import ProfileDropDown from "../dialogs/ProfileDropDown";
-import logo from './logo192.png';
+
 
 class HeaderComplete extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class HeaderComplete extends Component {
                     <AppBar position="sticky" style={theme.root}>
                         <Toolbar style={theme.toolbar}>
                             <div style={theme.imagediv}>
-                                <img src={logo} alt="Logo" style={theme.image}/>
+                                <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
                             </div>
 
                             <div>
@@ -35,7 +35,7 @@ class HeaderComplete extends Component {
                                     <BottomNavigationAction label={"Nachrichten"} icon={<ChatIcon style={theme.iconcss}/>}/>
                                 </Link>
 
-                                <Link to="/gruppen">
+                                <Link to="/lerngruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
                             </div>
