@@ -93,14 +93,14 @@ class PersonMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, name, email, key, alter, wohnort, studiengang, semester, profil_id) = \
+            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = \
             tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
             person.set_name(name)
             person.set_email(email)
-            person.set_google_user_id(key)
+            person.set_google_user_id(google_user_id)
             person.set_alter(alter)
             person.set_studiengang(studiengang)
             person.set_wohnort(wohnort)
