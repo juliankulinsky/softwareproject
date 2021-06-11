@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography, withStyles } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import theme from "./theme.js";
 
 /**
  * Renders a landing page for users who are not signed in. Provides a sign in button
@@ -26,28 +32,40 @@ class SignIn extends Component {
 		const { classes } = this.props;
 
 		return (
-			<div>
-				<Typography className={classes.root} align='center' variant='h6'>Willkommen bei STUDOO</Typography>
-				<Typography className={classes.root} align='center'>Ups! Du bist wohl nicht angemeldet.</Typography>
-				<Typography className={classes.root} align='center'>Um Studoo nutzen zu können, bitte</Typography>
-				<Grid container justify='center'>
-					<Grid item>
-						<Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
-							Sign in with Google
-      			</Button>
+			<div style={theme.root}>
+				<Card>
+					<CardActionArea>
+                            <div style={theme.imagediv}>
+                                <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
+                            </div>
+							<CardContent>
+								<Typography align='center' variant='h4' style={theme.typo}>Willkommen bei Studoo</Typography>
+								<Typography align='block' variant='h6' style={theme.typo}>
+									Willst du dich mit neuen Kommilitionen vernetzen oder neue Lerngruppen finden?
+									Dann bist du hier genau richtig!
+								</Typography>
+								<Typography align='block' variant='h6' style={theme.typo}>
+									Melde dich über den untenstehenden Button mit deinem Google-Account an, damit es losgehen kann!
+								</Typography>
+								<Typography align='center' variant='h6' style={theme.typo}>
+									Wir freuen uns auf spannende Matches! &#128521;
+								</Typography>
+							</CardContent>
+					</CardActionArea>
+					<CardActions>
+						<Grid container justify='center'>
+							<Grid item>
+								<Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
+									Anmelden über Google
+								</Button>
+						</Grid>
 					</Grid>
-				</Grid>
+					</CardActions>
+				</Card>
 			</div>
 		);
 	}
 }
-
-/** Component specific styles */
-const styles = theme => ({
-	root: {
-		margin: theme.spacing(2)
-	}
-});
 
 /** PropTypes */
 SignIn.propTypes = {
@@ -59,4 +77,4 @@ SignIn.propTypes = {
 	onSignIn: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(SignIn)
+export default SignIn;
