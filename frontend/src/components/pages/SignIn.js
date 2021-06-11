@@ -27,31 +27,29 @@ class SignIn extends Component {
 		this.props.onSignIn();
 	}
 
-	/** Renders the sign in page, if user object is null */
+	/** Renders the sign in page, if user is logged out or user object equals null*/
 	render() {
-		const { classes } = this.props;
 
 		return (
 			<div style={theme.root}>
-				<Card>
-					<CardActionArea>
-                            <div style={theme.imagediv}>
-                                <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
-                            </div>
-							<CardContent>
-								<Typography align='center' variant='h4' style={theme.typo}>Willkommen bei Studoo</Typography>
-								<Typography align='block' variant='h6' style={theme.typo}>
-									Willst du dich mit neuen Kommilitionen vernetzen oder neue Lerngruppen finden?
-									Dann bist du hier genau richtig!
-								</Typography>
-								<Typography align='block' variant='h6' style={theme.typo}>
-									Melde dich über den untenstehenden Button mit deinem Google-Account an, damit es losgehen kann!
-								</Typography>
-								<Typography align='center' variant='h6' style={theme.typo}>
-									Wir freuen uns auf spannende Matches! &#128521;
-								</Typography>
-							</CardContent>
-					</CardActionArea>
+				<Card style={theme.card}>
+					<CardContent>
+						<div style={theme.imagediv}>
+							<img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
+						</div>
+						<Typography align='left' variant='h4' style={theme.typo}>Willkommen bei Studoo &#128526;</Typography>
+						<Typography align='left' variant='h6' style={theme.typo}>
+							Willst du dich mit neuen Kommilitionen vernetzen oder neue Lerngruppen finden?
+							Dann bist du hier genau richtig!
+						</Typography>
+						<Typography align='left' variant='h6' style={theme.typo}>
+							Melde dich über den untenstehenden Button mit deinem Google-Account an, damit es losgehen kann!
+						</Typography>
+						<Typography align='left' variant='h6' style={theme.typo}>
+							Wir freuen uns auf spannende Matches! &#128521;
+						</Typography>
+					</CardContent>
+
 					<CardActions>
 						<Grid container justify='center'>
 							<Grid item>
@@ -61,6 +59,7 @@ class SignIn extends Component {
 						</Grid>
 					</Grid>
 					</CardActions>
+
 				</Card>
 			</div>
 		);

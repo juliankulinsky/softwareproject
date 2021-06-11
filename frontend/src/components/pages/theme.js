@@ -1,8 +1,10 @@
 const theme = {
     root: {
     margin: '0 auto',
+    marginTop: '10%',
     maxWidth: '500px',
-    maxHeight: '500px'
+    maxHeight: '500px',
+    boxShadow: '100px'
     },
     imagediv: {
         textAlign: 'center',
@@ -15,7 +17,10 @@ const theme = {
     typo: {
         margin: '10px',
         padding: '10px'
-    }
+    },
+    card: {
+        margin: '0 auto',
+    },
 }
 
 export default theme
