@@ -26,6 +26,7 @@ import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
 import theme from "./components/header/theme";
 import {StudooAPI} from "./api";
+import PartnerExplorer from "./components/PartnerExplorer";
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -176,6 +177,9 @@ class App extends React.Component {
 									</Route>
 									<Route path='/konversationen'>
 										<KonversationenList person={currentPersonBO}/>
+									</Route>
+									<Route path='/partnerexplorer'>
+										<PartnerExplorer person={currentPersonBO}/>
 									</Route>
 								</>
 								:

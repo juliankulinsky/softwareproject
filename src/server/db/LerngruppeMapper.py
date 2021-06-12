@@ -20,11 +20,11 @@ class LerngruppeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id,
-            erstellungszeitpunkt,
-            gruppenname,
-            profil_id,
-            konversation_id
-        ) in tuples:
+             erstellungszeitpunkt,
+             gruppenname,
+             profil_id,
+             konversation_id
+             ) in tuples:
             lerngruppe = Lerngruppe()
             lerngruppe.set_id(id)
             lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -44,7 +44,7 @@ class LerngruppeMapper(Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = ("SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
-                    "lerngruppen WHERE id={}".format(key))
+                   "lerngruppen WHERE id={}".format(key))
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -96,6 +96,34 @@ class LerngruppeMapper(Mapper):
 
         return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
+    def find_by_konversation_id(self, konversation_key: int):
+        """Suchen von Lerngruppen, an denen eine bestimmte Person mit einer ID teilnimmt"""
+
+        result = []
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
+                       "lerngruppen WHERE konversation_id={}".format(konversation_key))
+        tuples = cursor.fetchall()
+
+        for (id,
+             erstellungszeitpunkt,
+             gruppenname,
+             profil_id,
+             konversation_id
+             ) in tuples:
+            lerngruppe = Lerngruppe()
+            lerngruppe.set_id(id)
+            lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            lerngruppe.set_gruppenname(gruppenname)
+            lerngruppe.set_profil_id(profil_id)
+            lerngruppe.set_konversation_id(konversation_id)
+            result.append(lerngruppe)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
+
     def insert(self, lerngruppe: Lerngruppe):
         """Einfügen eines Lerngruppe-Objekts in die Datenbank.
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt."""
@@ -108,7 +136,7 @@ class LerngruppeMapper(Mapper):
             lerngruppe.set_id(maxid[0] + 1)
 
         command = ("INSERT INTO lerngruppen (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
-            "VALUES (%s,%s,%s,%s,%s)")
+                   "VALUES (%s,%s,%s,%s,%s)")
         data = (
             lerngruppe.get_id(),
             lerngruppe.get_erstellungszeitpunkt(),
@@ -162,11 +190,9 @@ if __name__ == "__main__":
         test.set_profil_id(7)
         test.set_konversation_id(7)
 
-
         #   Methode insert
         print("Test der Methode: .insert")
         mapper.insert(test)
-
 
         #   Methode find_all
         print("Test der Methode: find_all")

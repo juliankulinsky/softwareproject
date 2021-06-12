@@ -45,6 +45,23 @@ class KonversationenList extends Component {
         this.getKonversationen();
     }
 
+    KeineKonversationen = () => {
+        return <Typography>Du nimmst an keinen Konversationen teil.</Typography>
+    }
+
+    Anzeige = () => {
+        let konversationen = this.state.konversationen
+        if (konversationen.length===0) {
+            return this.KeineKonversationen()
+        }
+        else return konversationen.map(konversation =>
+                        <KonversationListEntry
+                            key={konversation.getID()}
+                            konversation={konversation}
+                            person={this.props.person}
+                            />)
+    }
+
     render() {
         const { classes } = this.props;
         const { konversationen, error, loadingInProgress } = this.state;
@@ -56,14 +73,10 @@ class KonversationenList extends Component {
                     {
                         this.props.person.getName()
                     }
+                    <br/><br/>
                 </Typography>
                 {
-                    konversationen.map(konversation =>
-                    <KonversationListEntry
-                        key={konversation.getID()}
-                        konversation={konversation}
-                        person={this.props.person}
-                        />)
+                    this.Anzeige()
                 }
                 <LoadingProgress show={loadingInProgress} />
                 <ContextErrorMessage

@@ -23,7 +23,7 @@ export default class PartnerVorschlagBO extends VorschlagBO {
     * Setzen der Partnervorschlag ID
     */
     setPartnerVorschlagID(aPVID){
-        this.person_id = aPVID;
+        this.partnervorschlag_id = aPVID;
     }
 
     /*

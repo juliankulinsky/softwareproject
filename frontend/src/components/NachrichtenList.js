@@ -33,7 +33,6 @@ class NachrichtenList extends Component {
     }
 
     getNachrichten = () => {
-        console.log(this.props.konversation)
         StudooAPI.getAPI().getNachrichtenByKonversationID(this.props.konversation.getID())
         .then(nachrichtenBOs => {
             this.setState({
@@ -55,7 +54,23 @@ class NachrichtenList extends Component {
     }
 
     componentDidMount() {
-    this.getNachrichten();
+        this.getNachrichten();
+    }
+
+    Anzeige = () => {
+        let nachrichten = this.state.nachrichten
+        if (nachrichten.length===0) {
+            return <Typography>
+                        In dieser Konversation gibt es noch keine Nachrichten! <br/>
+                        Sei der Erste!
+                   </Typography>
+        }
+        else return nachrichten.map(nachricht =>
+                            <NachrichtListEntry
+                                key={nachricht.getID()}
+                                nachricht={nachricht}
+                                currentPerson={this.props.currentPerson}
+                            />)
     }
 
 
@@ -64,35 +79,16 @@ class NachrichtenList extends Component {
         const {nachrichten=[], error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test 1.0.0
-                        </Typography>
-                    </Grid>
-                </Grid>
                 <div>
-                    nachrichten ?
-                        Ich wurde zumindest bis hierhin geladen.
-
-                        Jetzt kommen Nachrichten:
-
-                        {
-                            nachrichten.map(nachricht =>
-                            <NachrichtListEntry
-                                key={nachricht.getID()}
-                                nachricht={nachricht}
-                                currentPerson={this.props.currentPerson}
-                            />)
-                        }
-                        <ContextErrorMessage
-                            error={error} contextErrorMsg={`Nicht geklappt`}
-                            onReload={this.getNachrichten}
-                        />
-                    :
-                    Keine Nachrichten
+                    {
+                        this.Anzeige()
+                    }
+                    <LoadingProgress show={loadingInProgress} />
+                    <ContextErrorMessage
+                        error={error} contextErrorMsg={`Nicht geklappt`}
+                        onReload={this.getNachrichten}
+                    />
                 </div>
-
             </div>
         )
     }

@@ -25,7 +25,7 @@ export default class StudooAPI {
     #getPersonenURL = () => `${this.#studooServerBaseURL}/personen`;
     #addPersonURL = () => `${this.#studooServerBaseURL}/personen`;
     #getPersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
-    #getPersonByUIDURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
+    #getPersonByUIDURL = (id) => `${this.#studooServerBaseURL}/googleuserid/${id}/person`;
     #updatePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
     #deletePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
 
@@ -46,6 +46,7 @@ export default class StudooAPI {
     // Lerngruppe-bezogen
     #getLerngruppenURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
     #getLerngruppenByPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/lerngruppen`;
+    #getLerngruppeOfKonversationIDURL = (konversationid) => `${this.#studooServerBaseURL}/konversation/${konversationid}/lerngruppe`;
     #addLerngruppeURL = () => `${this.#studooServerBaseURL}/lerngruppen`;
     #getLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
     #updateLerngruppeURL = (id) => `${this.#studooServerBaseURL}/lerngruppe/${id}`;
@@ -53,7 +54,7 @@ export default class StudooAPI {
 
     // Konversation-bezogen
     #getKonversationenURL = () => `${this.#studooServerBaseURL}/konversationen`;
-    #getKonversationenByPersonIDURL = (person_id) => `${this.#studooServerBaseURL}/person/${person_id}/konversationen`
+    #getKonversationenByPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/konversationen`
     #addKonversationURL = () => `${this.#studooServerBaseURL}/konversationen`;
     #getKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
     #updateKonversationURL = (id) => `${this.#studooServerBaseURL}/konversation/${id}`;
@@ -61,7 +62,7 @@ export default class StudooAPI {
 
     // Nachricht-bezogen
     #getNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
-    #getNachrichtenByKonversationIDURL = (konvid) => `${this.#studooServerBaseURL}/konversation/${konvid}/nachrichten`;
+    #getNachrichtenByKonversationIDURL = (konversationid) => `${this.#studooServerBaseURL}/konversation/${konversationid}/nachrichten`;
     #addNachrichtenURL = () => `${this.#studooServerBaseURL}/nachrichten`;
     #getNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
     #updateNachrichtURL = (id) => `${this.#studooServerBaseURL}/nachricht/${id}`;
@@ -90,6 +91,7 @@ export default class StudooAPI {
 
     // PartnerVorschlag-bezogen
     #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
+    #getPartnerVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/partnervorschlag`;
     #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
@@ -175,7 +177,7 @@ export default class StudooAPI {
 
 
     getPersonByUID(personenUID) {
-    return this.#fetchAdvanced(this.#getPersonURL(personenUID)).then((responseJSON) => {
+    return this.#fetchAdvanced(this.#getPersonByUIDURL(personenUID)).then((responseJSON) => {
       // We always get an array of CustomerBOs.fromJSON, but only need one object
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
       // console.info(responseCustomerBO);
@@ -435,6 +437,17 @@ export default class StudooAPI {
               let lerngruppenBOS = LerngruppeBO.fromJSON(responseJSON);
               return new Promise(function (resolve) {
                 resolve(lerngruppenBOS);
+              })
+          })
+    }
+
+    /** Die zu einer Konversation gehörende Lerngruppe ausgeben NUR wenn Konversation gruppenchat ist*/
+    getLerngruppeOfKonversationID(konversationID) {
+        return this.#fetchAdvanced(this.#getLerngruppeOfKonversationIDURL(konversationID))
+          .then((responseJSON) => {
+              let lerngruppenBO = LerngruppeBO.fromJSON(responseJSON)[0];
+              return new Promise(function (resolve) {
+                resolve(lerngruppenBO);
               })
           })
     }
@@ -964,15 +977,23 @@ export default class StudooAPI {
      * @public
      */
     getPartnerVorschlaege() {
-        return fetch(this.#getPartnerVorschlaegeURL())
-            .then(response => response.json())
-            .then((response) => {
-                let res = PartnerVorschlagBO.fromJSON(response)
+        return this.#fetchAdvanced(this.#getPartnerVorschlaegeURL())
+            .then((responseJSON) => {
+                let res = PartnerVorschlagBO.fromJSON(responseJSON)
                 return new Promise(function (resolve) {
                     resolve(res);
             })
-            .catch(error => console.log('error', error));
+        })
+    }
+
+    getPartnerVorschlagByPersonID(person_id) {
+        return this.#fetchAdvanced(this.#getPartnerVorschlagForPersonIDURL(person_id))
+            .then((responseJSON) => {
+                let res = PartnerVorschlagBO.fromJSON(responseJSON)[0]
+                return new Promise(function (resolve) {
+                    resolve(res);
             })
+        })
     }
 
 

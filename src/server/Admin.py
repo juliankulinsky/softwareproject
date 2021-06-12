@@ -200,6 +200,11 @@ class Admin(object):
         with LerngruppeMapper() as mapper:
             return mapper.find_by_key(key)
 
+    def get_lerngruppe_by_konversation_id(self, key: int):
+        """Lerngruppe nach einer spezifischen ID auslesen."""
+        with LerngruppeMapper() as mapper:
+            return mapper.find_by_konversation_id(key)
+
     def save_lerngruppe(self, lerngruppe: Lerngruppe):
         """Änderungen einer Lerngruppe speichern bzw. updaten."""
         with LerngruppeMapper as mapper:
@@ -311,6 +316,11 @@ class Admin(object):
         """PartnerVorschlag mit der gegebenen ID auslesen."""
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_best_partner_vorschlag_for_person_id(self, person_id):
+        """Den noch nicht bewerteten PartnerVorschlag mit der höchsten Ähnlichkeit für eine Person auslesen"""
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_best_by_person_id(person_id)
 
     def save_partner_vorschlag(self, partner_vorschlag: PartnerVorschlag):
         """PartnerVorschlag speichern."""
