@@ -154,7 +154,10 @@ class App extends React.Component {
 							currentUser ?
 								<>
 									<HeaderComplete user={currentUser}/>
-									<Redirect from='/' to='/partnervorschlaege' />
+									{/**
+										<Redirect from='/' to='/partnervorschlaege' />
+									*/}
+
 									<Route path='/lerngruppen'>
 										<LerngruppenList person={currentPersonBO}/>
 									</Route>
