@@ -38,9 +38,6 @@ class HeaderComplete extends Component {
                                 <Link to="/lerngruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
-                                <Link to="/personen">
-                                    <BottomNavigationAction label={"Personen"} icon={<GroupIcon style={theme.iconcss}/>}/>
-                                </Link>
                             </div>
 
                             <div>
