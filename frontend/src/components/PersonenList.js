@@ -9,7 +9,6 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
 import PersonListEntry from './PersonListEntry';
-import {Person} from "@material-ui/icons";
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -33,8 +32,6 @@ class PersonenList extends Component {
 
   /** Fetches all PersonenBO from the backend */
   getPersonen = () => {
-
-    //console.log("Personlist", StudooAPI.getAPI().getPersonen())
     StudooAPI.getAPI().getPersonen()
         .then(personenBOs => this.setState({
         personen: personenBOs,
@@ -89,6 +86,7 @@ class PersonenList extends Component {
             personen.map(person =>
             <PersonListEntry key={person.getID()}
               person ={person}
+            />)
             />
           )*/
         }

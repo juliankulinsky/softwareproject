@@ -161,7 +161,7 @@ class PersonMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE personen SET name=%s, email=%s, google_user_id=%s, `alter`=%s, wohnort=%s, studiengang=%s, " \
+        command = "UPDATE personen SET `name`=%s, email=%s, google_user_id=%s, `alter`=%s, wohnort=%s, studiengang=%s, " \
                   "semester=%s, profil_id=%s WHERE id=%s"
         data = (
             person.get_name(),
@@ -174,6 +174,7 @@ class PersonMapper (Mapper):
             person.get_profil_id(),
             person.get_id()
         )
+
         cursor.execute(command, data)
 
         self._cnx.commit()

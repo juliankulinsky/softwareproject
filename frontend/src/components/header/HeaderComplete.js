@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppBar, BottomNavigation, ThemeProvider, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, BottomNavigation, Avatar, ThemeProvider, Toolbar, Typography} from "@material-ui/core";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import {Image} from "@material-ui/icons";
 import ChatIcon from "@material-ui/icons/Chat";

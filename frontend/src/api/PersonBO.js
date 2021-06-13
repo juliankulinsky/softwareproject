@@ -81,7 +81,7 @@ export default class PersonBO extends BusinessObject {
     /**
    * Setzt das Alter.
    *
-   * @param {String} aAlter - Das Alter des PersonBO.
+   * @param {*} aAlter - Das Alter des PersonBO.
    */
   setAlter(aAlter) {
     this.alter = aAlter;
@@ -129,7 +129,7 @@ export default class PersonBO extends BusinessObject {
   /**
    * Setzt das Semester.
    *
-   * @param {String} aSemester - Das Semester des PersonBO.
+   * @param {*} aSemester - Das Semester des PersonBO.
    */
   setSemester(aSemester) {
     this.semester = aSemester;
@@ -145,7 +145,7 @@ export default class PersonBO extends BusinessObject {
   /**
    * Setzt die Profil ID
    *
-   * @param {String} aProfilId - Die Profil ID des PersonBO.
+   * @param {*} aProfilId - Die Profil ID des PersonBO.
    */
   setProfilId(aProfilId) {
     this.profil_id = aProfilId;

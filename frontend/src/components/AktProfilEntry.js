@@ -4,11 +4,12 @@ import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, 
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LernvorliebenList from "./LernvorliebenList";
+import EineLernvorliebe from "./EineLernvorliebe";
 
 
 
 
-class ProfilEntry extends Component {
+class AktProfilEntry extends Component {
     constructor(props) {
         super(props);
 
@@ -29,7 +30,7 @@ class ProfilEntry extends Component {
                 <Grid>
                     <Grid item>
                         <Typography className={classes.heading}>
-                            Profil ID:
+                            { /*Profil ID:
                             {
                                 profil.getID()
                             }
@@ -37,7 +38,12 @@ class ProfilEntry extends Component {
                             Lernvorliebe ID:
                             {
                                 profil.getLernvorliebeID()
+                            */}
+                            {
+                                <EineLernvorliebe tes={profil.getLernvorliebeID()} />
                             }
+
+
 
                         </Typography>
                     </Grid>
@@ -56,7 +62,7 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-ProfilEntry.propTypes = {
+AktProfilEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   /** The CustomerBO to be rendered */
@@ -64,4 +70,4 @@ ProfilEntry.propTypes = {
 
 }
 
-export default withStyles(styles)(ProfilEntry);
+export default withStyles(styles)(AktProfilEntry);

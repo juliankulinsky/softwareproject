@@ -750,7 +750,8 @@ class LerngruppenByKonversationIDOperations(Resource):
         admin = Admin()
         return admin.get_lerngruppe_by_konversation_id(konversation_id)
 
-@studoo.route('/profil')
+
+@studoo.route('/profile')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class ProfilListOperations(Resource):
 

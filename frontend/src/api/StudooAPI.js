@@ -191,21 +191,21 @@ export default class StudooAPI {
     *   @param {PersonBO} personBO - Object von PersonBO
     */
     updatePerson(personBO) {
-    return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(personBO)
-    }).then((responseJSON) => {
-      // We always get an array of CustomerBOs.fromJSON
-      let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-      // console.info(accountBOs);
-      return new Promise(function (resolve) {
-        resolve(responsePersonBO);
-      })
-    })
+        return this.#fetchAdvanced(this.#updatePersonURL(personBO.getID()), {
+          method: 'PUT',
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(personBO)
+        }).then((responseJSON) => {
+          // We always get an array of CustomerBOs.fromJSON
+          let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
+          // console.info(accountBOs);
+          return new Promise(function (resolve) {
+            resolve(responsePersonBO);
+          })
+        })
     }
 
     /**
