@@ -11,7 +11,6 @@ import PersonForm from './dialogs/PersonForm';
 import PersonListEntry from './PersonListEntry';
 import {PersonBO} from "../api";
 import LernvorliebenList from "./LernvorliebenList";
-import AllNachrichten from "./AllNachrichten";
 import AllProfile from "./AllProfile";
 import AktuellesProfil from "./AktuellesProfil";
 import PersonEntry from "./PersonEntry";
