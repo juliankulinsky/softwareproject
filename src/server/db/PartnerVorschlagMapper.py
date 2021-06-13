@@ -70,6 +70,40 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
+    def find_best_by_person_id(self, person_key):
+        """
+
+        :param person_key:
+        :return:
+        """
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM partner_vorschlaege WHERE person_id={} AND entscheidung_person is null " \
+                  "ORDER BY aehnlichkeit DESC LIMIT 1".format(person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit, entscheidung_person,
+             entscheidung_partner) = tuples[0]
+            partner_vorschlag = PartnerVorschlag()
+            partner_vorschlag.set_id(id)
+            partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            partner_vorschlag.set_person_id(person_id)
+            partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+            partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_entscheidung_person(entscheidung_person)
+            partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
+            result = partner_vorschlag
+        except IndexError:
+            """"""
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, partner_vorschlag: PartnerVorschlag):
         """
 

@@ -69,6 +69,31 @@ class NachrichtMapper (Mapper):
 
         return result
 
+    def find_by_konversation_id(self, konversation_key):
+        """Auslesen aller Nachricht-Objekte
+
+        :return: Sammlung mit Nachricht-Objekten, die sämtliche Kunden repräsentieren
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten "
+                       "WHERE konversation_id={} ORDER BY erstellungszeitpunkt ASC".format(konversation_key))
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) in tuples:
+            nachricht = Nachricht()
+            nachricht.set_id(id)
+            nachricht.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            nachricht.set_inhalt(inhalt)
+            nachricht.set_absender_id(absender_id)
+            nachricht.set_konversation_id(konversation_id)
+            result.append(nachricht)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, nachricht: Nachricht):
         """Einfügen eines Nachricht-Objekts in die Datenbank.
 

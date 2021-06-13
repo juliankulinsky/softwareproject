@@ -21,9 +21,12 @@ import ProfilEntry from "./components/ProfilEntry";
 import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
 import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
-import AllNachrichten from "./components/AllNachrichten";
+import KonversationenList from "./components/KonversationenList";
+import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
 import theme from "./components/header/theme";
+import {StudooAPI} from "./api";
+import PartnerExplorer from "./components/PartnerExplorer";
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -43,6 +46,7 @@ class App extends React.Component {
 		// Init an empty state
 		this.state = {
 			currentUser: null,
+			currentPersonBO: null,
 			appError: null,
 			authError: null,
 			authLoading: false
@@ -57,6 +61,13 @@ class App extends React.Component {
 	static getDerivedStateFromError(error) {
 		// Update state so the next render will show the fallback UI.
 		return {appError: error};
+	}
+
+	getCurrentPerson = (uid) => {
+		StudooAPI.getAPI().getPersonByUID(uid)
+        .then(personBO => this.setState({
+				currentPersonBO: personBO
+			}));
 	}
 
 	/** Handles firebase users logged in state changes  */
@@ -84,6 +95,7 @@ class App extends React.Component {
 					authError: null,
 					authLoading: false
 				});
+				this.getCurrentPerson(this.state.currentUser.uid)
 			}).catch(e => {
 				this.setState({
 					authError: e,
@@ -131,7 +143,7 @@ class App extends React.Component {
 	//Automatisches Weiterleiten <Redirect from='/' to='/studoo/lerngruppen'/>
 	/** Renders the whole app */
 	render() {
-		const {currentUser, appError, authError, authLoading} = this.state;
+		const {currentUser, currentPersonBO, appError, authError, authLoading} = this.state;
 
 		return (
 				<Router basename={process.env.PUBLIC_URL}>
@@ -143,10 +155,10 @@ class App extends React.Component {
 									<HeaderComplete user={currentUser}/>
 									<Redirect from='/' to='/partnervorschlaege' />
 									<Route path='/lerngruppen'>
-										<LerngruppenList />
+										<LerngruppenList person={currentPersonBO}/>
 									</Route>
 									<Route path='/personen'>
-										<PersonenList/>
+										<PersonenList user={currentUser}/>
 									</Route>
 									<Route path='/profil'>
 										<AllProfile/>
@@ -161,7 +173,13 @@ class App extends React.Component {
 										<LernvorliebenList/>
 									</Route>
 									<Route path='/nachrichten'>
-										<AllNachrichten/>
+										<NachrichtenList/>
+									</Route>
+									<Route path='/konversationen'>
+										<KonversationenList person={currentPersonBO}/>
+									</Route>
+									<Route path='/partnerexplorer'>
+										<PartnerExplorer person={currentPersonBO}/>
 									</Route>
 								</>
 								:

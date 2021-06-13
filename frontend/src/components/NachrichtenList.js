@@ -17,22 +17,23 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import NachrichtEntry from "./NachrichtEntry";
+import NachrichtListEntry from "./NachrichtListEntry";
 
-class AllNachrichten extends Component {
+class NachrichtenList extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            inhalt: "",
+            konversation: props.konversation,
+            nachrichten: [],
             error: null,
             loadingInProgress: false
         }
     }
 
     getNachrichten = () => {
-        StudooAPI.getAPI().getNachrichten()
+        StudooAPI.getAPI().getNachrichtenByKonversationID(this.props.konversation.getID())
         .then(nachrichtenBOs => {
             this.setState({
                 nachrichten: nachrichtenBOs,
@@ -41,7 +42,7 @@ class AllNachrichten extends Component {
             });
             // console.log(this.state.nachrichten)
         }).catch(e => this.setState({
-            personen: "No person received.",
+            nachrichten: [],
             error: e,
             loadingInProgress: false
         }));
@@ -53,7 +54,23 @@ class AllNachrichten extends Component {
     }
 
     componentDidMount() {
-    this.getNachrichten();
+        this.getNachrichten();
+    }
+
+    Anzeige = () => {
+        let nachrichten = this.state.nachrichten
+        if (nachrichten.length===0) {
+            return <Typography>
+                        In dieser Konversation gibt es noch keine Nachrichten! <br/>
+                        Sei der Erste!
+                   </Typography>
+        }
+        else return nachrichten.map(nachricht =>
+                            <NachrichtListEntry
+                                key={nachricht.getID()}
+                                nachricht={nachricht}
+                                currentPerson={this.props.currentPerson}
+                            />)
     }
 
 
@@ -62,28 +79,16 @@ class AllNachrichten extends Component {
         const {nachrichten=[], error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test 1.0.0
-                        </Typography>
-                    </Grid>
-                </Grid>
-                Ich wurde zumindest bis hierhin geladen.
-
-                Jetzt kommen Nachrichten:
-
-                {
-                    nachrichten.map(nachricht =>
-                    <NachrichtEntry
-                        key={nachricht.getID()}
-                        nachricht={nachricht}
-                    />)
-                }
-                <ContextErrorMessage
-                    error={error} contextErrorMsg={`Nicht geklappt`}
-                    onReload={this.getNachrichten}
-                />
+                <div>
+                    {
+                        this.Anzeige()
+                    }
+                    <LoadingProgress show={loadingInProgress} />
+                    <ContextErrorMessage
+                        error={error} contextErrorMsg={`Nicht geklappt`}
+                        onReload={this.getNachrichten}
+                    />
+                </div>
             </div>
         )
     }
@@ -102,9 +107,9 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-AllNachrichten.propTypes = {
+NachrichtenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(AllNachrichten));
+export default withRouter(withStyles(styles)(NachrichtenList));

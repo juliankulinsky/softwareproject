@@ -6,18 +6,18 @@ export default class KonversationBO extends BusinessObject {
 
     constructor(aIstGruppenchat) {
         super();
-        this.gruppenchat = aIstGruppenchat;
+        this.ist_gruppenchat = aIstGruppenchat;
     }
 
     // Nun die jeweiligen Getter & Setter der Konversation:
     /** Setzt boolean Wert, ob eine jeweilige Konversation ein Gruppenchat ist. */
     setIstGruppenchat(aIstGruppenchat) {
-        this.gruppenchat = aIstGruppenchat;
+        this.ist_gruppenchat = aIstGruppenchat;
     }
 
     /** Gibt boolean Wert aus, ob eine jeweilige Konversation ein Gruppenchat ist. */
     getIstGruppenchat() {
-        return this.gruppenchat;
+        return this.ist_gruppenchat;
     }
 
     // Debugging Methoden

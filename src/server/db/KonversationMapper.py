@@ -78,6 +78,37 @@ class KonversationMapper(Mapper):
 
         return result
 
+    def find_by_person_id(self, person_key):
+        """
+                Extrahieren aller Konversationsobjekte an denen die Person mit der ID person_key teilnimmt
+                :return: Sammlung von Konversations-Objekten
+                """
+
+        result = []
+        cursor = self._cnx.cursor()
+        # Hier wird nun das SQL-Statement ausgeführt, um Konversations-Objekte aus der Datenbank zu extrahieren.
+        cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.ist_gruppenchat "
+                       "FROM konversationen AS L LEFT OUTER JOIN chat_teilnahmen AS R "
+                       "ON R.konversation_id=L.id "
+                       "WHERE R.person_id={}".format(person_key))
+        tuples = cursor.fetchall()
+
+        # Im nächsten Schritt wird über die extrahierten Objekte iteriert und eine Konversationsinstanz erstellt
+        for (id, erstellungszeitpunkt, ist_gruppenchat) in tuples:
+            konversation = Konversation()
+            # Nun werden die Attribute mit den set-Methoden gesetted
+            konversation.set_id(id)
+            konversation.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            konversation.set_ist_gruppenchat(ist_gruppenchat)
+            # Das Objekt wird an die Liste angehängt
+            result.append(konversation)
+
+        self._cnx.commit()
+        cursor.close()
+
+        # Die Liste mit den Konversations-Objekten wird zurückgegeben
+        return result
+
     def insert(self, konversation: Konversation):
         """
         Einfügen eines Konverastion-Objektes in die DB
