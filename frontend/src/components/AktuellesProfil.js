@@ -31,7 +31,7 @@ class AktuellesProfil extends Component {
     }
 
     getProfil = () => {
-        StudooAPI.getAPI().getProfil(this.props.person.getID())
+        StudooAPI.getAPI().getProfil(this.props.person.getProfilId())
         .then(profilBO => {
             this.setState({
                 profil: profilBO,
@@ -67,7 +67,7 @@ class AktuellesProfil extends Component {
                 {
                     profil ?
                         <AktProfilEntry
-                            key={profil.getID()}profil={profil}
+                            key={profil.getID()} profil={profil}
                         />
                     : null
                 }
