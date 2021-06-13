@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {AppBar, BottomNavigation, Avatar, ThemeProvider, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Container, Avatar, ThemeProvider, Toolbar, Typography} from "@material-ui/core";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import {Image} from "@material-ui/icons";
 import ChatIcon from "@material-ui/icons/Chat";
 import {Link} from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import GroupIcon from "@material-ui/icons/Group";
 import theme from "./theme";
 import ProfileDropDown from "../dialogs/ProfileDropDown";
+import { StyleSheet, css } from "aphrodite";
 
 
 class HeaderComplete extends Component {
@@ -19,8 +19,8 @@ class HeaderComplete extends Component {
         const {user} = this.props;
         return (
             <>
-                <div>
-                    <AppBar style={theme.root} position="static">
+                <div style={theme.test}>
+                    <AppBar style={theme.root} >
                         <Toolbar style={theme.toolbar}>
                             <div style={theme.imagediv}>
                                 <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
@@ -51,7 +51,6 @@ class HeaderComplete extends Component {
                             <div>
                             <ProfileDropDown user={user} />
                             </div>
-
                         </Toolbar>
                     </AppBar>
                 </div>
