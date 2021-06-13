@@ -42,7 +42,7 @@ class PersonEntry extends Component {
     })
   }
 
-  /** Handles the onClick event of the edit customer button */
+  /** Handles the onClick event of the edit person button */
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
@@ -78,7 +78,7 @@ class PersonEntry extends Component {
     // if customer is not null, delete it
     if (person) {
       this.props.onPersonDeleted(person);
-    };
+    }
 
     // Don´t show the dialog
     this.setState({
@@ -100,14 +100,27 @@ class PersonEntry extends Component {
                   <Button color='primary' onClick={this.editProfilButtonClicked}>
                     edit
                   </Button>
-                  <Button color='secondary' onClick={this.deleteProfilButtonClicked}>
-                    delete
-                  </Button>
-                </ButtonGroup>
+            </ButtonGroup>
           </div>
-          Nachname:
+          Name:
           {
             person.getName()
+          }
+          Alter:
+          {
+            person.getAlter()
+          }
+          Wohnort:
+          {
+            person.getWohnort()
+          }
+          Studiengang:
+          {
+            person.getStudiengang()
+          }
+          Semester:
+          {
+            person.getSemester()
           }
 
           <ProfilForm show={showProfilForm} person={person} onClose={this.profilFormClosed} />

@@ -175,7 +175,6 @@ class PersonMapper (Mapper):
             person.get_id()
         )
 
-        print("Bla", (command, data))
         cursor.execute(command, data)
 
         self._cnx.commit()

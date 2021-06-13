@@ -70,11 +70,6 @@ class ProfilVorschau extends Component {
                 />
                 : null
           }
-          {/*
-            person ?
-                <AktuellesProfil person={person}/>
-                : null*/
-          }
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getPerson}/>

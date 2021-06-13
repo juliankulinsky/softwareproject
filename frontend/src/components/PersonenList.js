@@ -9,6 +9,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
 import PersonListEntry from './PersonListEntry';
+import {PersonBO} from "../api";
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -43,8 +44,6 @@ class PersonenList extends Component {
 
   /** Fetches all PersonenBO from the backend */
   getPersonen = () => {
-
-    //console.log("Personlist", StudooAPI.getAPI().getPersonen())
     StudooAPI.getAPI().getPersonen()
         .then(personenBOs => this.setState({
         personen: personenBOs,
@@ -52,45 +51,6 @@ class PersonenList extends Component {
         loadingInProgress: false,
         error: null
       }));
-        /*
-      .then(personenBOs =>
-        this.setState({               // Set new state when CustomerBOs have been fetched
-          personen: personenBOs,
-          filteredPersonen: [...personenBOs], // store a copy
-          loadingInProgress: false,   // disable loading indicator
-          error: null
-        })).catch(e =>
-          this.setState({             // Reset state with error from catch
-            personen: [],
-            loadingInProgress: false, // disable loading indicator
-            error: e
-          })
-        );
-    var requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
-        };
-
-        fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
-          .then(response => response.text())
-          .then(result => this.setState({               // Set new state when CustomerBOs have been fetched
-            personen: result,
-            filteredPersonen: [...result], // store a copy
-            loadingInProgress: false,   // disable loading indicator
-            error: null
-        }))
-          .catch(error => console.log('error', error));
-
-        fetch("http://127.0.0.1:5000/studoo/personen", requestOptions)
-          .then(response => response.json())
-          .then(result => {this.setState({               // Set new state when CustomerBOs have been fetched
-            personen: result,
-            filteredPersonen: [...result], // store a copy
-            loadingInProgress: false,   // disable loading indicator
-            error: null
-        });console.log(personen)})
-          .catch(error => console.log('error', error));*/
-
 
     // set loading to true
     this.setState({
@@ -190,8 +150,8 @@ class PersonenList extends Component {
 
   /** Renders the component */
   render() {
-    const { classes } = this.props;
-    const { personen, filteredPersonen, personFilter, expandedPersonID, loadingInProgress, error, showPersonForm } = this.state;
+    const { classes, user } = this.props;
+    const { personen, person, filteredPersonen, personFilter, expandedPersonID, loadingInProgress, error, showPersonForm } = this.state;
 
     return (
       <div className={classes.root}>
@@ -226,22 +186,13 @@ class PersonenList extends Component {
           </Grid>
         </Grid>
         {
-           //Show the list of CustomerListEntry components
-          // Do not use strict comparison, since expandedCustomerID maybe a string if given from the URL parameters
-          /*filteredPersonen.map(person =>
-            <PersonListEntry key={person.getID()} person={person} expandedState={expandedPersonID === person.getID()}
-              onExpandedStateChange={this.onExpandedStateChange}
-              onPersonDeleted={this.personDeleted}
-            />)*/
             personen.map(person =>
             <PersonListEntry key={person.getID()}
               person ={person}
-            />
-
-          )
+            />)
         }
         <LoadingProgress show={loadingInProgress} />
-        <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`} onReload={this.getPersonen} />
+        <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`} onReload={this.getPerson} />
         <PersonForm show={showPersonForm} onClose={this.personFormClosed} />
       </div>
     );

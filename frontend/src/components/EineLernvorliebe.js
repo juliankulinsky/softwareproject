@@ -57,8 +57,6 @@ class EineLernvorliebe extends Component {
                     <Grid item>
                     </Grid>
                 </Grid>
-                Lernvorliebe:
-
                 {
                     /*lernvorlieben.map(lernvorliebe =>*/
                     lernvorliebe ?
