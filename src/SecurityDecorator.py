@@ -42,7 +42,9 @@ def secured(function):
                         user.set_email(email)
                         adm.save_person(user)
                     else:
-                        user = adm.create_person(name, email, google_user_id)
+                        lv = adm.create_lernvorliebe()
+                        profil = adm.create_profil(lv.get_id())
+                        user = adm.create_person(name, email, google_user_id, profil_id=profil.get_id())
 
                     print(request.method, request.path, "angefragt durch:", name, email)
 
