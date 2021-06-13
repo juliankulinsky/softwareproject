@@ -20,7 +20,7 @@ class HeaderComplete extends Component {
         return (
             <>
                 <div>
-                    <AppBar style={theme.root}>
+                    <AppBar style={theme.root} position="static">
                         <Toolbar style={theme.toolbar}>
                             <div style={theme.imagediv}>
                                 <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
