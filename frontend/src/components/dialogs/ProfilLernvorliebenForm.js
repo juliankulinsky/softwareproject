@@ -129,15 +129,8 @@ class ProfilLernvorliebenForm extends Component {
       updatingError } = this.state;
 
     let title = '';
-    let header = '';
-
-    if (lernvorliebe) {
       // person defindet, so ist an edit dialog
       title = 'Update Lernvorlieben';
-    } else {
-      title = 'Create a new Person';
-      header = 'Enter Person data';
-    }
 
     return (
       show ?
@@ -148,9 +141,6 @@ class ProfilLernvorliebenForm extends Component {
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              {header}
-            </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
               <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
                 onChange={this.textFieldValueChange} error={lerntypValidationFailed}
