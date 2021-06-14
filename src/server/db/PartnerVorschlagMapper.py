@@ -79,7 +79,7 @@ class PartnerVorschlagMapper (Mapper):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT * FROM partner_vorschlaege WHERE person_id={} AND entscheidung_person is null " \
-                  "ORDER BY aehnlichkeit DESC LIMIT 1".format(person_key)
+                  "ORDER BY aehnlichkeit DESC ".format(person_key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -101,6 +101,8 @@ class PartnerVorschlagMapper (Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+        print(result)
 
         return result
 

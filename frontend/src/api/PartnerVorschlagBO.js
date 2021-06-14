@@ -70,7 +70,10 @@ export default class PartnerVorschlagBO extends VorschlagBO {
                 result.push(t);
             })
         }
-        else {
+        else if (partnervorschlaege == null){
+            result = null
+        } else
+        {
             // Sollte es sich um ein singuläres Objekt handeln.
             let t = partnervorschlaege;
 

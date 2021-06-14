@@ -62,8 +62,9 @@ class PartnerExplorer extends Component {
                     error: null,
                     loadingInProgress: false
                 });
-                this.getPartnerPerson()
-
+                if (this.state.partnervorschlag != null){
+                    this.getPartnerPerson()
+                }
             }).catch(e => this.setState({
             partnervorschlag: null,
             error: e,
@@ -100,7 +101,10 @@ class PartnerExplorer extends Component {
                                 : null
                         }
                     </Typography>
-                    : null
+                    :
+                    <Typography>
+                        Es gibt momentan leider keine Partnervorschläge für dich :/
+                    </Typography>
                 }
 
                 <ContextErrorMessage

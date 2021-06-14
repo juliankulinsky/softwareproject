@@ -990,9 +990,12 @@ export default class StudooAPI {
         return this.#fetchAdvanced(this.#getPartnerVorschlagForPersonIDURL(person_id))
             .then((responseJSON) => {
                 let res = PartnerVorschlagBO.fromJSON(responseJSON)[0]
-                return new Promise(function (resolve) {
+                if (res.getID() != null){
+                    return new Promise(function (resolve) {
                     resolve(res);
-            })
+                    })
+                } else return null
+
         })
     }
 
