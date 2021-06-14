@@ -18,6 +18,7 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
+import {PartnerVorschlagBO} from "../api";
 
 class PartnerExplorer extends Component {
 
@@ -28,9 +29,13 @@ class PartnerExplorer extends Component {
             partnervorschlag: null,
             currentPerson: this.props.person,
             partnerPerson: null,
+            entscheidung: null,
             error: null,
-            loadingInProgress: false
+            loadingInProgress: false,
+            updatingInProgress: false,
+            updatingError: null
         }
+        this.baseState = this.state;
     }
 
     getPartnerPerson = () => {
@@ -77,6 +82,48 @@ class PartnerExplorer extends Component {
         });
     }
 
+    entscheidungTrue = () => {
+        console.log("HALLO")
+        this.setState({
+            entscheidung: true
+        }, function (){
+            console.log(this.state.entscheidung)
+            this.updatePartnervorschlag()
+        });
+    }
+
+    entscheidungFalse = () => {
+        this.setState({
+            entscheidung: false
+        }, function (){
+            console.log(this.state.entscheidung)
+            this.updatePartnervorschlag()
+        });
+    }
+
+    updatePartnervorschlag = () => {
+        let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
+        console.log(updatedPartnerVorschlag)
+        updatedPartnerVorschlag.setEntscheidungPerson(!!this.state.entscheidung);
+        updatedPartnerVorschlag.setEntscheidungPartner(!!this.state.partnervorschlag.getEntscheidungPartner())
+        StudooAPI.getAPI().updatePartnerVorschlag(updatedPartnerVorschlag)
+            .then(partnerVorschlag => {
+                this.setState({
+                    updatingInProgress: false,
+                    updatingError: null
+                });
+                this.baseState.entscheidung = this.state.entscheidung;
+            }).catch(e =>
+        this.setState({
+            updatingInProgress: false,
+            updatingError: e
+        }));
+        this.setState({
+            updatingInProgress: true,
+            updatingError: null
+        })
+    }
+
     componentDidMount() {
         this.getBestPartnervorschlag()
     }
@@ -100,6 +147,10 @@ class PartnerExplorer extends Component {
                                 </Typography>
                                 : null
                         }
+                        Willst du eine Konversation mit der Person anfangen?
+                        <Button variant='contained' onClick={this.entscheidungTrue}>
+                            JA
+                        </Button>
                     </Typography>
                     :
                     <Typography>

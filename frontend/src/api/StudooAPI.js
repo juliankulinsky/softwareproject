@@ -1045,7 +1045,7 @@ export default class StudooAPI {
      * @public
      */
     updatePartnerVorschlag(partnervorschlagBO) {
-        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(), {
+        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(partnervorschlagBO.getID()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -1054,6 +1054,7 @@ export default class StudooAPI {
             body: JSON.stringify(partnervorschlagBO)
         }).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
+            console.log(responsePartnervorschlagBO)
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
