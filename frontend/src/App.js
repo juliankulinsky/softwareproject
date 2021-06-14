@@ -142,7 +142,8 @@ class App extends React.Component {
 		firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
 	}
 
-	/** Renders the whole app */
+	/** Renders the whole app
+										<ProfilVorschau person={currentPersonBO} user={currentUser}/>*/
 	render() {
 		const {currentUser, currentPersonBO, appError, authError, authLoading} = this.state;
 
@@ -162,7 +163,6 @@ class App extends React.Component {
 										<PersonenList user={currentUser}/>
 									</Route>
 									<Route path='/profil'>
-										<ProfilVorschau person={currentPersonBO} user={currentUser}/>
 										<AktuellesProfil person={currentPersonBO} user={currentUser} />
 									</Route>
 									<Route path='/gruppenvorschlaege'>
