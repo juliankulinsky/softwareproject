@@ -218,14 +218,14 @@ class Admin(object):
     """
         Lernvorliebe - Spezifische Methoden
     """
-    def create_lernvorliebe(self, lerntyp, wert, extrovertiertheit, remote_praesenz, vorkenntnisse, lerninteressen):
+    def create_lernvorliebe(self, lerntyp=0, frequenz=0, extrovertiertheit=0, remote_praesenz=0, vorkenntnisse="", lerninteressen=""):
         """
         Lernvorlieben erstellen:
         Diese Klasse wird bei der Profilerstellung instanziiert.
         """
         lv = Lernvorliebe()
         lv.set_lerntyp(lerntyp)
-        lv.set_frequenz(wert)
+        lv.set_frequenz(frequenz)
         lv.set_extrovertiertheit(extrovertiertheit)
         lv.set_remote_praesenz(remote_praesenz)
         lv.set_vorkenntnisse(vorkenntnisse)
