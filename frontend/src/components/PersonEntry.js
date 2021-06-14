@@ -5,16 +5,10 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import ProfilForm from "./dialogs/ProfilForm";
-//import AccountList from './AccountList';
 
 
 /**
- * Renders a CustomerBO object within a expandable/collapsible CustomerListEntry with the customer manipulation
- * functions. If expanded, it renders a AccountList.
- *
- * @see See [AccountList](#accountlist)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ *  Displays all information of a single Person
  */
 class PersonEntry extends Component {
 
@@ -50,7 +44,7 @@ class PersonEntry extends Component {
     });
   }
 
-  /** Handles the onClose event of the CustomerForm */
+  /** Handles the onClose event of the ProfilForm */
   profilFormClosed = (person) => {
     // customer is not null and therefor changed
     if (person) {
@@ -65,7 +59,7 @@ class PersonEntry extends Component {
     }
   }
 
-  /** Handles the onClick event of the delete customer button */
+  /** Handles the onClick event of the delete Profil button */
   deleteProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
@@ -73,7 +67,7 @@ class PersonEntry extends Component {
     });
   }
 
-  /** Handles the onClose event of the CustomerDeleteDialog */
+  /** Handles the onClose event of the ProfilDeleteDialog */
   deleteProfilDialogClosed = (person) => {
     // if customer is not null, delete it
     if (person) {
@@ -142,20 +136,9 @@ const styles = theme => ({
 PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be rendered */
   person: PropTypes.object.isRequired,
-  /** The state of this CustomerListEntry. If true the customer is shown with its accounts */
   expandedState: PropTypes.bool.isRequired,
-  /** The handler responsible for handle expanded state changes (exanding/collapsing) of this CustomerListEntry
-   *
-   * Signature: onExpandedStateChange(CustomerBO customer)
-   */
   onExpandedStateChange: PropTypes.func.isRequired,
-  /**
-   *  Event Handler function which is called after a sucessfull delete of this customer.
-   *
-   * Signature: onCustomerDelete(CustomerBO customer)
-   */
   onProfilDeleted: PropTypes.func.isRequired
 }
 

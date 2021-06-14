@@ -17,7 +17,13 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import AktProfilEntry from "./AktProfilEntry";
+import PersonEntry from "./PersonEntry";
+import EineLernvorliebe from "./EineLernvorliebe";
 
+
+/**
+ * Gets the currently logged in Person and displays information of PersonBO and LernvorliebenBO
+ * */
 class AktuellesProfil extends Component {
 
     constructor(props) {
@@ -25,11 +31,15 @@ class AktuellesProfil extends Component {
 
         this.state = {
             profil: null,
+            person: props.person,
             error: null,
             loadingInProgress: false
         }
     }
 
+    /**
+     * API call get the Profil of the current Person by the ProfilId stored in the PersonBO
+     * */
     getProfil = () => {
         StudooAPI.getAPI().getProfil(this.props.person.getProfilId())
         .then(profilBO => {
@@ -50,6 +60,7 @@ class AktuellesProfil extends Component {
         });
     }
 
+    /** Lifecycle Method which is called when the component is rendered on DOM */
     componentDidMount() {
     this.getProfil();
     }
@@ -57,7 +68,7 @@ class AktuellesProfil extends Component {
 
     render() {
         const {classes} = this.props;
-        const {profil,  error, loadingInProgress} = this.state;
+        const {profil, person, error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
                 <Grid>
@@ -65,9 +76,14 @@ class AktuellesProfil extends Component {
                     </Grid>
                 </Grid>
                 {
+                    person ?
+                        <PersonEntry person={person}
+                        />
+                : null
+                }
+                {
                     profil ?
-                        <AktProfilEntry
-                            key={profil.getID()} profil={profil}
+                        <EineLernvorliebe lvId={profil.getLernvorliebeID()}
                         />
                     : null
                 }

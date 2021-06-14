@@ -6,25 +6,17 @@ import {StudooAPI, PersonBO, LernvorliebeBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
-
 /**
- * Shows a modal form dialog for a CustomerBO in prop customer. If the customer is set, the dialog is configured
- * as an edit dialog and the text fields of the form are filled from the given CustomerBO object.
- * If the customer is null, the dialog is configured as a new customer dialog and the textfields are empty.
- * In dependency of the edit/new state, the respective backend calls are made to update or create a customer.
- * After that, the function of the onClose prop is called with the created/update CustomerBO object as parameter.
- * When the dialog is canceled, onClose is called with null.
- *
- * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
- * @see See Material-UIs [TextField](https://material-ui.com/components/text-fields//)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
- */
+ * Form which displays the Lernvorlieben of the current Person in Textfields and allows to edit the given information.
+ * */
 class ProfilLernvorliebenForm extends Component {
 
   constructor(props) {
     super(props);
 
+    /**
+     * Init empty variable and set Lernvorliebe values of the given Person
+     * */
     let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
     if (props.lernvorliebe) {
       lt = props.lernvorliebe.get_lerntyp();
@@ -66,9 +58,9 @@ class ProfilLernvorliebenForm extends Component {
 
   /** Updates the Lernvorliebe */
   updateLernvorliebe = () => {
-    // clone the original person, in case the backend call fails
+    // clone the Person, in case the backend call fails
     let updatedLernvorliebe = Object.assign(new LernvorliebeBO(), this.props.lernvorliebe);
-    // set the new attributes from our dialog
+    // set new attributes from Textfields
     updatedLernvorliebe.set_lerntyp(parseInt(this.state.lerntyp));
     updatedLernvorliebe.set_frequenz(parseInt(this.state.frequenz));
     updatedLernvorliebe.set_extrovertiertheit(parseInt(this.state.extrovertiertheit));
@@ -129,7 +121,6 @@ class ProfilLernvorliebenForm extends Component {
       updatingError } = this.state;
 
     let title = '';
-      // person defindet, so ist an edit dialog
       title = 'Update Lernvorlieben';
 
     return (
@@ -163,11 +154,10 @@ class ProfilLernvorliebenForm extends Component {
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
-              // Show error message in dependency of customer prop
+              // Show error message in dependency of Lernvorliebe prop
               lernvorliebe ?
-                <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${lernvorliebe.getID()} could not be updated.`} onReload={this.updateLernvorliebe} />
-                :
-                <ContextErrorMessage error={addingError} contextErrorMsg={`The customer could not be added.`} onReload={this.addPerson} />
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The Lernvorliebe ${lernvorliebe.getID()} could not be updated.`} onReload={this.updateLernvorliebe} />
+                : null
             }
           </DialogContent>
           <DialogActions>
@@ -175,7 +165,7 @@ class ProfilLernvorliebenForm extends Component {
               Cancel
             </Button>
             {
-              // If a customer is given, show an update button, else an add button
+              // If Lernvorliebe is given, show an update button, else show null
               lernvorliebe ?
                 <Button disabled={ lerntypValidationFailed || frequenzValidationFailed ||
                 extrovertiertheitValidationFailed || remoteValidationFailed || vorkenntnisseValidationFailed ||
@@ -212,12 +202,6 @@ ProfilLernvorliebenForm.propTypes = {
   lernvorliebe: PropTypes.object,
   /** If true, the form is rendered */
   show: PropTypes.bool.isRequired,
-  /**
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
-   *
-   * Signature: onClose(CustomerBO customer);
-   */
   onClose: PropTypes.func.isRequired,
 }
 

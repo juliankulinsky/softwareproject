@@ -10,7 +10,7 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import LernvorliebenListEntry from "./LernvorliebenListEntry";
 
 
-
+/** Displays a single Lernvorliebe of the current Person on the 'Your Profile' Tab */
 class EineLernvorliebe extends Component {
 
     constructor(props) {
@@ -58,12 +58,10 @@ class EineLernvorliebe extends Component {
                     </Grid>
                 </Grid>
                 {
-                    /*lernvorlieben.map(lernvorliebe =>*/
                     lernvorliebe ?
                         <LernvorliebenListEntry lernvorliebe={lernvorliebe}
                         />
                         : null
-
                 }
                 <LoadingProgress show={loadingInProgress}/>
                 <ContextErrorMessage
