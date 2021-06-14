@@ -7,7 +7,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import GroupIcon from "@material-ui/icons/Group";
 import theme from "./theme";
 import ProfileDropDown from "../dialogs/ProfileDropDown";
-import { StyleSheet, css } from "aphrodite";
 
 
 class HeaderComplete extends Component {
