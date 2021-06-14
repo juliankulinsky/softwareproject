@@ -244,8 +244,8 @@ CREATE TABLE `lerngruppen` (
 
 LOCK TABLES `lerngruppen` WRITE;
 INSERT INTO `lerngruppen`
-VALUES (1,'2021-03-02 18:21:26','Road-To-Python-Profis',3,2),
-       (2,'2021-04-26 15:36:01','Ersti-Treff',4,1),
+VALUES (1,'2021-03-02 18:21:26','Road-To-Python-Profis',3,1),
+       (2,'2021-04-26 15:36:01','Ersti-Treff',4,2),
        (3,'2021-04-26 15:36:01','Shy-Guys',5,4),
        (4,'2021-04-26 15:36:01','DIE NEUEN',6,5),
        (5,'2021-04-26 15:36:01','Die Unternehmer',8,6);
