@@ -24,7 +24,7 @@ class EineLernvorliebe extends Component {
     }
 
     getLernvorliebe = () => {
-        StudooAPI.getAPI().getLernvorliebe(this.props.tes)
+        StudooAPI.getAPI().getLernvorliebe(this.props.lvId)
             .then(lernvorliebeBO => {
                 this.setState({
                     lernvorliebe: lernvorliebeBO,
@@ -60,7 +60,7 @@ class EineLernvorliebe extends Component {
                 {
                     /*lernvorlieben.map(lernvorliebe =>*/
                     lernvorliebe ?
-                        <LernvorliebenListEntry key={lernvorliebe.getID()} lernvorliebe={lernvorliebe}
+                        <LernvorliebenListEntry lernvorliebe={lernvorliebe}
                         />
                         : null
 

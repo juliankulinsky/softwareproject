@@ -72,29 +72,6 @@ class ProfilForm extends Component {
     this.baseState = this.state;
   }
 
-  /** Adds the Person */
-  addPerson = () => {
-    let newPerson = new PersonBO(this.state.name, this.state.alter, this.state.wohnort,
-        this.state.studiengang, this.state.semester, this.state.profilID);
-    StudooAPI.getAPI().addPerson(newPerson).then(person => {
-      // Backend call sucessfull
-      // reinit the dialogs state for a new empty person
-      this.setState(this.baseState);
-      this.props.onClose(person); // call the parent with the person object from backend
-    }).catch(e =>
-      this.setState({
-        updatingInProgress: false,    // disable loading indicator
-        updatingError: e              // show error message
-      })
-    );
-
-    // set loading to true
-    this.setState({
-      updatingInProgress: true,       // show loading indicator
-      updatingError: null             // disable error message
-    });
-  }
-
   /** Updates the person */
   updatePerson = () => {
     // clone the original person, in case the backend call fails
@@ -230,11 +207,7 @@ class ProfilForm extends Component {
                 profilIDValidationFailed} variant='contained' onClick={this.updatePerson} color='primary'>
                   Update
               </Button>
-                : <Button disabled={ nameValidationFailed || alterValidationFailed ||
-                wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
-                profilIDValidationFailed} variant='contained' onClick={this.addPerson} color='primary'>
-                  Add
-             </Button>
+                : null
             }
           </DialogActions>
         </Dialog>
