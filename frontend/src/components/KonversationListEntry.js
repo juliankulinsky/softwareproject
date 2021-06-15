@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import {
+    withStyles,
+    Typography,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Grid,
+    TextField, Button
+} from '@material-ui/core';
 import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
+import {NachrichtBO} from "../api";
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -11,9 +20,15 @@ class KonversationListEntry extends Component {
         this.state = {
             konversation: props.konversation,
             lerngruppe: null,     // falls die Konversation ein Gruppenchat ist, ist das die zugehörige Lerngruppe
+            neueNachricht: null,
+            neueNachrichtValidationFailed: false,
+            neueNachrichtEdited: false,
             error: null,
-            loadingInProgress: false
+            loadingInProgress: false,
+            addingInProgress: false,
+            addingError: null
         }
+        this.baseState = this.state
     }
 
     getLerngruppe = () => {
@@ -38,13 +53,49 @@ class KonversationListEntry extends Component {
         }
     }
 
+    textFieldValueChange = (event) => {
+        const value = event.target.value;
+
+        let error = false;
+        if (value.trim().length === 0) {
+            error= true;
+        }
+
+        this.setState({
+            [event.target.id]: event.target.value,
+            [event.target.id + 'ValidationFailed']: error,
+            [event.target.id + 'Edited']: true
+        })
+    }
+
+    addNachricht = () => {
+        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
+            this.state.konversation.getID());
+        console.log(newNachricht)
+        console.log(new Date())
+        StudooAPI.getAPI().addNachricht(newNachricht)
+            .then(nachricht => {
+                this.setState(this.baseState)
+            }).catch(e =>
+        this.setState({
+            addingInProgress: false,
+            addingError: e
+        }));
+
+        this.setState({
+            addingInProgress: true,
+            addingError: null
+        })
+
+    }
+
     componentDidMount() {
         this.getLerngruppe()
     }
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe } = this.state;
+        const { konversation, lerngruppe, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
 
         return (
             <div>
@@ -64,6 +115,15 @@ class KonversationListEntry extends Component {
                             currentPerson={this.props.person}
                             konversation={konversation}
                         />
+                    <br/>
+                    <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
+                    error={neueNachrichtValidationFailed}>
+                        Test
+                    </TextField>&nbsp;&nbsp;
+                    <Button variant='contained' disabled={ !neueNachrichtEdited }
+                    onClick={this.addNachricht}>
+                        Nachricht senden
+                    </Button>
                     <br/>
                 </Typography>
             </div>
