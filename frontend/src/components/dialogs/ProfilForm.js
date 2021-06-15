@@ -6,7 +6,6 @@ import { StudooAPI, PersonBO } from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
-
 /**
  * Shows a Form for the currently logged in Person which allows to edit the Alter, Wohnort, Studiengang and Semester
  */
@@ -15,6 +14,9 @@ class ProfilForm extends Component {
   constructor(props) {
     super(props);
 
+    /**
+     * Init empty variable and set Lernvorliebe values of the given Person
+     * */
     let vn = '', em = '', gid= '', alt = 0, wo = '', sg = '', sm = 0, pID = 0;
     if (props.person) {
       vn = props.person.getName();
@@ -181,8 +183,7 @@ class ProfilForm extends Component {
               // Show error message in dependency of customer prop
               person ?
                 <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${person.getID()} could not be updated.`} onReload={this.updatePerson} />
-                :
-                <ContextErrorMessage error={addingError} contextErrorMsg={`The customer could not be added.`} onReload={this.addPerson} />
+                : null
             }
           </DialogContent>
           <DialogActions>
@@ -223,16 +224,8 @@ const styles = theme => ({
 ProfilForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
   person: PropTypes.object,
-  /** If true, the form is rendered */
   show: PropTypes.bool.isRequired,
-  /**
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
-   *
-   * Signature: onClose(CustomerBO customer);
-   */
   onClose: PropTypes.func.isRequired,
 }
 

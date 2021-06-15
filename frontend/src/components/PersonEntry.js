@@ -22,12 +22,6 @@ class PersonEntry extends Component {
       showProfilDeleteDialog: false,
     };
   }
-
-  /** Handles onChange events of the underlying ExpansionPanel */
-  expansionPanelStateChanged = () => {
-    this.props.onExpandedStateChange(this.props.person);
-  }
-
   /** Handles onAccountDelete events from an AccountListEntry */
   deleteAccountHandler = (deletedAccount) => {
     // console.log(deletedAccount.getID());
@@ -59,66 +53,43 @@ class PersonEntry extends Component {
     }
   }
 
-  /** Handles the onClick event of the delete Profil button */
-  deleteProfilButtonClicked = (event) => {
-    event.stopPropagation();
-    this.setState({
-      showProfilDeleteDialog: true
-    });
-  }
-
-  /** Handles the onClose event of the ProfilDeleteDialog */
-  deleteProfilDialogClosed = (person) => {
-    // if customer is not null, delete it
-    if (person) {
-      this.props.onPersonDeleted(person);
-    }
-
-    // Don´t show the dialog
-    this.setState({
-      showProfilDeleteDialog: false
-    });
-  }
-
   /** Renders the component */
   render() {
     const { classes, expandedState } = this.props;
     // Use the states customer
-    const { person, showProfilForm, showProfilDeleteDialog } = this.state;
+    const { person, showProfilForm } = this.state;
 
      console.log(this.state);
     return (
         <div>
-          <div>
-            <ButtonGroup variant='text' size='small'>
+          <ButtonGroup variant='text' size='small'>
                   <Button color='primary' onClick={this.editProfilButtonClicked}>
                     edit
                   </Button>
             </ButtonGroup>
-          </div>
-          Name:
-          {
-            person.getName()
-          }
-          Alter:
-          {
-            person.getAlter()
-          }
-          Wohnort:
-          {
-            person.getWohnort()
-          }
-          Studiengang:
-          {
-            person.getStudiengang()
-          }
-          Semester:
-          {
-            person.getSemester()
-          }
-
+            <Typography className={classes.heading}>
+                Name:
+                {
+                  person.getName()
+                }
+                Alter:
+                {
+                  person.getAlter()
+                }
+                Wohnort:
+                {
+                  person.getWohnort()
+                }
+                Studiengang:
+                {
+                  person.getStudiengang()
+                }
+                Semester:
+                {
+                  person.getSemester()
+                }
+            </Typography>
           <ProfilForm show={showProfilForm} person={person} onClose={this.profilFormClosed} />
-          <PersonDeleteDialog show={showProfilDeleteDialog} person={person} onClose={this.deleteProfilDialogClosed} />
       </div>
 
     );

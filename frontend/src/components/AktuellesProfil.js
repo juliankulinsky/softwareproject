@@ -75,11 +75,11 @@ class AktuellesProfil extends Component {
                     <Grid item>
                     </Grid>
                 </Grid>
-                {
+                {/*
                     person ?
                         <PersonEntry person={person}
                         />
-                : null
+                : null*/
                 }
                 {
                     profil ?

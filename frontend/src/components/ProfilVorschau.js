@@ -36,42 +36,53 @@ class ProfilVorschau extends Component {
 
     // Init an empty state
     this.state = {
-      person: props.person,
+      person: null,
       error: null,
       loadingInProgress: false
     };
   }
 
+  getCurrentPerson = () => {
+    StudooAPI.getAPI().getPersonByUID(this.props.person.getGoogleUserID())
+        .then(personBO => {
+            this.setState({
+                person: personBO,
+                error: null,
+                loadingInProgress: false
+            });
+            console.log("DAAAA",personBO)
+        }).catch(e => this.setState({
+            profil: "No profil received.",
+            error: e,
+            loadingInProgress: false
+        }));
+	}
+
   /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
-
+    console.log("Hier LOL")
+    this.getCurrentPerson()
   }
 
   /** Renders the component */
   render() {
     const {classes, user} = this.props;
-    const {
-      person,
-      loadingInProgress,
-      error
-    } = this.state;
+    const { person, loadingInProgress, error } = this.state;
 
     return (
         <div className={classes.root}>
           <IconButton className={classes.avatarButton}  >
             <Avatar src={user.photoURL} />
           </IconButton>
-
             {
             person ?
-                <PersonEntry key={person.getID()}
-                    person={person}
+                <PersonEntry person={person}
                 />
                 : null
           }
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
-                               onReload={this.getPerson}/>
+                               onReload={this.getCurrentPerson}/>
         </div>
     );
   }

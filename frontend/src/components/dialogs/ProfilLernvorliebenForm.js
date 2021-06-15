@@ -86,6 +86,11 @@ class ProfilLernvorliebenForm extends Component {
           updatingError: e                        // show error message
         })
     );
+    // set loading to true
+    this.setState({
+      updatingInProgress: true,                 // show loading indicator
+      updatingError: null                       // disable error message
+    });
   }
 
   /** Handles value changes of the forms textfields and validates them */
@@ -198,9 +203,7 @@ const styles = theme => ({
 ProfilLernvorliebenForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
   lernvorliebe: PropTypes.object,
-  /** If true, the form is rendered */
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }
