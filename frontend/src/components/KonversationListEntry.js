@@ -20,6 +20,7 @@ class KonversationListEntry extends Component {
         this.state = {
             konversation: props.konversation,
             lerngruppe: null,     // falls die Konversation ein Gruppenchat ist, ist das die zugehörige Lerngruppe
+            chatpartner: null,
             neueNachricht: null,
             neueNachrichtValidationFailed: false,
             neueNachrichtEdited: false,
@@ -53,6 +54,33 @@ class KonversationListEntry extends Component {
         }
     }
 
+    getChatpartner = () => {
+        if (!this.state.konversation.ist_gruppenchat){
+            StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())
+                .then(personen => {
+                    personen.map(person => {
+                        if (person.getID() !== this.props.person.getID()) {
+                            this.setState({
+                            chatpartner: person,
+                            error: null,
+                            loadingInProgress: false
+                        })
+                        }
+                    })
+
+                }).catch(e => this.setState({
+                chatpartner: null,
+                error: e,
+                loadingInProgress: false
+            }));
+
+            this.setState({
+                loadingInProgress: true,
+                error: null
+            });
+        }
+    }
+
     textFieldValueChange = (event) => {
         const value = event.target.value;
 
@@ -71,8 +99,6 @@ class KonversationListEntry extends Component {
     addNachricht = () => {
         let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
             this.state.konversation.getID());
-        console.log(newNachricht)
-        console.log(new Date())
         StudooAPI.getAPI().addNachricht(newNachricht)
             .then(nachricht => {
                 this.setState(this.baseState)
@@ -91,11 +117,12 @@ class KonversationListEntry extends Component {
 
     componentDidMount() {
         this.getLerngruppe()
+        this.getChatpartner()
     }
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
+        const { konversation, lerngruppe, chatpartner, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
 
         return (
             <div>
@@ -106,7 +133,14 @@ class KonversationListEntry extends Component {
                     {
                         lerngruppe ?
                             <Typography>
-                                Gruppenname: {lerngruppe.getGruppenname()}
+                                Das ist der Gruppenchat der Gruppe: {lerngruppe.getGruppenname()}
+                            </Typography>
+                            : null
+                    }
+                    {
+                        chatpartner ?
+                            <Typography>
+                                Das ist dein Chat mit: {chatpartner.getName()}
                             </Typography>
                             : null
                     }
