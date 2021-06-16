@@ -1,11 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { Container, ThemeProvider, CssBaseline } from '@material-ui/core';
+import {Container, ThemeProvider, CssBaseline, Typography} from '@material-ui/core';
 import PersonenList from './components/PersonenList';
 import PersonListEntry from "./components/PersonListEntry";
 import LerngruppenList from "./components/LerngruppenList";
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Registrieren from './components/pages/Registrieren'
 /*import TransactionList from './components/TransactionList';
 import About from './components/pages/About';
 import AllAccountList from './components/AllAccountList';
@@ -29,6 +30,7 @@ import {StudooAPI} from "./api";
 import PartnerExplorer from "./components/PartnerExplorer";
 import ProfilVorschau from "./components/ProfilVorschau";
 import AktuellesProfil from "./components/AktuellesProfil";
+import ProfilForm from "./components/dialogs/ProfilForm";
 
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
@@ -150,43 +152,56 @@ class App extends React.Component {
 		return (
 				<Router basename={process.env.PUBLIC_URL}>
 					<Container maxWidth='md'>
-
 						{
 							currentUser ?
 								<>
-									<HeaderComplete user={currentUser}/>
-									{/**
-										<Redirect from='/' to='/partnervorschlaege' />
-									*/}
-
-									<Route path='/lerngruppen'>
-										<LerngruppenList person={currentPersonBO}/>
-									</Route>
-									<Route path='/personen'>
-										<PersonenList user={currentUser}/>
-									</Route>
-									<Route path='/profil'>
-										<ProfilVorschau person={currentPersonBO} user={currentUser}/>
-
-									</Route>
-									<Route path='/gruppenvorschlaege'>
-										<AllGruppenvorschlaege/>
-									</Route>
-									<Route path='/partnervorschlaege'>
-										<AllPartnervorschlaege/>
-									</Route>
-									<Route path='/lernvorlieben'>
-										<LernvorliebenList/>
-									</Route>
-									<Route path='/nachrichten'>
-										<NachrichtenList/>
-									</Route>
-									<Route path='/konversationen'>
-										<KonversationenList person={currentPersonBO}/>
-									</Route>
-									<Route path='/partnerexplorer'>
-										<PartnerExplorer person={currentPersonBO}/>
-									</Route>
+									{
+										currentPersonBO ?
+											<>
+												{
+													currentPersonBO.getAlter() === 0 ?
+														<>
+															<Registrieren person={currentPersonBO} user={currentUser}/>
+														</>
+														:
+														<>
+															<HeaderComplete user={currentUser}/>
+																{/**
+																 <Redirect from='/' to='/partnervorschlaege' />
+																 */}
+															<Route path='/lerngruppen'>
+																<LerngruppenList person={currentPersonBO}/>
+															</Route>
+															<Route path='/personen'>
+																<PersonenList user={currentUser}/>
+															</Route>
+															<Route path='/profil'>
+																<ProfilVorschau person={currentPersonBO} user={currentUser}/>
+															</Route>
+															<Route path='/gruppenvorschlaege'>
+																<AllGruppenvorschlaege/>
+															</Route>
+															<Route path='/partnervorschlaege'>
+																<AllPartnervorschlaege/>
+															</Route>
+															<Route path='/lernvorlieben'>
+																<LernvorliebenList/>
+															</Route>
+															<Route path='/nachrichten'>
+																<NachrichtenList/>
+															</Route>
+															<Route path='/konversationen'>
+																<KonversationenList person={currentPersonBO}/>
+															</Route>
+															<Route path='/partnerexplorer'>
+																<PartnerExplorer person={currentPersonBO}/>
+															</Route>
+														</>
+												}
+											</>
+											:
+											null
+									}
 								</>
 								:
 								<>
