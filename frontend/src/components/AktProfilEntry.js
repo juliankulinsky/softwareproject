@@ -38,13 +38,11 @@ class AktProfilEntry extends Component {
                             Lernvorliebe ID:
                             {
                                 profil.getLernvorliebeID()
-                            */}
+                            */
+                            }
                             {
                                 <EineLernvorliebe lvId={profil.getLernvorliebeID()} />
                             }
-
-
-
                         </Typography>
                     </Grid>
                 </Grid>
