@@ -117,6 +117,33 @@ class PersonMapper (Mapper):
 
         return result
 
+    def find_by_konversation_id(self, konversation_id):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT L.* FROM personen AS L " \
+                  "LEFT OUTER JOIN chat_teilnahmen AS R ON R.person_id=L.id " \
+                  "WHERE R.konversation_id={}".format(konversation_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester,
+             profil_id) in tuples:
+            person = Person()
+            person.set_id(id)
+            person.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            person.set_name(name)
+            person.set_email(email)
+            person.set_google_user_id(google_user_id)
+            person.set_alter(alter)
+            person.set_studiengang(studiengang)
+            person.set_wohnort(wohnort)
+            person.set_semester(semester)
+            person.set_profil_id(profil_id)
+            result.append(person)
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
     def insert(self, person: Person):
         """Einfügen eines Person-Objekts in die Datenbank.

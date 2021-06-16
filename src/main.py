@@ -326,6 +326,17 @@ class PersonenListOperations(Resource):
             return '', 500
 
 
+@studoo.route('/konversation/<int:konversation_id>/personen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class PersonenByKonversationIDOperations(Resource):
+
+    @studoo.marshal_list_with(person)
+    @secured
+    def get(self, konversation_id):
+        adm = Admin()
+        return adm.get_personen_by_konversation_id(konversation_id)
+
+
 @studoo.route('/person/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class PersonOperations(Resource):

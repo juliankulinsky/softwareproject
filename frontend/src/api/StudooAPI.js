@@ -8,6 +8,7 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
+import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
@@ -26,6 +27,7 @@ export default class StudooAPI {
     #addPersonURL = () => `${this.#studooServerBaseURL}/personen`;
     #getPersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
     #getPersonByUIDURL = (id) => `${this.#studooServerBaseURL}/googleuserid/${id}/person`;
+    #getPersonenByKonversationURL = (konversation_id) => `${this.#studooServerBaseURL}/konversation/${konversation_id}/personen`;
     #updatePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
     #deletePersonURL = (id) => `${this.#studooServerBaseURL}/person/${id}`;
 
@@ -175,7 +177,6 @@ export default class StudooAPI {
     })
     }
 
-
     getPersonByUID(personenUID) {
     return this.#fetchAdvanced(this.#getPersonByUIDURL(personenUID)).then((responseJSON) => {
       // We always get an array of CustomerBOs.fromJSON, but only need one object
@@ -185,6 +186,16 @@ export default class StudooAPI {
         resolve(responsePersonBO);
       })
     })
+    }
+
+    getPersonenByKonversationID(konversation_id) {
+        return this.#fetchAdvanced(this.#getPersonenByKonversationURL(konversation_id))
+            .then((responseJSON) => {
+                let responsePersonenBOs = PersonBO.fromJSON(responseJSON);
+                return new Promise(function (resolve) {
+                    resolve(responsePersonenBOs)
+                })
+            })
     }
 
     /**
@@ -1045,7 +1056,7 @@ export default class StudooAPI {
      * @public
      */
     updatePartnerVorschlag(partnervorschlagBO) {
-        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(), {
+        return this.#fetchAdvanced(this.#updatePartnerVorschlagURL(partnervorschlagBO.getID()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -1054,6 +1065,7 @@ export default class StudooAPI {
             body: JSON.stringify(partnervorschlagBO)
         }).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
+            console.log(responsePartnervorschlagBO)
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })
