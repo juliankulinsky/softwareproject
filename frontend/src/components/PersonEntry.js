@@ -5,6 +5,7 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import ProfilForm from "./dialogs/ProfilForm";
+import StudooAPI from "../api/StudooAPI";
 
 
 /**
@@ -18,6 +19,7 @@ class PersonEntry extends Component {
     // Init the state
     this.state = {
       person: props.person,
+      lernvorliebe: props.lernvorliebe,
       showProfilForm: false,
       showProfilDeleteDialog: false,
     };
@@ -39,11 +41,12 @@ class PersonEntry extends Component {
   }
 
   /** Handles the onClose event of the ProfilForm */
-  profilFormClosed = (person) => {
+  profilFormClosed = (person, lernvorliebe) => {
     // customer is not null and therefor changed
-    if (person) {
+    if (person && lernvorliebe) {
       this.setState({
         person: person,
+        lernvorliebe: lernvorliebe,
         showProfilForm: false
       });
     } else {
@@ -57,7 +60,7 @@ class PersonEntry extends Component {
   render() {
     const { classes, expandedState } = this.props;
     // Use the states customer
-    const { person, showProfilForm } = this.state;
+    const { person, lernvorliebe, showProfilForm } = this.state;
 
      console.log(this.state);
     return (
@@ -68,29 +71,34 @@ class PersonEntry extends Component {
                   </Button>
             </ButtonGroup>
             <Typography className={classes.heading}>
-                Name:
-                {
+              Name:
+              {
+                person ?
                   person.getName()
-                }
-                Alter:
-                {
-                  person.getAlter()
-                }
-                Wohnort:
-                {
-                  person.getWohnort()
-                }
-                Studiengang:
-                {
-                  person.getStudiengang()
-                }
-                Semester:
-                {
-                  person.getSemester()
-                }
+                    :null
+              }
+              Alter:
+              {
+                person.getAlter()
+              }
+              Wohnort:
+              {
+                person.getWohnort()
+              }
+              Studiengang:
+              {
+                person.getStudiengang()
+              }
+              Semester:
+              {
+                person.getSemester()
+              }
+
             </Typography>
-          <ProfilForm show={showProfilForm} person={person} onClose={this.profilFormClosed} />
-      </div>
+          {
+          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} />
+          }
+        </div>
 
     );
   }

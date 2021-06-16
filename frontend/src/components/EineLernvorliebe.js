@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography } from '@material-ui/core';
+import {
+    withStyles,
+    Button,
+    TextField,
+    InputAdornment,
+    IconButton,
+    Grid,
+    Typography,
+    ButtonGroup
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
@@ -8,6 +17,8 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import LernvorliebenListEntry from "./LernvorliebenListEntry";
+import ProfilForm from "./dialogs/ProfilForm";
+import PersonEntry from "./PersonEntry";
 
 
 /** Displays a single Lernvorliebe of the current Person on the 'Your Profile' Tab */
@@ -18,6 +29,7 @@ class EineLernvorliebe extends Component {
 
         this.state = {
             lernvorliebe: null,
+            person: props.person,
             error: null,
             loadingInProgress: false
         };
@@ -43,13 +55,36 @@ class EineLernvorliebe extends Component {
         });
     }
 
+    /** Handles the onClick event of the edit person button */
+    editProfilButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showProfilForm: true
+        });
+    }
+
+    /** Handles the onClose event of the ProfilForm */
+    profilFormClosed = (person) => {
+        // customer is not null and therefor changed
+        if (person) {
+            this.setState({
+                person: person,
+                showProfilForm: false
+            });
+        } else {
+            this.setState({
+                showProfilForm: false
+            });
+        }
+    }
+
     componentDidMount() {
         this.getLernvorliebe();
     }
 
     render() {
         const {classes} = this.props;
-        const {lernvorliebe, error, loadingInProgress} = this.state;
+        const {lernvorliebe, person, error, showProfilForm, loadingInProgress} = this.state;
 
         return (
             <div className={classes.root}>
@@ -58,9 +93,15 @@ class EineLernvorliebe extends Component {
                     </Grid>
                 </Grid>
                 {
+                    person ?
+                        lernvorliebe ?
+                            <PersonEntry person={person} lernvorliebe={lernvorliebe}/>
+                        : null
+                        :null
+                }
+                {
                     lernvorliebe ?
-                        <LernvorliebenListEntry lernvorliebe={lernvorliebe}
-                        />
+                        <LernvorliebenListEntry lernvorliebe={lernvorliebe}/>
                         : null
                 }
                 <LoadingProgress show={loadingInProgress}/>

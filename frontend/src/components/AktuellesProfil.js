@@ -77,14 +77,12 @@ class AktuellesProfil extends Component {
                 </Grid>
                 {/*
                     person ?
-                        <PersonEntry person={person}
-                        />
-                : null*/
+                        <PersonEntry person={person}/>
+                    : null*/
                 }
                 {
                     profil ?
-                        <EineLernvorliebe lvId={profil.getLernvorliebeID()}
-                        />
+                        <EineLernvorliebe lvId={profil.getLernvorliebeID()} person={person} />
                     : null
                 }
                 <ContextErrorMessage

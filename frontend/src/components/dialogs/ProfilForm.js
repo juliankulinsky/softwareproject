@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { StudooAPI, PersonBO } from '../../api';
+import {StudooAPI, PersonBO, LernvorliebeBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
@@ -29,6 +29,15 @@ class ProfilForm extends Component {
       pID = props.person.getProfilId();
     }
 
+    let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
+    if (props.lernvorliebe) {
+      lt = props.lernvorliebe.get_lerntyp();
+      fq = props.lernvorliebe.get_frequenz();
+      ex = props.lernvorliebe.get_extrovertiertheit();
+      rp = props.lernvorliebe.get_remote_praesenz();
+      vk = props.lernvorliebe.get_vorkenntnisse();
+      li = props.lernvorliebe.get_lerninteressen();
+    }
     // Init the state
     this.state = {
       name: vn,
@@ -55,6 +64,24 @@ class ProfilForm extends Component {
       profilID: pID,
       profilIDValidationFailed: false,
       profilIDEdited: false,
+      lerntyp: lt,
+      lerntypValidationFailed: false,
+      lerntypEdited: false,
+      frequenz: fq,
+      frequenzValidationFailed: false,
+      frequenzEdited: false,
+      extrovertiertheit: ex,
+      extrovertiertheitValidationFailed: false,
+      extrovertiertheitEdited: false,
+      remote : rp,
+      remoteValidationFailed: false,
+      remoteEdited: false,
+      vorkenntnisse: vk,
+      vorkenntnisseValidationFailed: false,
+      vorkenntnisseEdited: false,
+      lerninteressen: li,
+      lerninteressenValidationFailed: false,
+      lerninteressenEdited: false,
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
@@ -62,6 +89,11 @@ class ProfilForm extends Component {
     };
     // save this state for canceling
     this.baseState = this.state;
+  }
+
+  updateProfil = () => {
+    this.updatePerson()
+    this.updateLernvorliebe()
   }
 
   /** Updates the person */
@@ -98,7 +130,44 @@ class ProfilForm extends Component {
         updatingError: e                        // show error message
       })
     );
+    // set loading to true
+    this.setState({
+      updatingInProgress: true,                 // show loading indicator
+      updatingError: null                       // disable error message
+    });
+  }
 
+
+  /** Updates the Lernvorliebe */
+  updateLernvorliebe = () => {
+    // clone the Person, in case the backend call fails
+    let updatedLernvorliebe = Object.assign(new LernvorliebeBO(), this.props.lernvorliebe);
+    // set new attributes from Textfields
+    updatedLernvorliebe.set_lerntyp(parseInt(this.state.lerntyp));
+    updatedLernvorliebe.set_frequenz(parseInt(this.state.frequenz));
+    updatedLernvorliebe.set_extrovertiertheit(parseInt(this.state.extrovertiertheit));
+    updatedLernvorliebe.set_remote_praesenz(parseInt(this.state.remote));
+    updatedLernvorliebe.set_vorkenntnisse(this.state.vorkenntnisse);
+    updatedLernvorliebe.set_lerninteressen(this.state.lerninteressen);
+    StudooAPI.getAPI().updateLernvorliebe(updatedLernvorliebe).then(lernvorliebe => {
+      this.setState({
+        updatingInProgress: false,              // disable loading indicator
+        updatingError: null                     // no error message
+      });
+      // keep the new state as base state
+      this.baseState.lerntyp = this.state.lerntyp;
+      this.baseState.frequenz = this.state.frequenz;
+      this.baseState.extrovertiertheit = this.state.extrovertiertheit;
+      this.baseState.remote = this.state.remote;
+      this.baseState.vorkenntnisse = this.state.vorkenntnisse;
+      this.baseState.lerninteressen = this.state.lerninteressen;
+      this.props.onClose(updatedLernvorliebe);      // call the parent with the new customer
+    }).catch(e =>
+        this.setState({
+          updatingInProgress: false,              // disable loading indicator
+          updatingError: e                        // show error message
+        })
+    );
     // set loading to true
     this.setState({
       updatingInProgress: true,                 // show loading indicator
@@ -135,6 +204,10 @@ class ProfilForm extends Component {
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
+        lerntyp, lerntypValidationFailed, lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited,
+        extrovertiertheit, extrovertiertheitValidationFailed, extrovertiertheitEdited, remote,
+        remoteValidationFailed, remoteEdited, vorkenntnisse, vorkenntnisseValidationFailed,
+        vorkenntnisseEdited, lerninteressen, lerninteressenValidationFailed, lerninteressenEdited,
         addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
 
     let title = '';
@@ -177,6 +250,24 @@ class ProfilForm extends Component {
               <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
                 onChange={this.textFieldValueChange} error={semesterValidationFailed}
                 helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
+                onChange={this.textFieldValueChange} error={lerntypValidationFailed}
+                helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='frequenz' label='Frequenz:' value={frequenz}
+                onChange={this.textFieldValueChange} error={frequenzValidationFailed}
+                helperText={frequenzValidationFailed ? 'The alter must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='extrovertiertheit' label='Extrovertiertheit:' value={extrovertiertheit}
+                onChange={this.textFieldValueChange} error={extrovertiertheitValidationFailed}
+                helperText={extrovertiertheitValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='remote' label='Remote/Präsenz:' value={remote}
+                onChange={this.textFieldValueChange} error={remoteValidationFailed}
+                helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
+                onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
+                helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
+                onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
+                helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
@@ -195,7 +286,7 @@ class ProfilForm extends Component {
               person ?
                 <Button disabled={ nameValidationFailed || alterValidationFailed ||
                 wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
-                profilIDValidationFailed} variant='contained' onClick={this.updatePerson} color='primary'>
+                profilIDValidationFailed} variant='contained' onClick={this.updateProfil} color='primary'>
                   Update
               </Button>
                 : null
@@ -225,6 +316,7 @@ ProfilForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   person: PropTypes.object,
+  lernvorliebe: PropTypes.object,
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }

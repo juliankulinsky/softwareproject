@@ -76,8 +76,7 @@ class ProfilVorschau extends Component {
           </IconButton>
             {
             person ?
-                <PersonEntry person={person}
-                />
+                <AktuellesProfil person={person} user={user}/>
                 : null
           }
           <LoadingProgress show={loadingInProgress}/>
