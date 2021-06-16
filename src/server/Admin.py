@@ -365,6 +365,11 @@ class Admin(object):
         with PersonMapper() as mapper:
             return mapper.find_by_google_user_id(google_user_id)
 
+    def get_personen_by_konversation_id(self, konversation_id):
+        """ Alle Personen, die an einer bestimmten Konversation teilnehmen, auslesen"""
+        with PersonMapper() as mapper:
+            return mapper.find_by_konversation_id(konversation_id)
+
     def save_person(self, person: Person):
         """ Änderungen einer Person speichern """
         with PersonMapper() as mapper:

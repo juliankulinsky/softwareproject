@@ -5,6 +5,7 @@ export default class BusinessObject {
 
   constructor() {
     this.id = 0;
+    this.erstellungszeitpunkt = new Date()
   }
 
   /**
@@ -19,6 +20,20 @@ export default class BusinessObject {
    */
   getID() {
     return this.id;
+  }
+
+  /**
+    Setzt Erstellungszeitpunkt des BO.
+   */
+  setErstellungszeitpunkt(aErstellungszeitpunkt) {
+    this.id = aErstellungszeitpunkt;
+  }
+
+  /**
+   *    Gibt Erstellungszeitpunkt des BO zurück.
+   */
+  getErstellungszeitpunkt() {
+    return this.erstellungszeitpunkt;
   }
 
   /**

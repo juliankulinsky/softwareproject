@@ -144,14 +144,14 @@ class App extends React.Component {
 		firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
 	}
 
-	/** Renders the whole app */
+	/** Renders the whole app <AktuellesProfil person={currentPersonBO} user={currentUser} />
+										*/
 	render() {
 		const {currentUser, currentPersonBO, appError, authError, authLoading} = this.state;
 
 		return (
 				<Router basename={process.env.PUBLIC_URL}>
 					<Container maxWidth='md'>
-
 						{
 							currentUser ?
 								<>
@@ -177,7 +177,6 @@ class App extends React.Component {
 															</Route>
 															<Route path='/profil'>
 																<ProfilVorschau person={currentPersonBO} user={currentUser}/>
-																<AktuellesProfil person={currentPersonBO} user={currentUser} />
 															</Route>
 															<Route path='/gruppenvorschlaege'>
 																<AllGruppenvorschlaege/>

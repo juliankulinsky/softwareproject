@@ -47,12 +47,14 @@ class LernvorliebenListEntry extends Component {
             <div>
                 <Grid>
                     <Grid item>
-                        <ButtonGroup variant='text' size='small'>
-                            <Button color='primary' onClick={this.editProfilLernvorliebenButtonClicked}>
-                                edit
-                            </Button>
-                        </ButtonGroup>
-                        <Typography className={classes.heading}>
+                        {/*
+                            <ButtonGroup variant='text' size='small'>
+                                <Button color='primary' onClick={this.editProfilLernvorliebenButtonClicked}>
+                                    edit
+                                </Button>
+                            </ButtonGroup>
+                            */
+                        }<Typography className={classes.heading}>
                             Lerntyp:
                             {
                                 lernvorliebe.get_lerntyp()
@@ -85,7 +87,10 @@ class LernvorliebenListEntry extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                <ProfilLernvorliebenForm show={showProfilLernvorliebenForm} lernvorliebe={lernvorliebe} onClose={this.profilLernvorliebenFormClosed} />
+                {/*
+                    <ProfilLernvorliebenForm show={showProfilLernvorliebenForm} lernvorliebe={lernvorliebe}
+                                             onClose={this.profilLernvorliebenFormClosed}/>
+                */}
             </div>
         )
     }
