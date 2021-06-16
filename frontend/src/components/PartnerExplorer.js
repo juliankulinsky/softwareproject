@@ -149,7 +149,7 @@ class PartnerExplorer extends Component {
                         }
                         Willst du eine Konversation mit der Person anfangen?
                         <Button variant='contained' onClick={this.entscheidungTrue}>
-                            JA
+                            JA (In Arbeit)
                         </Button>
                     </Typography>
                     :
