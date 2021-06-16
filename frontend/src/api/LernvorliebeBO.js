@@ -17,7 +17,7 @@ export default class LernvorliebeBO extends BusinessObject {
         super();
         this.lerntyp = lerntyp;
         this.frequenz = frequenz;
-        this.extrovertierteit= extrovertiertheit;
+        this.extrovertiertheit= extrovertiertheit;
         this.remote_praesenz = remote_praesenz;
         this.vorkenntnisse = vorkenntnisse;
         this.lerninteressen = lerninteressen;
@@ -55,14 +55,14 @@ export default class LernvorliebeBO extends BusinessObject {
      * Gibt die Extrovertiertheit aus.
      */
     get_extrovertiertheit() {
-        return this.extrovertierteit;
+        return this.extrovertiertheit;
     }
 
     /**
      * Legt die Extrovertiertheit fest.
      */
     set_extrovertiertheit(wert=0) {
-        this.extrovertierteit = wert;
+        this.extrovertiertheit = wert;
     }
 
     /**

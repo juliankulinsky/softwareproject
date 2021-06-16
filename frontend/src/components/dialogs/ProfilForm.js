@@ -2,29 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { StudooAPI, PersonBO } from '../../api';
+import {StudooAPI, PersonBO, LernvorliebeBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
-
 /**
- * Shows a modal form dialog for a CustomerBO in prop customer. If the customer is set, the dialog is configured
- * as an edit dialog and the text fields of the form are filled from the given CustomerBO object.
- * If the customer is null, the dialog is configured as a new customer dialog and the textfields are empty.
- * In dependency of the edit/new state, the respective backend calls are made to update or create a customer.
- * After that, the function of the onClose prop is called with the created/update CustomerBO object as parameter.
- * When the dialog is canceled, onClose is called with null.
- *
- * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
- * @see See Material-UIs [TextField](https://material-ui.com/components/text-fields//)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ * Shows a Form for the currently logged in Person which allows to edit the Alter, Wohnort, Studiengang and Semester
  */
 class ProfilForm extends Component {
 
   constructor(props) {
     super(props);
 
+    /**
+     * Init empty variable and set Lernvorliebe values of the given Person
+     * */
     let vn = '', em = '', gid= '', alt = 0, wo = '', sg = '', sm = 0, pID = 0;
     if (props.person) {
       vn = props.person.getName();
@@ -37,6 +29,15 @@ class ProfilForm extends Component {
       pID = props.person.getProfilId();
     }
 
+    let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
+    if (props.lernvorliebe) {
+      lt = props.lernvorliebe.get_lerntyp();
+      fq = props.lernvorliebe.get_frequenz();
+      ex = props.lernvorliebe.get_extrovertiertheit();
+      rp = props.lernvorliebe.get_remote_praesenz();
+      vk = props.lernvorliebe.get_vorkenntnisse();
+      li = props.lernvorliebe.get_lerninteressen();
+    }
     // Init the state
     this.state = {
       name: vn,
@@ -63,6 +64,24 @@ class ProfilForm extends Component {
       profilID: pID,
       profilIDValidationFailed: false,
       profilIDEdited: false,
+      lerntyp: lt,
+      lerntypValidationFailed: false,
+      lerntypEdited: false,
+      frequenz: fq,
+      frequenzValidationFailed: false,
+      frequenzEdited: false,
+      extrovertiertheit: ex,
+      extrovertiertheitValidationFailed: false,
+      extrovertiertheitEdited: false,
+      remote : rp,
+      remoteValidationFailed: false,
+      remoteEdited: false,
+      vorkenntnisse: vk,
+      vorkenntnisseValidationFailed: false,
+      vorkenntnisseEdited: false,
+      lerninteressen: li,
+      lerninteressenValidationFailed: false,
+      lerninteressenEdited: false,
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
@@ -72,27 +91,9 @@ class ProfilForm extends Component {
     this.baseState = this.state;
   }
 
-  /** Adds the Person */
-  addPerson = () => {
-    let newPerson = new PersonBO(this.state.name, this.state.alter, this.state.wohnort,
-        this.state.studiengang, this.state.semester, this.state.profilID);
-    StudooAPI.getAPI().addPerson(newPerson).then(person => {
-      // Backend call sucessfull
-      // reinit the dialogs state for a new empty person
-      this.setState(this.baseState);
-      this.props.onClose(person); // call the parent with the person object from backend
-    }).catch(e =>
-      this.setState({
-        updatingInProgress: false,    // disable loading indicator
-        updatingError: e              // show error message
-      })
-    );
-
-    // set loading to true
-    this.setState({
-      updatingInProgress: true,       // show loading indicator
-      updatingError: null             // disable error message
-    });
+  updateProfil = () => {
+    this.updatePerson()
+    this.updateLernvorliebe()
   }
 
   /** Updates the person */
@@ -129,7 +130,44 @@ class ProfilForm extends Component {
         updatingError: e                        // show error message
       })
     );
+    // set loading to true
+    this.setState({
+      updatingInProgress: true,                 // show loading indicator
+      updatingError: null                       // disable error message
+    });
+  }
 
+
+  /** Updates the Lernvorliebe */
+  updateLernvorliebe = () => {
+    // clone the Person, in case the backend call fails
+    let updatedLernvorliebe = Object.assign(new LernvorliebeBO(), this.props.lernvorliebe);
+    // set new attributes from Textfields
+    updatedLernvorliebe.set_lerntyp(parseInt(this.state.lerntyp));
+    updatedLernvorliebe.set_frequenz(parseInt(this.state.frequenz));
+    updatedLernvorliebe.set_extrovertiertheit(parseInt(this.state.extrovertiertheit));
+    updatedLernvorliebe.set_remote_praesenz(parseInt(this.state.remote));
+    updatedLernvorliebe.set_vorkenntnisse(this.state.vorkenntnisse);
+    updatedLernvorliebe.set_lerninteressen(this.state.lerninteressen);
+    StudooAPI.getAPI().updateLernvorliebe(updatedLernvorliebe).then(lernvorliebe => {
+      this.setState({
+        updatingInProgress: false,              // disable loading indicator
+        updatingError: null                     // no error message
+      });
+      // keep the new state as base state
+      this.baseState.lerntyp = this.state.lerntyp;
+      this.baseState.frequenz = this.state.frequenz;
+      this.baseState.extrovertiertheit = this.state.extrovertiertheit;
+      this.baseState.remote = this.state.remote;
+      this.baseState.vorkenntnisse = this.state.vorkenntnisse;
+      this.baseState.lerninteressen = this.state.lerninteressen;
+      this.props.onClose(updatedLernvorliebe);      // call the parent with the new customer
+    }).catch(e =>
+        this.setState({
+          updatingInProgress: false,              // disable loading indicator
+          updatingError: e                        // show error message
+        })
+    );
     // set loading to true
     this.setState({
       updatingInProgress: true,                 // show loading indicator
@@ -166,6 +204,10 @@ class ProfilForm extends Component {
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
+        lerntyp, lerntypValidationFailed, lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited,
+        extrovertiertheit, extrovertiertheitValidationFailed, extrovertiertheitEdited, remote,
+        remoteValidationFailed, remoteEdited, vorkenntnisse, vorkenntnisseValidationFailed,
+        vorkenntnisseEdited, lerninteressen, lerninteressenValidationFailed, lerninteressenEdited,
         addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
 
     let title = '';
@@ -208,14 +250,31 @@ class ProfilForm extends Component {
               <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
                 onChange={this.textFieldValueChange} error={semesterValidationFailed}
                 helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
+                onChange={this.textFieldValueChange} error={lerntypValidationFailed}
+                helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='frequenz' label='Frequenz:' value={frequenz}
+                onChange={this.textFieldValueChange} error={frequenzValidationFailed}
+                helperText={frequenzValidationFailed ? 'The alter must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='extrovertiertheit' label='Extrovertiertheit:' value={extrovertiertheit}
+                onChange={this.textFieldValueChange} error={extrovertiertheitValidationFailed}
+                helperText={extrovertiertheitValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='remote' label='Remote/Präsenz:' value={remote}
+                onChange={this.textFieldValueChange} error={remoteValidationFailed}
+                helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
+                onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
+                helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
+                onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
+                helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
               // Show error message in dependency of customer prop
               person ?
                 <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${person.getID()} could not be updated.`} onReload={this.updatePerson} />
-                :
-                <ContextErrorMessage error={addingError} contextErrorMsg={`The customer could not be added.`} onReload={this.addPerson} />
+                : null
             }
           </DialogContent>
           <DialogActions>
@@ -227,14 +286,10 @@ class ProfilForm extends Component {
               person ?
                 <Button disabled={ nameValidationFailed || alterValidationFailed ||
                 wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
-                profilIDValidationFailed} variant='contained' onClick={this.updatePerson} color='primary'>
+                profilIDValidationFailed} variant='contained' onClick={this.updateProfil} color='primary'>
                   Update
               </Button>
-                : <Button disabled={ nameValidationFailed || alterValidationFailed ||
-                wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
-                profilIDValidationFailed} variant='contained' onClick={this.addPerson} color='primary'>
-                  Add
-             </Button>
+                : null
             }
           </DialogActions>
         </Dialog>
@@ -260,16 +315,9 @@ const styles = theme => ({
 ProfilForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
   person: PropTypes.object,
-  /** If true, the form is rendered */
+  lernvorliebe: PropTypes.object,
   show: PropTypes.bool.isRequired,
-  /**
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
-   *
-   * Signature: onClose(CustomerBO customer);
-   */
   onClose: PropTypes.func.isRequired,
 }
 

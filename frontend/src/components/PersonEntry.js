@@ -5,16 +5,11 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import ProfilForm from "./dialogs/ProfilForm";
-//import AccountList from './AccountList';
+import StudooAPI from "../api/StudooAPI";
 
 
 /**
- * Renders a CustomerBO object within a expandable/collapsible CustomerListEntry with the customer manipulation
- * functions. If expanded, it renders a AccountList.
- *
- * @see See [AccountList](#accountlist)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ *  Displays all information of a single Person
  */
 class PersonEntry extends Component {
 
@@ -24,16 +19,11 @@ class PersonEntry extends Component {
     // Init the state
     this.state = {
       person: props.person,
+      lernvorliebe: props.lernvorliebe,
       showProfilForm: false,
       showProfilDeleteDialog: false,
     };
   }
-
-  /** Handles onChange events of the underlying ExpansionPanel */
-  expansionPanelStateChanged = () => {
-    this.props.onExpandedStateChange(this.props.person);
-  }
-
   /** Handles onAccountDelete events from an AccountListEntry */
   deleteAccountHandler = (deletedAccount) => {
     // console.log(deletedAccount.getID());
@@ -50,12 +40,13 @@ class PersonEntry extends Component {
     });
   }
 
-  /** Handles the onClose event of the CustomerForm */
-  profilFormClosed = (person) => {
+  /** Handles the onClose event of the ProfilForm */
+  profilFormClosed = (person, lernvorliebe) => {
     // customer is not null and therefor changed
-    if (person) {
+    if (person && lernvorliebe) {
       this.setState({
         person: person,
+        lernvorliebe: lernvorliebe,
         showProfilForm: false
       });
     } else {
@@ -65,67 +56,49 @@ class PersonEntry extends Component {
     }
   }
 
-  /** Handles the onClick event of the delete customer button */
-  deleteProfilButtonClicked = (event) => {
-    event.stopPropagation();
-    this.setState({
-      showProfilDeleteDialog: true
-    });
-  }
-
-  /** Handles the onClose event of the CustomerDeleteDialog */
-  deleteProfilDialogClosed = (person) => {
-    // if customer is not null, delete it
-    if (person) {
-      this.props.onPersonDeleted(person);
-    }
-
-    // Don´t show the dialog
-    this.setState({
-      showProfilDeleteDialog: false
-    });
-  }
-
   /** Renders the component */
   render() {
     const { classes, expandedState } = this.props;
     // Use the states customer
-    const { person, showProfilForm, showProfilDeleteDialog } = this.state;
+    const { person, lernvorliebe, showProfilForm } = this.state;
 
      console.log(this.state);
     return (
         <div>
-          <div>
-            <ButtonGroup variant='text' size='small'>
+          <ButtonGroup variant='text' size='small'>
                   <Button color='primary' onClick={this.editProfilButtonClicked}>
                     edit
                   </Button>
             </ButtonGroup>
-          </div>
-          Name:
-          {
-            person.getName()
-          }
-          Alter:
-          {
-            person.getAlter()
-          }
-          Wohnort:
-          {
-            person.getWohnort()
-          }
-          Studiengang:
-          {
-            person.getStudiengang()
-          }
-          Semester:
-          {
-            person.getSemester()
-          }
+            <Typography className={classes.heading}>
+              Name:
+              {
+                person ?
+                  person.getName()
+                    :null
+              }
+              Alter:
+              {
+                person.getAlter()
+              }
+              Wohnort:
+              {
+                person.getWohnort()
+              }
+              Studiengang:
+              {
+                person.getStudiengang()
+              }
+              Semester:
+              {
+                person.getSemester()
+              }
 
-          <ProfilForm show={showProfilForm} person={person} onClose={this.profilFormClosed} />
-          <PersonDeleteDialog show={showProfilDeleteDialog} person={person} onClose={this.deleteProfilDialogClosed} />
-      </div>
+            </Typography>
+          {
+          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} />
+          }
+        </div>
 
     );
   }
@@ -142,20 +115,9 @@ const styles = theme => ({
 PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be rendered */
   person: PropTypes.object.isRequired,
-  /** The state of this CustomerListEntry. If true the customer is shown with its accounts */
   expandedState: PropTypes.bool.isRequired,
-  /** The handler responsible for handle expanded state changes (exanding/collapsing) of this CustomerListEntry
-   *
-   * Signature: onExpandedStateChange(CustomerBO customer)
-   */
   onExpandedStateChange: PropTypes.func.isRequired,
-  /**
-   *  Event Handler function which is called after a sucessfull delete of this customer.
-   *
-   * Signature: onCustomerDelete(CustomerBO customer)
-   */
   onProfilDeleted: PropTypes.func.isRequired
 }
 
