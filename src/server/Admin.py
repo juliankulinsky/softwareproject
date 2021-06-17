@@ -294,13 +294,14 @@ class Admin(object):
     """
         PartnerVorschlag - Spezifische Methoden
     """
-    def create_partnervorschlag(self, person_id, partnervorschlag_id, aehnlichkeit,
+    def create_partnervorschlag(self, person_id, partner_id, aehnlichkeit, matchpoints,
                                 entscheidung_person, entscheidung_partner):
         """Ein PartnerVorschlag anlegen"""
         partner_vorschlag = PartnerVorschlag()
         partner_vorschlag.set_person_id(person_id)
-        partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+        partner_vorschlag.set_partner_id(partner_id)
         partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+        partner_vorschlag.set_matchpoints(matchpoints)
         partner_vorschlag.set_entscheidung_person(entscheidung_person)
         partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
 

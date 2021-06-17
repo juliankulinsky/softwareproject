@@ -30,6 +30,7 @@ class PartnerExplorer extends Component {
             currentPerson: this.props.person,
             partnerPerson: null,
             entscheidung: null,
+            matchpoints: 0,
             error: null,
             loadingInProgress: false,
             updatingInProgress: false,
@@ -39,7 +40,7 @@ class PartnerExplorer extends Component {
     }
 
     getPartnerPerson = () => {
-        StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerVorschlagID())
+        StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
             .then(partnerPersonBO => {
                 this.setState({
                     partnerPerson: partnerPersonBO,
@@ -64,14 +65,16 @@ class PartnerExplorer extends Component {
             .then(partnervorschlagBO => {
                 this.setState({
                     partnervorschlag: partnervorschlagBO,
+                    matchpoints: partnervorschlagBO.getMatchpoints(),
                     error: null,
                     loadingInProgress: false
                 });
-                if (this.state.partnervorschlag != null){
+                if (this.state.partnervorschlag != null) {
                     this.getPartnerPerson()
                 }
             }).catch(e => this.setState({
             partnervorschlag: null,
+            matchpoints: 0,
             error: e,
             loadingInProgress: false
         }));
@@ -83,11 +86,9 @@ class PartnerExplorer extends Component {
     }
 
     entscheidungTrue = () => {
-        console.log("HALLO")
         this.setState({
             entscheidung: true
-        }, function (){
-            console.log(this.state.entscheidung)
+        }, function () {
             this.updatePartnervorschlag()
         });
     }
@@ -95,8 +96,7 @@ class PartnerExplorer extends Component {
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false
-        }, function (){
-            console.log(this.state.entscheidung)
+        }, function () {
             this.updatePartnervorschlag()
         });
     }
@@ -104,8 +104,17 @@ class PartnerExplorer extends Component {
     updatePartnervorschlag = () => {
         let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
         console.log(updatedPartnerVorschlag)
-        updatedPartnerVorschlag.setEntscheidungPerson(!!this.state.entscheidung);
-        updatedPartnerVorschlag.setEntscheidungPartner(!!this.state.partnervorschlag.getEntscheidungPartner())
+        if (this.props.person.getID() === this.state.partnervorschlag.getPersonId()) {
+            updatedPartnerVorschlag.setEntscheidungPerson(true);
+            if (this.state.entscheidung) {
+                updatedPartnerVorschlag.setMatchpoints(this.state.matchpoints += 1)
+            }
+        } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
+            updatedPartnerVorschlag.setEntscheidungPartner(true);
+            if (this.state.entscheidung) {
+                updatedPartnerVorschlag.setMatchpoints(this.state.matchpoints += 1)
+            }
+        }
         StudooAPI.getAPI().updatePartnerVorschlag(updatedPartnerVorschlag)
             .then(partnerVorschlag => {
                 this.setState({
@@ -114,10 +123,10 @@ class PartnerExplorer extends Component {
                 });
                 this.baseState.entscheidung = this.state.entscheidung;
             }).catch(e =>
-        this.setState({
-            updatingInProgress: false,
-            updatingError: e
-        }));
+            this.setState({
+                updatingInProgress: false,
+                updatingError: e
+            }));
         this.setState({
             updatingInProgress: true,
             updatingError: null
@@ -138,12 +147,13 @@ class PartnerExplorer extends Component {
                 {partnervorschlag ?
                     <Typography>
                         Auf dich zugeschnittener Partnervorschlag mit der ID:{partnervorschlag.getID()}<br/>
-                        PartnerID: {partnervorschlag.getPartnerVorschlagID()}&nbsp;
+                        PartnerID: {partnervorschlag.getPartnerID()}&nbsp;
                         mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
                         {
                             partnerPerson ?
                                 <Typography>
-                                    Name: {partnerPerson.getName()}
+                                    Name: {partnerPerson.getName()}<br/>
+                                    Matchpoints: {partnervorschlag.getMatchpoints()}
                                 </Typography>
                                 : null
                         }
