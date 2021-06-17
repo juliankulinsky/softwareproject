@@ -34,7 +34,8 @@ class PartnerExplorer extends Component {
             error: null,
             loadingInProgress: false,
             updatingInProgress: false,
-            updatingError: null
+            updatingError: null,
+            buttonPressed: false
         }
         this.baseState = this.state;
     }
@@ -82,7 +83,8 @@ class PartnerExplorer extends Component {
 
     entscheidungTrue = () => {
         this.setState({
-            entscheidung: true
+            entscheidung: true,
+            buttonPressed: true
         }, function () {
             this.updatePartnervorschlag()
         });
@@ -90,7 +92,8 @@ class PartnerExplorer extends Component {
 
     entscheidungFalse = () => {
         this.setState({
-            entscheidung: false
+            entscheidung: false,
+            buttonPressed: true
         }, function () {
             this.updatePartnervorschlag()
         });
@@ -151,7 +154,7 @@ class PartnerExplorer extends Component {
                             </Typography>
                             Willst du eine Konversation mit {anderePerson.getName()} anfangen?
                             <br/>
-                            <Button variant='contained' onClick={this.entscheidungTrue}>
+                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
                                 JA (In Arbeit)
                             </Button>
                         </Typography>
