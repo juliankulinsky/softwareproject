@@ -155,7 +155,10 @@ class PartnerExplorer extends Component {
                             Willst du eine Konversation mit {anderePerson.getName()} anfangen?
                             <br/>
                             <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
-                                JA (In Arbeit)
+                                JA
+                            </Button>
+                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungFalse}>
+                                NEIN
                             </Button>
                         </Typography>
                         :
