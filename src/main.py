@@ -502,6 +502,18 @@ class GruppenTeilnahmeOperations(Resource):
         return '', 200
 
 
+@studoo.route('/person/<int:person_id>/gruppe/<int:gruppen_id>/gruppenteilnahme')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmeByPersonIDundGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenteilnahme)
+    @secured
+    def get(self, person_id, gruppen_id):
+        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        return adm.get_gruppen_teilnahme_by_person_id_und_gruppen_id(person_id, gruppen_id)
+
+
 @studoo.route('/chatteilnahmen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class ChatteilnahmenListOperations(Resource):
@@ -555,6 +567,17 @@ class ChatteilnahmeOperations(Resource):
         ct = adm.get_chatteilnahme_by_id(id)
         adm.delete_chatteilnahme(ct)
         return '', 200
+
+
+@studoo.route('/person/<int:person_id>/konversation/<int:konversation_id>/chatteilnahme')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
+
+    @studoo.marshal_with(chatteilnahme)
+    @secured
+    def get(self, person_id, konversation_id):
+        adm = Admin()
+        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id,konversation_id)
 
 
 @studoo.route('/partnervorschlaege')

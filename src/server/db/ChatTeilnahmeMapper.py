@@ -63,6 +63,32 @@ class ChatTeilnahmeMapper (Mapper):
 
         return result
 
+    def find_by_person_id_und_konversation_id(self, person_id: int, konversation_id: int):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM chat_teilnahmen WHERE person_id={} AND konversation_id={}" \
+            .format(person_id,konversation_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, person_id, konversation_id) = tuples[0]
+            chat_teilnahme = ChatTeilnahme()
+            chat_teilnahme.set_id(id)
+            chat_teilnahme.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            chat_teilnahme.set_person_id(person_id)
+            chat_teilnahme.set_konversation_id(konversation_id)
+            result = chat_teilnahme
+        except IndexError:
+            """
+            """
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, chat_teilnahme: ChatTeilnahme):
         """
 

@@ -62,6 +62,32 @@ class GruppenTeilnahmeMapper(Mapper):
 
         return result
 
+    def find_by_person_id_und_gruppen_id(self, person_id: int, gruppen_id: int):
+        result = None
+        cursor = self._cnx.cursor()
+        command = (
+            "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(person_id,gruppen_id)
+        )
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) = tuples[0]
+            gruppenteilnahme = GruppenTeilnahme()
+            gruppenteilnahme.set_id(id)
+            gruppenteilnahme.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppenteilnahme.set_person_id(person_id)
+            gruppenteilnahme.set_gruppen_id(gruppen_id)
+            gruppenteilnahme.set_ist_admin(ist_admin)
+            result = gruppenteilnahme
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, gruppenteilnahme: GruppenTeilnahme):
         """Einfügen eines GruppenTeilnahme-Objekts in die Datenbank.
 

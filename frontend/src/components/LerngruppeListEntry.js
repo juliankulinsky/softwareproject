@@ -5,6 +5,7 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import {StudooAPI} from "../api";
 //import AccountList from './AccountList';
 
 
@@ -17,6 +18,18 @@ class LerngruppeListEntry extends Component {
         }
     }
 
+    deleteGruppenteilnahme = () => {
+        StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.person.getID(),this.props.lerngruppe.getID())
+            .then(gruppenTeilnahme => {
+                StudooAPI.getAPI().deleteGruppenTeilnahme(gruppenTeilnahme.getID())
+            })
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.lerngruppe.getKonversationId())
+            .then(chatTeilnahme => {
+                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
+            })
+
+    }
+
     render() {
         const { classes } = this.props;
         const { lerngruppe } = this.state;
@@ -26,15 +39,19 @@ class LerngruppeListEntry extends Component {
                 <Grid>
                     <Grid item>
                         <Typography className={classes.heading}>
+                            ------------- <br/>
                             Gruppenname:
                             {
                                 lerngruppe.getGruppenname()
-                            }
+                            } &nbsp;
+                            <Button color="secondary" variant="contained" onClick={this.deleteGruppenteilnahme}>
+                                Teilnahme beenden
+                            </Button>
+                            <br/>-------------
 
                         </Typography>
                     </Grid>
                 </Grid>
-                Ende von einem Entry
             </div>
         )
     }
