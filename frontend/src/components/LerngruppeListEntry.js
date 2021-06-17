@@ -14,15 +14,22 @@ class LerngruppeListEntry extends Component {
         super(props);
 
         this.state = {
-            lerngruppe: props.lerngruppe
+            lerngruppe: props.lerngruppe,
+            gruppenTeilnahme: null
         }
     }
 
-    deleteGruppenteilnahme = () => {
+    getGruppenTeilnahme = () => {
         StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.person.getID(),this.props.lerngruppe.getID())
-            .then(gruppenTeilnahme => {
-                StudooAPI.getAPI().deleteGruppenTeilnahme(gruppenTeilnahme.getID())
+            .then (gruppenTeilnahme => {
+                this.setState({
+                    gruppenTeilnahme: gruppenTeilnahme
+                })
             })
+    }
+
+    deleteTeilnahme = () => {
+        StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.gruppenTeilnahme.getID())
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
@@ -30,9 +37,13 @@ class LerngruppeListEntry extends Component {
 
     }
 
+    componentDidMount() {
+        this.getGruppenTeilnahme()
+    }
+
     render() {
         const { classes } = this.props;
-        const { lerngruppe } = this.state;
+        const { lerngruppe, gruppenTeilnahme } = this.state;
 
         return (
             <div>
@@ -44,7 +55,7 @@ class LerngruppeListEntry extends Component {
                             {
                                 lerngruppe.getGruppenname()
                             } &nbsp;
-                            <Button color="secondary" variant="contained" onClick={this.deleteGruppenteilnahme}>
+                            <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
                                 Teilnahme beenden
                             </Button>
                             <br/>-------------
