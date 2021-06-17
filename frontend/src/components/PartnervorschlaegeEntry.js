@@ -13,23 +13,21 @@ class PartnervorschlaegeEntry extends Component {
         super(props);
 
         this.state = {
-            partnervorschlaege: props.partnervorschlaege
+            partnervorschlag: props.partnervorschlag
         }
     }
 
     render() {
         const { classes } = this.props;
-        const { partnervorschlaege } = this.state;
+        const { partnervorschlag } = this.state;
 
         return (
             <div>
                 <Grid>
                     <Grid item>
                         <Typography className={classes.heading}>
-                            Partnervorschläge:
-                            {
-                                partnervorschlaege.getPartnerID()
-                            }
+                            PartnervorschlagID:{partnervorschlag.getID()} &nbsp;
+                            Matchpoints: {partnervorschlag.getMatchpoints()}
                         </Typography>
                     </Grid>
                 </Grid>
