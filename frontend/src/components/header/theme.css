@@ -25,7 +25,6 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
         background-color: #FFF;
 }
 /* Header/Toolbar MQ*/
@@ -33,10 +32,13 @@
     .toolbar {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
         background-color: #FFF;
 }
+    .icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
 }
 
 
