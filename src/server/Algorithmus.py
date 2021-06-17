@@ -46,22 +46,35 @@ class Algorithmus:
         partnerprofil = a.get_profil_by_id(partner.get_profil_id())
         lernvorliebeperson = a.get_lernvorliebe_by_id(personprofil.get_lernvorlieben_id())
         lernvorliebepartner = a.get_lernvorliebe_by_id(partnerprofil.get_lernvorlieben_id())
-
-        """if lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 0:
-            aehnlichkeit += 10
-        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 1 or -1:
-            aehnlichkeit += 7
-        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 2 or -2:
-            aehnlichkeit += 4
-        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 3 or -3:
-            aehnlichkeit += 2
-        else:
-            aehnlichkeit += 0"""
+        lernvorliebenpe = [lernvorliebeperson.get_frequenz(), lernvorliebeperson.get_extrovertiertheit(), lernvorliebeperson.get_remote_praesenz()]
+        lernvorliebenpa = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(), lernvorliebepartner.get_remote_praesenz()]
+        for x in lernvorliebenpe:
+            count = 0
+            if x - lernvorliebenpa[count] == 0:
+                aehnlichkeit += 10
+                count += 1
+            elif x - lernvorliebenpa[count] == 1 or -1:
+                aehnlichkeit += 7
+                count += 1
+            elif x - lernvorliebenpa[count] == 2 or -2:
+                aehnlichkeit += 4
+                count += 1
+            elif x - lernvorliebenpa[count] == 3 or -3:
+                aehnlichkeit += 2
+                count += 1
+            else:
+                aehnlichkeit += 0
+                count += 1
 
         with PartnerVorschlagMapper() as mapper:
             result = mapper.find_by_key(partnervorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
             mapper.update(result)
+
+
+adm = Admin()
+algo = Algorithmus()
+print(algo.match(adm.get_partner_vorschlag_by_id(1)))
 
 
 
