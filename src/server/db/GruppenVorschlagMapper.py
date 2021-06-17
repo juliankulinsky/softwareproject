@@ -72,6 +72,36 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
+    def find_best_for_person_id(self, person_id: int):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person=FALSE " \
+                  "ORDER BY aehnlichkeit DESC ".format(person_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) = tuples[0]
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result = gruppen_vorschlag
+        except IndexError:
+            """"""
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, gruppen_vorschlag: GruppenVorschlag):
         """
 

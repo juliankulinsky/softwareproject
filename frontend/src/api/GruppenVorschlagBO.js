@@ -13,12 +13,12 @@ export default class GruppenVorschlagBO extends VorschlagBO {
 
     // Nun die jeweiligen Getter & Setter:
     /** Setzt die ID des Gruppen. */
-    setGruppenId(aGruppenId) {
+    setGruppenID(aGruppenId) {
     this.gruppen_id = aGruppenId;
     }
 
     /** Gibt die GruppenID aus. */
-    getGruppenId() {
+    getGruppenID() {
         return this.gruppen_id;
     }
 

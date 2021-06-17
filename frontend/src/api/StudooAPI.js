@@ -86,6 +86,7 @@ export default class StudooAPI {
 
     // GruppenVorschlag-bezogen
     #getGruppenVorschlaegeURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
+    #getGruppenVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlag`;
     #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
     #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
@@ -903,15 +904,21 @@ export default class StudooAPI {
     /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
      * @public */
     getGruppenVorschlaege() {
-        return fetch(this.#getGruppenVorschlaegeURL())
-            .then(response => response.json())
+        return this.#fetchAdvanced(this.#getGruppenVorschlaegeURL())
             .then((response) => {
-                console.log(GruppenVorschlagBO.fromJSON(response))
                 let res = GruppenVorschlagBO.fromJSON(response)
                 return new Promise(function (resolve) {
                     resolve(res);
+            })})
+    }
+
+    getGruppenVorschlagForPersonID(personID) {
+        return this.#fetchAdvanced(this.#getGruppenVorschlagForPersonIDURL(personID))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)[0]
+                return new Promise(function (resolve) {
+                    resolve(res);
             })
-            .catch(error => console.log('error', error));
             })
     }
 
