@@ -86,7 +86,7 @@ class LerngruppeListEntry extends Component {
                                             <>
                                                 &nbsp;
                                                 <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
-                                                    Verwalten
+                                                    Verwalten (In Arbeit)
                                                 </Button>
                                                 <Typography>
                                                     Das sind alle Teilnehmer:
