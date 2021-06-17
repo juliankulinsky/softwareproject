@@ -33,6 +33,7 @@ import AktuellesProfil from "./components/AktuellesProfil";
 import ProfilForm from "./components/dialogs/ProfilForm";
 import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
+import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
 
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
@@ -199,6 +200,7 @@ class App extends React.Component {
 															</Route>
 															<Route path='/anfragen'>
 																<EingehendeAnfragenList person={currentPersonBO}/>
+																<AusgehendeAnfragenList person={currentPersonBO}/>
 															</Route>
 														</>
 												}

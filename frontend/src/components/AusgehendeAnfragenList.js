@@ -10,45 +10,46 @@ import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import EingehendeAnfragenListEntry from "./EingehendeAnfragenListEntry";
+import AusgehendeAnfragenListEntry from "./AusgehendeAnfragenListEntry";
 //import AccountList from './AccountList';
 
 
-class EingehendeAnfragenList extends Component {
+class AusgehendeAnfragenList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            eingehendeKonversationsAnfragen: [],
+            ausgehendeKonversationsAnfragen: [],
         }
     }
 
-    getEingehendeKonversationsAnfragen = () => {
-        StudooAPI.getAPI().getEingehendePartnerVorschlaegeForPersonID(this.props.person.getID())
+    getAusgehendeKonversationsAnfragen = () => {
+        StudooAPI.getAPI().getAusgehendePartnerVorschlaegeForPersonID(this.props.person.getID())
             .then(anfragen => {
                 this.setState({
-                    eingehendeKonversationsAnfragen: anfragen
+                    ausgehendeKonversationsAnfragen: anfragen
                 })
             })
     }
 
 
     componentDidMount() {
-        this.getEingehendeKonversationsAnfragen();
+        this.getAusgehendeKonversationsAnfragen();
     }
 
     render() {
         const { classes } = this.props;
-        const { eingehendeKonversationsAnfragen } = this.state;
+        const { ausgehendeKonversationsAnfragen } = this.state;
 
         return (
             <Typography>
                 {
-                    eingehendeKonversationsAnfragen.length > 0 ?
+                    ausgehendeKonversationsAnfragen.length > 0 ?
                         <Typography>
-                            Das sind alle eingehenden Konversationsanfragen von {this.props.person.getName()}: <br/>
+                            Das sind alle ausgehenden Konversationsanfragen von {this.props.person.getName()}: <br/>
                             {
-                                eingehendeKonversationsAnfragen.map( anfrage =>
-                                    <EingehendeAnfragenListEntry
+                                ausgehendeKonversationsAnfragen.map( anfrage =>
+                                    <AusgehendeAnfragenListEntry
                                         person={this.props.person}
                                         anfrage={anfrage}
                                     />
@@ -58,7 +59,7 @@ class EingehendeAnfragenList extends Component {
                         </Typography>
                         :
                         <Typography>
-                            Du hast keine eingehenden Konversationsanfragen :/
+                            Du hast keine ausgehenden Konversationsanfragen :/
                         </Typography>
 
                 }
@@ -78,10 +79,10 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-EingehendeAnfragenList.propTypes = {
+AusgehendeAnfragenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
 
 }
 
-export default withStyles(styles)(EingehendeAnfragenList);
+export default withStyles(styles)(AusgehendeAnfragenList);
