@@ -35,19 +35,33 @@ class Algorithmus:
                 mapper.update(result)
         return result.get_aehnlichkeit()"""
 
-    def match(self):
-        adm = Admin()
-        p = PartnerVorschlag().
+    def match(self, partnervorschlag: PartnerVorschlag):
+        aehnlichkeit = 0
+        a = Admin()
+        personid = partnervorschlag.get_person_id()
+        partnerid = partnervorschlag.get_partner_id()
+        person = a.get_person_by_id(personid)
+        partner = a.get_person_by_id(partnerid)
+        personprofil = a.get_profil_by_id(person.get_profil_id())
+        partnerprofil = a.get_profil_by_id(partner.get_profil_id())
+        lernvorliebeperson = a.get_lernvorliebe_by_id(personprofil.get_lernvorlieben_id())
+        lernvorliebepartner = a.get_lernvorliebe_by_id(partnerprofil.get_lernvorlieben_id())
 
+        """if lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 0:
+            aehnlichkeit += 10
+        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 1 or -1:
+            aehnlichkeit += 7
+        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 2 or -2:
+            aehnlichkeit += 4
+        elif lernvorliebeperson.get_frequenz() - lernvorliebepartner.get_frequenz() == 3 or -3:
+            aehnlichkeit += 2
+        else:
+            aehnlichkeit += 0"""
 
-
-
-
-
-
-
-test = Algorithmus()
-print(test.getalllernvorlieben())
+        with PartnerVorschlagMapper() as mapper:
+            result = mapper.find_by_key(partnervorschlag.get_id())
+            result.set_aehnlichkeit(aehnlichkeit)
+            mapper.update(result)
 
 
 
