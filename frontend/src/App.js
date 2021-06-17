@@ -25,7 +25,6 @@ import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
-import theme from "./components/header/theme";
 import {StudooAPI} from "./api";
 import PartnerExplorer from "./components/PartnerExplorer";
 import ProfilVorschau from "./components/ProfilVorschau";
@@ -151,7 +150,6 @@ class App extends React.Component {
 
 		return (
 				<Router basename={process.env.PUBLIC_URL}>
-					<Container maxWidth='md'>
 						{
 							currentUser ?
 								<>
@@ -209,7 +207,6 @@ class App extends React.Component {
 									<SignIn onSignIn={this.handleSignIn}/>
 								</>
 						}
-					</Container>
 				</Router>
 		);
 	}
