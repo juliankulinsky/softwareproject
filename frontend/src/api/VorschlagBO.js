@@ -20,7 +20,7 @@ export default class VorschlagBO extends BusinessObject {
     }
 
     /** Gibt die ID der Person aus. */
-    getPersonId() {
+    getPersonID() {
         return this.person_id;
     }
 

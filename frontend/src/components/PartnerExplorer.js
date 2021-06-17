@@ -28,7 +28,7 @@ class PartnerExplorer extends Component {
         this.state = {
             partnervorschlag: null,
             currentPerson: this.props.person,
-            partnerPerson: null,
+            anderePerson: null,
             entscheidung: null,
             matchpoints: 0,
             error: null,
@@ -39,25 +39,20 @@ class PartnerExplorer extends Component {
         this.baseState = this.state;
     }
 
-    getPartnerPerson = () => {
-        StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
-            .then(partnerPersonBO => {
+    getAnderePerson = () => {
+        if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
+            StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
+                .then(anderePerson =>
                 this.setState({
-                    partnerPerson: partnerPersonBO,
-                    error: null,
-                    loadingInProgress: false
-                });
-
-            }).catch(e => this.setState({
-            partnerPerson: null,
-            error: e,
-            loadingInProgress: false
-        }));
-
-        this.setState({
-            loadingInProgress: true,
-            error: null
-        });
+                    anderePerson: anderePerson
+                }))
+        } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
+            StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
+                .then(anderePerson =>
+                this.setState({
+                    anderePerson: anderePerson
+                }))
+        }
     }
 
     getBestPartnervorschlag = () => {
@@ -70,7 +65,7 @@ class PartnerExplorer extends Component {
                     loadingInProgress: false
                 });
                 if (this.state.partnervorschlag != null) {
-                    this.getPartnerPerson()
+                    this.getAnderePerson()
                 }
             }).catch(e => this.setState({
             partnervorschlag: null,
@@ -104,7 +99,7 @@ class PartnerExplorer extends Component {
     updatePartnervorschlag = () => {
         let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
         console.log(updatedPartnerVorschlag)
-        if (this.props.person.getID() === this.state.partnervorschlag.getPersonId()) {
+        if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             updatedPartnerVorschlag.setEntscheidungPerson(true);
             if (this.state.entscheidung) {
                 updatedPartnerVorschlag.setMatchpoints(this.state.matchpoints += 1)
@@ -140,32 +135,30 @@ class PartnerExplorer extends Component {
 
     render() {
         const {classes} = this.props;
-        const {partnervorschlag, partnerPerson, error, loadingInProgress} = this.state;
+        const {partnervorschlag, anderePerson, error, loadingInProgress} = this.state;
 
         return (
             <div className={classes.root}>
-                {partnervorschlag ?
-                    <Typography>
-                        Auf dich zugeschnittener Partnervorschlag mit der ID:{partnervorschlag.getID()}<br/>
-                        PartnerID: {partnervorschlag.getPartnerID()}&nbsp;
-                        mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
-                        {
-                            partnerPerson ?
-                                <Typography>
-                                    Name: {partnerPerson.getName()}<br/>
-                                    Matchpoints: {partnervorschlag.getMatchpoints()}
-                                </Typography>
-                                : null
-                        }
-                        Willst du eine Konversation mit der Person anfangen?
-                        <Button variant='contained' onClick={this.entscheidungTrue}>
-                            JA (In Arbeit)
-                        </Button>
-                    </Typography>
-                    :
-                    <Typography>
-                        Es gibt momentan leider keine Partnervorschläge für dich :/
-                    </Typography>
+                {
+                    (partnervorschlag && anderePerson) ?
+                        <Typography>
+                            Auf dich zugeschnittener Partnervorschlag mit der ID#{partnervorschlag.getID()}<br/>
+                            PartnerID: {anderePerson.getID()}&nbsp;
+                            mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
+                            <Typography>
+                                Name: {anderePerson.getName()}<br/>
+                                Matchpoints: {partnervorschlag.getMatchpoints()}
+                            </Typography>
+                            Willst du eine Konversation mit {anderePerson.getName()} anfangen?
+                            <br/>
+                            <Button variant='contained' onClick={this.entscheidungTrue}>
+                                JA (In Arbeit)
+                            </Button>
+                        </Typography>
+                        :
+                        <Typography>
+                            Es gibt momentan leider keine Partnervorschläge für dich :/
+                        </Typography>
                 }
 
                 <ContextErrorMessage
