@@ -514,6 +514,18 @@ class GruppenTeilnahmeByPersonIDundGruppenIDOperations(Resource):
         return adm.get_gruppen_teilnahme_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
 
+@studoo.route('/gruppe/<int:gruppen_id>/gruppenteilnahmen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmenByGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenteilnahme)
+    @secured
+    def get(self, gruppen_id):
+        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        return adm.get_all_gruppen_teilnahmen_for_gruppen_id(gruppen_id)
+
+
 @studoo.route('/chatteilnahmen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class ChatteilnahmenListOperations(Resource):

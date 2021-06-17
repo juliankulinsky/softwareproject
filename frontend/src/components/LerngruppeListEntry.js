@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
+import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
 
@@ -15,35 +16,54 @@ class LerngruppeListEntry extends Component {
 
         this.state = {
             lerngruppe: props.lerngruppe,
-            gruppenTeilnahme: null
+            eigeneGruppenTeilnahme: null,
+            alleGruppenTeilnahmen: []
         }
     }
 
-    getGruppenTeilnahme = () => {
-        StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.person.getID(),this.props.lerngruppe.getID())
+    getEigeneGruppenTeilnahme = () => {
+        StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.currentperson.getID(),this.props.lerngruppe.getID())
             .then (gruppenTeilnahme => {
                 this.setState({
-                    gruppenTeilnahme: gruppenTeilnahme
+                    eigeneGruppenTeilnahme: gruppenTeilnahme
                 })
             })
     }
 
     deleteTeilnahme = () => {
-        StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.gruppenTeilnahme.getID())
-        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.lerngruppe.getKonversationId())
+        StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.eigeneGruppenTeilnahme.getID())
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.currentperson.getID(),this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
             })
 
     }
 
+    Verwaltung = () => {
+        return (
+            <div>
+                Testtest was passiert jetzt
+            </div>
+        )
+    }
+
+    getGruppenTeilnahmen = () => {
+        StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
+            .then(gruppenTeilnahmen => {
+                this.setState({
+                    alleGruppenTeilnahmen: gruppenTeilnahmen
+                })
+            })
+    }
+
     componentDidMount() {
-        this.getGruppenTeilnahme()
+        this.getEigeneGruppenTeilnahme()
+        this.getGruppenTeilnahmen()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, gruppenTeilnahme } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, alleGruppenTeilnahmen } = this.state;
 
         return (
             <div>
@@ -58,6 +78,38 @@ class LerngruppeListEntry extends Component {
                             <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
                                 Teilnahme beenden
                             </Button>
+                            {
+                                eigeneGruppenTeilnahme ?
+                                    <>
+                                        {
+                                            eigeneGruppenTeilnahme.get_ist_admin() ?
+                                            <>
+                                                &nbsp;
+                                                <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
+                                                    Verwalten
+                                                </Button>
+                                                <Typography>
+                                                    Das sind alle Teilnehmer:
+                                                    {
+                                                        alleGruppenTeilnahmen.map( gruppenteilnahme =>
+                                                            <TeilnehmerListEntry
+                                                                currentperson={this.props.currentperson}
+                                                                lerngruppe={lerngruppe}
+                                                                eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
+                                                                gruppenteilnahme={gruppenteilnahme} />
+                                                        )
+                                                    }
+                                                </Typography>
+                                            </>
+                                            :
+                                            null
+                                        }
+
+                                    </>
+                                    :
+                                    null
+
+                            }
                             <br/>-------------
 
                         </Typography>

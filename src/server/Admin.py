@@ -89,6 +89,11 @@ class Admin(object):
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.find_all()
 
+    def get_all_gruppen_teilnahmen_for_gruppen_id(self, gruppen_id):
+        """Auslesen aller Gruppenteilnahmen einer Gruppe"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_all_by_gruppen_id(gruppen_id)
+
     def get_gruppen_teilnahme_by_id(self, value):
         """Eine Gruppen_Teilnahme auswählen"""
         with GruppenTeilnahmeMapper() as mapper:

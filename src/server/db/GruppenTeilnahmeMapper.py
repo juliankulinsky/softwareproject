@@ -30,6 +30,30 @@ class GruppenTeilnahmeMapper(Mapper):
 
         return result
 
+    def find_all_by_gruppen_id(self, gruppen_id):
+        """Auslesen aller GruppenTeilnahme-Objekte
+
+        :return: Sammlung mit GruppenTeilnahme-Objekten
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT * from gruppen_teilnahmen WHERE gruppen_id={}".format(gruppen_id))
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) in tuples:
+            gruppenteilnahme = GruppenTeilnahme()
+            gruppenteilnahme.set_id(id)
+            gruppenteilnahme.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppenteilnahme.set_person_id(person_id)
+            gruppenteilnahme.set_gruppen_id(gruppen_id)
+            gruppenteilnahme.set_ist_admin(ist_admin)
+            result.append(gruppenteilnahme)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_key(self, key: int):
         """Suchen einer GruppenTeilnahme mit vorgegebener GruppenTeilnahme-ID
 

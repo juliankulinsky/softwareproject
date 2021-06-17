@@ -83,6 +83,7 @@ export default class StudooAPI {
     #getGruppenTeilnahmenURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
     #addGruppenTeilnahmeURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
     #getGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
+    #getGruppenTeilnahmenByGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenteilnahmen`;
     #getGruppenTeilnahmeByPersonIDundGruppenIDURL = (personid,gruppenid) =>
         `${this.#studooServerBaseURL}/person/${personid}/gruppe/${gruppenid}/gruppenteilnahme`;
     #updateGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
@@ -877,6 +878,15 @@ export default class StudooAPI {
           })
         })
       }
+
+    getGruppenTeilnahmenForGruppenID(gruppenID) {
+        return this.#fetchAdvanced(this.#getGruppenTeilnahmenByGruppenIDURL(gruppenID)).then((responseJSON) => {
+            let gruppenteilnahmenBOs = GruppenTeilnahmeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(gruppenteilnahmenBOs);
+            })
+        })
+    }
 
     getGruppenTeilnahmeByPersonIDundGruppenID(personID,gruppenID) {
         return this.#fetchAdvanced(this.#getGruppenTeilnahmeByPersonIDundGruppenIDURL(personID,gruppenID)).then((responseJSON) => {

@@ -68,7 +68,7 @@ class LerngruppenList extends Component {
                     <LerngruppeListEntry
                         key={lerngruppe.getID()}
                         lerngruppe={lerngruppe}
-                        person={this.props.person}
+                        currentperson={this.props.person}
                     />)
                 }
                 <LoadingProgress show={loadingInProgress} />
