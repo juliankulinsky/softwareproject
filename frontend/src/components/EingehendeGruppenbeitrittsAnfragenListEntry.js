@@ -12,7 +12,7 @@ import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
 
-class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
+class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
 
@@ -33,12 +33,30 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
             })
     }
 
-    updateGruppenvorschlagsAnfrage = () => {
+    entscheidungTrue = () => {
         this.setState({
+            entscheidung: true,
             buttonPressed: true
-        })
+        }, function () {
+            this.updateGruppenvorschlagsAnfrage()
+        });
+    }
+
+    entscheidungFalse = () => {
+        this.setState({
+            entscheidung: false,
+            buttonPressed: true
+        }, function () {
+            this.updateGruppenvorschlagsAnfrage()
+        });
+    }
+
+    updateGruppenvorschlagsAnfrage = () => {
         let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.anfrage);
-        updatedGruppenVorschlag.setMatchpoints(this.state.matchpoints -= 1)
+        updatedGruppenVorschlag.setEntscheidungPerson(true)
+        if (this.state.entscheidung) {
+            updatedGruppenVorschlag.setMatchpoints(this.state.matchpoints += 1)
+        }
         StudooAPI.getAPI().updateGruppenVorschlag(updatedGruppenVorschlag)
             .then(gruppenVorschlag => {
                 this.setState({
@@ -71,11 +89,15 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
                     (anfrage && lerngruppe) ?
                         <Typography>
                             -------------- <br/>
-                            Das ist eine ausgehende Gruppenbeitrittsanfrage #{anfrage.getID()}<br/>
+                            Das ist eine eingehende Gruppenbeitrittsanfrage #{anfrage.getID()}<br/>
                             Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
+                            <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
+                                    onClick={this.entscheidungTrue}>
+                                Annehmen
+                            </Button>
                             <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.updateGruppenvorschlagsAnfrage}>
-                                Zurückziehen
+                                    onClick={this.entscheidungFalse}>
+                                Ablehnen
                             </Button>
                             <br/>
                             Gruppenname: {lerngruppe.getGruppenname()}
@@ -100,10 +122,10 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-AusgehendeGruppenbeitrittsAnfragenListEntry.propTypes = {
+EingehendeGruppenbeitrittsAnfragenListEntry.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
 
 }
 
-export default withStyles(styles)(AusgehendeGruppenbeitrittsAnfragenListEntry);
+export default withStyles(styles)(EingehendeGruppenbeitrittsAnfragenListEntry);

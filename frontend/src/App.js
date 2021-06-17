@@ -195,11 +195,11 @@ class App extends React.Component {
 																<KonversationenList person={currentPersonBO}/>
 															</Route>
 															<Route path='/explorer'>
-																<PartnerExplorer person={currentPersonBO}/> <br/>
+																<PartnerExplorer person={currentPersonBO}/> <br/> <br/>
 																<LerngruppenExplorer person={currentPersonBO}/>
 															</Route>
 															<Route path='/anfragen'>
-																<EingehendeAnfragenList person={currentPersonBO}/>
+																<EingehendeAnfragenList person={currentPersonBO}/> <br/> <br/>
 																<AusgehendeAnfragenList person={currentPersonBO}/>
 															</Route>
 														</>
