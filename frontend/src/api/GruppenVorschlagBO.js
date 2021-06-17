@@ -5,21 +5,21 @@ import VorschlagBO from "./VorschlagBO";
 /** Repräsentiert einen Gruppenvorschlag. */
 export default class GruppenVorschlagBO extends VorschlagBO {
 
-    constructor(aGruppenvorschlagId, aEntscheidungGruppe) {
+    constructor(aGruppenId, aEntscheidungGruppe) {
         super();
-        this.gruppenvorschlag_id = aGruppenvorschlagId;
+        this.gruppen_id = aGruppenId;
         this.entscheidung_gruppe = aEntscheidungGruppe;
     }
 
     // Nun die jeweiligen Getter & Setter:
-    /** Setzt die ID des Gruppenvorschlags. */
-    setGruppenvorschlagId(aGruppenvorschlagId) {
-    this.gruppenvorschlag_id = aGruppenvorschlagId;
+    /** Setzt die ID des Gruppen. */
+    setGruppenId(aGruppenId) {
+    this.gruppen_id = aGruppenId;
     }
 
-    /** Gibt die ID Gruppenvorschlags aus. */
-    getGruppenvorschlagId() {
-        return this.gruppenvorschlag_id;
+    /** Gibt die GruppenID aus. */
+    getGruppenId() {
+        return this.gruppen_id;
     }
 
     /** Setzt die Entscheidung der Gruppe in einem boolean Wert. */

@@ -158,11 +158,14 @@ partnervorschlag = api.inherit(
 gruppenvorschlag = api.inherit(
     "GruppenVorschlag", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
-        "gruppenvorschlag_id": fields.Integer(attribute="_gruppenvorschlag_id", description="ID der Gruppe"),
+        "gruppen_id": fields.Integer(attribute="_gruppen_id", description="ID der Gruppe"),
         "aehnlichkeit": fields.Float(attribute="_aehnlichkeit",
                                      description="Berechnete Ähnlichkeit der Person zur Gruppe"),
-        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
-        "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe", description="Entscheidung der Gruppe")
+        "matchpoints": fields.Integer(attribute="_matchpoints", description="Matchpoints des Vorschlags"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person",
+                                              description="Ob die Person eine Entscheidung getroffen hat"),
+        "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe",
+                                              description="Ob die Gruppe eine Entscheidung getroffen hat")
     }
 )
 
@@ -644,7 +647,9 @@ class GruppenvorschlaegeListOperations(Resource):
         adm = Admin()
         proposal = GruppenVorschlag.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_gruppenvorschlag(proposal.get_person_id(), proposal.get_gruppenvorschlag_id())
+            p = adm.create_gruppenvorschlag(proposal.get_person_id(), proposal.get_gruppen_id(),
+                                            proposal.get_aehnlichkeit(), proposal.get_matchpoints(),
+                                            proposal.get_entscheidung_person(), proposal.get_entscheidung_gruppe())
             return p, 200
         else:
             return '', 500

@@ -102,11 +102,16 @@ class Admin(object):
     """
         GruppenVorschlag - Spezifische Methoden
     """
-    def create_gruppenvorschlag(self, person_id, gruppenvorschlag_id):
+    def create_gruppenvorschlag(self, person_id, gruppen_id, aehnlichkeit=0, matchpoints=0,
+                                entscheidung_person=False, entscheidung_gruppe=False):
         """Einen Gruppenvorschlag erstellen."""
         gruppenvorschlag = GruppenVorschlag()
         gruppenvorschlag.set_person_id(person_id)
-        gruppenvorschlag.set_gruppenvorschlag_id(gruppenvorschlag_id)
+        gruppenvorschlag.set_gruppen_id(gruppen_id)
+        gruppenvorschlag.set_aehnlichkeit(aehnlichkeit)
+        gruppenvorschlag.set_matchpoints(matchpoints)
+        gruppenvorschlag.set_entscheidung_person(entscheidung_person)
+        gruppenvorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
 
         with GruppenVorschlagMapper() as mapper:
             return mapper.insert(gruppenvorschlag)
