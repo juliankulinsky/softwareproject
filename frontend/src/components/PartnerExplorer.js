@@ -61,11 +61,13 @@ class PartnerExplorer extends Component {
             .then(partnervorschlagBO => {
                 this.setState({
                     partnervorschlag: partnervorschlagBO,
-                    matchpoints: partnervorschlagBO.getMatchpoints(),
                     error: null,
                     loadingInProgress: false
                 });
                 if (this.state.partnervorschlag != null) {
+                    this.setState({
+                        matchpoints: partnervorschlagBO.getMatchpoints()
+                    })
                     this.getAnderePerson()
                 }
             }).catch(e => this.setState({
