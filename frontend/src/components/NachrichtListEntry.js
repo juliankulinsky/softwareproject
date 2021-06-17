@@ -19,6 +19,7 @@ class NachrichtListEntry extends Component {
             nachricht: props.nachricht,
             absenderPerson: null,
             currentPerson: props.currentPerson,
+            buttonPressed: false,
             error: null,
             loadingInProgress: false
         }
@@ -45,6 +46,9 @@ class NachrichtListEntry extends Component {
     }
 
     deleteNachricht = () => {
+        this.setState({
+            buttonPressed: true,
+        })
         StudooAPI.getAPI().deleteNachricht(this.state.nachricht.getID())
     }
 
@@ -58,7 +62,7 @@ class NachrichtListEntry extends Component {
                         &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()} &nbsp;
                         von dir
                     </div>
-                    <Button color="secondary" onClick={this.deleteNachricht} variant={"contained"} >
+                    <Button disabled={this.state.buttonPressed} color="secondary" onClick={this.deleteNachricht} variant={"contained"} >
                         Löschen
                     </Button>
                </Typography>
