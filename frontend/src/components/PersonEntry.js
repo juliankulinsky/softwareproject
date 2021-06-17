@@ -41,9 +41,8 @@ class PersonEntry extends Component {
   }
 
   /** Handles the onClose event of the ProfilForm */
-  profilFormClosed = (person, lernvorliebe) => {
+  profilFormClosed = (person) => {
     console.log("Person", person)
-    console.log("Lernvorliebe", lernvorliebe)
     // customer is not null and therefor changed
     if (person) {
       this.setState({
@@ -55,7 +54,12 @@ class PersonEntry extends Component {
         showProfilForm: false
       });
     }
+  }
 
+  /** Handles the onClose event of the ProfilForm */
+  profilFormClosedL = (lernvorliebe) => {
+    console.log("Lernvorliebe", lernvorliebe)
+    // customer is not null and therefor changed
     if (lernvorliebe) {
       this.setState({
         lernvorliebe: lernvorliebe,
@@ -116,7 +120,7 @@ class PersonEntry extends Component {
                 }
             </Typography>
           {
-          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} onCloseL={this.profilFormClosed} />
+          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} onCloseL={this.profilFormClosedL} />
           }
         </div>
 
