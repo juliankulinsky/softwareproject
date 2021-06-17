@@ -27,7 +27,7 @@ class GruppenvorschlaegeEntry extends Component {
                     <Grid item>
                         <Typography className={classes.heading}>
                             GruppenvorschlagsID: {gruppenvorschlag.getID()}<br/>
-                            GruppenID: {gruppenvorschlag.getGruppenId()}
+                            GruppenID: {gruppenvorschlag.getGruppenID()}
                             Entscheidung:{gruppenvorschlag.getEntscheidungGruppe()}<br/>
                             Matchpoints: {gruppenvorschlag.getMatchpoints()}
                         </Typography>
