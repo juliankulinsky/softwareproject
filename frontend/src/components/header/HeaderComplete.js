@@ -5,6 +5,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 import {Link} from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import GroupIcon from "@material-ui/icons/Group";
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import theme from "./theme";
 import ProfileDropDown from "../dialogs/ProfileDropDown";
 
@@ -26,8 +27,11 @@ class HeaderComplete extends Component {
                             </div>
 
                             <div>
+                                <Link to="/anfragen">
+                                    <BottomNavigationAction label={"Explore"} icon={<NotificationsNoneIcon style={theme.iconcss}/>}/>
+                                </Link>
                                 <Link to="/vorschlaege">
-                                    <BottomNavigationAction label={"Explore"} icon={<SearchIcon style={theme.iconcss}/>}/>
+                                    <BottomNavigationAction label={"Explore"} icon={<NotificationsNoneIcon style={theme.iconcss}/>}/>
                                 </Link>
 
                                 <Link to="/explorer">
@@ -40,10 +44,6 @@ class HeaderComplete extends Component {
 
                                 <Link to="/lerngruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
-                                </Link>
-
-                                <Link to="/personen">
-                                    <BottomNavigationAction label={"Person"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
                             </div>
 

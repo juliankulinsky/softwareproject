@@ -343,6 +343,16 @@ class Admin(object):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_by_key(id)
 
+    def get_eingehende_partner_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Partnervorschläge für eine Person auslesen"""
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_eingehende_by_person_id(person_id)
+
+    def get_ausgehende_partner_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Partnervorschläge für eine Person auslesen"""
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_ausgehende_by_person_id(person_id)
+
     def get_best_partner_vorschlag_for_person_id(self, person_id):
         """Den noch nicht bewerteten PartnerVorschlag mit der höchsten Ähnlichkeit für eine Person auslesen"""
         with PartnerVorschlagMapper() as mapper:

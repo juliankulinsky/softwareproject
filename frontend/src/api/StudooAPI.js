@@ -100,6 +100,8 @@ export default class StudooAPI {
     // PartnerVorschlag-bezogen
     #getPartnerVorschlaegeURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
     #getPartnerVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/partnervorschlag`;
+    #getEingehendePartnerAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/partnervorschlaege/eingehend`;
+    #getAusgehendePartnerAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/partnervorschlaege/ausgehend`;
     #addPartnerVorschlagURL = () => `${this.#studooServerBaseURL}/partnervorschlaege`;
     #getPartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
     #updatePartnerVorschlagURL = (id) => `${this.#studooServerBaseURL}/partnervorschlag/${id}`;
@@ -1051,6 +1053,25 @@ export default class StudooAPI {
         })
     }
 
+    getEingehendePartnerVorschlaegeForPersonID(person_id) {
+        return this.#fetchAdvanced(this.#getEingehendePartnerAnfragenForPersonIDURL(person_id))
+            .then((responseJSON) => {
+                let res = PartnerVorschlagBO.fromJSON(responseJSON)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })
+        })
+    }
+
+    getAusgehendePartnerVorschlaegeForPersonID(person_id) {
+        return this.#fetchAdvanced(this.#getAusgehendePartnerAnfragenForPersonIDURL(person_id))
+            .then((responseJSON) => {
+                let res = PartnerVorschlagBO.fromJSON(responseJSON)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })
+        })
+    }
 
 
     /**
