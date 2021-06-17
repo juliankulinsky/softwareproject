@@ -44,6 +44,10 @@ class NachrichtListEntry extends Component {
         });
     }
 
+    deleteNachricht = () => {
+        StudooAPI.getAPI().deleteNachricht(this.state.nachricht.getID())
+    }
+
     EigeneNachricht = () => {
         return <Typography className={this.props.classes.right}>
                     Nachricht #{this.state.nachricht.getID()}:&nbsp;
@@ -54,6 +58,9 @@ class NachrichtListEntry extends Component {
                         &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()} &nbsp;
                         von dir
                     </div>
+                    <Button color="secondary" onClick={this.deleteNachricht} variant={"contained"} >
+                        Löschen
+                    </Button>
                </Typography>
     }
 

@@ -74,6 +74,8 @@ export default class StudooAPI {
     #getChatTeilnahmenURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
     #addChatTeilnahmeURL = () => `${this.#studooServerBaseURL}/chatteilnahmen`;
     #getChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
+    #getChatTeilnahmeByPersonIDundKonversationIDURL = (personid,konversationid) =>
+        `${this.#studooServerBaseURL}/person/${personid}/konversation/${konversationid}/chatteilnahme`;
     #updateChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
     #deleteChatTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/chatteilnahme/${id}`;
 
@@ -81,6 +83,9 @@ export default class StudooAPI {
     #getGruppenTeilnahmenURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
     #addGruppenTeilnahmeURL = () => `${this.#studooServerBaseURL}/gruppenteilnahmen`;
     #getGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
+    #getGruppenTeilnahmenByGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenteilnahmen`;
+    #getGruppenTeilnahmeByPersonIDundGruppenIDURL = (personid,gruppenid) =>
+        `${this.#studooServerBaseURL}/person/${personid}/gruppe/${gruppenid}/gruppenteilnahme`;
     #updateGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
     #deleteGruppenTeilnahmeURL = (id) => `${this.#studooServerBaseURL}/gruppenteilnahme/${id}`;
 
@@ -783,6 +788,15 @@ export default class StudooAPI {
         })
     }
 
+    getChatTeilnahmeByPersonIDundKonversationID(person_id, gruppen_id) {
+        return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, gruppen_id)).then((responseJSON) => {
+            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseChatteilnahmeBO);
+            })
+        })
+    }
+
     /**
      * Updates a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
      *
@@ -865,6 +879,24 @@ export default class StudooAPI {
           })
         })
       }
+
+    getGruppenTeilnahmenForGruppenID(gruppenID) {
+        return this.#fetchAdvanced(this.#getGruppenTeilnahmenByGruppenIDURL(gruppenID)).then((responseJSON) => {
+            let gruppenteilnahmenBOs = GruppenTeilnahmeBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(gruppenteilnahmenBOs);
+            })
+        })
+    }
+
+    getGruppenTeilnahmeByPersonIDundGruppenID(personID,gruppenID) {
+        return this.#fetchAdvanced(this.#getGruppenTeilnahmeByPersonIDundGruppenIDURL(personID,gruppenID)).then((responseJSON) => {
+            let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenTeilnahmeBO);
+          })
+        })
+    }
 
     /** Updates a groupparticipation and returns a Promise, which resolves to a new GruppenTeilnahmeBO object.
      * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.

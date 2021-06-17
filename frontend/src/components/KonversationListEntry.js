@@ -154,7 +154,7 @@ class KonversationListEntry extends Component {
                     error={neueNachrichtValidationFailed}>
                         Test
                     </TextField>&nbsp;&nbsp;
-                    <Button variant='contained' disabled={ !neueNachrichtEdited }
+                    <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
                     onClick={this.addNachricht}>
                         Nachricht senden
                     </Button>

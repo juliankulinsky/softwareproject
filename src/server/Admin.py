@@ -57,6 +57,11 @@ class Admin(object):
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_by_key(key)
 
+    def get_chatteilnahme_by_person_id_und_konvresation_id(self, person_id: int, konversation_id: int):
+        """Die Chatteilnahme mit PersonID und KonversationID auslesen"""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_by_person_id_und_konversation_id(person_id,konversation_id)
+
     def save_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
         """Die gegebene Chatteilnahme speichern."""
         with ChatTeilnahmeMapper() as mapper:
@@ -84,10 +89,20 @@ class Admin(object):
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.find_all()
 
+    def get_all_gruppen_teilnahmen_for_gruppen_id(self, gruppen_id):
+        """Auslesen aller Gruppenteilnahmen einer Gruppe"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_all_by_gruppen_id(gruppen_id)
+
     def get_gruppen_teilnahme_by_id(self, value):
         """Eine Gruppen_Teilnahme auswählen"""
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.find_by_key(value)
+
+    def get_gruppen_teilnahme_by_person_id_und_gruppen_id(self, person_id, gruppen_id):
+        """Eine Gruppen-Teilnahme durch PersonID und GruppenID auslesen"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
     def save_gruppen_teilnahme(self, gruppen_teilnahme: GruppenTeilnahme):
         """Gruppen_Teilnahme speichern"""

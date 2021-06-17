@@ -70,11 +70,14 @@ export default class GruppenTeilnahmeBO extends BusinessObject {
                 Object.setPrototypeOf(g, GruppenTeilnahmeBO.prototype);
                 result.push(g);
             })
-        }   else {
-            let g = gruppenteilnahme
-            Object.setPrototypeOf(g, GruppenTeilnahmeBO.prototype);
-            result.push(g);
-        }
+        }   else if (gruppenteilnahme == null) {
+            result = null
+            } else
+            {
+                let g = gruppenteilnahme
+                Object.setPrototypeOf(g, GruppenTeilnahmeBO.prototype);
+                result.push(g);
+            }
 
         return result;
     }
