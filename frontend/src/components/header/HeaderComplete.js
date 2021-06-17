@@ -30,7 +30,7 @@ class HeaderComplete extends Component {
                                     <BottomNavigationAction label={"Explore"} icon={<SearchIcon style={theme.iconcss}/>}/>
                                 </Link>
 
-                                <Link to="/partnerexplorer">
+                                <Link to="/explorer">
                                     <BottomNavigationAction label={"PartnerExplorer"} icon={<SearchIcon style={theme.iconcss}/>}/>
                                 </Link>
 

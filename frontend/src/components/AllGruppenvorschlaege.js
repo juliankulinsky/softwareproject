@@ -39,7 +39,6 @@ class AllGruppenvorschlaege extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log(this.state.gruppenvorschlaege)
 
         }).catch(e => this.setState({
             gruppenvorschlaege: [],

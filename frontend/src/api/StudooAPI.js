@@ -916,9 +916,11 @@ export default class StudooAPI {
         return this.#fetchAdvanced(this.#getGruppenVorschlagForPersonIDURL(personID))
             .then((response) => {
                 let res = GruppenVorschlagBO.fromJSON(response)[0]
-                return new Promise(function (resolve) {
-                    resolve(res);
-            })
+                if (res.getID() != null){
+                    return new Promise(function (resolve) {
+                        resolve(res);
+                    })
+                }
             })
     }
 
@@ -958,19 +960,19 @@ export default class StudooAPI {
      * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion is set by the backend.
      * @public */
     updateGruppenVorschlag(gruppenvorschlagBO) {
-    return this.#fetchAdvanced(this.#updateGruppenVorschlagURL(), {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(gruppenvorschlagBO)
-    }).then((responseJSON) => {
-        let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
-        return new Promise(function (resolve) {
-            resolve(responseGruppenVorschlagBO);
-    })
-    })
+        return this.#fetchAdvanced(this.#updateGruppenVorschlagURL(gruppenvorschlagBO.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(gruppenvorschlagBO)
+        }).then((responseJSON) => {
+            let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenVorschlagBO);
+        })
+        })
     }
 
     /** Returns a Promise, which resolves to an Array of GruppenVorschlagBO.
@@ -1072,7 +1074,6 @@ export default class StudooAPI {
             body: JSON.stringify(partnervorschlagBO)
         }).then((responseJSON) => {
             let responsePartnervorschlagBO = PartnerVorschlagBO.fromJSON(responseJSON)[0];
-            console.log(responsePartnervorschlagBO)
             return new Promise(function (resolve) {
                 resolve(responsePartnervorschlagBO);
             })

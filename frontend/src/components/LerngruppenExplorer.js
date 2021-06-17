@@ -18,7 +18,7 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
-import {GruppenVorschlagBO} from "../api";
+import {GruppenVorschlagBO, LerngruppeBO} from "../api";
 
 class LerngruppenExplorer extends Component {
 
@@ -41,11 +41,12 @@ class LerngruppenExplorer extends Component {
     }
 
     getLerngruppe = () => {
-        StudooAPI.getAPI().getPerson(this.state.gruppenvorschlag.getGruppenID())
-            .then(lerngruppe =>
-            this.setState({
-                anderePerson: lerngruppe
-            }))
+        StudooAPI.getAPI().getLerngruppe(this.state.gruppenvorschlag.getGruppenID())
+            .then(lerngruppe => {
+                this.setState({
+                    lerngruppe: lerngruppe
+                })
+            })
     }
 
     getBestGruppenvorschlag = () => {
@@ -131,14 +132,14 @@ class LerngruppenExplorer extends Component {
                 {
                     (gruppenvorschlag && lerngruppe) ?
                         <Typography>
-                            Auf dich zugeschnittener Partnervorschlag mit der ID#{gruppenvorschlag.getID()}<br/>
-                            PartnerID: {lerngruppe.getID()}&nbsp;
+                            Auf dich zugeschnittener Gruppenvorschlag mit der ID#{gruppenvorschlag.getID()}<br/>
+                            GruppenID: {lerngruppe.getID()}&nbsp;
                             mit einer Ähnlichkeit von: {gruppenvorschlag.getAehnlichkeit()}
                             <Typography>
-                                Gruppenname: {lerngruppe.getName()}<br/>
+                                Gruppenname: {lerngruppe.getGruppenname()}<br/>
                                 Matchpoints: {gruppenvorschlag.getMatchpoints()}
                             </Typography>
-                            Willst du der Gruppe {lerngruppe.getName()} eine beitrittsanfrage senden?
+                            Willst du der Gruppe "{lerngruppe.getGruppenname()}" eine Beitrittsanfrage senden?
                             <br/>
                             <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
                                 JA

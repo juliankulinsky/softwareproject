@@ -12,3 +12,4 @@ export {default as KonversationBO} from './KonversationBO';
 export {default as LernvorliebeBO} from './LernvorliebeBO';
 export {default as PartnerVorschlagBO} from './PartnerVorschlagBO';
 export {default as ProfilBO} from './ProfilBO';
+export {default as GruppenVorschlagBO} from './GruppenVorschlagBO'
