@@ -7,14 +7,14 @@ class PartnerVorschlag(vo.Vorschlag):
     """
     def __init__(self):
         super().__init__()
-        self._partnervorschlag_id = 0       # Fremdschlüsselbeziehung zur vorgeschlagenen Person
-        self._entscheidung_partner = None   #
+        self._partner_id = 0       # Fremdschlüsselbeziehung zur vorgeschlagenen Person
+        self._entscheidung_partner = False   # Ob sich der Partner entschieden hat
 
-    def get_partnervorschlag_id(self):
-        return self._partnervorschlag_id
+    def get_partner_id(self):
+        return self._partner_id
 
-    def set_partnervorschlag_id(self, partner_id: int):
-        self._partnervorschlag_id = partner_id
+    def set_partner_id(self, partner_id: int):
+        self._partner_id = partner_id
 
     def get_entscheidung_partner(self):
         return self._entscheidung_partner
@@ -24,7 +24,7 @@ class PartnerVorschlag(vo.Vorschlag):
 
     def __str__(self):
         return "Nr.{}: Person {} und Person {} mit Ähnl. {}: {} & {}".format(
-            self.get_id(),self.get_person_id(),self.get_partnervorschlag_id(),self.get_aehnlichkeit(),
+            self.get_id(),self.get_person_id(),self.get_partner_id(),self.get_aehnlichkeit(),self.get_matchpoints(),
             self.get_entscheidung_person(),self.get_entscheidung_partner()
         )
 
@@ -34,8 +34,9 @@ class PartnerVorschlag(vo.Vorschlag):
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
         obj.set_person_id(dictionary["person_id"])
-        obj.set_partnervorschlag_id(dictionary["partnervorschlag_id"])
+        obj.set_partner_id(dictionary["partner_id"])
         obj.set_aehnlichkeit(dictionary["aehnlichkeit"])
+        obj.set_matchpoints(dictionary["matchpoints"])
         obj.set_entscheidung_person(dictionary["entscheidung_person"])
         obj.set_entscheidung_partner(dictionary["entscheidung_partner"])
         return obj

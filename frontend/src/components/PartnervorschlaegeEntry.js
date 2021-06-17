@@ -28,7 +28,7 @@ class PartnervorschlaegeEntry extends Component {
                         <Typography className={classes.heading}>
                             Partnervorschläge:
                             {
-                                partnervorschlaege.getPartnerVorschlagID()
+                                partnervorschlaege.getPartnerID()
                             }
                         </Typography>
                     </Grid>

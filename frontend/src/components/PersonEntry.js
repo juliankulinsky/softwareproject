@@ -42,10 +42,22 @@ class PersonEntry extends Component {
 
   /** Handles the onClose event of the ProfilForm */
   profilFormClosed = (person, lernvorliebe) => {
+    console.log("Person", person)
+    console.log("Lernvorliebe", lernvorliebe)
     // customer is not null and therefor changed
-    if (person && lernvorliebe) {
+    if (person) {
       this.setState({
         person: person,
+        showProfilForm: false
+      });
+    } else {
+      this.setState({
+        showProfilForm: false
+      });
+    }
+
+    if (lernvorliebe) {
+      this.setState({
         lernvorliebe: lernvorliebe,
         showProfilForm: false
       });
@@ -54,6 +66,7 @@ class PersonEntry extends Component {
         showProfilForm: false
       });
     }
+    //window.location.reload();
   }
 
   /** Renders the component */
@@ -71,32 +84,39 @@ class PersonEntry extends Component {
                   </Button>
             </ButtonGroup>
             <Typography className={classes.heading}>
-              Name:
-              {
-                person ?
-                  person.getName()
-                    :null
-              }
-              Alter:
-              {
-                person.getAlter()
-              }
-              Wohnort:
-              {
-                person.getWohnort()
-              }
-              Studiengang:
-              {
-                person.getStudiengang()
-              }
-              Semester:
-              {
-                person.getSemester()
-              }
-
+                Name:
+                {
+                  person ?
+                    person.getName()
+                      :null
+                }
+                  Alter:
+                {
+                  person ?
+                    person.getAlter()
+                      :null
+                }
+                  Wohnort:
+                {
+                  person ?
+                    person.getWohnort()
+                      :null
+                }
+                  Studiengang:
+                {
+                  person ?
+                    person.getStudiengang()
+                      :null
+                }
+                  Semester:
+                {
+                  person ?
+                    person.getSemester()
+                      :null
+                }
             </Typography>
           {
-          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} />
+          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} onCloseL={this.profilFormClosed} />
           }
         </div>
 
@@ -116,6 +136,7 @@ PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   person: PropTypes.object.isRequired,
+  lernvorliebe: PropTypes.object.isRequired,
   expandedState: PropTypes.bool.isRequired,
   onExpandedStateChange: PropTypes.func.isRequired,
   onProfilDeleted: PropTypes.func.isRequired

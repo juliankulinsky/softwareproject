@@ -94,6 +94,8 @@ class ProfilForm extends Component {
   updateProfil = () => {
     this.updatePerson()
     this.updateLernvorliebe()
+
+    console.log("Basestate", this.baseState)
   }
 
   /** Updates the person */
@@ -161,7 +163,7 @@ class ProfilForm extends Component {
       this.baseState.remote = this.state.remote;
       this.baseState.vorkenntnisse = this.state.vorkenntnisse;
       this.baseState.lerninteressen = this.state.lerninteressen;
-      this.props.onClose(updatedLernvorliebe);      // call the parent with the new customer
+      this.props.onCloseL(updatedLernvorliebe);      // call the parent with the new customer
     }).catch(e =>
         this.setState({
           updatingInProgress: false,              // disable loading indicator
@@ -196,11 +198,12 @@ class ProfilForm extends Component {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
+    this.props.onCloseL(null);
   }
 
   /** Renders the component */
   render() {
-    const { classes, person, show } = this.props;
+    const { classes, person, lernvorliebe, show } = this.props;
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
@@ -273,7 +276,13 @@ class ProfilForm extends Component {
             {
               // Show error message in dependency of customer prop
               person ?
-                <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${person.getID()} could not be updated.`} onReload={this.updatePerson} />
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${person.getID()} could not be updated.`} onReload={this.updateProfil} />
+                : null
+            }
+            {
+              // Show error message in dependency of customer prop
+              lernvorliebe ?
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${lernvorliebe.getID()} could not be updated.`} onReload={this.updateProfil} />
                 : null
             }
           </DialogContent>

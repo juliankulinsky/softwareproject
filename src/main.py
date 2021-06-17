@@ -144,12 +144,14 @@ chatteilnahme = api.inherit(
 partnervorschlag = api.inherit(
     "PartnerVorschlag", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
-        "partnervorschlag_id": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partners"),
+        "partner_id": fields.Integer(attribute="_partner_id", description="ID des Partners"),
         "aehnlichkeit": fields.Float(attribute="_aehnlichkeit",
                                      description="Berechnete Ähnlichkeit der Person zum potentiellen Partner"),
-        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
+        "matchpoints": fields.Integer(attribute="_matchpoints", description="Matchpoints des Vorschlags"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person",
+                                              description="Ob Person eine Entscheidung getroffen hat"),
         "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner",
-                                               description="Entscheidung des Partners")
+                                               description="Ob Partner eine Entscheidung getroffen hat")
     }
 )
 
@@ -574,7 +576,9 @@ class PartnervorschlaegeListOperations(Resource):
         adm = Admin()
         proposal = PartnerVorschlag.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_partnervorschlag(proposal.get_person_id(), proposal.get_partnervorschlag_id(), proposal.get_aehnlichkeit(), proposal.get_entscheidung_person(), proposal.get_entscheidung_partner())
+            p = adm.create_partnervorschlag(proposal.get_person_id(), proposal.get_partnervorschlag_id(),
+                                            proposal.get_aehnlichkeit(), proposal.get_matchpoints(),
+                                            proposal.get_entscheidung_person(), proposal.get_entscheidung_partner())
             return p, 200
         else:
             return '', 500
