@@ -12,7 +12,7 @@ import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
 
-class AusgehendeAnfragenListEntry extends Component {
+class AusgehendeKonversationsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
 
@@ -107,10 +107,10 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-AusgehendeAnfragenListEntry.propTypes = {
+AusgehendeKonversationsAnfragenListEntry.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
 
 }
 
-export default withStyles(styles)(AusgehendeAnfragenListEntry);
+export default withStyles(styles)(AusgehendeKonversationsAnfragenListEntry);

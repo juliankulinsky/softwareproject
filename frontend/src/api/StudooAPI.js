@@ -92,6 +92,8 @@ export default class StudooAPI {
     // GruppenVorschlag-bezogen
     #getGruppenVorschlaegeURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlag`;
+    #getAusgehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/ausgehend`;
+    #getEingehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/eingehend`;
     #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
     #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
@@ -956,6 +958,24 @@ export default class StudooAPI {
                     })
                 }
             })
+    }
+
+    getAusgehendeGruppenVorschlaegeForPersonID(person_id) {
+        return this.#fetchAdvanced(this.#getAusgehendeGruppenAnfragenForPersonIDURL(person_id))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })})
+    }
+
+    getEingehendeGruppenVorschlaegeForPersonID(person_id) {
+        return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForPersonIDURL(person_id))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })})
     }
 
     /** Adds a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.

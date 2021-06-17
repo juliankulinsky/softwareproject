@@ -72,6 +72,60 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
+    def find_eingehende_by_person_id(self, person_key):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE " \
+                  "(person_id={} AND entscheidung_person=FALSE AND entscheidung_gruppe=TRUE AND matchpoints=1) " \
+                  .format(person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) in tuples:
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result.append(gruppen_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_ausgehende_by_person_id(self, person_key):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE " \
+                  "(person_id={} AND entscheidung_person=TRUE AND entscheidung_gruppe=FALSE AND matchpoints=1) " \
+                  .format(person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) in tuples:
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result.append(gruppen_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_best_for_person_id(self, person_id: int):
         result = None
         cursor = self._cnx.cursor()

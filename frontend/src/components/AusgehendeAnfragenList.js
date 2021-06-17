@@ -10,7 +10,8 @@ import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import EingehendeAnfragenListEntry from "./EingehendeAnfragenListEntry";
-import AusgehendeAnfragenListEntry from "./AusgehendeAnfragenListEntry";
+import AusgehendeKonversationsAnfragenListEntry from "./AusgehendeKonversationsAnfragenListEntry";
+import AusgehendeGruppenbeitrittsAnfragenListEntry from "./AusgehendeGruppenbeitrittsAnfragenListEntry";
 //import AccountList from './AccountList';
 
 
@@ -20,6 +21,7 @@ class AusgehendeAnfragenList extends Component {
 
         this.state = {
             ausgehendeKonversationsAnfragen: [],
+            ausgehendeGruppenbeitrittsAnfragen: [],
         }
     }
 
@@ -32,40 +34,68 @@ class AusgehendeAnfragenList extends Component {
             })
     }
 
+    getAusgehendeGruppenbeitrittsAnfragen = () => {
+        StudooAPI.getAPI().getAusgehendeGruppenVorschlaegeForPersonID(this.props.person.getID())
+            .then(anfragen => {
+                this.setState({
+                    ausgehendeGruppenbeitrittsAnfragen: anfragen
+                })
+            })
+    }
+
 
     componentDidMount() {
         this.getAusgehendeKonversationsAnfragen();
+        this.getAusgehendeGruppenbeitrittsAnfragen();
     }
 
     render() {
         const { classes } = this.props;
-        const { ausgehendeKonversationsAnfragen } = this.state;
+        const { ausgehendeKonversationsAnfragen, ausgehendeGruppenbeitrittsAnfragen } = this.state;
 
         return (
-            <Typography>
-                {
-                    ausgehendeKonversationsAnfragen.length > 0 ?
-                        <Typography>
-                            Das sind alle ausgehenden Konversationsanfragen von {this.props.person.getName()}: <br/>
-                            {
-                                ausgehendeKonversationsAnfragen.map( anfrage =>
-                                    <AusgehendeAnfragenListEntry
-                                        person={this.props.person}
-                                        anfrage={anfrage}
-                                    />
-                                )
-                            }
-
-                        </Typography>
-                        :
-                        <Typography>
-                            Du hast keine ausgehenden Konversationsanfragen :/
-                        </Typography>
-
-                }
-
-            </Typography>
-
+            <>
+                <Typography>
+                    {
+                        ausgehendeKonversationsAnfragen.length > 0 ?
+                            <Typography>
+                                Das sind alle ausgehenden Konversationsanfragen von {this.props.person.getName()}: <br/>
+                                {
+                                    ausgehendeKonversationsAnfragen.map( anfrage =>
+                                        <AusgehendeKonversationsAnfragenListEntry
+                                            person={this.props.person}
+                                            anfrage={anfrage}
+                                        />
+                                    )
+                                }
+                            </Typography>
+                            :
+                            <Typography>
+                                Du hast keine ausgehenden Konversationsanfragen :/
+                            </Typography>
+                    }
+                </Typography>
+                <Typography>
+                    {
+                        ausgehendeGruppenbeitrittsAnfragen.length > 0 ?
+                            <Typography>
+                                Das sind alle ausgehenden Gruppenbeitrittsanfragen von {this.props.person.getName()}: <br/>
+                                {
+                                    ausgehendeGruppenbeitrittsAnfragen.map( anfrage =>
+                                        <AusgehendeGruppenbeitrittsAnfragenListEntry
+                                            person={this.props.person}
+                                            anfrage={anfrage}
+                                        />
+                                    )
+                                }
+                            </Typography>
+                            :
+                            <Typography>
+                                Du hast keine ausgehenden Gruppenbeitrittsanfragen :/
+                            </Typography>
+                    }
+                </Typography>
+            </>
         )
     }
 

@@ -667,7 +667,7 @@ class PartnervorschlagForPersonIDOperations(Resource):
 
 @studoo.route('/person/<int:person_id>/partnervorschlaege/eingehend')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
-class EingehendePartnervorschlagForPersonIDOperations(Resource):
+class EingehendePartnervorschlaegeForPersonIDOperations(Resource):
 
     @studoo.marshal_with(partnervorschlag)
     @secured
@@ -678,7 +678,7 @@ class EingehendePartnervorschlagForPersonIDOperations(Resource):
 
 @studoo.route('/person/<int:person_id>/partnervorschlaege/ausgehend')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
-class AusgehendePartnervorschlagForPersonIDOperations(Resource):
+class AusgehendePartnervorschlaegeForPersonIDOperations(Resource):
 
     @studoo.marshal_with(partnervorschlag)
     @secured
@@ -753,6 +753,28 @@ class GruppenvorschlagByPersonIDOperations(Resource):
     def get(self, person_id):
         adm = Admin()
         return adm.get_best_gruppenvorschlag_for_person_id(person_id)
+
+
+@studoo.route('/person/<int:person_id>/gruppenvorschlaege/eingehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class EingehendeGruppenvorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_eingehende_gruppen_vorschlaege_for_person_id(person_id)
+
+
+@studoo.route('/person/<int:person_id>/gruppenvorschlaege/ausgehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
 @studoo.route('/lerngruppen')
