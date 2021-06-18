@@ -57,6 +57,38 @@ class ProfilMapper(Mapper):
 
         return result
 
+    def find_by_lernvorlieben_id(self, lernvorlieben_id: int):
+        """Suchen eines Profils mit vorgegebener ID. Da diese eindeutig ist,
+        wird genau ein Objekt zurückgegeben.
+
+        :param key Primärschlüsselattribut (->DB)
+        :return Profil-Objekt, das dem übergebenen Schlüssel entspricht, None bei
+            nicht vorhandenem DB-Tupel.
+        """
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id FROM profile WHERE lernvorlieben_id={}".format(lernvorlieben_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, lernvorlieben_id) = tuples[0]
+            profil = Profil()
+            profil.set_id(id)
+            profil.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            profil.set_lernvorlieben_id(lernvorlieben_id)
+            result = profil
+        except IndexError:
+
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, profil: Profil):
         """Einfügen eines Profil-Objekts in die Datenbank.
 

@@ -368,6 +368,10 @@ class Admin(object):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_best_by_person_id(person_id)
 
+    def get_all_partnervorschlaege_for_person_id(self, person_id):
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_all_for_person_id(person_id)
+
     def save_partner_vorschlag(self, partner_vorschlag: PartnerVorschlag):
         """PartnerVorschlag speichern."""
         with PartnerVorschlagMapper() as mapper:
@@ -416,6 +420,11 @@ class Admin(object):
         with PersonMapper() as mapper:
             return mapper.find_by_konversation_id(konversation_id)
 
+    def get_person_by_profil_id(self, profil_id):
+        """ Eine Person anhand der Profil_ID auslesen"""
+        with PersonMapper() as mapper:
+            return mapper.find_by_profil_id(profil_id)
+
     def save_person(self, person: Person):
         """ Änderungen einer Person speichern """
         with PersonMapper() as mapper:
@@ -446,6 +455,11 @@ class Admin(object):
         """Das Profil mit der gegebenen ID auslesen."""
         with ProfilMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_profil_by_lernvorlieben_id(self, lernvorlieben_id):
+        """Das Profil mit der gegebenen Lernvorlieben_ID auslesen."""
+        with ProfilMapper() as mapper:
+            return mapper.find_by_lernvorlieben_id(lernvorlieben_id)
 
     def save_profil(self, profil: Profil):
         """Das Profil speichern."""

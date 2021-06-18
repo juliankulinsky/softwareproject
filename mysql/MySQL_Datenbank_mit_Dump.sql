@@ -87,14 +87,14 @@ CREATE TABLE `lernvorlieben` (
 
 LOCK TABLES `lernvorlieben` WRITE;
 INSERT INTO `lernvorlieben`
-VALUES (1,'2021-03-02 18:21:26',4,3,1,2,'Python','Apps'),
-       (2,'2021-04-26 15:36:01',2,4,3,2,'React','Websites'),
-       (3,'2021-04-26 15:37:01',4,5,3,2,'Java','Python'),
-       (4,'2021-04-26 15:39:01',2,4,3,2,'Mathe','Websites'),
-       (5,'2021-04-26 15:39:01',4,1,1,1,'React','Apps'),
-       (6,'2021-04-26 15:39:01',2,1,3,1,'Nichts','Python'),
-       (7,'2021-04-26 15:39:01',4,1,2,3,'Design','Java'),
-       (8,'2021-04-26 15:39:01',4,5,5,5,'Apps','Data Science');
+VALUES (1,'2021-03-02 18:21:26',4,3,1,2,'Python','Apps, Design, HTML'),
+       (2,'2021-04-26 15:36:01',2,4,3,2,'React','Websites, JavaScript'),
+       (3,'2021-04-26 15:37:01',4,5,3,2,'Java','Python, C++'),
+       (4,'2021-04-26 15:39:01',2,4,3,2,'Mathe','Websites, Java, Spanisch'),
+       (5,'2021-04-26 15:39:01',4,1,1,1,'React','Apps, Mathe, BWL'),
+       (6,'2021-04-26 15:39:01',2,1,3,1,'Nichts','Python, BWL, React'),
+       (7,'2021-04-26 15:39:01',4,1,2,3,'Design','Java, Design, Apps'),
+       (8,'2021-04-26 15:39:01',4,5,5,5,'Apps','Data Science, Mathe, Websites');
 UNLOCK TABLES;
 
 --
@@ -218,12 +218,10 @@ CREATE TABLE `partner_vorschlaege` (
 
 LOCK TABLES `partner_vorschlaege` WRITE;
 INSERT INTO `partner_vorschlaege`
-VALUES (1,'2021-03-02 18:21:26',1,2,67.8,2,TRUE,TRUE),
-       (2,'2021-04-26 15:36:01',1,3,67.8,1,TRUE,FALSE),
-       (3,'2021-04-26 15:36:01',4,1,81.2,0,FALSE,FALSE),
-       (4,'2021-04-26 15:36:01',4,2,90.3,2,TRUE,TRUE),
-       (5,'2021-04-26 15:36:01',4,3,57.8,1,FALSE,TRUE),
-       (6,'2021-04-30 15:36:01',2,4,75.3,1,TRUE,FALSE);
+VALUES (1,'2021-04-26 15:36:01',2,1,67.8,1,TRUE,FALSE),
+       (2,'2021-04-26 15:36:01',3,1,81.2,0,FALSE,FALSE),
+       (3,'2021-04-26 15:36:01',3,2,90.3,2,TRUE,TRUE);
+
 UNLOCK TABLES;
 
 --
