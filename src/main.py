@@ -603,7 +603,7 @@ class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
     @secured
     def get(self, person_id, konversation_id):
         adm = Admin()
-        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id, konversation_id)
+        return adm.get_chatteilnahme_by_person_id_und_konversation_id(person_id, konversation_id)
 
 
 @studoo.route('/partnervorschlaege')

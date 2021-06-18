@@ -21,9 +21,11 @@ class KonversationListEntry extends Component {
             konversation: props.konversation,
             lerngruppe: null,     // falls die Konversation ein Gruppenchat ist, ist das die zugehörige Lerngruppe
             chatpartner: null,
+            chatteilnahme: null,
             neueNachricht: null,
             neueNachrichtValidationFailed: false,
             neueNachrichtEdited: false,
+            deleteButtonPressed: false,
             error: null,
             loadingInProgress: false,
             addingInProgress: false,
@@ -112,7 +114,17 @@ class KonversationListEntry extends Component {
             addingInProgress: true,
             addingError: null
         })
+    }
 
+    deleteChatTeilnahme = () => {
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
+            .then(chatTeilnahme => {
+                this.setState({
+                    chatteilnahme: chatTeilnahme,
+                    deleteButtonPressed: true
+                })
+                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
+            })
     }
 
     componentDidMount() {
@@ -122,26 +134,30 @@ class KonversationListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
+        const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited, deleteButtonPressed } = this.state;
 
         return (
             <div>
                 <Typography>
                         ----------------- <br/>
                         KonversationsID: {konversation.getID()} <br/>
-                        Gruppenchat: {String(konversation.getIstGruppenchat())}<br/>
                     {
                         lerngruppe ?
                             <Typography>
-                                Das ist der Gruppenchat der Gruppe: {lerngruppe.getGruppenname()}
+                                Gruppenchat von "{lerngruppe.getGruppenname()}"
                             </Typography>
                             : null
                     }
                     {
                         chatpartner ?
-                            <Typography>
-                                Das ist dein Chat mit: {chatpartner.getName()}
-                            </Typography>
+                            <>
+                                <Typography>
+                                    Chat mit: {chatpartner.getName()} &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
+                                    Chat löschen
+                                    </Button>
+                                </Typography>
+                            </>
                             : null
                     }
                         -----------------

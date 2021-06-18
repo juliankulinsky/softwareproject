@@ -57,7 +57,7 @@ class Admin(object):
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_by_key(key)
 
-    def get_chatteilnahme_by_person_id_und_konvresation_id(self, person_id: int, konversation_id: int):
+    def get_chatteilnahme_by_person_id_und_konversation_id(self, person_id: int, konversation_id: int):
         """Die Chatteilnahme mit PersonID und KonversationID auslesen"""
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_by_person_id_und_konversation_id(person_id,konversation_id)

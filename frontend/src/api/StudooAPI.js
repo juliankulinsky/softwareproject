@@ -793,12 +793,13 @@ export default class StudooAPI {
         })
     }
 
-    getChatTeilnahmeByPersonIDundKonversationID(person_id, gruppen_id) {
-        return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, gruppen_id)).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseChatteilnahmeBO);
-            })
+    getChatTeilnahmeByPersonIDundKonversationID(person_id, konversation_id) {
+        return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, konversation_id))
+            .then((responseJSON) => {
+                let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
+                return new Promise(function (resolve) {
+                    resolve(responseChatteilnahmeBO);
+                })
         })
     }
 
