@@ -652,7 +652,7 @@ class PartnervorschlagOperations(Resource):
             p.set_id(id)
             adm.save_partner_vorschlag(p)
             vorschlag = adm.get_partner_vorschlag_by_id(p.get_id())
-            if vorschlag.get_matchpoints() == 2:
+            if vorschlag.get_matchpoints() >= 2:
                 chat = adm.create_konversation(ist_gruppenchat=False)
                 adm.create_chatteilnahme(person_id=vorschlag.get_person_id(), konversation_id=chat.get_id())
                 adm.create_chatteilnahme(person_id=vorschlag.get_partner_id(), konversation_id=chat.get_id())
