@@ -13,28 +13,23 @@ class GruppenvorschlaegeEntry extends Component {
         super(props);
 
         this.state = {
-            gruppenvorschlaege: props.gruppenvorschlaege
+            gruppenvorschlag: props.gruppenvorschlag
         }
     }
 
     render() {
         const { classes } = this.props;
-        const { gruppenvorschlaege } = this.state;
-
-        console.log("Ausgabe aller Gruppenvorschlaege:")
-        console.log(this.state);
+        const { gruppenvorschlag } = this.state;
 
         return (
             <div>
                 <Grid>
                     <Grid item>
                         <Typography className={classes.heading}>
-                            Gruppenvorschläge:
-                            {
-                                gruppenvorschlaege.getGruppenvorschlagId()}
-                            Entscheidung:
-                            {
-                                gruppenvorschlaege.getEntscheidungGruppe()}
+                            GruppenvorschlagsID: {gruppenvorschlag.getID()}<br/>
+                            GruppenID: {gruppenvorschlag.getGruppenID()}
+                            Entscheidung:{gruppenvorschlag.getEntscheidungGruppe()}<br/>
+                            Matchpoints: {gruppenvorschlag.getMatchpoints()}
                         </Typography>
                     </Grid>
                 </Grid>

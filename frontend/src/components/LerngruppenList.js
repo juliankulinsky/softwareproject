@@ -34,7 +34,7 @@ class LerngruppenList extends Component {
                     loadingInProgress: false
                 });
             }).catch(e => this.setState({
-            personen: [],
+            lerngruppen: [],
             error: e,
             loadingInProgress: false
         }));
@@ -55,23 +55,20 @@ class LerngruppenList extends Component {
 
         return (
             <div className={classes.root}>
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test test
-                            {
-                                this.props.person.getEmail()
-                            }
-                        </Typography>
-                    </Grid>
-                </Grid>
-                Lerngruppen:
+                <Typography>
+                    Das sind die Lerngruppen von &nbsp;
+                    {
+                        this.props.person.getName()
+                    }
+                   :
+                </Typography>
 
                 {
                     lerngruppen.map(lerngruppe =>
                     <LerngruppeListEntry
                         key={lerngruppe.getID()}
                         lerngruppe={lerngruppe}
+                        currentperson={this.props.person}
                     />)
                 }
                 <LoadingProgress show={loadingInProgress} />

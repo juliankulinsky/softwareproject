@@ -19,14 +19,15 @@ class PartnerVorschlagMapper (Mapper):
         cursor.execute("SELECT * from partner_vorschlaege")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit, entscheidung_person,
+        for (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
              entscheidung_partner) in tuples:
             partner_vorschlag = PartnerVorschlag()
             partner_vorschlag.set_id(id)
             partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
             partner_vorschlag.set_person_id(person_id)
-            partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+            partner_vorschlag.set_partner_id(partner_id)
             partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
             partner_vorschlag.set_entscheidung_person(entscheidung_person)
             partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
             result.append(partner_vorschlag)
@@ -44,26 +45,83 @@ class PartnerVorschlagMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit, entscheidung_person," \
+        command = "SELECT id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person," \
                   "entscheidung_partner FROM partner_vorschlaege WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit, entscheidung_person,
+            (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
              entscheidung_partner) = tuples[0]
             partner_vorschlag = PartnerVorschlag()
             partner_vorschlag.set_id(id)
             partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
             partner_vorschlag.set_person_id(person_id)
-            partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+            partner_vorschlag.set_partner_id(partner_id)
             partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
             partner_vorschlag.set_entscheidung_person(entscheidung_person)
             partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
             result = partner_vorschlag
         except IndexError:
             """"""
             result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_eingehende_by_person_id(self, person_key):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM partner_vorschlaege WHERE " \
+                  "(person_id={} AND entscheidung_person=FALSE AND entscheidung_partner=TRUE AND matchpoints=1) " \
+                  "OR (partner_id={} AND entscheidung_person=TRUE AND entscheidung_partner=FALSE AND matchpoints=1) "\
+            .format(person_key,person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_partner) in tuples:
+            partner_vorschlag = PartnerVorschlag()
+            partner_vorschlag.set_id(id)
+            partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            partner_vorschlag.set_person_id(person_id)
+            partner_vorschlag.set_partner_id(partner_id)
+            partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
+            partner_vorschlag.set_entscheidung_person(entscheidung_person)
+            partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
+            result.append(partner_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_ausgehende_by_person_id(self, person_key):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM partner_vorschlaege WHERE " \
+                  "(person_id={} AND entscheidung_person=TRUE AND entscheidung_partner=FALSE AND matchpoints=1) " \
+                  "OR (partner_id={} AND entscheidung_person=FALSE AND entscheidung_partner=TRUE AND matchpoints=1) "\
+            .format(person_key,person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_partner) in tuples:
+            partner_vorschlag = PartnerVorschlag()
+            partner_vorschlag.set_id(id)
+            partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            partner_vorschlag.set_person_id(person_id)
+            partner_vorschlag.set_partner_id(partner_id)
+            partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
+            partner_vorschlag.set_entscheidung_person(entscheidung_person)
+            partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
+            result.append(partner_vorschlag)
 
         self._cnx.commit()
         cursor.close()
@@ -78,20 +136,22 @@ class PartnerVorschlagMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM partner_vorschlaege WHERE person_id={} AND entscheidung_person is null " \
-                  "ORDER BY aehnlichkeit DESC ".format(person_key)
+        command = "SELECT * FROM partner_vorschlaege WHERE (person_id={} AND entscheidung_person is FALSE) " \
+                  "OR (partner_id={} AND entscheidung_partner is FALSE) ORDER BY aehnlichkeit DESC "\
+            .format(person_key, person_key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, person_id, partnervorschlag_id, aehnlichkeit, entscheidung_person,
+            (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
              entscheidung_partner) = tuples[0]
             partner_vorschlag = PartnerVorschlag()
             partner_vorschlag.set_id(id)
             partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
             partner_vorschlag.set_person_id(person_id)
-            partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+            partner_vorschlag.set_partner_id(partner_id)
             partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
             partner_vorschlag.set_entscheidung_person(entscheidung_person)
             partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
             result = partner_vorschlag
@@ -119,15 +179,16 @@ class PartnerVorschlagMapper (Mapper):
         for (maxid) in tuples:
             partner_vorschlag.set_id(maxid[0]+1)
 
-        command = "INSERT INTO partner_vorschlaege (id, erstellungszeitpunkt, person_id, partnervorschlag_id, " \
-                  "aehnlichkeit, entscheidung_person, entscheidung_partner) " \
-                  "VALUES (%s,%s,%s,%s,%s,%s,%s)"
+        command = "INSERT INTO partner_vorschlaege (id, erstellungszeitpunkt, person_id, partner_id, " \
+                  "aehnlichkeit, matchpoints, entscheidung_person, entscheidung_partner) " \
+                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
         data = (
             partner_vorschlag.get_id(),
             partner_vorschlag.get_erstellungszeitpunkt(),
             partner_vorschlag.get_person_id(),
-            partner_vorschlag.get_partnervorschlag_id(),
+            partner_vorschlag.get_partner_id(),
             partner_vorschlag.get_aehnlichkeit(),
+            partner_vorschlag.get_matchpoints(),
             partner_vorschlag.get_entscheidung_person(),
             partner_vorschlag.get_entscheidung_partner()
         )
@@ -146,12 +207,13 @@ class PartnerVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE partner_vorschlaege SET person_id=%s, partnervorschlag_id=%s, " \
-                  "aehnlichkeit=%s, entscheidung_person=%s, entscheidung_partner=%s WHERE id=%s"
+        command = "UPDATE partner_vorschlaege SET person_id=%s, partner_id=%s, " \
+                  "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_partner=%s WHERE id=%s"
         data = (
             partner_vorschlag.get_person_id(),
-            partner_vorschlag.get_partnervorschlag_id(),
+            partner_vorschlag.get_partner_id(),
             partner_vorschlag.get_aehnlichkeit(),
+            partner_vorschlag.get_matchpoints(),
             partner_vorschlag.get_entscheidung_person(),
             partner_vorschlag.get_entscheidung_partner(),
             partner_vorschlag.get_id()

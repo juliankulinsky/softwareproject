@@ -12,7 +12,8 @@ class Vorschlag(bo.BusinessObject, ABC):
         super().__init__()
         self._person_id = 0                # Fremdschlüsselbeziehung zur Person für die Vorschläge gesucht werden
         self._aehnlichkeit = 0             # durch Algorithmus ermittelte Ähnlichkeit
-        self._entscheidung_person = None   # Entscheidung der Person über den ggf. vorgeschlagenen Partner/Gruppe
+        self._matchpoints = 0              # Matchpoints -> 0=keine Entscheidung, 1=eine Partei entschied sich dafür, 2= beidseitige positive Entscheidung
+        self._entscheidung_person = False   # Ob die Person eine Entscheidung getroffen hat
 
     def get_person_id(self):
         return self._person_id
@@ -25,6 +26,12 @@ class Vorschlag(bo.BusinessObject, ABC):
 
     def set_aehnlichkeit(self, wert: float):
         self._aehnlichkeit = wert
+
+    def get_matchpoints(self):
+        return self._matchpoints
+
+    def set_matchpoints(self, wert: int):
+        self._matchpoints = wert
 
     def get_entscheidung_person(self):
         return self._entscheidung_person
@@ -39,5 +46,6 @@ class Vorschlag(bo.BusinessObject, ABC):
         obj.set_erstellungszeitpunkt(dictionary["erstellungszeitpunkt"])
         obj.set_person_id(dictionary["person_id"])
         obj.set_aehnlichkeit(dictionary["aehnlichkeit"])
+        obj.set_matchpoints(dictionary["matchpoints"])
         obj.set_entscheidung_person(dictionary["entscheidung_person"])
         return obj

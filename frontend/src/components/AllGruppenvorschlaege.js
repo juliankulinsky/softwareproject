@@ -39,10 +39,9 @@ class AllGruppenvorschlaege extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log(this.state.gruppenvorschlaege)
 
         }).catch(e => this.setState({
-            gruppenvorschlaege: "Nothing received.",
+            gruppenvorschlaege: [],
             error: e,
             loadingInProgress: false
         }));
@@ -62,28 +61,17 @@ class AllGruppenvorschlaege extends Component {
         const {classes} = this.props;
         const {gruppenvorschlaege=[], error, loadingInProgress} = this.state;
 
-        console.log("Test-Render für gruppenvorschlaege")
-        console.log(gruppenvorschlaege)
-        console.log("gruppenvorschlaege hat Typ:" + typeof(gruppenvorschlaege))
-
         return (
             <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test 1.0.0
-                        </Typography>
-                    </Grid>
-                </Grid>
-                Ich wurde zumindest bis hierhin geladen.
-
-                Jetzt kommen Gruppenvorschläge:
+                <Typography>
+                    Das sind alle Gruppenvorschläge:
+                </Typography>
 
                 {
                     gruppenvorschlaege.map(gruppenvorschlag =>
                     <GruppenvorschlaegeEntry
                         key={gruppenvorschlag.getID()}
-                        gruppenvorschlaege={gruppenvorschlag}
+                        gruppenvorschlag={gruppenvorschlag}
                     />)
                 }
                 <ContextErrorMessage

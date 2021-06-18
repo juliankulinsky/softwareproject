@@ -144,23 +144,28 @@ chatteilnahme = api.inherit(
 partnervorschlag = api.inherit(
     "PartnerVorschlag", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
-        "partnervorschlag_id": fields.Integer(attribute="_partnervorschlag_id", description="ID des Partners"),
+        "partner_id": fields.Integer(attribute="_partner_id", description="ID des Partners"),
         "aehnlichkeit": fields.Float(attribute="_aehnlichkeit",
                                      description="Berechnete Ähnlichkeit der Person zum potentiellen Partner"),
-        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
+        "matchpoints": fields.Integer(attribute="_matchpoints", description="Matchpoints des Vorschlags"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person",
+                                              description="Ob Person eine Entscheidung getroffen hat"),
         "entscheidung_partner": fields.Boolean(attribute="_entscheidung_partner",
-                                               description="Entscheidung des Partners")
+                                               description="Ob Partner eine Entscheidung getroffen hat")
     }
 )
 
 gruppenvorschlag = api.inherit(
     "GruppenVorschlag", bo, {
         "person_id": fields.Integer(attribute="_person_id", description="ID der Person"),
-        "gruppenvorschlag_id": fields.Integer(attribute="_gruppenvorschlag_id", description="ID der Gruppe"),
+        "gruppen_id": fields.Integer(attribute="_gruppen_id", description="ID der Gruppe"),
         "aehnlichkeit": fields.Float(attribute="_aehnlichkeit",
                                      description="Berechnete Ähnlichkeit der Person zur Gruppe"),
-        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person", description="Entscheidung der Person"),
-        "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe", description="Entscheidung der Gruppe")
+        "matchpoints": fields.Integer(attribute="_matchpoints", description="Matchpoints des Vorschlags"),
+        "entscheidung_person": fields.Boolean(attribute="_entscheidung_person",
+                                              description="Ob die Person eine Entscheidung getroffen hat"),
+        "entscheidung_gruppe": fields.Boolean(attribute="_entscheidung_gruppe",
+                                              description="Ob die Gruppe eine Entscheidung getroffen hat")
     }
 )
 
@@ -502,6 +507,30 @@ class GruppenTeilnahmeOperations(Resource):
         return '', 200
 
 
+@studoo.route('/person/<int:person_id>/gruppe/<int:gruppen_id>/gruppenteilnahme')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmeByPersonIDundGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenteilnahme)
+    @secured
+    def get(self, person_id, gruppen_id):
+        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        return adm.get_gruppen_teilnahme_by_person_id_und_gruppen_id(person_id, gruppen_id)
+
+
+@studoo.route('/gruppe/<int:gruppen_id>/gruppenteilnahmen')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenTeilnahmenByGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenteilnahme)
+    @secured
+    def get(self, gruppen_id):
+        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        adm = Admin()
+        return adm.get_all_gruppen_teilnahmen_for_gruppen_id(gruppen_id)
+
+
 @studoo.route('/chatteilnahmen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class ChatteilnahmenListOperations(Resource):
@@ -557,6 +586,17 @@ class ChatteilnahmeOperations(Resource):
         return '', 200
 
 
+@studoo.route('/person/<int:person_id>/konversation/<int:konversation_id>/chatteilnahme')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
+
+    @studoo.marshal_with(chatteilnahme)
+    @secured
+    def get(self, person_id, konversation_id):
+        adm = Admin()
+        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id,konversation_id)
+
+
 @studoo.route('/partnervorschlaege')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class PartnervorschlaegeListOperations(Resource):
@@ -574,7 +614,9 @@ class PartnervorschlaegeListOperations(Resource):
         adm = Admin()
         proposal = PartnerVorschlag.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_partnervorschlag(proposal.get_person_id(), proposal.get_partnervorschlag_id(), proposal.get_aehnlichkeit(), proposal.get_entscheidung_person(), proposal.get_entscheidung_partner())
+            p = adm.create_partnervorschlag(proposal.get_person_id(), proposal.get_partnervorschlag_id(),
+                                            proposal.get_aehnlichkeit(), proposal.get_matchpoints(),
+                                            proposal.get_entscheidung_person(), proposal.get_entscheidung_partner())
             return p, 200
         else:
             return '', 500
@@ -623,6 +665,28 @@ class PartnervorschlagForPersonIDOperations(Resource):
         return adm.get_best_partner_vorschlag_for_person_id(person_id)
 
 
+@studoo.route('/person/<int:person_id>/partnervorschlaege/eingehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class EingehendePartnervorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(partnervorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_eingehende_partner_vorschlaege_for_person_id(person_id)
+
+
+@studoo.route('/person/<int:person_id>/partnervorschlaege/ausgehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class AusgehendePartnervorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(partnervorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_ausgehende_partner_vorschlaege_for_person_id(person_id)
+
+
 @studoo.route('/gruppenvorschlaege')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class GruppenvorschlaegeListOperations(Resource):
@@ -640,7 +704,9 @@ class GruppenvorschlaegeListOperations(Resource):
         adm = Admin()
         proposal = GruppenVorschlag.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_gruppenvorschlag(proposal.get_person_id(), proposal.get_gruppenvorschlag_id())
+            p = adm.create_gruppenvorschlag(proposal.get_person_id(), proposal.get_gruppen_id(),
+                                            proposal.get_aehnlichkeit(), proposal.get_matchpoints(),
+                                            proposal.get_entscheidung_person(), proposal.get_entscheidung_gruppe())
             return p, 200
         else:
             return '', 500
@@ -676,6 +742,39 @@ class GruppenvorschlagOperations(Resource):
         pv = adm.get_gruppenvorschlag_by_id(id)
         adm.delete_gruppenvorschlag(pv)
         return '', 200
+
+
+@studoo.route('/person/<int:person_id>/gruppenvorschlag')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlagByPersonIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_best_gruppenvorschlag_for_person_id(person_id)
+
+
+@studoo.route('/person/<int:person_id>/gruppenvorschlaege/eingehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class EingehendeGruppenvorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_eingehende_gruppen_vorschlaege_for_person_id(person_id)
+
+
+@studoo.route('/person/<int:person_id>/gruppenvorschlaege/ausgehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id):
+        adm = Admin()
+        return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
 @studoo.route('/lerngruppen')

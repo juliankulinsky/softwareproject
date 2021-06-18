@@ -57,6 +57,11 @@ class Admin(object):
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_by_key(key)
 
+    def get_chatteilnahme_by_person_id_und_konvresation_id(self, person_id: int, konversation_id: int):
+        """Die Chatteilnahme mit PersonID und KonversationID auslesen"""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_by_person_id_und_konversation_id(person_id,konversation_id)
+
     def save_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
         """Die gegebene Chatteilnahme speichern."""
         with ChatTeilnahmeMapper() as mapper:
@@ -84,10 +89,20 @@ class Admin(object):
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.find_all()
 
+    def get_all_gruppen_teilnahmen_for_gruppen_id(self, gruppen_id):
+        """Auslesen aller Gruppenteilnahmen einer Gruppe"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_all_by_gruppen_id(gruppen_id)
+
     def get_gruppen_teilnahme_by_id(self, value):
         """Eine Gruppen_Teilnahme auswählen"""
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.find_by_key(value)
+
+    def get_gruppen_teilnahme_by_person_id_und_gruppen_id(self, person_id, gruppen_id):
+        """Eine Gruppen-Teilnahme durch PersonID und GruppenID auslesen"""
+        with GruppenTeilnahmeMapper() as mapper:
+            return mapper.find_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
     def save_gruppen_teilnahme(self, gruppen_teilnahme: GruppenTeilnahme):
         """Gruppen_Teilnahme speichern"""
@@ -102,11 +117,16 @@ class Admin(object):
     """
         GruppenVorschlag - Spezifische Methoden
     """
-    def create_gruppenvorschlag(self, person_id, gruppenvorschlag_id):
+    def create_gruppenvorschlag(self, person_id, gruppen_id, aehnlichkeit=0, matchpoints=0,
+                                entscheidung_person=False, entscheidung_gruppe=False):
         """Einen Gruppenvorschlag erstellen."""
         gruppenvorschlag = GruppenVorschlag()
         gruppenvorschlag.set_person_id(person_id)
-        gruppenvorschlag.set_gruppenvorschlag_id(gruppenvorschlag_id)
+        gruppenvorschlag.set_gruppen_id(gruppen_id)
+        gruppenvorschlag.set_aehnlichkeit(aehnlichkeit)
+        gruppenvorschlag.set_matchpoints(matchpoints)
+        gruppenvorschlag.set_entscheidung_person(entscheidung_person)
+        gruppenvorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
 
         with GruppenVorschlagMapper() as mapper:
             return mapper.insert(gruppenvorschlag)
@@ -120,6 +140,21 @@ class Admin(object):
         """Den Gruppenvorschlag mit gegebener ID auslesen."""
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_by_key(key)
+
+    def get_eingehende_gruppen_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Gruppenvorschläge an eine Person auslesen"""
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_eingehende_by_person_id(person_id)
+
+    def get_ausgehende_gruppen_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Gruppenvorschläge an eine Person auslesen"""
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_ausgehende_by_person_id(person_id)
+
+    def get_best_gruppenvorschlag_for_person_id(self, person_id):
+        """Den besten Gruppenvorschlag für eine Person auslesen. """
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_best_for_person_id(person_id)
 
     def save_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
         """Den gegebenen Gruppenvorschlag speichern."""
@@ -294,13 +329,14 @@ class Admin(object):
     """
         PartnerVorschlag - Spezifische Methoden
     """
-    def create_partnervorschlag(self, person_id, partnervorschlag_id, aehnlichkeit,
+    def create_partnervorschlag(self, person_id, partner_id, aehnlichkeit, matchpoints,
                                 entscheidung_person, entscheidung_partner):
         """Ein PartnerVorschlag anlegen"""
         partner_vorschlag = PartnerVorschlag()
         partner_vorschlag.set_person_id(person_id)
-        partner_vorschlag.set_partnervorschlag_id(partnervorschlag_id)
+        partner_vorschlag.set_partner_id(partner_id)
         partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+        partner_vorschlag.set_matchpoints(matchpoints)
         partner_vorschlag.set_entscheidung_person(entscheidung_person)
         partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
 
@@ -316,6 +352,16 @@ class Admin(object):
         """PartnerVorschlag mit der gegebenen ID auslesen."""
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_eingehende_partner_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Partnervorschläge für eine Person auslesen"""
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_eingehende_by_person_id(person_id)
+
+    def get_ausgehende_partner_vorschlaege_for_person_id(self, person_id):
+        """Eingehende Partnervorschläge für eine Person auslesen"""
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_ausgehende_by_person_id(person_id)
 
     def get_best_partner_vorschlag_for_person_id(self, person_id):
         """Den noch nicht bewerteten PartnerVorschlag mit der höchsten Ähnlichkeit für eine Person auslesen"""

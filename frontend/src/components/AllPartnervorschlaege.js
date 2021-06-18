@@ -39,7 +39,6 @@ class AllPartnervorschlaege extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            // console.log(this.state.partnervorschlaege)
 
         }).catch(e => this.setState({
             partnervorschlaege: "Nothing received.",
@@ -64,24 +63,17 @@ class AllPartnervorschlaege extends Component {
 
         return (
             <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                        <Typography>
-                            Test 1.0.0
-                        </Typography>
-                    </Grid>
-                </Grid>
-                Ich wurde zumindest bis hierhin geladen.
-
-                Jetzt kommen Partnervorschläge:
-
+                <Typography>
+                    Das sind alle Partnervorschläge im System:
+                </Typography>
                 {
                     partnervorschlaege.map(partnervorschlag =>
                     <PartnervorschlaegeEntry
                         key={partnervorschlag.getID()}
-                        partnervorschlaege={partnervorschlag}
+                        partnervorschlag={partnervorschlag}
                     />)
                 }
+                -------------
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getPartnervorschlaege}

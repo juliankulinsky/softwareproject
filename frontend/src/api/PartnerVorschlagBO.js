@@ -8,13 +8,13 @@ export default class PartnerVorschlagBO extends VorschlagBO {
     /**
    * Diese Klasse erstellt ein BusinessObject einer PartnerVorschlagBO.
    *
-   * @param {*} partnervorschlag_id - the ID of the partner to be matched.
+   * @param {*} partner_id - the ID of the partner to be matched.
    * @param {*} entscheidung_partner - the decision of the potential match.
    */
 
-    constructor(partnervorschlag_id, entscheidung_partner) {
+    constructor(partner_id, entscheidung_partner) {
         super();
-        this.partnervorschlag_id = partnervorschlag_id;
+        this.partner_id = partner_id;
         this.entscheidung_partner = entscheidung_partner;
     }
 
@@ -22,15 +22,15 @@ export default class PartnerVorschlagBO extends VorschlagBO {
     /*
     * Setzen der Partnervorschlag ID
     */
-    setPartnerVorschlagID(aPVID){
-        this.partnervorschlag_id = aPVID;
+    setPartnerID(aPartnerID){
+        this.partner_id = aPartnerID;
     }
 
     /*
     * Auslesen der PartnerVorschlagBO ID
     */
-    getPartnerVorschlagID() {
-        return this.partnervorschlag_id;
+    getPartnerID() {
+        return this.partner_id;
     }
 
     /*
