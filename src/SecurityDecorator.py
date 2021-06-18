@@ -12,10 +12,12 @@ def secured(function):
     def wrapper(*args, **kwargs):
         # Verify Firebase auth.
         id_token = request.cookies.get("token")
+        """
         print("----------------")
         print("Das ist der Token: (aus SecurityDecorator.py)")
         print(id_token)
         print("----------------")
+        """
         error_message = None
         claims = None
         objects = None

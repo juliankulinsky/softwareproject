@@ -762,7 +762,7 @@ export default class StudooAPI {
      * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
-    addChatTeilnahmen(chatteilnahmeBO) {
+    addChatTeilnahme(chatteilnahmeBO) {
         return this.#fetchAdvanced(this.#addChatTeilnahmeURL(), {
             method: 'POST',
             headers: {

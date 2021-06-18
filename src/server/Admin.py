@@ -75,11 +75,12 @@ class Admin(object):
     """
         GruppenTeilnahme - Spezifische Methoden
     """
-    def create_gruppen_teilnahme(self, person_id, gruppen_id):
+    def create_gruppen_teilnahme(self, person_id, gruppen_id, ist_admin):
         """Gruppen_Teilnahme erstellen"""
         gruppenteilnahme = GruppenTeilnahme()
         gruppenteilnahme.set_person_id(person_id)
         gruppenteilnahme.set_gruppen_id(gruppen_id)
+        gruppenteilnahme.set_ist_admin(ist_admin)
 
         with GruppenTeilnahmeMapper() as mapper:
             return mapper.insert(gruppenteilnahme)
@@ -223,7 +224,7 @@ class Admin(object):
         lerngruppe.set_profil_id(profil_id)
         lerngruppe.set_konversation_id(konversation_id)
 
-        with LerngruppeMapper as mapper:
+        with LerngruppeMapper() as mapper:
             return mapper.insert(lerngruppe)
 
     def get_all_lerngruppen(self):

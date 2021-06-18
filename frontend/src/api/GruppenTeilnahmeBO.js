@@ -13,7 +13,7 @@ export default class GruppenTeilnahmeBO extends BusinessObject {
     constructor(person_id, gruppen_id, ist_admin) {
         super();
         this.person_id = person_id;
-        this.group_id = gruppen_id;
+        this.gruppen_id = gruppen_id;
         this.ist_admin = ist_admin;
     }
 
@@ -35,14 +35,14 @@ export default class GruppenTeilnahmeBO extends BusinessObject {
      * Liest die gruppen_id aus.
      */
     get_gruppen_id() {
-        return this.group_id;
+        return this.gruppen_id;
     }
 
     /**
      * Legt die gruppen_id fest.
      */
     set_gruppen_id(gruppen_id=0) {
-        this.group_id = gruppen_id;
+        this.gruppen_id = gruppen_id;
     }
 
     /**

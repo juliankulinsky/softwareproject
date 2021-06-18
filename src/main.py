@@ -475,7 +475,7 @@ class GruppenTeilnahmeListOperations(Resource):
         adm = Admin()
         proposal = GruppenTeilnahme.from_dict(api.payload)
         if proposal is not None:
-            gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id())
+            gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id(), proposal.get_ist_admin())
             return gt, 200
         else:
             return '', 500
@@ -749,7 +749,7 @@ class GruppenvorschlagOperations(Resource):
             vorschlag = adm.get_gruppenvorschlag_by_id(p.get_id())
             aktuelle_lerngruppe = adm.get_lerngruppe_by_id(vorschlag.get_gruppen_id())
             if vorschlag.get_matchpoints() >= 2:
-                adm.create_gruppen_teilnahme(vorschlag.get_person_id(), vorschlag.get_gruppen_id())
+                adm.create_gruppen_teilnahme(vorschlag.get_person_id(), vorschlag.get_gruppen_id(), False)
                 adm.create_chatteilnahme(vorschlag.get_person_id(), aktuelle_lerngruppe.get_konversation_id())
             return '', 200
         else:
