@@ -7,6 +7,7 @@
 /* Header/Icon colors */
 .iconcss {
         color: #000000;
+        padding: 5px;
 }
 
 /* Header/Studoo-Image-Icon umgebendes <div> */
@@ -27,18 +28,32 @@
         justify-content: space-between;
         background-color: #FFF;
 }
+
+.profile {
+    order: 3;
+}
+.icons {
+    order: 2;
+}
+
 /* Header/Toolbar MQ*/
 @media only screen and (max-width: 400px){
     .toolbar {
         display: flex;
         flex-direction: column;
         background-color: #FFF;
-}
+    }
+    .icons a button {
+        padding: 0;
+    }
+    .profile {
+        order: 2;
+    }
+    .imagediv {
+        order: 1;
+    }
     .icons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
+        order: 3;
     }
 }
-
 
