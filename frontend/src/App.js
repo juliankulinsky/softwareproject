@@ -30,6 +30,9 @@ import PartnerExplorer from "./components/PartnerExplorer";
 import ProfilVorschau from "./components/ProfilVorschau";
 import AktuellesProfil from "./components/AktuellesProfil";
 import ProfilForm from "./components/dialogs/ProfilForm";
+import LerngruppenExplorer from "./components/LerngruppenExplorer";
+import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
+import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
 
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
@@ -176,11 +179,9 @@ class App extends React.Component {
 															<Route path='/profil'>
 																<ProfilVorschau person={currentPersonBO} user={currentUser}/>
 															</Route>
-															<Route path='/gruppenvorschlaege'>
-																<AllGruppenvorschlaege/>
-															</Route>
-															<Route path='/partnervorschlaege'>
-																<AllPartnervorschlaege/>
+															<Route path='/vorschlaege'>
+																<AllPartnervorschlaege person={currentPersonBO}/>
+																<AllGruppenvorschlaege person={currentPersonBO}/>
 															</Route>
 															<Route path='/lernvorlieben'>
 																<LernvorliebenList/>
@@ -191,8 +192,13 @@ class App extends React.Component {
 															<Route path='/konversationen'>
 																<KonversationenList person={currentPersonBO}/>
 															</Route>
-															<Route path='/partnerexplorer'>
-																<PartnerExplorer person={currentPersonBO}/>
+															<Route path='/explorer'>
+																<PartnerExplorer person={currentPersonBO}/> <br/> <br/>
+																<LerngruppenExplorer person={currentPersonBO}/>
+															</Route>
+															<Route path='/anfragen'>
+																<EingehendeAnfragenList person={currentPersonBO}/> <br/> <br/>
+																<AusgehendeAnfragenList person={currentPersonBO}/>
 															</Route>
 														</>
 												}

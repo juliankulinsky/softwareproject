@@ -204,10 +204,11 @@ CREATE TABLE `partner_vorschlaege` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
     `person_id` int NOT NULL DEFAULT 0,
-    `partnervorschlag_id` int NOT NULL DEFAULT 0,
+    `partner_id` int NOT NULL DEFAULT 0,
     `aehnlichkeit` float NOT NULL DEFAULT 0.0,
-    `entscheidung_person` bool DEFAULT NULL,
-    `entscheidung_partner` bool DEFAULT NULL,
+    `matchpoints` int NOT NULL DEFAULT 0,
+    `entscheidung_person` bool DEFAULT FALSE,
+    `entscheidung_partner` bool DEFAULT FALSE,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -217,11 +218,12 @@ CREATE TABLE `partner_vorschlaege` (
 
 LOCK TABLES `partner_vorschlaege` WRITE;
 INSERT INTO `partner_vorschlaege`
-VALUES (1,'2021-03-02 18:21:26',1,2,67.8,TRUE,TRUE),
-       (2,'2021-04-26 15:36:01',1,3,67.8,TRUE,NULL),
-       (3,'2021-04-26 15:36:01',4,1,81.2,NULL,NULL),
-       (4,'2021-04-26 15:36:01',4,2,90.3,TRUE,TRUE),
-       (5,'2021-04-26 15:36:01',4,3,57.8,NULL,TRUE);
+VALUES (1,'2021-03-02 18:21:26',1,2,67.8,2,TRUE,TRUE),
+       (2,'2021-04-26 15:36:01',1,3,67.8,1,TRUE,FALSE),
+       (3,'2021-04-26 15:36:01',4,1,81.2,0,FALSE,FALSE),
+       (4,'2021-04-26 15:36:01',4,2,90.3,2,TRUE,TRUE),
+       (5,'2021-04-26 15:36:01',4,3,57.8,1,FALSE,TRUE),
+       (6,'2021-04-30 15:36:01',2,4,75.3,1,TRUE,FALSE);
 UNLOCK TABLES;
 
 --
@@ -291,10 +293,11 @@ CREATE TABLE `gruppen_vorschlaege` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
     `person_id` int NOT NULL DEFAULT 0,
-    `gruppenvorschlag_id` int NOT NULL DEFAULT 0,
+    `gruppen_id` int NOT NULL DEFAULT 0,
     `aehnlichkeit` float DEFAULT 0.0,
-    `entscheidung_person` bool DEFAULT NULL,
-    `entscheidung_gruppe` bool DEFAULT NULL,
+    `matchpoints` int NOT NULL DEFAULT 0,
+    `entscheidung_person` bool DEFAULT FALSE,
+    `entscheidung_gruppe` bool DEFAULT FALSE,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -304,11 +307,11 @@ CREATE TABLE `gruppen_vorschlaege` (
 
 LOCK TABLES `gruppen_vorschlaege` WRITE;
 INSERT INTO `gruppen_vorschlaege`
-VALUES (1,'2021-03-02 18:21:26',1,1,70.5,TRUE,NULL),
-       (2,'2021-04-26 15:36:01',3,2,66.8,FALSE,NULL),
-       (3,'2021-04-26 15:36:01',4,4,92.8,NULL,NULL),
-       (4,'2021-04-26 15:36:01',4,5,98.2,NULL,NULL),
-       (5,'2021-04-26 15:36:01',4,2,98.2,TRUE,TRUE),
-       (6,'2021-04-26 15:36:01',4,1,98.2,TRUE,TRUE),
-       (7,'2021-04-26 15:36:01',4,3,98.2,TRUE,TRUE);
+VALUES (1,'2021-03-02 18:21:26',1,1,70.5,1,TRUE,FALSE),
+       (2,'2021-04-26 15:36:01',3,2,66.8,0,FALSE,FALSE),
+       (3,'2021-04-26 15:36:01',4,4,92.8,2,TRUE,TRUE),
+       (4,'2021-04-26 15:36:01',4,5,98.2,0,FALSE,FALSE),
+       (5,'2021-04-26 15:36:01',4,2,80.7,1,TRUE,FALSE),
+       (6,'2021-04-26 15:36:01',4,1,97.2,0,FALSE,FALSE),
+       (7,'2021-04-26 15:36:01',3,4,70.9,0,FALSE,FALSE);
 UNLOCK TABLES;

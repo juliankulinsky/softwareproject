@@ -18,17 +18,17 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
-import {PartnerVorschlagBO} from "../api";
+import {GruppenVorschlagBO, LerngruppeBO} from "../api";
 
-class PartnerExplorer extends Component {
+class LerngruppenExplorer extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            partnervorschlag: null,
+            gruppenvorschlag: null,
             currentPerson: this.props.person,
-            anderePerson: null,
+            lerngruppe: null,
             entscheidung: null,
             matchpoints: 0,
             error: null,
@@ -40,38 +40,31 @@ class PartnerExplorer extends Component {
         this.baseState = this.state;
     }
 
-    getAnderePerson = () => {
-        if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
-            StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
-                .then(anderePerson =>
+    getLerngruppe = () => {
+        StudooAPI.getAPI().getLerngruppe(this.state.gruppenvorschlag.getGruppenID())
+            .then(lerngruppe => {
                 this.setState({
-                    anderePerson: anderePerson
-                }))
-        } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
-            StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
-                .then(anderePerson =>
-                this.setState({
-                    anderePerson: anderePerson
-                }))
-        }
+                    lerngruppe: lerngruppe
+                })
+            })
     }
 
-    getBestPartnervorschlag = () => {
-        StudooAPI.getAPI().getPartnerVorschlagByPersonID(this.props.person.getID())
-            .then(partnervorschlagBO => {
+    getBestGruppenvorschlag = () => {
+        StudooAPI.getAPI().getGruppenVorschlagForPersonID(this.props.person.getID())
+            .then(gruppenvorschlagBO => {
                 this.setState({
-                    partnervorschlag: partnervorschlagBO,
+                    gruppenvorschlag: gruppenvorschlagBO,
                     error: null,
                     loadingInProgress: false
                 });
-                if (this.state.partnervorschlag != null) {
+                if (this.state.gruppenvorschlag != null) {
                     this.setState({
-                        matchpoints: partnervorschlagBO.getMatchpoints()
+                        matchpoints: gruppenvorschlagBO.getMatchpoints()
                     })
-                    this.getAnderePerson()
+                    this.getLerngruppe()
                 }
             }).catch(e => this.setState({
-            partnervorschlag: null,
+            gruppenvorschlag: null,
             matchpoints: 0,
             error: e,
             loadingInProgress: false
@@ -88,7 +81,7 @@ class PartnerExplorer extends Component {
             entscheidung: true,
             buttonPressed: true
         }, function () {
-            this.updatePartnervorschlag()
+            this.updateGruppenvorschlag()
         });
     }
 
@@ -97,25 +90,18 @@ class PartnerExplorer extends Component {
             entscheidung: false,
             buttonPressed: true
         }, function () {
-            this.updatePartnervorschlag()
+            this.updateGruppenvorschlag()
         });
     }
 
-    updatePartnervorschlag = () => {
-        let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
-        if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
-            updatedPartnerVorschlag.setEntscheidungPerson(true);
-            if (this.state.entscheidung) {
-                updatedPartnerVorschlag.setMatchpoints(this.state.matchpoints += 1)
-            }
-        } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
-            updatedPartnerVorschlag.setEntscheidungPartner(true);
-            if (this.state.entscheidung) {
-                updatedPartnerVorschlag.setMatchpoints(this.state.matchpoints += 1)
-            }
+    updateGruppenvorschlag = () => {
+        let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.gruppenvorschlag);
+        updatedGruppenVorschlag.setEntscheidungPerson(true);
+        if (this.state.entscheidung) {
+            updatedGruppenVorschlag.setMatchpoints(this.state.matchpoints += 1)
         }
-        StudooAPI.getAPI().updatePartnerVorschlag(updatedPartnerVorschlag)
-            .then(partnerVorschlag => {
+        StudooAPI.getAPI().updateGruppenVorschlag(updatedGruppenVorschlag)
+            .then(gruppenVorschlag => {
                 this.setState({
                     updatingInProgress: false,
                     updatingError: null
@@ -133,27 +119,27 @@ class PartnerExplorer extends Component {
     }
 
     componentDidMount() {
-        this.getBestPartnervorschlag()
+        this.getBestGruppenvorschlag()
     }
 
 
     render() {
         const {classes} = this.props;
-        const {partnervorschlag, anderePerson, error, loadingInProgress} = this.state;
+        const {gruppenvorschlag, lerngruppe, error, loadingInProgress} = this.state;
 
         return (
             <div className={classes.root}>
                 {
-                    (partnervorschlag && anderePerson) ?
+                    (gruppenvorschlag && lerngruppe) ?
                         <Typography>
-                            Auf dich zugeschnittener Partnervorschlag mit der ID#{partnervorschlag.getID()}<br/>
-                            PartnerID: {anderePerson.getID()}&nbsp;
-                            mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
+                            Auf dich zugeschnittener Gruppenvorschlag mit der ID#{gruppenvorschlag.getID()}<br/>
+                            GruppenID: {lerngruppe.getID()}&nbsp;
+                            mit einer Ähnlichkeit von: {gruppenvorschlag.getAehnlichkeit()}
                             <Typography>
-                                Name: {anderePerson.getName()}<br/>
-                                Matchpoints: {partnervorschlag.getMatchpoints()}
+                                Gruppenname: {lerngruppe.getGruppenname()}<br/>
+                                Matchpoints: {gruppenvorschlag.getMatchpoints()}
                             </Typography>
-                            Willst du eine Konversation mit {anderePerson.getName()} anfangen?
+                            Willst du der Gruppe "{lerngruppe.getGruppenname()}" eine Beitrittsanfrage senden?
                             <br/>
                             <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
                                 JA
@@ -164,13 +150,13 @@ class PartnerExplorer extends Component {
                         </Typography>
                         :
                         <Typography>
-                            Es gibt momentan leider keine Partnervorschläge für dich :/
+                            Es gibt momentan leider keine Gruppenvorschläge für dich :/
                         </Typography>
                 }
 
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
-                    onReload={this.getBestPartnervorschlag}
+                    onReload={this.getBestGruppenvorschlag}
                 />
             </div>
         )
@@ -187,9 +173,9 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-PartnerExplorer.propTypes = {
+LerngruppenExplorer.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(PartnerExplorer));
+export default withRouter(withStyles(styles)(LerngruppenExplorer));

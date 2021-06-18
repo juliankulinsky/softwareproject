@@ -5,10 +5,11 @@ export default class VorschlagBO extends BusinessObject {
     /** Diese Super-Klasse erstellt ein BusinessObject eines Vorschlags
      * und dient als Basis für die Klassen Partnervorschlag und Gruppenvorschlag. */
 
-    constructor(aPersonId, aAehnlichkeit, aEntscheidungPerson) {
+    constructor(aPersonId, aAehnlichkeit, aMatchpoints, aEntscheidungPerson) {
         super();
         this.person_id = aPersonId;
         this.aehnlichkeit = aAehnlichkeit;
+        this.matchpoints = aMatchpoints;
         this.entscheidung_person = aEntscheidungPerson;
     }
 
@@ -19,7 +20,7 @@ export default class VorschlagBO extends BusinessObject {
     }
 
     /** Gibt die ID der Person aus. */
-    getPersonId() {
+    getPersonID() {
         return this.person_id;
     }
 
@@ -31,6 +32,16 @@ export default class VorschlagBO extends BusinessObject {
     /** Gibt den Wert der Aehnlichkeit aus. */
     getAehnlichkeit() {
         return this.aehnlichkeit;
+    }
+
+    /** Legt die Matchpoints fest. */
+    setMatchpoints(aMatchpoints) {
+    this.matchpoints = aMatchpoints;
+    }
+
+    /** Gibt die Matchpoints aus. */
+    getMatchpoints() {
+        return this.matchpoints;
     }
 
     /** Setzt die Entscheidung der Person in einem boolean Wert. */
