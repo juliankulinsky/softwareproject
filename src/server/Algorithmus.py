@@ -18,26 +18,40 @@ class Algorithmus:
         partnerprofil = a.get_profil_by_id(partner.get_profil_id())
         lernvorliebeperson = a.get_lernvorliebe_by_id(personprofil.get_lernvorlieben_id())
         lernvorliebepartner = a.get_lernvorliebe_by_id(partnerprofil.get_lernvorlieben_id())
-        lernvorliebenpe = [lernvorliebeperson.get_frequenz(), lernvorliebeperson.get_extrovertiertheit(), lernvorliebeperson.get_remote_praesenz()]
-        lernvorliebenpa = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(), lernvorliebepartner.get_remote_praesenz()]
+        listeperson = [lernvorliebeperson.get_frequenz(), lernvorliebeperson.get_extrovertiertheit(),
+                       lernvorliebeperson.get_remote_praesenz()]
+        listepartner = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(),
+                        lernvorliebepartner.get_remote_praesenz()]
+        spperson = lernvorliebeperson.get_lerninteressen()
+        sppartner = lernvorliebepartner.get_lerninteressen()
+        durchlaufpersonunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spperson.split(',')])
+        durchlaufperson = list(durchlaufpersonunbearbeitet)
+        durchlaufpartnerunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in sppartner.split(',')])
+        durchlaufpartner = list(durchlaufpartnerunbearbeitet)
         aehnlichkeit = 0
-        for x in lernvorliebenpe:
+        for aufruf in listeperson:
             count = 0
-            if x - lernvorliebenpa[count] == 0:
-                aehnlichkeit += 10 + lernvorliebenpa[count] + lernvorliebenpe[count]
+            if aufruf - listepartner[count] == 0:
+                aehnlichkeit += 10
                 count += 1
-            elif x - lernvorliebenpa[count] == 1 or -1:
-                aehnlichkeit += 5 + lernvorliebenpa[count] + lernvorliebenpe[count]
+            elif aufruf - listepartner[count] == 1 or aufruf - listepartner[count] == -1:
+                aehnlichkeit += 5
                 count += 1
-            elif x - lernvorliebenpa[count] == 2 or -2:
-                aehnlichkeit += 1 + lernvorliebenpa[count] + lernvorliebenpe[count]
+            elif aufruf - listepartner[count] == 2 or aufruf - listepartner[count] == -2:
+                aehnlichkeit += 1
                 count += 1
-            elif x - lernvorliebenpa[count] == 3 or -3:
-                aehnlichkeit -= 2 - lernvorliebenpa[count] - lernvorliebenpe[count]
+            elif aufruf - listepartner[count] == 3 or aufruf - listepartner[count] == -3:
+                aehnlichkeit -= 2
                 count += 1
             else:
-                aehnlichkeit -= 5 - lernvorliebenpa[count] - lernvorliebenpe[count]
+                aehnlichkeit -= 5
                 count += 1
+        if lernvorliebeperson.get_lerntyp() == lernvorliebepartner.get_lerntyp():
+            aehnlichkeit += 10
+        for wort in range(len(durchlaufperson)):
+            for kek in range(len(durchlaufpartner)):
+                if durchlaufperson[wort] in durchlaufpartner[kek]:
+                    aehnlichkeit += 15
         with PartnerVorschlagMapper() as mapper:
             result = mapper.find_by_key(partnervorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
@@ -46,10 +60,10 @@ class Algorithmus:
 
 adm = Admin()
 algo = Algorithmus()
-print(algo.match(adm.get_partner_vorschlag_by_id(5)))
-
-
-
-
+algo.match(adm.get_partner_vorschlag_by_id(1))
+algo.match(adm.get_partner_vorschlag_by_id(2))
+algo.match(adm.get_partner_vorschlag_by_id(3))
+algo.match(adm.get_partner_vorschlag_by_id(4))
+algo.match(adm.get_partner_vorschlag_by_id(5))
 
 
