@@ -145,6 +145,44 @@ class PersonMapper (Mapper):
 
         return result
 
+    def find_by_profil_id(self, profil_id: int):
+        """Suchen eines Person-Objekts mit der angegebenen Google-User-ID
+
+        :param key:
+        :return: das gesuchte Person-Objekt
+        """
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
+                  "profil_id FROM personen WHERE profil_id={}".format(profil_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = \
+            tuples[0]
+            person = Person()
+            person.set_id(id)
+            person.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            person.set_name(name)
+            person.set_email(email)
+            person.set_google_user_id(google_user_id)
+            person.set_alter(alter)
+            person.set_studiengang(studiengang)
+            person.set_wohnort(wohnort)
+            person.set_semester(semester)
+            person.set_profil_id(profil_id)
+            result = person
+        except IndexError:
+            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
+            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, person: Person):
         """Einfügen eines Person-Objekts in die Datenbank.
 

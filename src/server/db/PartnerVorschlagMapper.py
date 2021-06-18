@@ -166,6 +166,36 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
+    def find_all_for_person_id(self, person_key):
+        """Auslesen aller PartnerVorschlag-Objekte aus der Datenbank
+
+        :return:
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM partner_vorschlaege WHERE (person_id={} AND entscheidung_person is FALSE) " \
+                  "OR (partner_id={} AND entscheidung_partner is FALSE)".format(person_key, person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_partner) in tuples:
+            partner_vorschlag = PartnerVorschlag()
+            partner_vorschlag.set_id(id)
+            partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            partner_vorschlag.set_person_id(person_id)
+            partner_vorschlag.set_partner_id(partner_id)
+            partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
+            partner_vorschlag.set_entscheidung_person(entscheidung_person)
+            partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
+            result.append(partner_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, partner_vorschlag: PartnerVorschlag):
         """
 

@@ -37,6 +37,8 @@ from server.bo.Person import Person
 from server.bo.Profil import Profil
 from server.Admin import Admin
 
+from server.Algorithmus import Algorithmus
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -169,7 +171,6 @@ gruppenvorschlag = api.inherit(
     }
 )
 
-
 """
 API Routes
 """
@@ -228,6 +229,7 @@ class NachrichtOperations(Resource):
         message = adm.get_nachricht_by_id(id)
         adm.delete_nachricht(message)
         return '', 200
+
 
 @studoo.route('/konversation/<int:konversation_id>/nachrichten')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -293,6 +295,7 @@ class KonversationListOperations(Resource):
             return p, 200
         else:
             return '', 500
+
 
 @studoo.route('/person/<int:person_id>/konversationen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -373,6 +376,7 @@ class PersonOperations(Resource):
         adm.delete_person(pers)
         return '', 200
 
+
 @studoo.route('/googleuserid/<uid>/person')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class PersonUIDOperations(Resource):
@@ -433,6 +437,11 @@ class LernvorliebeOperations(Resource):
         if lv is not None:
             lv.set_id(id)
             adm.save_lernvorliebe(lv)
+            algo = Algorithmus()
+            person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
+            vorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
+            for vorschlag in vorschlaege:
+                algo.match(vorschlag)
             return '', 200
         else:
             return '', 500
@@ -594,7 +603,7 @@ class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
     @secured
     def get(self, person_id, konversation_id):
         adm = Admin()
-        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id,konversation_id)
+        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id, konversation_id)
 
 
 @studoo.route('/partnervorschlaege')
@@ -797,10 +806,12 @@ class LerngruppenListOperations(Resource):
         admin = Admin()
         proposal = Lerngruppe.from_dict(api.payload)
         if proposal is not None:
-            lg = admin.create_lerngruppe(proposal.get_gruppenname(), proposal.get_profil_id(), proposal.get_konversation_id())
+            lg = admin.create_lerngruppe(proposal.get_gruppenname(), proposal.get_profil_id(),
+                                         proposal.get_konversation_id())
             return lg, 200
         else:
             return '', 500
+
 
 @studoo.route('/lerngruppe/<int:id>')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')

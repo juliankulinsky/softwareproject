@@ -29,8 +29,8 @@ class Algorithmus:
         durchlaufpartnerunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in sppartner.split(',')])
         durchlaufpartner = list(durchlaufpartnerunbearbeitet)
         aehnlichkeit = 0
+        count = 0
         for aufruf in listeperson:
-            count = 0
             if aufruf - listepartner[count] == 0:
                 aehnlichkeit += 10
                 count += 1
@@ -56,14 +56,4 @@ class Algorithmus:
             result = mapper.find_by_key(partnervorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
             mapper.update(result)
-
-
-adm = Admin()
-algo = Algorithmus()
-algo.match(adm.get_partner_vorschlag_by_id(1))
-algo.match(adm.get_partner_vorschlag_by_id(2))
-algo.match(adm.get_partner_vorschlag_by_id(3))
-algo.match(adm.get_partner_vorschlag_by_id(4))
-algo.match(adm.get_partner_vorschlag_by_id(5))
-
 
