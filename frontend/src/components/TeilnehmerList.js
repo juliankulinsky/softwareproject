@@ -58,12 +58,9 @@ class TeilnehmerList extends Component {
                         :
                         null
                 }
-
             </Typography>
-
         )
     }
-
 }
 
 /** Component specific styles */

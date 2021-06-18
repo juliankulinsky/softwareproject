@@ -28,7 +28,6 @@ class GruppenAnfragenList extends Component {
     getAlleGruppenbeitrittsAnfragen = () => {
         StudooAPI.getAPI().getEingehendeGruppenVorschlaegeForGruppenID(this.props.lerngruppe.getID())
             .then(anfragen => {
-                console.log("YO ",anfragen)
                 this.setState({
                     gruppenBeitrittsAnfragen: anfragen
                 })
