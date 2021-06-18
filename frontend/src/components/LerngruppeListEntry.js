@@ -18,7 +18,6 @@ class LerngruppeListEntry extends Component {
         this.state = {
             lerngruppe: props.lerngruppe,
             eigeneGruppenTeilnahme: null,
-            alleGruppenTeilnahmen: []
         }
     }
 
@@ -42,75 +41,47 @@ class LerngruppeListEntry extends Component {
             })
     }
 
-    getAlleGruppenTeilnahmenForGruppe = () => {
-        StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
-            .then(gruppenTeilnahmen => {
-                this.setState({
-                    alleGruppenTeilnahmen: gruppenTeilnahmen
-                })
-            })
-    }
-
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
-        this.getAlleGruppenTeilnahmenForGruppe()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, alleGruppenTeilnahmen } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme } = this.state;
 
         return (
-            <div>
-                <Grid>
-                    <Grid item>
-                        <Typography className={classes.heading}>
-                            ------------- <br/>
-                            Gruppenname:
-                            {
-                                lerngruppe.getGruppenname()
-                            } &nbsp;
-                            <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
-                                Teilnahme beenden
-                            </Button>
-                            {
-                                eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
-                                    <>
-                                        &nbsp;
-                                        <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
-                                            Verwalten (In Arbeit)
-                                        </Button>
-                                        <Typography>
-                                            Das sind alle Teilnehmer:
-                                            {
-                                                alleGruppenTeilnahmen.map( gruppenteilnahme =>
-                                                    <TeilnehmerListEntry
-                                                        currentperson={this.props.currentperson}
-                                                        lerngruppe={lerngruppe}
-                                                        eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
-                                                        gruppenteilnahme={gruppenteilnahme} />
-                                                )
-                                            }
-                                        </Typography>
-                                        <br/><br/>
-                                        <Typography>
-                                            Das sollte auch funktionieren: <br/>
-                                            <TeilnehmerList
-                                                currentperson={this.props.currentperson}
-                                                lerngruppe={lerngruppe}
-                                            />
-                                        </Typography>
-                                    </>
-                                    :
-                                    null
+                <Typography className={classes.heading}>
+                    ------------- <br/>
+                    Gruppenname:
+                    {
+                        lerngruppe.getGruppenname()
+                    } &nbsp;
+                    <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
+                        Teilnahme beenden
+                    </Button>
+                    {
+                        eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
+                            <>
+                                &nbsp;
+                                <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
+                                    Verwalten (In Arbeit)
+                                </Button>
+                                <br/><br/>
+                                <Typography>
+                                    Das sollte auch funktionieren (Das sind alle Teilnehmer der Gruppe: <br/>
+                                    <TeilnehmerList
+                                        currentperson={this.props.currentperson}
+                                        lerngruppe={lerngruppe}
+                                    />
+                                </Typography>
+                            </>
+                            :
+                            null
 
-                            }
-                            <br/>-------------
+                    }
+                    <br/>-------------
 
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </div>
+                </Typography>
         )
     }
 

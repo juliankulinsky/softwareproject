@@ -18,7 +18,7 @@ class TeilnehmerList extends Component {
 
         this.state = {
             lerngruppe: props.lerngruppe,
-            alleGruppenTeilnahmen: props.alleGruppenTeilnahmen
+            alleGruppenTeilnahmen: []
         }
     }
 
@@ -48,8 +48,8 @@ class TeilnehmerList extends Component {
                                 alleGruppenTeilnahmen.map(gruppenteilnahme =>
                                     <TeilnehmerListEntry
                                         currentperson={this.props.currentperson}
-                                        lerngruppe={lerngruppe}
-                                        gruppenteilnahme={gruppenteilnahme}/>
+                                        gruppenteilnahme={gruppenteilnahme}
+                                    />
                                 )
                             }
                         </Typography>
