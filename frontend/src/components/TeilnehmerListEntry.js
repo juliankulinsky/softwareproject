@@ -19,7 +19,6 @@ class TeilnehmerListEntry extends Component {
             lerngruppe: props.lerngruppe,
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
-            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme
         }
     }
 

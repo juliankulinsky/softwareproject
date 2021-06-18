@@ -7,6 +7,7 @@ import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import TeilnehmerList from "./TeilnehmerList";
 //import AccountList from './AccountList';
 
 
@@ -21,6 +22,9 @@ class LerngruppeListEntry extends Component {
         }
     }
 
+    /**
+     * Um schauen zu können, ob man Admin in der Gruppe ist
+     */
     getEigeneGruppenTeilnahme = () => {
         StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.currentperson.getID(),this.props.lerngruppe.getID())
             .then (gruppenTeilnahme => {
@@ -36,18 +40,9 @@ class LerngruppeListEntry extends Component {
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
             })
-
     }
 
-    Verwaltung = () => {
-        return (
-            <div>
-                Testtest was passiert jetzt
-            </div>
-        )
-    }
-
-    getGruppenTeilnahmen = () => {
+    getAlleGruppenTeilnahmenForGruppe = () => {
         StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
             .then(gruppenTeilnahmen => {
                 this.setState({
@@ -58,7 +53,7 @@ class LerngruppeListEntry extends Component {
 
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
-        this.getGruppenTeilnahmen()
+        this.getAlleGruppenTeilnahmenForGruppe()
     }
 
     render() {
@@ -79,32 +74,32 @@ class LerngruppeListEntry extends Component {
                                 Teilnahme beenden
                             </Button>
                             {
-                                eigeneGruppenTeilnahme ?
+                                eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
                                     <>
-                                        {
-                                            eigeneGruppenTeilnahme.get_ist_admin() ?
-                                            <>
-                                                &nbsp;
-                                                <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
-                                                    Verwalten (In Arbeit)
-                                                </Button>
-                                                <Typography>
-                                                    Das sind alle Teilnehmer:
-                                                    {
-                                                        alleGruppenTeilnahmen.map( gruppenteilnahme =>
-                                                            <TeilnehmerListEntry
-                                                                currentperson={this.props.currentperson}
-                                                                lerngruppe={lerngruppe}
-                                                                eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
-                                                                gruppenteilnahme={gruppenteilnahme} />
-                                                        )
-                                                    }
-                                                </Typography>
-                                            </>
-                                            :
-                                            null
-                                        }
-
+                                        &nbsp;
+                                        <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
+                                            Verwalten (In Arbeit)
+                                        </Button>
+                                        <Typography>
+                                            Das sind alle Teilnehmer:
+                                            {
+                                                alleGruppenTeilnahmen.map( gruppenteilnahme =>
+                                                    <TeilnehmerListEntry
+                                                        currentperson={this.props.currentperson}
+                                                        lerngruppe={lerngruppe}
+                                                        eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
+                                                        gruppenteilnahme={gruppenteilnahme} />
+                                                )
+                                            }
+                                        </Typography>
+                                        <br/><br/>
+                                        <Typography>
+                                            Das sollte auch funktionieren: <br/>
+                                            <TeilnehmerList
+                                                currentperson={this.props.currentperson}
+                                                lerngruppe={lerngruppe}
+                                            />
+                                        </Typography>
                                     </>
                                     :
                                     null
