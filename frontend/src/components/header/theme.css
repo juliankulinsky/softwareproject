@@ -29,12 +29,6 @@
         background-color: #FFF;
 }
 
-.profile {
-    order: 3;
-}
-.icons {
-    order: 2;
-}
 
 /* Header/Toolbar MQ*/
 @media only screen and (max-width: 400px){

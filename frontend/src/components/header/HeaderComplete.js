@@ -27,10 +27,6 @@ class HeaderComplete extends Component {
                                 <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" className="image"/>
                             </div>
 
-                            <div className="profile">
-                                <ProfileDropDown user={user} />
-                            </div>
-
                             <div className="icons">
                                 <Link to="/personen">
                                     <BottomNavigationAction className="test" label={"Person"} icon={<NotificationsNoneIcon className="iconcss"/>}/>
@@ -49,6 +45,9 @@ class HeaderComplete extends Component {
                                 </Link>
                             </div>
 
+                            <div className="profile">
+                                <ProfileDropDown user={user} />
+                            </div>
 
                         </Toolbar>
                     </AppBar>
