@@ -44,7 +44,14 @@ def secured(function):
                     else:
                         lv = adm.create_lernvorliebe()
                         profil = adm.create_profil(lv.get_id())
+                        personen = adm.get_all_personen()
+                        print(personen)
                         user = adm.create_person(name, email, google_user_id, profil_id=profil.get_id())
+                        for person in personen:
+                            print("Neue Person ", user.get_id())
+                            print("Partner ", person.get_id())
+                            adm.create_partnervorschlag(user.get_id(),person.get_id(), aehnlichkeit=0, matchpoints=0,entscheidung_person=False, entscheidung_partner=False)
+
 
                     print(request.method, request.path, "angefragt durch:", name, email)
 
