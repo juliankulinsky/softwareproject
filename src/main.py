@@ -746,6 +746,11 @@ class GruppenvorschlagOperations(Resource):
         if p is not None:
             p.set_id(id)
             adm.save_gruppenvorschlag(p)
+            vorschlag = adm.get_gruppenvorschlag_by_id(p.get_id())
+            aktuelle_lerngruppe = adm.get_lerngruppe_by_id(vorschlag.get_gruppen_id())
+            if vorschlag.get_matchpoints() >= 2:
+                adm.create_gruppen_teilnahme(vorschlag.get_person_id(), vorschlag.get_gruppen_id())
+                adm.create_chatteilnahme(vorschlag.get_person_id(), aktuelle_lerngruppe.get_konversation_id())
             return '', 200
         else:
             return '', 500
