@@ -67,13 +67,10 @@ class LerngruppeListEntry extends Component {
                                     Verwalten (In Arbeit)
                                 </Button>
                                 <br/><br/>
-                                <Typography>
-                                    Das sollte auch funktionieren (Das sind alle Teilnehmer der Gruppe: <br/>
-                                    <TeilnehmerList
-                                        currentperson={this.props.currentperson}
-                                        lerngruppe={lerngruppe}
-                                    />
-                                </Typography>
+                                <TeilnehmerList
+                                    currentperson={this.props.currentperson}
+                                    lerngruppe={lerngruppe}
+                                />
                             </>
                             :
                             null

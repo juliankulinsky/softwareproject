@@ -44,11 +44,13 @@ class TeilnehmerList extends Component {
                 {
                     alleGruppenTeilnahmen ?
                         <Typography>
+                            Das sind alle Gruppenteilnehmer: <br/><br/>
                             {
                                 alleGruppenTeilnahmen.map(gruppenteilnahme =>
                                     <TeilnehmerListEntry
                                         currentperson={this.props.currentperson}
                                         gruppenteilnahme={gruppenteilnahme}
+                                        lerngruppe={lerngruppe}
                                     />
                                 )
                             }
