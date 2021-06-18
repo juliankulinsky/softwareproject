@@ -19,6 +19,7 @@ class LerngruppeListEntry extends Component {
         this.state = {
             lerngruppe: props.lerngruppe,
             eigeneGruppenTeilnahme: null,
+            beendenButtonPressed: false,
             expandedState: false
         }
     }
@@ -36,6 +37,9 @@ class LerngruppeListEntry extends Component {
     }
 
     deleteTeilnahme = () => {
+        this.setState({
+            beendenButtonPressed: true
+        })
         StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.eigeneGruppenTeilnahme.getID())
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.currentperson.getID(),this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
@@ -61,7 +65,7 @@ class LerngruppeListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, expandedState } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState } = this.state;
 
         return (
                 <Typography className={classes.heading}>
@@ -70,7 +74,7 @@ class LerngruppeListEntry extends Component {
                     {
                         lerngruppe.getGruppenname()
                     } &nbsp;
-                    <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
+                    <Button disabled={beendenButtonPressed} color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
                         Teilnahme beenden
                     </Button>
                     {
