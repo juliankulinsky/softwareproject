@@ -61,12 +61,12 @@ class TeilnehmerListEntry extends Component {
                         <>
                             {teilnehmerPerson.getName()}
                             {
-                                !(teilnehmerPerson.getID()===this.props.currentperson.getID()) ?
+                                teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
                                     <Button disabled={buttonPressed} color={"secondary"}
                                             onClick={this.deleteAktuelleTeilnahme}>
                                         Löschen
                                     </Button>
-                                    : null
+                                    : <> (DU)</>
                             }
                         </>
                         : null

@@ -8,6 +8,7 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import TeilnehmerList from "./TeilnehmerList";
+import GruppenAnfragenList from "./GruppenAnfragenList";
 //import AccountList from './AccountList';
 
 
@@ -83,6 +84,11 @@ class LerngruppeListEntry extends Component {
                                     expandedState ?
                                         <>
                                             <br/><br/>
+                                            <GruppenAnfragenList
+                                                currentperson={this.props.currentperson}
+                                                lerngruppe={lerngruppe}
+                                            />
+                                            <br/>
                                             <TeilnehmerList
                                                 currentperson={this.props.currentperson}
                                                 lerngruppe={lerngruppe}

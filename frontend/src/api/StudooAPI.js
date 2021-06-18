@@ -94,6 +94,7 @@ export default class StudooAPI {
     #getGruppenVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlag`;
     #getAusgehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/ausgehend`;
     #getEingehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/eingehend`;
+    #getEingehendeGruppenAnfragenForGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenvorschlaege/eingehend`;
     #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
     #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
@@ -971,6 +972,15 @@ export default class StudooAPI {
 
     getEingehendeGruppenVorschlaegeForPersonID(person_id) {
         return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForPersonIDURL(person_id))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })})
+    }
+
+    getEingehendeGruppenVorschlaegeForGruppenID(gruppen_id) {
+        return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForGruppenIDURL(gruppen_id))
             .then((response) => {
                 let res = GruppenVorschlagBO.fromJSON(response)
                 return new Promise(function (resolve) {

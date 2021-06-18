@@ -786,6 +786,17 @@ class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
         return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
+@studoo.route('/gruppe/<int:gruppen_id>/gruppenvorschlaege/eingehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class EingehendeGruppenvorschlaegeForGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, gruppen_id):
+        adm = Admin()
+        return adm.get_eingehende_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
+
+
 @studoo.route('/lerngruppen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class LerngruppenListOperations(Resource):
