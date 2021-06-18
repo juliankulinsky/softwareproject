@@ -1,0 +1,53 @@
+/* Header/MUI-Appbar */
+.root {
+        margin: 0;
+        padding: 0;
+}
+
+/* Header/Icon colors */
+.iconcss {
+        color: #000000;
+        padding: 5px;
+}
+
+/* Header/Studoo-Image-Icon umgebendes <div> */
+.imagediv {
+        padding: 15px;
+}
+
+/* Bildgröße anpassen */
+.image {
+        max-width: 50px;
+        max-height: 50px;
+}
+
+/* Header/Toolbar */
+.toolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: #FFF;
+}
+
+
+/* Header/Toolbar MQ*/
+@media only screen and (max-width: 400px){
+    .toolbar {
+        display: flex;
+        flex-direction: column;
+        background-color: #FFF;
+    }
+    .icons a button {
+        padding: 0;
+    }
+    .profile {
+        order: 2;
+    }
+    .imagediv {
+        order: 1;
+    }
+    .icons {
+        order: 3;
+    }
+}
+
