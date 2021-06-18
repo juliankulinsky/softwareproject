@@ -60,10 +60,6 @@ class Algorithmus:
 
 adm = Admin()
 algo = Algorithmus()
-algo.match(adm.get_partner_vorschlag_by_id(1))
-algo.match(adm.get_partner_vorschlag_by_id(2))
-algo.match(adm.get_partner_vorschlag_by_id(3))
-algo.match(adm.get_partner_vorschlag_by_id(4))
-algo.match(adm.get_partner_vorschlag_by_id(5))
-
-
+for x in range(1, len(adm.get_all_partner_vorschlag())+1):
+    print(x)
+    algo.match(adm.get_partner_vorschlag_by_id(x))
