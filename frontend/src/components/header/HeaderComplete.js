@@ -25,7 +25,6 @@ class HeaderComplete extends Component {
                             <div style={theme.imagediv}>
                                 <img src={process.env.PUBLIC_URL + '/logo192.png'} alt="Logo" style={theme.image}/>
                             </div>
-
                             <div>
                                 <Link to="/anfragen">
                                     <BottomNavigationAction label={"Explore"} icon={<NotificationsNoneIcon style={theme.iconcss}/>}/>
@@ -33,16 +32,13 @@ class HeaderComplete extends Component {
                                 <Link to="/explorer">
                                     <BottomNavigationAction label={"PartnerExplorer"} icon={<SearchIcon style={theme.iconcss}/>}/>
                                 </Link>
-
                                 <Link to="/konversationen">
                                     <BottomNavigationAction label={"Konversationen"} icon={<ChatIcon style={theme.iconcss}/>}/>
                                 </Link>
-
                                 <Link to="/lerngruppen">
                                     <BottomNavigationAction label={"Gruppen"} icon={<GroupIcon style={theme.iconcss}/>}/>
                                 </Link>
                             </div>
-
                             <div>
                             <ProfileDropDown user={user} />
                             </div>
