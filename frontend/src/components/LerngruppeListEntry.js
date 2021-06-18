@@ -18,6 +18,7 @@ class LerngruppeListEntry extends Component {
         this.state = {
             lerngruppe: props.lerngruppe,
             eigeneGruppenTeilnahme: null,
+            expandedState: false
         }
     }
 
@@ -41,13 +42,25 @@ class LerngruppeListEntry extends Component {
             })
     }
 
+    switchExpandedState = () => {
+        if (this.state.expandedState){
+            this.setState({
+                expandedState: false
+            })
+        } else {
+            this.setState({
+                expandedState: true
+            })
+        }
+    }
+
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, expandedState } = this.state;
 
         return (
                 <Typography className={classes.heading}>
@@ -63,25 +76,28 @@ class LerngruppeListEntry extends Component {
                         eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
                             <>
                                 &nbsp;
-                                <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
-                                    Verwalten (In Arbeit)
+                                <Button color={expandedState ? "disabled":"primary"} variant={"contained"} onClick={this.switchExpandedState}>
+                                    Verwalten { expandedState ? <> ˄</> : <> ˅</> }
                                 </Button>
-                                <br/><br/>
-                                <TeilnehmerList
-                                    currentperson={this.props.currentperson}
-                                    lerngruppe={lerngruppe}
-                                />
+                                {
+                                    expandedState ?
+                                        <>
+                                            <br/><br/>
+                                            <TeilnehmerList
+                                                currentperson={this.props.currentperson}
+                                                lerngruppe={lerngruppe}
+                                            />
+                                        </>
+                                        : null
+                                }
                             </>
                             :
                             null
-
                     }
                     <br/>-------------
-
                 </Typography>
         )
     }
-
 }
 
 /** Component specific styles */
