@@ -58,8 +58,8 @@ class Algorithmus:
             mapper.update(result)
 
 
-adm = Admin()
+"""adm = Admin()
 algo = Algorithmus()
 for x in range(1, len(adm.get_all_partner_vorschlag())+1):
     print(x)
-    algo.match(adm.get_partner_vorschlag_by_id(x))
+    algo.match(adm.get_partner_vorschlag_by_id(x))"""

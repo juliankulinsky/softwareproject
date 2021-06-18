@@ -37,6 +37,8 @@ from server.bo.Person import Person
 from server.bo.Profil import Profil
 from server.Admin import Admin
 
+from server.Algorithmus import Algorithmus
+
 """
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
@@ -169,11 +171,9 @@ gruppenvorschlag = api.inherit(
     }
 )
 
-
 """
 API Routes
 """
-
 
 @studoo.route('/nachrichten')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -429,6 +429,11 @@ class LernvorliebeOperations(Resource):
         """Update einer bestimmten Lernvorliebe"""
         adm = Admin()
         lv = Lernvorliebe.from_dict(api.payload)
+
+        algo = Algorithmus()
+        for x in range(1, len(adm.get_all_partner_vorschlag()) + 1):
+            print(x)
+            algo.match(adm.get_partner_vorschlag_by_id(x))
 
         if lv is not None:
             lv.set_id(id)
