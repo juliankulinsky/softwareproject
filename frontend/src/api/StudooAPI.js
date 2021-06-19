@@ -98,6 +98,7 @@ export default class StudooAPI {
     #getGruppenVorschlaegeForGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenvorschlaege`;
     #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #getGruppenVorschlagByPersonIDundGruppenIDURL = (personid,gruppenid) => `${this.#studooServerBaseURL}/person/${personid}/gruppe/${gruppenid}/gruppenvorschlag`;
     #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
     #deleteGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
 
@@ -909,19 +910,19 @@ export default class StudooAPI {
      * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.
      * @public */
     updateGruppenTeilnahme(gruppenteilnahmeBO) {
-    return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(), {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(gruppenteilnahmeBO)
-    }).then((responseJSON) => {
-        let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
-        return new Promise(function (resolve) {
-            resolve(responseGruppenTeilnahmeBO);
-    })
-    })
+        return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(gruppenteilnahmeBO.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(gruppenteilnahmeBO)
+        }).then((responseJSON) => {
+            let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenTeilnahmeBO);
+        })
+        })
     }
 
     /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
@@ -1029,7 +1030,16 @@ export default class StudooAPI {
                 resolve(responseGruppenVorschlagBO);
           })
         })
-      }
+    }
+
+    getGruppenVorschlagByPersonIDundGruppenID(personid,gruppenID) {
+        return this.#fetchAdvanced(this.#getGruppenVorschlagByPersonIDundGruppenIDURL(personid,gruppenID)).then((responseJSON) => {
+            let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenVorschlagBO);
+          })
+        })
+    }
 
     /** Updates a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
      * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion is set by the backend.

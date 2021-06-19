@@ -37,7 +37,7 @@ class ErstelleLerngruppeDialog extends Component {
     this.baseState = this.state;
   }
 
-  /** Erstellt die Lerngrupe mit allem was dazu gehört */
+  /** Erstellt die Lerngruppe mit allem was dazu gehört */
   erstelleLerngruppe = () => {
     let newLernvorlieben = new LernvorliebeBO()
     StudooAPI.getAPI().addLernvorliebe(newLernvorlieben).then(lernvorlieben => {
@@ -47,19 +47,31 @@ class ErstelleLerngruppeDialog extends Component {
         StudooAPI.getAPI().addKonversation(newKonversation).then(konversation => {
           let newLerngruppe = new LerngruppeBO(this.state.gruppenname,profil.getID(),konversation.getID())
           StudooAPI.getAPI().addLerngruppe(newLerngruppe).then(lernguppe => {
-            let newGruppenTeilnahme = new GruppenTeilnahmeBO(this.props.person.getID(),lernguppe.getID(),true)
-            StudooAPI.getAPI().addGruppenTeilnahme(newGruppenTeilnahme).then(gruppenteilnahme => {
-                let newChatTeilnahme = new ChatTeilnahmeBO(this.props.person.getID(),konversation.getID())
-                StudooAPI.getAPI().addChatTeilnahme(newChatTeilnahme).then(chatTeilnahme => {
-                  this.setState(this.baseState);
-                  this.props.onClose(lernguppe);
-                  /**
-                   * Hier muss noch das "Einladen" vom chatpartner stattfinden
-                   * --> automatisch erstellten Gruppenvorschlag aufrufen --> Mapper dafür (by personid & gruppenid)
-                   * --> updaten auf mp=1 entsch_gr=True
-                   */
+            StudooAPI.getAPI().getGruppenVorschlagByPersonIDundGruppenID(this.props.person.getID(),lernguppe.getID())
+                .then(eigenerGruppenvorschlag => {
+                  eigenerGruppenvorschlag.setEntscheidungGruppe(true)
+                  eigenerGruppenvorschlag.setEntscheidungPerson(true)
+                  eigenerGruppenvorschlag.setMatchpoints(2)
+                  StudooAPI.getAPI().updateGruppenVorschlag(eigenerGruppenvorschlag).then(neweigenerGruppenvorschlag => {
+                    /** jetzt wird automatisch eine zugehörige Gruppen- & Chateilnahme erstellt */
+                    StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.person.getID(),lernguppe.getID())
+                      .then(eigeneGruppenteilnahme => {
+                        /** Die aktuelle Person als Admin der Gruppe setzen */
+                        eigeneGruppenteilnahme.set_ist_admin(true)
+                        StudooAPI.getAPI().updateGruppenTeilnahme(eigeneGruppenteilnahme)
+                      })
+                  })
                 })
-            })
+            /** "Einladung" an Chatpartner senden */
+            StudooAPI.getAPI().getGruppenVorschlagByPersonIDundGruppenID(this.props.chatpartner.getID(),lernguppe.getID())
+                .then(partnerGruppenvorschlag => {
+                  partnerGruppenvorschlag.setEntscheidungGruppe(true)
+                  partnerGruppenvorschlag.setMatchpoints(1)
+                  StudooAPI.getAPI().updateGruppenVorschlag(partnerGruppenvorschlag)
+                })
+
+            this.setState(this.baseState);
+            this.props.onClose(lernguppe);
           })
         })
       })

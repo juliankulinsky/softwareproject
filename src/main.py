@@ -763,6 +763,17 @@ class GruppenvorschlagOperations(Resource):
         return '', 200
 
 
+@studoo.route('/person/<int:person_id>/gruppe/<int:gruppen_id>/gruppenvorschlag')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlagByPersonIDundGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id, gruppen_id):
+        adm = Admin()
+        return adm.get_gruppenvorschlag_by_person_id_und_gruppen_id(person_id, gruppen_id)
+
+
 @studoo.route('/person/<int:person_id>/gruppenvorschlag')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class GruppenvorschlagByPersonIDOperations(Resource):
