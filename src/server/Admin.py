@@ -157,6 +157,11 @@ class Admin(object):
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_eingehende_by_gruppen_id(gruppen_id)
 
+    def get_gruppen_vorschlaege_for_gruppen_id(self, gruppen_id):
+        """Eingehende Gruppenbeitrittsanfragen an eine Gruppe auslesen"""
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_by_gruppen_id(gruppen_id)
+
     def get_best_gruppenvorschlag_for_person_id(self, person_id):
         """Den besten Gruppenvorschlag für eine Person auslesen. """
         with GruppenVorschlagMapper() as mapper:
