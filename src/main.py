@@ -840,6 +840,9 @@ class LerngruppenListOperations(Resource):
         if proposal is not None:
             lg = admin.create_lerngruppe(proposal.get_gruppenname(), proposal.get_profil_id(),
                                          proposal.get_konversation_id())
+            allePersonen = admin.get_all_personen()
+            for person in allePersonen:
+                admin.create_gruppenvorschlag(person.get_id(),lg.get_id())
             return lg, 200
         else:
             return '', 500
