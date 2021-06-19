@@ -511,7 +511,7 @@ export default class StudooAPI {
      * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
      * @public */
     updateLerngruppe(lerngruppeBO) {
-    return this.#fetchAdvanced(this.#updateLerngruppeURL(), {
+    return this.#fetchAdvanced(this.#updateLerngruppeURL(lerngruppeBO.getID()), {
         method: 'PUT',
         headers: {
             'Accept': 'application/json, text/plain',

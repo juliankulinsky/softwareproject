@@ -9,6 +9,7 @@ import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import TeilnehmerList from "./TeilnehmerList";
 import GruppenAnfragenList from "./GruppenAnfragenList";
+import UpdateGruppennameDialog from "./dialogs/UpdateGruppennameDialog";
 //import AccountList from './AccountList';
 
 
@@ -20,7 +21,8 @@ class LerngruppeListEntry extends Component {
             lerngruppe: props.lerngruppe,
             eigeneGruppenTeilnahme: null,
             beendenButtonPressed: false,
-            expandedState: false
+            expandedState: false,
+            showUpdateGruppennameDialog: false
         }
     }
 
@@ -59,13 +61,25 @@ class LerngruppeListEntry extends Component {
         }
     }
 
+    openUpdateGruppennameDialog = () => {
+        this.setState({
+            showUpdateGruppennameDialog: true
+        })
+    }
+
+    updateGruppennameDialogClosed = () => {
+        this.setState({
+            showUpdateGruppennameDialog: false
+        })
+    }
+
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog } = this.state;
 
         return (
                 <Typography className={classes.heading}>
@@ -87,6 +101,15 @@ class LerngruppeListEntry extends Component {
                                 {
                                     expandedState ?
                                         <>
+                                            <br/>
+                                            <Button color={"primary"} onClick={this.openUpdateGruppennameDialog}>
+                                                Gruppenname ändern
+                                            </Button>
+                                            <UpdateGruppennameDialog
+                                                show={showUpdateGruppennameDialog}
+                                                lerngruppe={lerngruppe}
+                                                onClose={this.updateGruppennameDialogClosed}
+                                            />
                                             <br/><br/>
                                             <GruppenAnfragenList
                                                 currentperson={this.props.currentperson}

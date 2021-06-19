@@ -258,7 +258,7 @@ class Admin(object):
 
     def save_lerngruppe(self, lerngruppe: Lerngruppe):
         """Änderungen einer Lerngruppe speichern bzw. updaten."""
-        with LerngruppeMapper as mapper:
+        with LerngruppeMapper() as mapper:
             mapper.update(lerngruppe)
 
     def delete_lerngruppe(self, lerngruppe: Lerngruppe):

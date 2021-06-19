@@ -20,78 +20,45 @@ import LoadingProgress from './LoadingProgress';
  *
  * @author [Christoph Kunz](https://github.com/christophkunz)
  */
-class ErstelleLerngruppeDialog extends Component {
+class UpdateGruppennameDialog extends Component {
 
   constructor(props) {
     super(props);
 
     // Init the state
     this.state = {
+      lerngruppe: props.lerngruppe,
       gruppenname: null,
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
-      addingInProgress: false,
-      addingError: null
+      updatingInProgress: false,
+      updatingError: null
     };
     // save this state for canceling
     this.baseState = this.state;
   }
 
   /** Erstellt die Lerngruppe mit allem was dazu gehört */
-  erstelleLerngruppe = () => {
-    /** Zuerst neue Lernvorlieben, neues Profil, das auf diese Lernvorlieben weist und eine neue Konversation erstellen */
-    let newLernvorlieben = new LernvorliebeBO()
-    StudooAPI.getAPI().addLernvorliebe(newLernvorlieben).then(lernvorlieben => {
-      let newProfil = new ProfilBO(lernvorlieben.getID())
-      StudooAPI.getAPI().addProfil(newProfil).then(profil => {
-        let newKonversation = new KonversationBO(true)
-        StudooAPI.getAPI().addKonversation(newKonversation).then(konversation => {
-          /** Mit dem eingegebenen Gruppenname, diesem erstellten Profil und der Konversation eine neue Gruppe erstellen */
-          let newLerngruppe = new LerngruppeBO(this.state.gruppenname,profil.getID(),konversation.getID())
-          StudooAPI.getAPI().addLerngruppe(newLerngruppe).then(lernguppe => {
-            /** Hier werden automatisch Gruppenvorschläge für alle Personen mit dieser Gruppe erstellt.
-             *  Im Folgenden wird der Gruppenvorschlag für die aktuelle Person aktualisiert, damit dieser ihr nicht angezeigt wird */
-            StudooAPI.getAPI().getGruppenVorschlagByPersonIDundGruppenID(this.props.person.getID(),lernguppe.getID())
-                .then(eigenerGruppenvorschlag => {
-                  eigenerGruppenvorschlag.setEntscheidungGruppe(true)
-                  eigenerGruppenvorschlag.setEntscheidungPerson(true)
-                  eigenerGruppenvorschlag.setMatchpoints(2)
-                  StudooAPI.getAPI().updateGruppenVorschlag(eigenerGruppenvorschlag).then(neweigenerGruppenvorschlag => {
-                    /** Hier wird automatisch eine zugehörige Gruppen- & Chateilnahme für die Person erstellt, weil Matchpoints=2.
-                     *  Die neue Gruppenteilnahme der aktuellen Person zur neuen Gruppe wird ausgelesen */
-                    StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.person.getID(),lernguppe.getID())
-                      .then(eigeneGruppenteilnahme => {
-                        /** Die aktuelle Person wird als Admin der Gruppe gesetzt */
-                        eigeneGruppenteilnahme.set_ist_admin(true)
-                        StudooAPI.getAPI().updateGruppenTeilnahme(eigeneGruppenteilnahme)
-                      })
-                  })
-                })
-            /** "Einladung" an Chatpartner senden, indem automatisch erstellter Gruppenvorschlag ausgelesen und angepasst wird. */
-            StudooAPI.getAPI().getGruppenVorschlagByPersonIDundGruppenID(this.props.chatpartner.getID(),lernguppe.getID())
-                .then(partnerGruppenvorschlag => {
-                  partnerGruppenvorschlag.setEntscheidungGruppe(true)
-                  partnerGruppenvorschlag.setMatchpoints(1)
-                  StudooAPI.getAPI().updateGruppenVorschlag(partnerGruppenvorschlag)
-                })
-            this.setState(this.baseState);
-            this.props.onClose(lernguppe);
-          })
-        })
-      })
-    })
-        .catch(e =>
+  updateLerngruppe = () => {
+    let updatedLerngruppe = Object.assign(new LerngruppeBO(), this.props.lerngruppe);
+    updatedLerngruppe.setGruppenname(this.state.gruppenname)
+    StudooAPI.getAPI().updateLerngruppe(updatedLerngruppe).then(lerngruppe => {
       this.setState({
-        addInProgress: false,    // disable loading indicator
-        addError: e              // show error message
+        updatingInProgress: false,
+        updatingError: null
+      });
+      this.baseState.lerngruppe = this.state.lerngruppe
+      this.props.onClose(updatedLerngruppe)
+    }).catch(e =>
+      this.setState({
+        updatingInProgress: false,
+        updatingError: e
       })
-    );
-
-    // set loading to true
+    )
     this.setState({
-      addInProgress: true,       // show loading indicator
-      addError: null             // disable error message
-    });
+      updatingInProgress: true,
+      updatingError: null
+    })
   }
 
   /** Handles value changes of the forms textfields and validates them */
@@ -120,12 +87,12 @@ class ErstelleLerngruppeDialog extends Component {
   /** Renders the component */
   render() {
     const { classes, person, show } = this.props;
-    const { gruppenname, gruppennameEdited, gruppennameValidationFailed, addingInProgress, addingError } = this.state;
+    const { lerngruppe, gruppenname, gruppennameEdited, gruppennameValidationFailed, updatingInProgress,updatingError } = this.state;
 
     let title = '';
     let header = '';
 
-    title = 'Erstelle eine Lerngruppe';
+    title = 'Ändern des Gruppenamens';
     header = 'Gebe hier den Lerngruppenname ein';
 
     return (
@@ -141,18 +108,18 @@ class ErstelleLerngruppeDialog extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='Gruppenname:' value={gruppenname}
+              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='neuer Gruppenname:' value={gruppenname}
                 onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
                 helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
             </form>
-            <LoadingProgress show={addingInProgress} />
-            <ContextErrorMessage error={addingError} contextErrorMsg={`Die Lerngruppe konnte nicht erstellt werden.`} onReload={this.erstelleLerngruppe} />
+            <LoadingProgress show={updatingInProgress} />
+            <ContextErrorMessage error={updatingError} contextErrorMsg={`Die Lerngruppe konnte nicht geändert werden.`} onReload={this.updateLerngruppe} />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='secondary'>
               Cancel
             </Button>
-            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.erstelleLerngruppe} color='primary'>
+            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.updateLerngruppe} color='primary'>
                 Add
             </Button>
           </DialogActions>
@@ -176,11 +143,13 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-ErstelleLerngruppeDialog.propTypes = {
+UpdateGruppennameDialog.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   /** The CustomerBO to be edited */
   person: PropTypes.object,
+  /** Das LerngruppeBO-Objekt, das man ändern will */
+  lerngruppe: PropTypes.object,
   /** If true, the form is rendered */
   show: PropTypes.bool.isRequired,
   /**
@@ -192,4 +161,4 @@ ErstelleLerngruppeDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(ErstelleLerngruppeDialog);
+export default withStyles(styles)(UpdateGruppennameDialog);
