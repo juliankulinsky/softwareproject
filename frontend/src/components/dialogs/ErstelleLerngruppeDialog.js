@@ -150,10 +150,10 @@ class ErstelleLerngruppeDialog extends Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='secondary'>
-              Cancel
+              Abbrechen
             </Button>
             <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.erstelleLerngruppe} color='primary'>
-                Add
+                Erstellen
             </Button>
           </DialogActions>
         </Dialog>

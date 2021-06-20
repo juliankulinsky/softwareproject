@@ -64,7 +64,7 @@ class TeilnehmerListEntry extends Component {
                                 teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
                                     <Button disabled={buttonPressed} color={"secondary"}
                                             onClick={this.deleteAktuelleTeilnahme}>
-                                        Löschen
+                                        Entfernen
                                     </Button>
                                     : <> (DU)</>
                             }

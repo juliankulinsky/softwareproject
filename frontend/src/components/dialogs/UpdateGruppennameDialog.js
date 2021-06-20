@@ -117,10 +117,10 @@ class UpdateGruppennameDialog extends Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='secondary'>
-              Cancel
+              Abbrechen
             </Button>
             <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.updateLerngruppe} color='primary'>
-                Add
+                Ändern
             </Button>
           </DialogActions>
         </Dialog>
