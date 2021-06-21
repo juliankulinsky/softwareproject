@@ -432,16 +432,19 @@ class LernvorliebeOperations(Resource):
     def put(self, id):
         """Update einer bestimmten Lernvorliebe"""
         adm = Admin()
-        lv = Lernvorliebe.from_dict(api.payload)
+        lernv = Lernvorliebe.from_dict(api.payload)
 
-        if lv is not None:
-            lv.set_id(id)
-            adm.save_lernvorliebe(lv)
+        if lernv is not None:
+            lernv.set_id(id)
+            adm.save_lernvorliebe(lernv)
             algo = Algorithmus()
             person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
             vorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
+            gruppen = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
             for vorschlag in vorschlaege:
                 algo.match(vorschlag)
+            for vorschlag in gruppen:
+                algo.match_gruppen(vorschlag)
             return '', 200
         else:
             return '', 500
