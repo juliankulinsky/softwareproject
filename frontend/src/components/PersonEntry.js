@@ -20,6 +20,7 @@ class PersonEntry extends Component {
     this.state = {
       person: props.person,
       lernvorliebe: props.lernvorliebe,
+      profil: props.profil,
       showProfilForm: false,
       showProfilDeleteDialog: false,
     };
@@ -58,6 +59,22 @@ class PersonEntry extends Component {
   }
 
   /** Handles the onClose event of the ProfilForm */
+  profilFormClosedP = (profil) => {
+
+    // customer is not null and therefore changed
+    if (profil) {
+      this.setState({
+        profil: profil,
+        showProfilForm: false
+      });
+    } else {
+      this.setState({
+        showProfilForm: false
+      });
+    }
+  }
+
+  /** Handles the onClose event of the ProfilForm */
   profilFormClosedL = (lernvorliebe) => {
 
     // customer is not null and therefore changed
@@ -77,9 +94,9 @@ class PersonEntry extends Component {
 
   /** Renders the component */
   render() {
-    const {classes, expandedState, selfperson, profil} = this.props;
+    const {classes, expandedState, selfperson} = this.props;
     // Use the states customer
-    const {person, lernvorliebe, showProfilForm} = this.state;
+    const {person, profil, lernvorliebe, showProfilForm} = this.state;
 
     return (
         <div>
@@ -123,7 +140,7 @@ class PersonEntry extends Component {
                 <Typography className={classes.heading}>
                   Beschreibung:
                   {
-                    profil.getLernvorliebeID()
+                    profil.getBeschreibung()
                   }
                 </Typography>
                 : null
@@ -163,8 +180,8 @@ class PersonEntry extends Component {
                 </Typography> : null
           }
           {
-            <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe}
-                        onClose={this.profilFormClosed} onCloseL={this.profilFormClosedL}/>
+            <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
+                        onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP} onCloseL={this.profilFormClosedL}/>
           }
         </div>
 
@@ -184,6 +201,7 @@ PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   person: PropTypes.object.isRequired,
+  profil: PropTypes.object.isRequired,
   lernvorliebe: PropTypes.object.isRequired,
   expandedState: PropTypes.bool.isRequired,
   onExpandedStateChange: PropTypes.func.isRequired,

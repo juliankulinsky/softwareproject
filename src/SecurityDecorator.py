@@ -43,7 +43,7 @@ def secured(function):
                         adm.save_person(user)
                     else:
                         lv = adm.create_lernvorliebe()
-                        profil = adm.create_profil(lv.get_id())
+                        profil = adm.create_profil(lv.get_id(), " ")
                         personen = adm.get_all_personen()
                         print(personen)
                         user = adm.create_person(name, email, google_user_id, profil_id=profil.get_id())

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import {StudooAPI, PersonBO, LernvorliebeBO} from '../../api';
+import {StudooAPI, PersonBO, LernvorliebeBO, ProfilBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
@@ -27,6 +27,11 @@ class ProfilForm extends Component {
       sg = props.person.getStudiengang();
       sm = props.person.getSemester();
       pID = props.person.getProfilId();
+    }
+
+    let be = '';
+    if (props.profil) {
+      be = props.profil.getBeschreibung();
     }
 
     let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
@@ -64,6 +69,9 @@ class ProfilForm extends Component {
       profilID: pID,
       profilIDValidationFailed: false,
       profilIDEdited: false,
+      beschreibung: be,
+      beschreibungValidationFailed: false,
+      beschreibungEdited: false,
       lerntyp: lt,
       lerntypValidationFailed: false,
       lerntypEdited: false,
@@ -93,6 +101,7 @@ class ProfilForm extends Component {
 
   updateProfil = () => {
     this.updatePerson()
+    this.updateProfilBeschreibung()
     this.updateLernvorliebe()
 
     console.log("Basestate", this.baseState)
@@ -131,6 +140,34 @@ class ProfilForm extends Component {
         updatingInProgress: false,              // disable loading indicator
         updatingError: e                        // show error message
       })
+    );
+    // set loading to true
+    this.setState({
+      updatingInProgress: true,                 // show loading indicator
+      updatingError: null                       // disable error message
+    });
+  }
+
+
+  /** Updates the Profil */
+  updateProfilBeschreibung = () => {
+    // clone the Person, in case the backend call fails
+    let updatedProfil = Object.assign(new ProfilBO(), this.props.profil);
+    // set new attributes from Textfields
+    updatedProfil.setBeschreibung(this.state.beschreibung);
+    StudooAPI.getAPI().updateProfil(updatedProfil).then(profil => {
+      this.setState({
+        updatingInProgress: false,              // disable loading indicator
+        updatingError: null                     // no error message
+      });
+      // keep the new state as base state
+      this.baseState.beschreibung = this.state.beschreibung;
+      this.props.onCloseP(updatedProfil);      // call the parent with the new customer
+    }).catch(e =>
+        this.setState({
+          updatingInProgress: false,              // disable loading indicator
+          updatingError: e                        // show error message
+        })
     );
     // set loading to true
     this.setState({
@@ -198,20 +235,22 @@ class ProfilForm extends Component {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
+    this.props.onCloseP(null);
     this.props.onCloseL(null);
   }
 
   /** Renders the component */
   render() {
-    const { classes, person, lernvorliebe, show } = this.props;
+    const { classes, person, profil, lernvorliebe, show } = this.props;
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
-        lerntyp, lerntypValidationFailed, lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited,
-        extrovertiertheit, extrovertiertheitValidationFailed, extrovertiertheitEdited, remote,
-        remoteValidationFailed, remoteEdited, vorkenntnisse, vorkenntnisseValidationFailed,
-        vorkenntnisseEdited, lerninteressen, lerninteressenValidationFailed, lerninteressenEdited,
-        addingInProgress, addingError, updatingInProgress, updatingError } = this.state;
+        beschreibung, beschreibungValidationFailed, beschreibungEdited, lerntyp, lerntypValidationFailed,
+      lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited, extrovertiertheit,
+      extrovertiertheitValidationFailed, extrovertiertheitEdited, remote, remoteValidationFailed, remoteEdited,
+      vorkenntnisse, vorkenntnisseValidationFailed, vorkenntnisseEdited, lerninteressen,
+      lerninteressenValidationFailed, lerninteressenEdited,addingInProgress, addingError, updatingInProgress,
+      updatingError } = this.state;
 
     let title = '';
     let header = '';
@@ -253,6 +292,9 @@ class ProfilForm extends Component {
               <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
                 onChange={this.textFieldValueChange} error={semesterValidationFailed}
                 helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
+                onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
+                helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
               <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
                 onChange={this.textFieldValueChange} error={lerntypValidationFailed}
                 helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
@@ -277,6 +319,12 @@ class ProfilForm extends Component {
               // Show error message in dependency of customer prop
               person ?
                 <ContextErrorMessage error={updatingError} contextErrorMsg={`The person ${person.getID()} could not be updated.`} onReload={this.updateProfil} />
+                : null
+            }
+            {
+              // Show error message in dependency of customer prop
+              profil ?
+                <ContextErrorMessage error={updatingError} contextErrorMsg={`The Profil ${profil.getID()} could not be updated.`} onReload={this.updateProfilBeschreibung} />
                 : null
             }
             {
@@ -325,6 +373,7 @@ ProfilForm.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   person: PropTypes.object,
+  profil: PropTypes.object,
   lernvorliebe: PropTypes.object,
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

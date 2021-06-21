@@ -115,7 +115,8 @@ lerngruppe = api.inherit(
 
 profil = api.inherit(
     "Profil", bo, {
-        "lernvorlieben_id": fields.Integer(attribute="_lernvorlieben_id", description="Lernvorlieben_id")
+        "lernvorlieben_id": fields.Integer(attribute="_lernvorlieben_id", description="Lernvorlieben_id"),
+        "beschreibung": fields.String(attribute="_beschreibung", description="Beschreibung")
     }
 )
 
@@ -892,7 +893,7 @@ class ProfilListOperations(Resource):
         adm = Admin()
         proposal = Profil.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_profil(proposal.get_lernvorlieben_id())
+            p = adm.create_profil(proposal.get_lernvorlieben_id(), proposal.get_beschreibung())
             return p, 200
         else:
             return '', 500

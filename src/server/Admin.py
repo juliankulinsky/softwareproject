@@ -438,10 +438,11 @@ class Admin(object):
     """
         Profil - Spezifische Methoden
     """
-    def create_profil(self, lernvorlieben_id):
+    def create_profil(self, lernvorlieben_id, beschreibung=""):
         """Ein Profil anlegen"""
         profil = Profil()
         profil.set_lernvorlieben_id(lernvorlieben_id)
+        profil.set_beschreibung(beschreibung)
 
         with ProfilMapper() as mapper:
             return mapper.insert(profil)

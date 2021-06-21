@@ -94,9 +94,11 @@ class EineLernvorliebe extends Component {
                 </Grid>
                 {
                     person ?
+                        profil ?
                         lernvorliebe ?
                             <PersonEntry profil={profil} person={person} lernvorliebe={lernvorliebe} selfperson={selfperson}/>
                         : null
+                        :null
                         :null
                 }
                 <LoadingProgress show={loadingInProgress}/>

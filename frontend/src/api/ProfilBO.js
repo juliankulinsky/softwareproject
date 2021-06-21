@@ -9,10 +9,12 @@ export default class ProfilBO extends BusinessObject {
    * Erstellt ein BO eines Profils mit gegebenen Attributen.
    *
    * @param {*} aLernvorliebenID - Die Lernvorlieben ID der ProfilBO .
+   * @param {*} aBeschreibung - Die Beschreibung der ProfilBO .
    */
-  constructor(aLernvorliebenID) {
+  constructor(aLernvorliebenID, aBeschreibung) {
     super();
     this.lernvorlieben_id = aLernvorliebenID;
+    this.beschreibung = aBeschreibung
     //Fremdschlüsselbeziehung zur Lernvorliebe der Person
   }
 
@@ -26,10 +28,26 @@ export default class ProfilBO extends BusinessObject {
   }
 
   /**
-   * Gibt die LernvorliebenID aus.
+   * Gibt die Lerngruppen ID aus.
    */
   getLernvorliebeID() {
     return this.lernvorlieben_id;
+  }
+
+  /**
+   * Setzt die Beschreibung.
+   *
+   * @param {String} aBeschreibung - Die Beschreibung der ProfilBO.
+   */
+  setBeschreibung(aBeschreibung) {
+    this.beschreibung = aBeschreibung;
+  }
+
+  /**
+   * Gibt die beschreibung aus.
+   */
+  getBeschreibung() {
+    return this.beschreibung;
   }
 
   /**

@@ -13,11 +13,12 @@ class ProfilMapper(Mapper):
         cursor.execute("SELECT * from profile")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, lernvorlieben_id) in tuples:
+        for (id, erstellungszeitpunkt, lernvorlieben_id, beschreibung) in tuples:
             profile = Profil()
             profile.set_id(id)
             profile.set_erstellungszeitpunkt(erstellungszeitpunkt)
             profile.set_lernvorlieben_id(lernvorlieben_id)
+            profile.set_beschreibung(beschreibung)
             result.append(profile)
 
         self._cnx.commit()
@@ -37,16 +38,17 @@ class ProfilMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id FROM profile WHERE id={}".format(key)
+        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, lernvorlieben_id) = tuples[0]
+            (id, erstellungszeitpunkt, lernvorlieben_id, beschreibung) = tuples[0]
             profil = Profil()
             profil.set_id(id)
             profil.set_erstellungszeitpunkt(erstellungszeitpunkt)
             profil.set_lernvorlieben_id(lernvorlieben_id)
+            profil.set_beschreibung(beschreibung)
             result = profil
         except IndexError:
 
@@ -69,16 +71,18 @@ class ProfilMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id FROM profile WHERE lernvorlieben_id={}".format(lernvorlieben_id)
+        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE " \
+                  "lernvorlieben_id={}".format(lernvorlieben_id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, lernvorlieben_id) = tuples[0]
+            (id, erstellungszeitpunkt, lernvorlieben_id, beschreibung) = tuples[0]
             profil = Profil()
             profil.set_id(id)
             profil.set_erstellungszeitpunkt(erstellungszeitpunkt)
             profil.set_lernvorlieben_id(lernvorlieben_id)
+            profil.set_beschreibung(beschreibung)
             result = profil
         except IndexError:
 
@@ -102,11 +106,12 @@ class ProfilMapper(Mapper):
         for maxid in tuples:
             profil.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO profile (id, erstellungszeitpunkt, lernvorlieben_id) VALUES (%s,%s,%s)"
+        command = "INSERT INTO profile (id, erstellungszeitpunkt, lernvorlieben_id, beschreibung) VALUES (%s,%s,%s,%s)"
         data = (
             profil.get_id(),
             profil.get_erstellungszeitpunkt(),
-            profil.get_lernvorlieben_id()
+            profil.get_lernvorlieben_id(),
+            profil.get_beschreibung()
         )
         cursor.execute(command, data)
 
@@ -122,9 +127,10 @@ class ProfilMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE profile SET lernvorlieben_id=%s WHERE id=%s"
+        command = "UPDATE profile SET lernvorlieben_id=%s, beschreibung=%s WHERE id=%s"
         data = (
             profil.get_lernvorlieben_id(),
+            profil.get_beschreibung(),
             profil.get_id()
         )
         cursor.execute(command, data)
