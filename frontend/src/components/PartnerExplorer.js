@@ -9,7 +9,8 @@ import {
     Grid,
     Typography,
     Card,
-    CardContent
+    CardContent,
+    Fab
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear'
@@ -19,7 +20,6 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {PartnerVorschlagBO} from "../api";
-import AnnehmenButton from "./pages/Explore/components/AnnehmenButton";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
@@ -187,10 +187,10 @@ class PartnerExplorer extends Component {
                         </div>
                         :
                         <div className="partnervorschlag">
-                            <Button disabled={this.state.buttonPressed} variant='contained'
-                                    onClick={this.entscheidungFalse} size="large" className="buttonFalse">
-                                Leider Nein <CancelIcon/>
-                            </Button>
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
 
                             <Card>
                                 <CardContent className="partnercard">
@@ -221,10 +221,10 @@ class PartnerExplorer extends Component {
                                 </CardContent>
                             </Card>
 
-                            <Button disabled={this.state.buttonPressed} variant='contained'
+                            <Fab disabled={this.state.buttonPressed}
                                     onClick={this.entscheidungTrue} size="large" className="buttonTrue">
-                                Auf Geht's <CheckCircleIcon/>
-                            </Button>
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
                         </div>
                 }
 

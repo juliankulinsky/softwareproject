@@ -33,8 +33,6 @@ import ProfilForm from "./components/dialogs/ProfilForm";
 import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
-import ExploreComplete from "./components/pages/Explore/ExploreComplete";
-
 /**
  * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -156,17 +154,17 @@ class App extends React.Component {
 			<Router basename={process.env.PUBLIC_URL}>
 				{
 					currentUser ?
-						<> Lol 1
+						<>
 							{
 								currentPersonBO ?
-									<> Lol 2 {currentPersonBO.getName()}
+									<>
 										{
 											currentPersonBO.getAlter() === 0 ?
-												<> Lol 3
+												<>
 													<Registrieren person={currentPersonBO} user={currentUser}/>
 												</>
 												:
-												<> Lol 4
+												<>
 													<HeaderComplete user={currentUser}/>
 													{/**
 													 <Redirect from='/' to='/partnervorschlaege' />
@@ -194,7 +192,6 @@ class App extends React.Component {
 														<KonversationenList person={currentPersonBO}/>
 													</Route>
 													<Route path='/explorer'>
-														{/*<ExploreComplete person={currentPersonBO}/>*/}
 														<PartnerExplorer person={currentPersonBO}/> <br/> <br/>
 														<LerngruppenExplorer person={currentPersonBO}/>
 													</Route>

@@ -939,4 +939,4 @@ Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debugg
 Warnung: In der Produktions-Umgebung muss debug auf False gesetzt werden.
 """
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)
