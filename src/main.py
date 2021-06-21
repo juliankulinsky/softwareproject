@@ -37,7 +37,6 @@ from server.bo.Person import Person
 from server.bo.Profil import Profil
 from server.Admin import Admin
 
-from server.Algorithmus import Algorithmus
 
 """
 Zuerst wird Flask instanziiert.
@@ -438,21 +437,19 @@ class LernvorliebeOperations(Resource):
         if lernv is not None:
             lernv.set_id(id)
             adm.save_lernvorliebe(lernv)
-            algo = Algorithmus()
             person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
             partnervorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
             gruppenvorschlaege = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
             for vorschlag in partnervorschlaege:
-                algo.match(vorschlag)
+                adm.match(vorschlag)
 
             gruppenteilnahmen = adm.get_all_gruppen_teilnahmen_for_person_id(person.get_id())
             for teilnahme in gruppenteilnahmen:
                 gruppen_id = teilnahme.get_gruppen_id()
                 adm.berechne_gruppen_lernvorlieben(gruppen_id)
-                """algo.match_gruppen()"""
 
             for vorschlag in gruppenvorschlaege:
-                algo.match_gruppen(vorschlag)
+                adm.match_gruppen(vorschlag)
             return '', 200
         else:
             return '', 500

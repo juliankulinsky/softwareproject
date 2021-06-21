@@ -1,4 +1,4 @@
-from server.Admin import Admin
+"""from server.Admin import Admin
 from server.db.PartnerVorschlagMapper import PartnerVorschlagMapper
 from server.bo.PartnerVorschlag import PartnerVorschlag
 from server.bo.GruppenVorschlag import GruppenVorschlag
@@ -107,3 +107,4 @@ class Algorithmus:
             result = mapper.find_by_key(gruppenvorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
             mapper.update(result)
+"""
