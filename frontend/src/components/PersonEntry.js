@@ -94,7 +94,7 @@ class PersonEntry extends Component {
 
   /** Renders the component */
   render() {
-    const {classes, expandedState, selfperson} = this.props;
+    const {classes, selfperson} = this.props;
     // Use the states customer
     const {person, profil, lernvorliebe, showProfilForm} = this.state;
 
@@ -202,10 +202,7 @@ PersonEntry.propTypes = {
   //classes: PropTypes.object.isRequired,
   person: PropTypes.object.isRequired,
   profil: PropTypes.object.isRequired,
-  lernvorliebe: PropTypes.object.isRequired,
-  expandedState: PropTypes.bool.isRequired,
-  onExpandedStateChange: PropTypes.func.isRequired,
-  onProfilDeleted: PropTypes.func.isRequired
+  lernvorliebe: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(PersonEntry);
