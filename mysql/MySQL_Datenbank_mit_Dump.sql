@@ -45,6 +45,7 @@ CREATE TABLE `profile` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
     `lernvorlieben_id` int NOT NULL DEFAULT 0,
+    `beschreibung` varchar(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -54,14 +55,14 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 INSERT INTO `profile`
-VALUES (1,'2021-03-02 18:21:26',1),
-       (2,'2021-04-26 15:36:01',2),
-       (3,'2021-04-26 15:37:01',3),
-       (4,'2021-04-26 15:39:01',4),
-       (5,'2021-04-26 15:39:01',5),
-       (6,'2021-04-26 15:39:01',6),
-       (7,'2021-04-26 15:39:01',7),
-       (8,'2021-04-26 15:39:01',8);
+VALUES (1,'2021-03-02 18:21:26',1, 'Ganz nice Beschreibung'),
+       (2,'2021-04-26 15:36:01',2, 'JOJOJO'),
+       (3,'2021-04-26 15:37:01',3, 'We Lit'),
+       (4,'2021-04-26 15:39:01',4, 'Was steht hier eigentlich?'),
+       (5,'2021-04-26 15:39:01',5, 'Wie bin ich hierhergekommen'),
+       (6,'2021-04-26 15:39:01',6, 'Hier könnte Ihre Werbung stehen'),
+       (7,'2021-04-26 15:39:01',7, 'Beschreibung lel'),
+       (8,'2021-04-26 15:39:01',8, 'Keine Ahnung mehr');
 UNLOCK TABLES;
 
 --

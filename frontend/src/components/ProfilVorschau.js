@@ -66,17 +66,21 @@ class ProfilVorschau extends Component {
 
   /** Renders the component */
   render() {
-    const {classes, user} = this.props;
+    const {classes, user, selfperson} = this.props;
     const { person, loadingInProgress, error } = this.state;
 
     return (
         <div className={classes.root}>
-          <IconButton className={classes.avatarButton}  >
-            <Avatar src={user.photoURL} />
-          </IconButton>
+            {
+                user ?
+                    <IconButton className={classes.avatarButton}>
+                        <Avatar src={user.photoURL}/>
+                    </IconButton>
+                    :null
+            }
             {
             person ?
-                <AktuellesProfil person={person} user={user}/>
+                <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
           <LoadingProgress show={loadingInProgress}/>

@@ -67,7 +67,7 @@ class AktuellesProfil extends Component {
 
 
     render() {
-        const {classes} = this.props;
+        const {classes, selfperson} = this.props;
         const {profil, person, error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
@@ -82,7 +82,7 @@ class AktuellesProfil extends Component {
                 }
                 {
                     profil ?
-                        <EineLernvorliebe lvId={profil.getLernvorliebeID()} person={person} />
+                        <EineLernvorliebe lvId={profil.getLernvorliebeID()} person={person} profil={profil} selfperson={selfperson} />
                     : null
                 }
                 <ContextErrorMessage

@@ -19,6 +19,7 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {PartnerVorschlagBO} from "../api";
+import ProfilVorschau from "./ProfilVorschau";
 
 class PartnerExplorer extends Component {
 
@@ -149,6 +150,7 @@ class PartnerExplorer extends Component {
                             Auf dich zugeschnittener Partnervorschlag mit der ID#{partnervorschlag.getID()}<br/>
                             PartnerID: {anderePerson.getID()}&nbsp;
                             mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
+                            <ProfilVorschau person={anderePerson} selfperson={false}/>
                             <Typography>
                                 Name: {anderePerson.getName()}<br/>
                                 Matchpoints: {partnervorschlag.getMatchpoints()}

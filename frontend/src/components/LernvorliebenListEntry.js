@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ProfilLernvorliebenForm from "./dialogs/ProfilLernvorliebenForm";
+import ProfilForm from "./dialogs/ProfilForm";
 
-
+/** KANN GELÖSCHT WERRDEN LUL */
 
 class LernvorliebenListEntry extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class LernvorliebenListEntry extends Component {
     }
 
     /** Handles the onClick event of the edit customer button */
-  editProfilLernvorliebenButtonClicked = (event) => {
+  editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
       showProfilLernvorliebenForm: true
@@ -25,7 +25,7 @@ class LernvorliebenListEntry extends Component {
   }
 
   /** Handles the onClose event of the CustomerForm */
-  profilLernvorliebenFormClosed = (lernvorliebe) => {
+  profilFormClosed = (lernvorliebe) => {
     // Lernvorliebe is not null and therefor changed
     if (lernvorliebe) {
       this.setState({
