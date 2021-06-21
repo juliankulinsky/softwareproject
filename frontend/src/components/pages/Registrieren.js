@@ -36,7 +36,7 @@ class Registrieren extends Component {
                 {
                     person ?
                         <>
-                            <ProfilVorschau person={person} user={user}/>
+                            <ProfilVorschau person={person} user={user} selfperson={true}/>
                             <Button id="myButton" variant={"contained"} onClick={this.goToAppjs}>Registrieren</Button>
                         </>
                         :

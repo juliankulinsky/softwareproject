@@ -177,7 +177,7 @@ class App extends React.Component {
 																<PersonenList user={currentUser}/>
 															</Route>
 															<Route path='/profil'>
-																<ProfilVorschau person={currentPersonBO} user={currentUser}/>
+																<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
 															</Route>
 															<Route path='/vorschlaege'>
 																<AllPartnervorschlaege person={currentPersonBO}/>
