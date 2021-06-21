@@ -475,7 +475,7 @@ class GruppenTeilnahmeListOperations(Resource):
         adm = Admin()
         proposal = GruppenTeilnahme.from_dict(api.payload)
         if proposal is not None:
-            gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id())
+            gt = adm.create_gruppen_teilnahme(proposal.get_person_id(), proposal.get_gruppen_id(), proposal.get_ist_admin())
             return gt, 200
         else:
             return '', 500
@@ -603,7 +603,7 @@ class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
     @secured
     def get(self, person_id, konversation_id):
         adm = Admin()
-        return adm.get_chatteilnahme_by_person_id_und_konvresation_id(person_id, konversation_id)
+        return adm.get_chatteilnahme_by_person_id_und_konversation_id(person_id, konversation_id)
 
 
 @studoo.route('/partnervorschlaege')
@@ -651,6 +651,11 @@ class PartnervorschlagOperations(Resource):
         if p is not None:
             p.set_id(id)
             adm.save_partner_vorschlag(p)
+            vorschlag = adm.get_partner_vorschlag_by_id(p.get_id())
+            if vorschlag.get_matchpoints() >= 2:
+                chat = adm.create_konversation(ist_gruppenchat=False)
+                adm.create_chatteilnahme(person_id=vorschlag.get_person_id(), konversation_id=chat.get_id())
+                adm.create_chatteilnahme(person_id=vorschlag.get_partner_id(), konversation_id=chat.get_id())
             return '', 200
         else:
             return '', 500
@@ -741,6 +746,11 @@ class GruppenvorschlagOperations(Resource):
         if p is not None:
             p.set_id(id)
             adm.save_gruppenvorschlag(p)
+            vorschlag = adm.get_gruppenvorschlag_by_id(p.get_id())
+            aktuelle_lerngruppe = adm.get_lerngruppe_by_id(vorschlag.get_gruppen_id())
+            if vorschlag.get_matchpoints() >= 2:
+                adm.create_gruppen_teilnahme(vorschlag.get_person_id(), vorschlag.get_gruppen_id(), False)
+                adm.create_chatteilnahme(vorschlag.get_person_id(), aktuelle_lerngruppe.get_konversation_id())
             return '', 200
         else:
             return '', 500
@@ -751,6 +761,17 @@ class GruppenvorschlagOperations(Resource):
         pv = adm.get_gruppenvorschlag_by_id(id)
         adm.delete_gruppenvorschlag(pv)
         return '', 200
+
+
+@studoo.route('/person/<int:person_id>/gruppe/<int:gruppen_id>/gruppenvorschlag')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlagByPersonIDundGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, person_id, gruppen_id):
+        adm = Admin()
+        return adm.get_gruppenvorschlag_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
 
 @studoo.route('/person/<int:person_id>/gruppenvorschlag')
@@ -786,6 +807,28 @@ class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
         return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
+@studoo.route('/gruppe/<int:gruppen_id>/gruppenvorschlaege/eingehend')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class EingehendeGruppenvorschlaegeForGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, gruppen_id):
+        adm = Admin()
+        return adm.get_eingehende_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
+
+
+@studoo.route('/gruppe/<int:gruppen_id>/gruppenvorschlaege')
+@studoo.response(500, 'Falls es zu einem Fehler kommt')
+class GruppenvorschlaegeForGruppenIDOperations(Resource):
+
+    @studoo.marshal_with(gruppenvorschlag)
+    @secured
+    def get(self, gruppen_id):
+        adm = Admin()
+        return adm.get_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
+
+
 @studoo.route('/lerngruppen')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
 class LerngruppenListOperations(Resource):
@@ -808,6 +851,9 @@ class LerngruppenListOperations(Resource):
         if proposal is not None:
             lg = admin.create_lerngruppe(proposal.get_gruppenname(), proposal.get_profil_id(),
                                          proposal.get_konversation_id())
+            allePersonen = admin.get_all_personen()
+            for person in allePersonen:
+                admin.create_gruppenvorschlag(person.get_id(),lg.get_id())
             return lg, 200
         else:
             return '', 500

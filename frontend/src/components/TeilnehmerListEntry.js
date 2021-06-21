@@ -16,14 +16,14 @@ class TeilnehmerListEntry extends Component {
         super(props);
 
         this.state = {
-            lerngruppe: props.lerngruppe,
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
-            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme
+            lerngruppe: props.lerngruppe,
+            buttonPressed: false
         }
     }
 
-    getTeilnehmer = () => {
+    getAktuellenTeilnehmer = () => {
         StudooAPI.getAPI().getPerson(this.state.aktuelleGruppenTeilnahme.get_person_id())
             .then(teilnehmerPerson => {
                 this.setState({
@@ -32,14 +32,27 @@ class TeilnehmerListEntry extends Component {
             })
     }
 
+    deleteAktuelleTeilnahme = () => {
+        StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.aktuelleGruppenTeilnahme.getID())
+            .then(gruppenTeilnahme => {
+                this.setState({
+                    buttonPressed: true
+                })
+            })
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.state.teilnehmerPerson.getID(),this.props.lerngruppe.getKonversationId())
+            .then(chatTeilnahme => {
+                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
+            })
+
+    }
 
     componentDidMount() {
-        this.getTeilnehmer()
+        this.getAktuellenTeilnehmer()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme } = this.state;
+        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed } = this.state;
 
         return (
             <Typography>
@@ -47,17 +60,20 @@ class TeilnehmerListEntry extends Component {
                     teilnehmerPerson ?
                         <>
                             {teilnehmerPerson.getName()}
-                            <Button color={"secondary"}>
-                                Löschen (In Arbeit)
-                            </Button>
+                            {
+                                teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
+                                    <Button disabled={buttonPressed} color={"secondary"}
+                                            onClick={this.deleteAktuelleTeilnahme}>
+                                        Entfernen
+                                    </Button>
+                                    : <> (DU)</>
+                            }
                         </>
                         : null
                 }
             </Typography>
-
         )
     }
-
 }
 
 /** Component specific styles */

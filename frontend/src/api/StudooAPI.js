@@ -94,8 +94,11 @@ export default class StudooAPI {
     #getGruppenVorschlagForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlag`;
     #getAusgehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/ausgehend`;
     #getEingehendeGruppenAnfragenForPersonIDURL = (personid) => `${this.#studooServerBaseURL}/person/${personid}/gruppenvorschlaege/eingehend`;
+    #getEingehendeGruppenAnfragenForGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenvorschlaege/eingehend`;
+    #getGruppenVorschlaegeForGruppenIDURL = (gruppenid) => `${this.#studooServerBaseURL}/gruppe/${gruppenid}/gruppenvorschlaege`;
     #addGruppenVorschlagURL = () => `${this.#studooServerBaseURL}/gruppenvorschlaege`;
     #getGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
+    #getGruppenVorschlagByPersonIDundGruppenIDURL = (personid,gruppenid) => `${this.#studooServerBaseURL}/person/${personid}/gruppe/${gruppenid}/gruppenvorschlag`;
     #updateGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
     #deleteGruppenVorschlagURL = (id) => `${this.#studooServerBaseURL}/gruppenvorschlag/${id}`;
 
@@ -508,7 +511,7 @@ export default class StudooAPI {
      * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
      * @public */
     updateLerngruppe(lerngruppeBO) {
-    return this.#fetchAdvanced(this.#updateLerngruppeURL(), {
+    return this.#fetchAdvanced(this.#updateLerngruppeURL(lerngruppeBO.getID()), {
         method: 'PUT',
         headers: {
             'Accept': 'application/json, text/plain',
@@ -761,7 +764,7 @@ export default class StudooAPI {
      * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
-    addChatTeilnahmen(chatteilnahmeBO) {
+    addChatTeilnahme(chatteilnahmeBO) {
         return this.#fetchAdvanced(this.#addChatTeilnahmeURL(), {
             method: 'POST',
             headers: {
@@ -792,12 +795,13 @@ export default class StudooAPI {
         })
     }
 
-    getChatTeilnahmeByPersonIDundKonversationID(person_id, gruppen_id) {
-        return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, gruppen_id)).then((responseJSON) => {
-            let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseChatteilnahmeBO);
-            })
+    getChatTeilnahmeByPersonIDundKonversationID(person_id, konversation_id) {
+        return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, konversation_id))
+            .then((responseJSON) => {
+                let responseChatteilnahmeBO = ChatTeilnahmeBO.fromJSON(responseJSON)[0];
+                return new Promise(function (resolve) {
+                    resolve(responseChatteilnahmeBO);
+                })
         })
     }
 
@@ -906,19 +910,19 @@ export default class StudooAPI {
      * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.
      * @public */
     updateGruppenTeilnahme(gruppenteilnahmeBO) {
-    return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(), {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(gruppenteilnahmeBO)
-    }).then((responseJSON) => {
-        let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
-        return new Promise(function (resolve) {
-            resolve(responseGruppenTeilnahmeBO);
-    })
-    })
+        return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(gruppenteilnahmeBO.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(gruppenteilnahmeBO)
+        }).then((responseJSON) => {
+            let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenTeilnahmeBO);
+        })
+        })
     }
 
     /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
@@ -978,6 +982,24 @@ export default class StudooAPI {
             })})
     }
 
+    getEingehendeGruppenVorschlaegeForGruppenID(gruppen_id) {
+        return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForGruppenIDURL(gruppen_id))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })})
+    }
+
+    getGruppenVorschlaegeForGruppenID(gruppen_id) {
+        return this.#fetchAdvanced(this.#getGruppenVorschlaegeForGruppenIDURL(gruppen_id))
+            .then((response) => {
+                let res = GruppenVorschlagBO.fromJSON(response)
+                return new Promise(function (resolve) {
+                    resolve(res);
+            })})
+    }
+
     /** Adds a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
      * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion
      * is set by the backend.
@@ -1008,7 +1030,16 @@ export default class StudooAPI {
                 resolve(responseGruppenVorschlagBO);
           })
         })
-      }
+    }
+
+    getGruppenVorschlagByPersonIDundGruppenID(personid,gruppenID) {
+        return this.#fetchAdvanced(this.#getGruppenVorschlagByPersonIDundGruppenIDURL(personid,gruppenID)).then((responseJSON) => {
+            let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGruppenVorschlagBO);
+          })
+        })
+    }
 
     /** Updates a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
      * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion is set by the backend.

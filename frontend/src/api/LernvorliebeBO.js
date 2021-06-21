@@ -13,7 +13,7 @@ export default class LernvorliebeBO extends BusinessObject {
        * @param lerninteressen - Die Lerninteressen der Person.
      */
 
-    constructor(lerntyp, frequenz, extrovertiertheit, remote_praesenz, vorkenntnisse, lerninteressen) {
+    constructor(lerntyp=0, frequenz=0, extrovertiertheit=0, remote_praesenz=0, vorkenntnisse="", lerninteressen="") {
         super();
         this.lerntyp = lerntyp;
         this.frequenz = frequenz;

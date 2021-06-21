@@ -7,6 +7,9 @@ import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import TeilnehmerList from "./TeilnehmerList";
+import GruppenAnfragenList from "./GruppenAnfragenList";
+import UpdateGruppennameDialog from "./dialogs/UpdateGruppennameDialog";
 //import AccountList from './AccountList';
 
 
@@ -17,10 +20,15 @@ class LerngruppeListEntry extends Component {
         this.state = {
             lerngruppe: props.lerngruppe,
             eigeneGruppenTeilnahme: null,
-            alleGruppenTeilnahmen: []
+            beendenButtonPressed: false,
+            expandedState: false,
+            showUpdateGruppennameDialog: false
         }
     }
 
+    /**
+     * Um schauen zu können, ob man Admin in der Gruppe ist
+     */
     getEigeneGruppenTeilnahme = () => {
         StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.currentperson.getID(),this.props.lerngruppe.getID())
             .then (gruppenTeilnahme => {
@@ -31,94 +39,98 @@ class LerngruppeListEntry extends Component {
     }
 
     deleteTeilnahme = () => {
+        this.setState({
+            beendenButtonPressed: true
+        })
         StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.eigeneGruppenTeilnahme.getID())
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.currentperson.getID(),this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
             })
-
     }
 
-    Verwaltung = () => {
-        return (
-            <div>
-                Testtest was passiert jetzt
-            </div>
-        )
-    }
-
-    getGruppenTeilnahmen = () => {
-        StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
-            .then(gruppenTeilnahmen => {
-                this.setState({
-                    alleGruppenTeilnahmen: gruppenTeilnahmen
-                })
+    switchExpandedState = () => {
+        if (this.state.expandedState){
+            this.setState({
+                expandedState: false
             })
+        } else {
+            this.setState({
+                expandedState: true
+            })
+        }
+    }
+
+    openUpdateGruppennameDialog = () => {
+        this.setState({
+            showUpdateGruppennameDialog: true
+        })
+    }
+
+    updateGruppennameDialogClosed = () => {
+        this.setState({
+            showUpdateGruppennameDialog: false
+        })
     }
 
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
-        this.getGruppenTeilnahmen()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, alleGruppenTeilnahmen } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog } = this.state;
 
         return (
-            <div>
-                <Grid>
-                    <Grid item>
-                        <Typography className={classes.heading}>
-                            ------------- <br/>
-                            Gruppenname:
-                            {
-                                lerngruppe.getGruppenname()
-                            } &nbsp;
-                            <Button color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
-                                Teilnahme beenden
-                            </Button>
-                            {
-                                eigeneGruppenTeilnahme ?
-                                    <>
-                                        {
-                                            eigeneGruppenTeilnahme.get_ist_admin() ?
-                                            <>
-                                                &nbsp;
-                                                <Button color={"primary"} variant={"contained"} onClick={this.Verwaltung}>
-                                                    Verwalten (In Arbeit)
-                                                </Button>
-                                                <Typography>
-                                                    Das sind alle Teilnehmer:
-                                                    {
-                                                        alleGruppenTeilnahmen.map( gruppenteilnahme =>
-                                                            <TeilnehmerListEntry
-                                                                currentperson={this.props.currentperson}
-                                                                lerngruppe={lerngruppe}
-                                                                eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
-                                                                gruppenteilnahme={gruppenteilnahme} />
-                                                        )
-                                                    }
-                                                </Typography>
-                                            </>
-                                            :
-                                            null
-                                        }
-
-                                    </>
-                                    :
-                                    null
-
-                            }
-                            <br/>-------------
-
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </div>
+                <Typography className={classes.heading}>
+                    ------------- <br/>
+                    Gruppenname:
+                    {
+                        lerngruppe.getGruppenname()
+                    } &nbsp;
+                    <Button disabled={beendenButtonPressed} color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
+                        Teilnahme beenden
+                    </Button>
+                    {
+                        eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
+                            <>
+                                &nbsp;
+                                <Button color={expandedState ? "disabled":"primary"} variant={"contained"} onClick={this.switchExpandedState}>
+                                    Verwalten { expandedState ? <> ˄</> : <> ˅</> }
+                                </Button>
+                                {
+                                    expandedState ?
+                                        <>
+                                            <br/>
+                                            <Button color={"primary"} onClick={this.openUpdateGruppennameDialog}>
+                                                Gruppenname ändern
+                                            </Button>
+                                            <UpdateGruppennameDialog
+                                                show={showUpdateGruppennameDialog}
+                                                lerngruppe={lerngruppe}
+                                                onClose={this.updateGruppennameDialogClosed}
+                                            />
+                                            <br/><br/>
+                                            <GruppenAnfragenList
+                                                currentperson={this.props.currentperson}
+                                                lerngruppe={lerngruppe}
+                                            />
+                                            <br/>
+                                            <TeilnehmerList
+                                                currentperson={this.props.currentperson}
+                                                lerngruppe={lerngruppe}
+                                            />
+                                        </>
+                                        : null
+                                }
+                            </>
+                            :
+                            null
+                    }
+                    <br/>-------------
+                </Typography>
         )
     }
-
 }
 
 /** Component specific styles */
