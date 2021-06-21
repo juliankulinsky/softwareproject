@@ -50,7 +50,6 @@ class ProfilVorschau extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log("DAAAA",personBO)
         }).catch(e => this.setState({
             profil: "No profil received.",
             error: e,
@@ -60,7 +59,6 @@ class ProfilVorschau extends Component {
 
   /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
-    console.log("Hier LOL")
     this.getCurrentPerson()
   }
 
