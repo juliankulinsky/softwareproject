@@ -3,22 +3,18 @@ import PropTypes from 'prop-types';
 import {
     withStyles,
     Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
     Typography,
     Card,
-    CardContent
+    CardContent, Fab
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
-import { withRouter } from 'react-router-dom';
+
+import {NavLink, withRouter} from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
-import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {GruppenVorschlagBO, LerngruppeBO} from "../api";
+import CancelIcon from "@material-ui/icons/Cancel";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import "./components-theme.css";
 
 class LerngruppenExplorer extends Component {
 
@@ -129,30 +125,100 @@ class LerngruppenExplorer extends Component {
 
         return (
             <div className={classes.root}>
+                <div className="toggleExplore">
+                    <NavLink to="/explorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButtonPartner">
+                            <Typography>Partner</Typography>
+                        </Button>
+                    </NavLink>
+                    <NavLink to="/groupexplorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButton">
+                            <Typography style={{color: '#04A2CA'}}>Gruppen</Typography>
+                        </Button>
+                    </NavLink>
+                </div>
                 {
                     (gruppenvorschlag && lerngruppe) ?
-                        <Typography>
-                            Auf dich zugeschnittener Gruppenvorschlag mit der ID#{gruppenvorschlag.getID()}<br/>
-                            GruppenID: {lerngruppe.getID()}&nbsp;
-                            mit einer Ähnlichkeit von: {gruppenvorschlag.getAehnlichkeit()}
-                            <Typography>
-                                Gruppenname: {lerngruppe.getGruppenname()}<br/>
-                                Matchpoints: {gruppenvorschlag.getMatchpoints()}
-                            </Typography>
-                            Willst du der Gruppe "{lerngruppe.getGruppenname()}" eine Beitrittsanfrage senden?
-                            <br/>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
-                                JA
-                            </Button>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungFalse}>
-                                NEIN
-                            </Button>
-                        </Typography>
+                        <div className="partnervorschlag">
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography variant="h3">
+                                            It's a match! &#127881;
+                                        </Typography>
+                                        <Typography variant="h4">
+                                            {lerngruppe.getGruppenname()}
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Euer Match basiert auf einer Ähnlichkeit von {gruppenvorschlag.getAehnlichkeit()}%!
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Du kannst nun eine Konversation mit {lerngruppe.getGruppenname()} anfangen.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Learning! &#128640;
+                                        </Typography>
+                                    </div>
+
+                                    <div>
+                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Fab disabled={this.state.buttonPressed}
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
+                        </div>
                         :
-                        <Typography>
-                            Es gibt momentan leider keine Gruppenvorschläge für dich :/
-                        </Typography>
+                        <div className="partnervorschlag">
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography variant="h3">
+                                            It should be a match! &#128580;
+                                        </Typography>
+                                        <Typography variant="h4">
+                                            Und hier sollte dein Partner stehen ...
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Irgendwas ist da nicht ganz richtig.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Waiting for Solution! &#128540;
+                                        </Typography>
+                                    </div>
+
+                                    <div>
+                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Fab disabled={this.state.buttonPressed}
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
+                        </div>
                 }
+
 
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}

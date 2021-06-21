@@ -3,26 +3,19 @@ import PropTypes from 'prop-types';
 import {
     withStyles,
     Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
     Typography,
     Card,
     CardContent,
-    Fab
+    Fab,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
-import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {PartnerVorschlagBO} from "../api";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
+
 
 class PartnerExplorer extends Component {
 
@@ -147,45 +140,20 @@ class PartnerExplorer extends Component {
 
         return (
             <div className={classes.root}>
+                <div className="toggleExplore">
+                    <NavLink to="/explorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButtonPartner">
+                            <Typography style={{color: '#04A2CA'}}>Partner</Typography>
+                        </Button>
+                    </NavLink>
+                    <NavLink to="/groupexplorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButton">
+                            <Typography>Gruppen</Typography>
+                        </Button>
+                    </NavLink>
+                </div>
                 {
                     (partnervorschlag && anderePerson) ?
-                        <div className="partnervorschlag">
-                            <Button disabled={this.state.buttonPressed} variant='contained'
-                                    onClick={this.entscheidungFalse}>
-                                <CancelIcon/>
-                            </Button>
-
-                            <Card>
-                                <CardContent className="partnercard">
-                                    <div>
-                                        <Typography component="h2">
-                                            It's a match! &#127881;
-                                        </Typography>
-                                        <Typography component="h3">
-                                            {anderePerson.getName()}
-                                        </Typography>
-                                        <Typography component="h6">
-                                            Ähnlichkeit: {anderePerson.getAehnlichkeit()}%!
-                                        </Typography>
-                                        <Typography component="h6">
-                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
-                                            Entscheide dich, in dem du das Match annimmst oder ablehnst.
-                                            Happy Learning! &#128640;
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography>Hier kommt das Profilbild hin</Typography>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Button disabled={this.state.buttonPressed} variant='contained'
-                                    onClick={this.entscheidungTrue}>
-                                <CheckCircleIcon/>
-                            </Button>
-
-                        </div>
-                        :
                         <div className="partnervorschlag">
                             <Fab disabled={this.state.buttonPressed} size="large"
                                     onClick={this.entscheidungFalse} className="buttonFalse">
@@ -199,19 +167,57 @@ class PartnerExplorer extends Component {
                                             It's a match! &#127881;
                                         </Typography>
                                         <Typography variant="h4">
-                                            ANNIKA, 24
+                                            {anderePerson.getName()}, {anderePerson.getAlter()}
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            Euer Match basiert auf einer Ähnlichkeit von 93,27%!
+                                            Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
                                         </Typography>
                                         <Typography variant="subtitle1">
-                                            Du kannst nun eine Konversation mit Annika anfangen.
+                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
                                         </Typography>
                                         <Typography variant="subtitle1">
                                             Entscheide dich, indem du das Match annimmst oder ablehnst.
                                         </Typography>
                                         <Typography variant="h5">
                                             Happy Learning! &#128640;
+                                        </Typography>
+                                    </div>
+
+                                    <div>
+                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Fab disabled={this.state.buttonPressed}
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
+                        </div>
+                        :
+                        <div className="partnervorschlag">
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography variant="h3">
+                                            It should be a match! &#128580;
+                                        </Typography>
+                                        <Typography variant="h4">
+                                            Und hier sollte dein Partner stehen ...
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Irgendwas ist da nicht ganz richtig.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Waiting for Solution! &#128540;
                                         </Typography>
                                     </div>
 
