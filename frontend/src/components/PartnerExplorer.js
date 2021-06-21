@@ -19,6 +19,10 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {PartnerVorschlagBO} from "../api";
+import AnnehmenButton from "./pages/Explore/components/AnnehmenButton";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from '@material-ui/icons/Cancel';
+import "./components-theme.css"
 
 class PartnerExplorer extends Component {
 
@@ -44,15 +48,15 @@ class PartnerExplorer extends Component {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
                 .then(anderePerson =>
-                this.setState({
-                    anderePerson: anderePerson
-                }))
+                    this.setState({
+                        anderePerson: anderePerson
+                    }))
         } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
                 .then(anderePerson =>
-                this.setState({
-                    anderePerson: anderePerson
-                }))
+                    this.setState({
+                        anderePerson: anderePerson
+                    }))
         }
     }
 
@@ -145,27 +149,83 @@ class PartnerExplorer extends Component {
             <div className={classes.root}>
                 {
                     (partnervorschlag && anderePerson) ?
-                        <Typography>
-                            Auf dich zugeschnittener Partnervorschlag mit der ID#{partnervorschlag.getID()}<br/>
-                            PartnerID: {anderePerson.getID()}&nbsp;
-                            mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
-                            <Typography>
-                                Name: {anderePerson.getName()}<br/>
-                                Matchpoints: {partnervorschlag.getMatchpoints()}
-                            </Typography>
-                            Willst du eine Konversation mit {anderePerson.getName()} anfangen?
-                            <br/>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
-                                JA
+                        <div className="partnervorschlag">
+                            <Button disabled={this.state.buttonPressed} variant='contained'
+                                    onClick={this.entscheidungFalse}>
+                                <CancelIcon/>
                             </Button>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungFalse}>
-                                NEIN
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography component="h2">
+                                            It's a match! &#127881;
+                                        </Typography>
+                                        <Typography component="h3">
+                                            {anderePerson.getName()}
+                                        </Typography>
+                                        <Typography component="h6">
+                                            Ähnlichkeit: {anderePerson.getAehnlichkeit()}%!
+                                        </Typography>
+                                        <Typography component="h6">
+                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
+                                            Entscheide dich, in dem du das Match annimmst oder ablehnst.
+                                            Happy Learning! &#128640;
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography>Hier kommt das Profilbild hin</Typography>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Button disabled={this.state.buttonPressed} variant='contained'
+                                    onClick={this.entscheidungTrue}>
+                                <CheckCircleIcon/>
                             </Button>
-                        </Typography>
+
+                        </div>
                         :
-                        <Typography>
-                            Es gibt momentan leider keine Partnervorschläge für dich :/
-                        </Typography>
+                        <div className="partnervorschlag">
+                            <Button disabled={this.state.buttonPressed} variant='contained'
+                                    onClick={this.entscheidungFalse} size="large" className="buttonFalse">
+                                Leider Nein <CancelIcon/>
+                            </Button>
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography variant="h3">
+                                            It's a match! &#127881;
+                                        </Typography>
+                                        <Typography variant="h4">
+                                            ANNIKA, 24
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Euer Match basiert auf einer Ähnlichkeit von 93,27%!
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Du kannst nun eine Konversation mit Annika anfangen.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Learning! &#128640;
+                                        </Typography>
+                                    </div>
+
+                                    <div>
+                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Button disabled={this.state.buttonPressed} variant='contained'
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                Auf Geht's <CheckCircleIcon/>
+                            </Button>
+                        </div>
                 }
 
                 <ContextErrorMessage
