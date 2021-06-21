@@ -11,7 +11,7 @@ export default class ProfilBO extends BusinessObject {
    * @param {*} aLernvorliebenID - Die Lernvorlieben ID der ProfilBO .
    * @param {*} aBeschreibung - Die Beschreibung der ProfilBO .
    */
-  constructor(aLernvorliebenID, aBeschreibung) {
+  constructor(aLernvorliebenID, aBeschreibung="") {
     super();
     this.lernvorlieben_id = aLernvorliebenID;
     this.beschreibung = aBeschreibung
