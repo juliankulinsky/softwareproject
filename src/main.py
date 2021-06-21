@@ -440,11 +440,18 @@ class LernvorliebeOperations(Resource):
             adm.save_lernvorliebe(lernv)
             algo = Algorithmus()
             person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
-            vorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
-            gruppen = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
-            for vorschlag in vorschlaege:
+            partnervorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
+            gruppenvorschlaege = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
+            for vorschlag in partnervorschlaege:
                 algo.match(vorschlag)
-            for vorschlag in gruppen:
+
+            gruppenteilnahmen = adm.get_all_gruppen_teilnahmen_for_person_id(person.get_id())
+            for teilnahme in gruppenteilnahmen:
+                gruppen_id = teilnahme.get_gruppen_id()
+                adm.berechne_gruppen_lernvorlieben(gruppen_id)
+                """algo.match_gruppen()"""
+
+            for vorschlag in gruppenvorschlaege:
                 algo.match_gruppen(vorschlag)
             return '', 200
         else:
