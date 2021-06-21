@@ -156,6 +156,10 @@ class Admin(object):
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_best_for_person_id(person_id)
 
+    def get_all_gruppenvorschlaege_for_person_id(self, person_id):
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_all_for_person_id(person_id)
+
     def save_gruppenvorschlag(self, gruppenvorschlag: GruppenVorschlag):
         """Den gegebenen Gruppenvorschlag speichern."""
         with GruppenVorschlagMapper() as mapper:
