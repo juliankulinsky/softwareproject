@@ -383,8 +383,8 @@ class PersonOperations(Resource):
         for pers_gruppenteilnahme in adm.get_all_gruppen_teilnahmen_for_person_id(person.get_id()):
             adm.delete_gruppen_teilnahme(pers_gruppenteilnahme)
 
-        profil = adm.get_profil_by_id(person.get_id())
-        lernvorliebe = adm.get_lernvorliebe_by_id(profil.get_id())
+        profil = adm.get_profil_by_id(person.get_profil_id())
+        lernvorliebe = adm.get_lernvorliebe_by_id(profil.get_lernvorlieben_id())
         adm.delete_lernvorliebe(lernvorliebe)
         adm.delete_profil(profil)
 

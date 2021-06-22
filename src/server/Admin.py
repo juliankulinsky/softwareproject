@@ -545,7 +545,7 @@ class Admin(object):
 
         teilnahmen_anzahl = len(alle_teilnahmen)
         frequenz_extro_remote_schnitt = [0,0,0]
-        for index in range(0,2):
+        for index in range(0,3):
             if teilnahmen_anzahl > 0:
                 frequenz_extro_remote_schnitt[index] = (frequenz_extro_remote_sammlung[index]/teilnahmen_anzahl)
 
