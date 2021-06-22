@@ -372,8 +372,23 @@ class PersonOperations(Resource):
     @secured
     def delete(self, id):
         adm = Admin()
-        pers = adm.get_person_by_id(id)
-        adm.delete_person(pers)
+        person = adm.get_person_by_id(id)
+
+        for pers_gruppenvorschlag in adm.get_all_gruppenvorschlaege_for_person_id(person.get_id()):
+            adm.delete_gruppenvorschlag(pers_gruppenvorschlag)
+        for pers_partnervorschlag in adm.get_all_partnervorschlaege_for_person_id(person.get_id()):
+            adm.delete_partner_vorschlag(pers_partnervorschlag)
+        for pers_chatteilnahme in adm.get_all_chatteilnahmen_by_person_id(person.get_id()):
+            adm.delete_chatteilnahme(pers_chatteilnahme)
+        for pers_gruppenteilnahme in adm.get_all_gruppen_teilnahmen_for_person_id(person.get_id()):
+            adm.delete_gruppen_teilnahme(pers_gruppenteilnahme)
+
+        profil = adm.get_profil_by_id(person.get_id())
+        lernvorliebe = adm.get_lernvorliebe_by_id(profil.get_id())
+        adm.delete_lernvorliebe(lernvorliebe)
+        adm.delete_profil(profil)
+
+        adm.delete_person(person)
         return '', 200
 
 
@@ -438,8 +453,8 @@ class LernvorliebeOperations(Resource):
             lernv.set_id(id)
             adm.save_lernvorliebe(lernv)
             person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
-            partnervorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
-            gruppenvorschlaege = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
+            partnervorschlaege = adm.get_all_offene_partnervorschlaege_for_person_id(person.get_id())
+            gruppenvorschlaege = adm.get_all_offene_gruppenvorschlaege_for_person_id(person.get_id())
             for vorschlag in partnervorschlaege:
                 adm.match(vorschlag)
 
