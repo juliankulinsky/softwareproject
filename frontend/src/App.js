@@ -1,26 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import {Container, ThemeProvider, CssBaseline, Typography} from '@material-ui/core';
-import PersonenList from './components/PersonenList';
-import PersonListEntry from "./components/PersonListEntry";
 import LerngruppenList from "./components/LerngruppenList";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Registrieren from './components/pages/Registrieren'
-/*import TransactionList from './components/TransactionList';
-import About from './components/pages/About';
-import AllAccountList from './components/AllAccountList';
-import Theme from './Theme';
-
- */
 import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 import AllProfile from './components/AllProfile';
 import ProfilEntry from "./components/ProfilEntry";
-import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
-import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
@@ -175,15 +164,8 @@ class App extends React.Component {
 															<Route path='/lerngruppen'>
 																<LerngruppenList person={currentPersonBO}/>
 															</Route>
-															<Route path='/personen'>
-																<PersonenList user={currentUser}/>
-															</Route>
 															<Route path='/profil'>
 																<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
-															</Route>
-															<Route path='/vorschlaege'>
-																<AllPartnervorschlaege person={currentPersonBO}/>
-																<AllGruppenvorschlaege person={currentPersonBO}/>
 															</Route>
 															<Route path='/lernvorlieben'>
 																<LernvorliebenList/>

@@ -11,13 +11,9 @@ import {
     Card,
     CardContent
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
-import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {GruppenVorschlagBO, LerngruppeBO} from "../api";
 
 class LerngruppenExplorer extends Component {
