@@ -9,6 +9,7 @@ import {PartnerVorschlagBO, StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -64,13 +65,68 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
         })
     }
 
+
+    getProfil = () => {
+        StudooAPI.getAPI().getProfil(this.state.anderePerson.getProfilId())
+        .then(profilBO => {
+            this.setState({
+                profil: profilBO,
+                error: null,
+                loadingInProgress: false
+            });
+        }).catch(e => this.setState({
+            profil: "No profil received.",
+            error: e,
+            loadingInProgress: false
+        }));
+
+        this.setState({
+            loadingInProgress: true,
+            error: null
+        });
+    }
+
+    getLernvorliebe = () => {
+        StudooAPI.getAPI().getLernvorliebe(this.state.profil.getLernvorliebeID())
+            .then(lernvorliebeBO => {
+                this.setState({
+                    lernvorliebe: lernvorliebeBO,
+                    error: null,
+                    loadingInProgress: false
+                });
+            }).catch(e => this.setState({
+            personen: ["wtf"],
+            error: e,
+            loadingInProgress: false
+        }));
+
+        this.setState({
+            loadingInProgress: true,
+            error: null
+        });
+    }
+
+    /** Handles the onClick event of the Popup person button */
+        popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getAnderePerson()
     }
 
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed} = this.state;
+        const {anfrage, anderePerson, buttonPressed,showProfilPopUp, profil, lernvorliebe} = this.state;
 
         return (
             <>
@@ -85,8 +141,14 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
                                 Zurückziehen
                             </Button>
                             <br/>
-                            Partnername: {anderePerson.getName()}
+                            Partnername:
+                            <button onClick={this.popUpButtonClicked}>
+                                {
+                                     anderePerson.getName()
+                                }
+                            </button>
                             <br/>--------------
+                            <PopUpProfil show={showProfilPopUp} person={anderePerson} profil={profil} lernvorliebe={lernvorliebe} onClose={this.popUpClosed} />
                         </Typography>
                         :
                         null
