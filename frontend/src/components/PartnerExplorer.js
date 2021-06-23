@@ -11,11 +11,12 @@ import {
 import { withRouter, NavLink } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
+import LoadingProgress from './dialogs/LoadingProgress';
 import {PartnerVorschlagBO} from "../api";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
-
+import ProfilVorschau from "./ProfilVorschau";
 
 class PartnerExplorer extends Component {
 
@@ -168,6 +169,7 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                         <Typography variant="h4">
                                             {anderePerson.getName()}, {anderePerson.getAlter()}
+                                            <ProfilVorschau person={anderePerson} selfperson={false}/>
                                         </Typography>
                                         <Typography variant="subtitle1">
                                             Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!

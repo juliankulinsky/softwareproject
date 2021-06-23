@@ -45,6 +45,7 @@ CREATE TABLE `profile` (
     `id` int NOT NULL DEFAULT 0,
     `erstellungszeitpunkt` varchar(255) NOT NULL DEFAULT '2000-01-01 00:00:00',
     `lernvorlieben_id` int NOT NULL DEFAULT 0,
+    `beschreibung` varchar(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -54,14 +55,14 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 INSERT INTO `profile`
-VALUES (1,'2021-03-02 18:21:26',1),
-       (2,'2021-04-26 15:36:01',2),
-       (3,'2021-04-26 15:37:01',3),
-       (4,'2021-04-26 15:39:01',4),
-       (5,'2021-04-26 15:39:01',5),
-       (6,'2021-04-26 15:39:01',6),
-       (7,'2021-04-26 15:39:01',7),
-       (8,'2021-04-26 15:39:01',8);
+VALUES (1,'2021-03-02 18:21:26',1, 'Ganz nice Beschreibung'),
+       (2,'2021-04-26 15:36:01',2, 'JOJOJO'),
+       (3,'2021-04-26 15:37:01',3, 'We Lit'),
+       (4,'2021-04-26 15:39:01',4, 'Was steht hier eigentlich?'),
+       (5,'2021-04-26 15:39:01',5, 'Wie bin ich hierhergekommen'),
+       (6,'2021-04-26 15:39:01',6, 'Hier könnte Ihre Werbung stehen'),
+       (7,'2021-04-26 15:39:01',7, 'Beschreibung lel'),
+       (8,'2021-04-26 15:39:01',8, 'Keine Ahnung mehr');
 UNLOCK TABLES;
 
 --
@@ -191,8 +192,8 @@ VALUES (1,'2021-03-02 18:21:26',1,2),
        (8,'2021-04-26 15:36:01',4,3),
        (9,'2021-04-26 15:36:01',4,4),
        (10,'2021-04-26 15:36:01',2,6),
-       (11,'2021-04-26 15:36:01',3,6)
-       ;
+       (11,'2021-04-26 15:36:01',3,6),
+       (12,'2021-04-26 15:36:01',2,1)       ;
 UNLOCK TABLES;
 
 --
@@ -273,7 +274,7 @@ LOCK TABLES `gruppen_teilnahmen` WRITE;
 INSERT INTO `gruppen_teilnahmen`
 VALUES (1,'2021-03-02 18:21:26',1,1,FALSE),
        (2,'2021-04-26 15:36:01',2,1,FALSE),
-       (3,'2021-04-26 15:36:01',4,1,FALSE),
+       (3,'2021-04-26 15:36:01',4,1,TRUE),
        (4,'2021-04-26 15:36:01',1,2,FALSE),
        (5,'2021-04-26 15:36:01',3,2,FALSE),
        (6,'2021-04-26 15:36:01',4,2,FALSE),
@@ -305,11 +306,13 @@ CREATE TABLE `gruppen_vorschlaege` (
 
 LOCK TABLES `gruppen_vorschlaege` WRITE;
 INSERT INTO `gruppen_vorschlaege`
-VALUES (1,'2021-03-02 18:21:26',1,1,70.5,1,TRUE,FALSE),
+VALUES (1,'2021-03-02 18:21:26',1,1,70.5,2,TRUE,TRUE),
        (2,'2021-04-26 15:36:01',3,2,66.8,0,FALSE,FALSE),
        (3,'2021-04-26 15:36:01',4,4,92.8,2,TRUE,TRUE),
        (4,'2021-04-26 15:36:01',4,5,98.2,0,FALSE,FALSE),
        (5,'2021-04-26 15:36:01',4,2,80.7,1,TRUE,FALSE),
        (6,'2021-04-26 15:36:01',4,1,97.2,0,FALSE,FALSE),
-       (7,'2021-04-26 15:36:01',3,4,70.9,0,FALSE,FALSE);
+       (7,'2021-04-26 15:36:01',3,4,70.9,0,FALSE,FALSE),
+       (8,'2021-05-26 15:36:01',2,3,66,1,TRUE,FALSE),
+       (9,'2021-05-26 15:36:01',3,1,54,1,TRUE,FALSE);
 UNLOCK TABLES;

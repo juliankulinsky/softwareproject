@@ -5,9 +5,9 @@ import {
     Button,
     Typography,
     Card,
-    CardContent, Fab
+    CardContent,
+    Fab
 } from '@material-ui/core';
-
 import {NavLink, withRouter} from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -218,7 +218,6 @@ class LerngruppenExplorer extends Component {
                             </Fab>
                         </div>
                 }
-
 
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}

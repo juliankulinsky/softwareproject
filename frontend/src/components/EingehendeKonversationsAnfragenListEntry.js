@@ -9,6 +9,7 @@ import {PartnerVorschlagBO, StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -21,7 +22,8 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
             anderePerson: null,
             entscheidung: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
@@ -90,13 +92,27 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         })
     }
 
+    /** Handles the onClick event of the Popup person button */
+        popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getAnderePerson()
     }
 
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed} = this.state;
+        const {anfrage, anderePerson, buttonPressed,showProfilPopUp} = this.state;
 
         return (
             <>
@@ -115,8 +131,14 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
                                 Ablehnen
                             </Button>
                             <br/>
-                            Partnername: {anderePerson.getName()}
+                            Partnername:
+                            <button onClick={this.popUpButtonClicked}>
+                                {
+                                     anderePerson.getName()
+                                }
+                            </button>
                             <br/>--------------
+                            <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed} />
                         </Typography>
                         :
                         null

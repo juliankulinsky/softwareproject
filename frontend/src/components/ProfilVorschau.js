@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography, Avatar} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
+
 import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
-import PersonListEntry from './PersonListEntry';
 import {PersonBO} from "../api";
 import LernvorliebenList from "./LernvorliebenList";
 import AllProfile from "./AllProfile";
@@ -50,7 +48,6 @@ class ProfilVorschau extends Component {
                 error: null,
                 loadingInProgress: false
             });
-            console.log("DAAAA",personBO)
         }).catch(e => this.setState({
             profil: "No profil received.",
             error: e,
@@ -58,27 +55,42 @@ class ProfilVorschau extends Component {
         }));
 	}
 
+	deletePerson = () => {
+      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+    }
+
   /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
-    console.log("Hier LOL")
     this.getCurrentPerson()
   }
 
   /** Renders the component */
   render() {
-    const {classes, user} = this.props;
+    const {classes, user, selfperson} = this.props;
     const { person, loadingInProgress, error } = this.state;
 
     return (
         <div className={classes.root}>
-          <IconButton className={classes.avatarButton}  >
-            <Avatar src={user.photoURL} />
-          </IconButton>
+            {
+                user ?
+                    <IconButton className={classes.avatarButton}>
+                        <Avatar src={user.photoURL}/>
+                    </IconButton>
+                    :null
+            }
             {
             person ?
-                <AktuellesProfil person={person} user={user}/>
+                <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
+          {
+            selfperson ?
+                <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
+                      Profil löschen
+                </Button>
+                : null
+          }
+
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getCurrentPerson}/>

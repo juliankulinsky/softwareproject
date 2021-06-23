@@ -18,49 +18,49 @@ class TeilnehmerList extends Component {
 
         this.state = {
             lerngruppe: props.lerngruppe,
-            aktuelleGruppenTeilnahme: props.gruppenteilnahme,
-            teilnehmerPerson: null,
-            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme,
-            alleGruppenTeilnahmen: props.alleGruppenTeilnahmen
+            alleGruppenTeilnahmen: []
         }
     }
 
-    getTeilnehmer = () => {
-        StudooAPI.getAPI().getPerson(this.state.aktuelleGruppenTeilnahme.get_person_id())
-            .then(teilnehmerPerson => {
+    getAlleGruppenTeilnahmenForGruppe = () => {
+        StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
+            .then(gruppenTeilnahmen => {
                 this.setState({
-                    teilnehmerPerson: teilnehmerPerson
+                    alleGruppenTeilnahmen: gruppenTeilnahmen
                 })
             })
     }
 
-
     componentDidMount() {
-        this.getTeilnehmer()
+        this.getAlleGruppenTeilnahmenForGruppe()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenTeilnahme, alleGruppenTeilnahmen } = this.state;
+        const { lerngruppe, alleGruppenTeilnahmen } = this.state;
 
         return (
             <Typography>
                 {
-                    alleGruppenTeilnahmen.map( gruppenteilnahme =>
-                        <TeilnehmerListEntry
-                            currentperson={this.props.currentperson}
-                            teilnehmerPerson={teilnehmerPerson}
-                            lerngruppe={lerngruppe}
-                            eigeneGruppenTeilnahme={eigeneGruppenTeilnahme}
-                            gruppenteilnahme={gruppenteilnahme} />
-                    )
+                    alleGruppenTeilnahmen ?
+                        <Typography>
+                            Das sind alle Gruppenteilnehmer: <br/><br/>
+                            {
+                                alleGruppenTeilnahmen.map(gruppenteilnahme =>
+                                    <TeilnehmerListEntry
+                                        currentperson={this.props.currentperson}
+                                        gruppenteilnahme={gruppenteilnahme}
+                                        lerngruppe={lerngruppe}
+                                    />
+                                )
+                            }
+                        </Typography>
+                        :
+                        null
                 }
-
             </Typography>
-
         )
     }
-
 }
 
 /** Component specific styles */

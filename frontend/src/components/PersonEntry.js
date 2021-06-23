@@ -20,10 +20,12 @@ class PersonEntry extends Component {
     this.state = {
       person: props.person,
       lernvorliebe: props.lernvorliebe,
+      profil: props.profil,
       showProfilForm: false,
       showProfilDeleteDialog: false,
     };
   }
+
   /** Handles onAccountDelete events from an AccountListEntry */
   deleteAccountHandler = (deletedAccount) => {
     // console.log(deletedAccount.getID());
@@ -43,7 +45,7 @@ class PersonEntry extends Component {
   /** Handles the onClose event of the ProfilForm */
   profilFormClosed = (person) => {
     console.log("Person", person)
-    // customer is not null and therefor changed
+    // customer is not null and therefore changed
     if (person) {
       this.setState({
         person: person,
@@ -57,9 +59,25 @@ class PersonEntry extends Component {
   }
 
   /** Handles the onClose event of the ProfilForm */
+  profilFormClosedP = (profil) => {
+
+    // customer is not null and therefore changed
+    if (profil) {
+      this.setState({
+        profil: profil,
+        showProfilForm: false
+      });
+    } else {
+      this.setState({
+        showProfilForm: false
+      });
+    }
+  }
+
+  /** Handles the onClose event of the ProfilForm */
   profilFormClosedL = (lernvorliebe) => {
-    console.log("Lernvorliebe", lernvorliebe)
-    // customer is not null and therefor changed
+
+    // customer is not null and therefore changed
     if (lernvorliebe) {
       this.setState({
         lernvorliebe: lernvorliebe,
@@ -70,57 +88,100 @@ class PersonEntry extends Component {
         showProfilForm: false
       });
     }
+    console.log("Lernvorliebe", lernvorliebe)
     //window.location.reload();
   }
 
   /** Renders the component */
   render() {
-    const { classes, expandedState } = this.props;
+    const {classes, selfperson} = this.props;
     // Use the states customer
-    const { person, lernvorliebe, showProfilForm } = this.state;
+    const {person, profil, lernvorliebe, showProfilForm} = this.state;
 
-     console.log(this.state);
     return (
         <div>
-          <ButtonGroup variant='text' size='small'>
+          {
+            selfperson ?
+                <ButtonGroup variant='text' size='small'>
                   <Button color='primary' onClick={this.editProfilButtonClicked}>
                     edit
                   </Button>
-            </ButtonGroup>
-            <Typography className={classes.heading}>
-                Name:
-                {
-                  person ?
-                    person.getName()
-                      :null
-                }
-                  Alter:
-                {
-                  person ?
-                    person.getAlter()
-                      :null
-                }
-                  Wohnort:
-                {
-                  person ?
-                    person.getWohnort()
-                      :null
-                }
-                  Studiengang:
-                {
-                  person ?
-                    person.getStudiengang()
-                      :null
-                }
-                  Semester:
-                {
-                  person ?
-                    person.getSemester()
-                      :null
-                }
-            </Typography>
+                </ButtonGroup> :
+                null
+          }
           {
-          <ProfilForm show={showProfilForm} person={person} lernvorliebe={lernvorliebe} onClose={this.profilFormClosed} onCloseL={this.profilFormClosedL} />
+            person ?
+                <Typography className={classes.heading}>
+                  Name:&nbsp;
+                  {
+                    person.getName()
+                  }&nbsp;
+                  Alter:&nbsp;
+                  {
+                    person.getAlter()
+                  }&nbsp;
+                  Wohnort:&nbsp;
+                  {
+                    person.getWohnort()
+                  }&nbsp;
+                  Studiengang:&nbsp;
+                  {
+                    person.getStudiengang()
+                  }&nbsp;
+                  Semester:&nbsp;
+                  {
+                    person.getSemester()
+                  }
+                </Typography>
+                : null
+          }
+          {
+            profil ?
+                <Typography className={classes.heading}>
+                  Beschreibung:&nbsp;
+                  {
+                    profil.getBeschreibung()
+                  }
+                </Typography>
+                : null
+          }
+          {
+            lernvorliebe ?
+                <Typography className={classes.heading}>
+                  Lerntyp:&nbsp;
+                  {
+                    lernvorliebe.get_lerntyp()
+                  }&nbsp;
+
+                  Frequenz:&nbsp;
+                  {
+                    lernvorliebe.get_frequenz()
+                  }&nbsp;
+
+                  Extro:&nbsp;
+                  {
+                    lernvorliebe.get_extrovertiertheit()
+                  }&nbsp;
+
+                  RemPra:&nbsp;
+                  {
+                    lernvorliebe.get_remote_praesenz()
+                  }&nbsp;
+
+                  Vorkenntnisse:&nbsp;
+                  {
+                    lernvorliebe.get_vorkenntnisse()
+                  }&nbsp;
+
+                  Lerninteressen:&nbsp;
+                  {
+                    lernvorliebe.get_lerninteressen()
+                  }
+                </Typography> : null
+          }
+          {
+            <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
+                        onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP} onCloseL={this.profilFormClosedL}/>
           }
         </div>
 
@@ -140,10 +201,8 @@ PersonEntry.propTypes = {
   /** @ignore */
   //classes: PropTypes.object.isRequired,
   person: PropTypes.object.isRequired,
-  lernvorliebe: PropTypes.object.isRequired,
-  expandedState: PropTypes.bool.isRequired,
-  onExpandedStateChange: PropTypes.func.isRequired,
-  onProfilDeleted: PropTypes.func.isRequired
+  profil: PropTypes.object.isRequired,
+  lernvorliebe: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(PersonEntry);

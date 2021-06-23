@@ -1,26 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import {Container, ThemeProvider, CssBaseline, Typography} from '@material-ui/core';
-import PersonenList from './components/PersonenList';
-import PersonListEntry from "./components/PersonListEntry";
 import LerngruppenList from "./components/LerngruppenList";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Registrieren from './components/pages/Registrieren'
-/*import TransactionList from './components/TransactionList';
-import About from './components/pages/About';
-import AllAccountList from './components/AllAccountList';
-import Theme from './Theme';
-
- */
 import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 import AllProfile from './components/AllProfile';
 import ProfilEntry from "./components/ProfilEntry";
-import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
-import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
@@ -34,7 +23,7 @@ import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
 /**
- * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
+ * The main studoo app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
  *
  * @see See Google [firebase.auth()](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
@@ -90,10 +79,12 @@ class App extends React.Component {
 				// token (which is verified server-side) in a cookie; do not add other
 				// user information.
 				document.cookie = `token=${token};path=/`;
+				/**
 				console.log("-------------")
 				console.log("Das ist der Token: (aus handleAuthState in App.js")
 				console.log(token)
 				console.log("-------------")
+				 */
 
 				// Set the user not before the token arrived
 				this.setState({
@@ -176,7 +167,7 @@ class App extends React.Component {
 														<PersonenList user={currentUser}/>
 													</Route>
 													<Route path='/profil'>
-														<ProfilVorschau person={currentPersonBO} user={currentUser}/>
+														<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
 													</Route>
 													<Route path='/vorschlaege'>
 														<AllPartnervorschlaege person={currentPersonBO}/>

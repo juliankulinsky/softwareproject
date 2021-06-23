@@ -8,6 +8,8 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
+import ProfilForm from "./dialogs/ProfilForm";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -16,14 +18,15 @@ class TeilnehmerListEntry extends Component {
         super(props);
 
         this.state = {
-            lerngruppe: props.lerngruppe,
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
-            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme
+            lerngruppe: props.lerngruppe,
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
-    getTeilnehmer = () => {
+    getAktuellenTeilnehmer = () => {
         StudooAPI.getAPI().getPerson(this.state.aktuelleGruppenTeilnahme.get_person_id())
             .then(teilnehmerPerson => {
                 this.setState({
@@ -32,32 +35,67 @@ class TeilnehmerListEntry extends Component {
             })
     }
 
+    deleteAktuelleTeilnahme = () => {
+        StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.aktuelleGruppenTeilnahme.getID())
+            .then(gruppenTeilnahme => {
+                this.setState({
+                    buttonPressed: true
+                })
+            })
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.state.teilnehmerPerson.getID(),this.props.lerngruppe.getKonversationId())
+            .then(chatTeilnahme => {
+                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
+            })
+
+    }
+    /** Handles the onClick event of the Popup person button */
+  popUpButtonClicked = (event) => {
+    event.stopPropagation();
+    this.setState({
+      showProfilPopUp: true
+    });
+  }
+
+  popUpClosed = (event) => {
+    this.setState({
+      showProfilPopUp: false
+    });
+  }
+
 
     componentDidMount() {
-        this.getTeilnehmer()
+        this.getAktuellenTeilnehmer()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme } = this.state;
+        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed, showProfilPopUp } = this.state;
 
         return (
             <Typography>
                 {
                     teilnehmerPerson ?
                         <>
-                            {teilnehmerPerson.getName()}
-                            <Button color={"secondary"}>
-                                Löschen (In Arbeit)
+                            <Button onClick={this.popUpButtonClicked}>
+                                {
+                                    teilnehmerPerson.getName()
+                                }
                             </Button>
+                            {
+                                teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
+                                    <Button disabled={buttonPressed} color={"secondary"}
+                                            onClick={this.deleteAktuelleTeilnahme}>
+                                        Entfernen
+                                    </Button>
+                                    : <> (DU)</>
+                            }
                         </>
                         : null
                 }
+                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson}  onClose={this.popUpClosed} />
             </Typography>
-
         )
     }
-
 }
 
 /** Component specific styles */

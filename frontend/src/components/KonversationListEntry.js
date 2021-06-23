@@ -12,6 +12,8 @@ import {
 import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
+import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
+import PopUpProfil from "./dialogs/PopUpProfil";
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -21,13 +23,17 @@ class KonversationListEntry extends Component {
             konversation: props.konversation,
             lerngruppe: null,     // falls die Konversation ein Gruppenchat ist, ist das die zugehörige Lerngruppe
             chatpartner: null,
+            chatteilnahme: null,
             neueNachricht: null,
             neueNachrichtValidationFailed: false,
             neueNachrichtEdited: false,
+            deleteButtonPressed: false,
+            showErstelleLerngruppeDialog: false,
             error: null,
             loadingInProgress: false,
             addingInProgress: false,
-            addingError: null
+            addingError: null,
+            showProfilPopUp: false
         }
         this.baseState = this.state
     }
@@ -112,7 +118,43 @@ class KonversationListEntry extends Component {
             addingInProgress: true,
             addingError: null
         })
+    }
 
+    deleteChatTeilnahme = () => {
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
+            .then(chatTeilnahme => {
+                this.setState({
+                    chatteilnahme: chatTeilnahme,
+                    deleteButtonPressed: true
+                })
+                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
+            })
+    }
+
+    openErstelleLerngruppeDialog = () => {
+        this.setState({
+            showErstelleLerngruppeDialog: true
+        })
+    }
+
+    erstelleLerngruppeDialogClosed = lerngruppe => {
+        this.setState({
+            showErstelleLerngruppeDialog: false
+        })
+    }
+
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
     }
 
     componentDidMount() {
@@ -122,26 +164,40 @@ class KonversationListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
+        const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed,
+            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
 
         return (
             <div>
                 <Typography>
                         ----------------- <br/>
                         KonversationsID: {konversation.getID()} <br/>
-                        Gruppenchat: {String(konversation.getIstGruppenchat())}<br/>
                     {
                         lerngruppe ?
                             <Typography>
-                                Das ist der Gruppenchat der Gruppe: {lerngruppe.getGruppenname()}
+                                Gruppenchat von "{lerngruppe.getGruppenname()}"
                             </Typography>
                             : null
                     }
                     {
                         chatpartner ?
-                            <Typography>
-                                Das ist dein Chat mit: {chatpartner.getName()}
-                            </Typography>
+                            <>
+                                <Typography>
+                                    Chat mit:&nbsp;
+                                    <Button onClick={this.popUpButtonClicked}>
+                                        {
+                                            chatpartner.getName()
+                                        }
+                                    </Button> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
+                                        Chat löschen
+                                    </Button>
+                                    <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
+                                        Gruppe erstellen
+                                    </Button>
+                                    <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog} person={this.props.person} chatpartner={chatpartner} onClose={this.erstelleLerngruppeDialogClosed}/>
+                                </Typography>
+                            </>
                             : null
                     }
                         -----------------
@@ -159,6 +215,8 @@ class KonversationListEntry extends Component {
                         Nachricht senden
                     </Button>
                     <br/>
+
+                <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
                 </Typography>
             </div>
         )

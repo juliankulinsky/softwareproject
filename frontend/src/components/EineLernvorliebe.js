@@ -83,7 +83,7 @@ class EineLernvorliebe extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, selfperson, profil} = this.props;
         const {lernvorliebe, person, error, showProfilForm, loadingInProgress} = this.state;
 
         return (
@@ -94,15 +94,12 @@ class EineLernvorliebe extends Component {
                 </Grid>
                 {
                     person ?
+                        profil ?
                         lernvorliebe ?
-                            <PersonEntry person={person} lernvorliebe={lernvorliebe}/>
+                            <PersonEntry profil={profil} person={person} lernvorliebe={lernvorliebe} selfperson={selfperson}/>
                         : null
                         :null
-                }
-                {
-                    lernvorliebe ?
-                        <LernvorliebenListEntry lernvorliebe={lernvorliebe}/>
-                        : null
+                        :null
                 }
                 <LoadingProgress show={loadingInProgress}/>
                 <ContextErrorMessage
