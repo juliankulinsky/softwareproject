@@ -28,9 +28,13 @@ class UpdateGruppennameDialog extends Component {
     // Init the state
     this.state = {
       lerngruppe: props.lerngruppe,
+      gruppenprofil: null,
       gruppenname: null,
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
+      gruppenbeschreibung: null,
+      gruppenbeschreibungEdited: false,
+      gruppenbeschreibungValidationFailed: false,
       updatingInProgress: false,
       updatingError: null
     };
@@ -40,6 +44,10 @@ class UpdateGruppennameDialog extends Component {
 
   /** Erstellt die Lerngruppe mit allem was dazu gehört */
   updateLerngruppe = () => {
+    let updatedProfil = Object.assign(new ProfilBO(), this.state.gruppenprofil)
+    updatedProfil.setBeschreibung(this.state.gruppenbeschreibung)
+    StudooAPI.getAPI().updateProfil(updatedProfil)
+
     let updatedLerngruppe = Object.assign(new LerngruppeBO(), this.props.lerngruppe);
     updatedLerngruppe.setGruppenname(this.state.gruppenname)
     StudooAPI.getAPI().updateLerngruppe(updatedLerngruppe).then(lerngruppe => {
@@ -84,16 +92,30 @@ class UpdateGruppennameDialog extends Component {
     this.props.onClose(null);
   }
 
+  getGruppenprofil = () => {
+    StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
+        .then(profil => {
+          this.setState({
+            gruppenprofil: profil
+          })
+        })
+  }
+
+  componentDidMount() {
+    this.getGruppenprofil()
+  }
+
   /** Renders the component */
   render() {
     const { classes, person, show } = this.props;
-    const { lerngruppe, gruppenname, gruppennameEdited, gruppennameValidationFailed, updatingInProgress,updatingError } = this.state;
+    const { lerngruppe, gruppenprofil, gruppenname, gruppennameEdited, gruppennameValidationFailed, gruppenbeschreibung,
+      gruppenbeschreibungEdited, gruppenbeschreibungValidationFailed, updatingInProgress, updatingError } = this.state;
 
     let title = '';
     let header = '';
 
-    title = 'Ändern des Gruppenamens';
-    header = 'Gebe hier den Lerngruppenname ein';
+    title = 'Ändern der Gruppendaten';
+    header = 'Gebe hier die Lerngruppendaten ein';
 
     return (
       show ?
@@ -111,6 +133,10 @@ class UpdateGruppennameDialog extends Component {
               <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='neuer Gruppenname:' value={gruppenname}
                 onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
                 helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
+            </form>
+            <form className={classes.root} noValidate autoComplete='off'>
+              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenbeschreibung' label='neue Gruppenbeschreibung:' value={gruppenbeschreibung}
+                onChange={this.textFieldValueChange}/>
             </form>
             <LoadingProgress show={updatingInProgress} />
             <ContextErrorMessage error={updatingError} contextErrorMsg={`Die Lerngruppe konnte nicht geändert werden.`} onReload={this.updateLerngruppe} />
