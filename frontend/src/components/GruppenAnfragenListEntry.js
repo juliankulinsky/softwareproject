@@ -9,6 +9,7 @@ import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -22,7 +23,8 @@ class GruppenAnfragenListEntry extends Component {
             anfragendePerson: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
             entscheidung: null,
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
@@ -78,20 +80,38 @@ class GruppenAnfragenListEntry extends Component {
             })
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getAnfragendePerson()
     }
 
     render() {
         const {classes} = this.props;
-        const {anfrage, lerngruppe, buttonPressed, anfragendePerson} = this.state;
+        const {anfrage, lerngruppe, buttonPressed, anfragendePerson, showProfilPopUp} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anfragendePerson) ?
                         <Typography>
-                            Beitrittsanfrage von {anfragendePerson.getName()}&nbsp;&nbsp;&nbsp;&nbsp;
+                            Beitrittsanfrage von <Button onClick={this.popUpButtonClicked}>
+                                        {
+                                            anfragendePerson.getName()
+                                        }
+                                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
@@ -100,6 +120,7 @@ class GruppenAnfragenListEntry extends Component {
                                     onClick={this.entscheidungFalse}>
                                 Ablehnen
                             </Button>
+                        <PopUpProfil show={showProfilPopUp} person={anfragendePerson}  onClose={this.popUpClosed} />
                         </Typography>
                         :
                         null
