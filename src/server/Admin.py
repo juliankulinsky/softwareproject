@@ -603,12 +603,7 @@ class Admin(object):
                        lernvorliebeperson.get_remote_praesenz()]
         listepartner = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(),
                         lernvorliebepartner.get_remote_praesenz()]
-        spperson = lernvorliebeperson.get_lerninteressen()
-        sppartner = lernvorliebepartner.get_lerninteressen()
-        durchlaufpersonunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spperson.split(',')])
-        durchlaufperson = list(durchlaufpersonunbearbeitet)
-        durchlaufpartnerunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in sppartner.split(',')])
-        durchlaufpartner = list(durchlaufpartnerunbearbeitet)
+
         aehnlichkeit = 0
         count = 0
         for aufruf in listeperson:
@@ -629,10 +624,15 @@ class Admin(object):
                 count += 1
         if lernvorliebeperson.get_lerntyp() == lernvorliebepartner.get_lerntyp():
             aehnlichkeit += 10
-        for wort in range(len(durchlaufperson)):
-            for lv in range(len(durchlaufpartner)):
-                if durchlaufperson[wort] in durchlaufpartner[lv]:
-                    aehnlichkeit += 15
+
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        lerninteressenpartner = lernvorliebepartner.get_lerninteressen().lower().replace(" ", "")
+        lerninteressen_list_person = lerninteressenperson.split(",")
+        lerninteressen_list_partner = lerninteressenpartner.split(",")
+        for lerninteresse in lerninteressen_list_person:
+            if lerninteressen_list_partner.count(lerninteresse) > 0:
+                aehnlichkeit += 15
+
         with PartnerVorschlagMapper() as mapper:
             result = mapper.find_by_key(partnervorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
@@ -652,12 +652,7 @@ class Admin(object):
                        lernvorliebeperson.get_remote_praesenz()]
         listegruppe = [lernvorliebegruppe.get_frequenz(), lernvorliebegruppe.get_extrovertiertheit(),
                        lernvorliebegruppe.get_remote_praesenz()]
-        spperson = lernvorliebeperson.get_lerninteressen()
-        spgruppe = lernvorliebegruppe.get_lerninteressen()
-        durchlaufpersonunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spperson.split(',')])
-        durchlaufperson = list(durchlaufpersonunbearbeitet)
-        durchlaufgruppeunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spgruppe.split(',')])
-        durchlaufgruppe = list(durchlaufgruppeunbearbeitet)
+
         aehnlichkeit = 0
         count = 0
         for aufruf in listeperson:
@@ -678,10 +673,16 @@ class Admin(object):
                 count += 1
         if lernvorliebeperson.get_lerntyp() == lernvorliebegruppe.get_lerntyp():
             aehnlichkeit += 10
-        for wort in range(len(durchlaufperson)):
-            for lv in range(len(durchlaufgruppe)):
-                if durchlaufperson[wort] in durchlaufgruppe[lv]:
-                    aehnlichkeit += 15
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen()
+        lerninteressengruppe = lernvorliebegruppe.get_lerninteressen()
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        lerninteressengruppe = lernvorliebegruppe.get_lerninteressen().lower().replace(" ", "")
+        lerninteressen_list_person = lerninteressenperson.split(",")
+        lerninteressen_list_gruppe = lerninteressengruppe.split(",")
+        for lerninteresse in lerninteressen_list_person:
+            if lerninteressen_list_gruppe.count(lerninteresse) > 0:
+                aehnlichkeit += 15
+
         with GruppenVorschlagMapper() as mapper:
             result = mapper.find_by_key(gruppenvorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
