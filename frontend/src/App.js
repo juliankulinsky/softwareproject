@@ -163,15 +163,8 @@ class App extends React.Component {
 													<Route path='/lerngruppen'>
 														<LerngruppenList person={currentPersonBO}/>
 													</Route>
-													<Route path='/personen'>
-														<PersonenList user={currentUser}/>
-													</Route>
 													<Route path='/profil'>
 														<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
-													</Route>
-													<Route path='/vorschlaege'>
-														<AllPartnervorschlaege person={currentPersonBO}/>
-														<AllGruppenvorschlaege person={currentPersonBO}/>
 													</Route>
 													<Route path='/lernvorlieben'>
 														<LernvorliebenList/>
