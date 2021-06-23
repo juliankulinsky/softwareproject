@@ -22,7 +22,7 @@ class TeilnehmerListEntry extends Component {
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
             eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme,
-            showProfilPopUp: null
+            showProfilPopUp: false
         }
     }
 

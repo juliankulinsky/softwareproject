@@ -21,7 +21,8 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
             anfrage: this.props.anfrage,
             anderePerson: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 

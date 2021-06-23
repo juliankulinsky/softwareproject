@@ -12,6 +12,7 @@ import {
 import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
+import PopUpProfil from "./dialogs/PopUpProfil";
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -27,7 +28,8 @@ class KonversationListEntry extends Component {
             error: null,
             loadingInProgress: false,
             addingInProgress: false,
-            addingError: null
+            addingError: null,
+            showProfilPopUp: false
         }
         this.baseState = this.state
     }
@@ -115,6 +117,20 @@ class KonversationListEntry extends Component {
 
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
@@ -122,7 +138,8 @@ class KonversationListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited } = this.state;
+        const { konversation, lerngruppe, chatpartner, neueNachricht, neueNachrichtValidationFailed,
+            neueNachrichtEdited, showProfilPopUp} = this.state;
 
         return (
             <div>
@@ -140,7 +157,13 @@ class KonversationListEntry extends Component {
                     {
                         chatpartner ?
                             <Typography>
-                                Das ist dein Chat mit: {chatpartner.getName()}
+                                Das ist dein Chat mit:&nbsp;
+                                <button onClick={this.popUpButtonClicked}>
+                                {
+                                    chatpartner.getName()
+
+                                }
+                            </button>
                             </Typography>
                             : null
                     }
@@ -159,6 +182,8 @@ class KonversationListEntry extends Component {
                         Nachricht senden
                     </Button>
                     <br/>
+
+                <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
                 </Typography>
             </div>
         )

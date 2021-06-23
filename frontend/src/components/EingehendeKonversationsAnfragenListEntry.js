@@ -23,7 +23,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
             entscheidung: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
             buttonPressed: false,
-            showProfilPopUp: null
+            showProfilPopUp: false
         }
     }
 
