@@ -79,7 +79,6 @@ class NachrichtenList extends Component {
         const {nachrichten=[], error, loadingInProgress} = this.state;
         return (
             <div className={classes.root} >
-                <div>
                     {
                         this.Anzeige()
                     }
@@ -88,7 +87,6 @@ class NachrichtenList extends Component {
                         error={error} contextErrorMsg={`Nicht geklappt`}
                         onReload={this.getNachrichten}
                     />
-                </div>
             </div>
         )
     }

@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography } from '@material-ui/core';
+import {
+    withStyles,
+    Box,
+    Container,
+    Grid,
+    ListItem,
+    Button,
+    Card,
+    TextField,
+    InputAdornment,
+    IconButton,
+    Typography,
+    ButtonBase
+}
+    from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
@@ -8,6 +22,8 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import KonversationListEntry from "./KonversationListEntry";
+import NachrichtenList from "./NachrichtenList";
+import "./components-theme.css";
 
 class KonversationenList extends Component {
 
@@ -16,6 +32,7 @@ class KonversationenList extends Component {
 
         this.state = {
             konversationen: [],
+            aktuellekonversation: null,
             error: null,
             loadingInProgress: false
         };
@@ -41,49 +58,100 @@ class KonversationenList extends Component {
         })
     }
 
+    setAktuelleKonversation = (konversation) => {
+        this.setState({
+            aktuellekonversation: konversation
+        })
+    }
+
     componentDidMount() {
         this.getKonversationen();
     }
 
-    KeineKonversationen = () => {
-        return <Typography>Du nimmst an keinen Konversationen teil.</Typography>
+    whoseConversations() {
+        return <Typography>
+            Das sind die Konversationen von:&nbsp;
+            {
+                this.props.person.getName()
+            }
+            <br/><br/>
+        </Typography>
     }
 
     Anzeige = () => {
         let konversationen = this.state.konversationen
-        if (konversationen.length===0) {
-            return this.KeineKonversationen()
-        }
-        else return konversationen.map(konversation =>
-                        <KonversationListEntry
-                            key={konversation.getID()}
-                            konversation={konversation}
-                            person={this.props.person}
-                            />)
+
+
+        if (konversationen.length === 0) {
+            return <Typography>Du nimmst an keinen Konversationen teil.</Typography>
+        } else return konversationen.map(konversation =>
+            <Card>
+                <ButtonBase
+                    onClick={(event) => this.setAktuelleKonversation(konversation)}>
+
+                    <KonversationListEntry
+                        key={konversation.getID()}
+                        konversation={konversation}
+                        person={this.props.person}
+                    />
+
+                </ButtonBase>
+            </Card>)
     }
 
     render() {
-        const { classes } = this.props;
-        const { konversationen, error, loadingInProgress } = this.state;
+        const {classes} = this.props;
+        const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
 
         return (
-            <div className={classes.root}>
-                <Typography>
-                    Das sind die Konversationen von:&nbsp;
-                    {
-                        this.props.person.getName()
-                    }
-                    <br/><br/>
-                </Typography>
+            <Box className={classes.root}>
                 {
                     this.Anzeige()
                 }
-                <LoadingProgress show={loadingInProgress} />
+
+                <LoadingProgress show={loadingInProgress}/>
+
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getKonversationen}
                 />
-            </div>
+
+                {
+                    aktuellekonversation ?
+                        <NachrichtenList
+                            konversation={aktuellekonversation}
+                            currentPerson={this.props.person}
+                        />
+
+                        :
+                        <Typography>
+                            Du hast noch <b>keine</b> Konversation ausgewählt.
+                        </Typography>
+                }
+
+
+                {/*<Typography>
+                            <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
+
+                            <NachrichtenList
+                                currentPerson={this.props.person}
+                                konversation={konversation}
+                            />
+                            <br/>
+
+                            <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
+                            error={neueNachrichtValidationFailed}>
+                                Test
+                            </TextField>&nbsp;&nbsp;
+
+                            <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
+                            onClick={this.addNachricht}>
+                                Nachricht senden
+                            </Button>
+                            <br/>
+
+                        </Typography>*/}
+            </Box>
         )
     }
 }

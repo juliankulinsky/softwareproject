@@ -172,6 +172,7 @@ class App extends React.Component {
 																{/**
 																 <Redirect from='/' to='/partnervorschlaege' />
 																 */}
+
 															<Route path='/lerngruppen'>
 																<LerngruppenList person={currentPersonBO}/>
 															</Route>

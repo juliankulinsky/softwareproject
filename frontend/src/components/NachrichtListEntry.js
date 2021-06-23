@@ -107,7 +107,9 @@ class NachrichtListEntry extends Component {
                             : null
                     }
                 </Typography>
+
                 <LoadingProgress show={loadingInProgress} />
+
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getAbsenderPerson}
@@ -123,12 +125,16 @@ const styles = theme => ({
   root: {
     width: '100%',
   },
+
     right: {
       textAlign: "right"
     },
+
     left: {
       textAlign: "left"
     }
+
+
 });
 
 /** PropTypes */
