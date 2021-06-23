@@ -22,9 +22,7 @@ class TeilnehmerListEntry extends Component {
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
             eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme,
-            showProfilPopUp: null,
-            profil: null,
-            lernvorliebe: null
+            showProfilPopUp: null
         }
     }
 
@@ -35,46 +33,6 @@ class TeilnehmerListEntry extends Component {
                     teilnehmerPerson: teilnehmerPerson
                 })
             })
-    }
-
-    getProfil = () => {
-        StudooAPI.getAPI().getProfil(this.state.teilnehmerPerson.getProfilId())
-        .then(profilBO => {
-            this.setState({
-                profil: profilBO,
-                error: null,
-                loadingInProgress: false
-            });
-        }).catch(e => this.setState({
-            profil: "No profil received.",
-            error: e,
-            loadingInProgress: false
-        }));
-
-        this.setState({
-            loadingInProgress: true,
-            error: null
-        });
-    }
-
-    getLernvorliebe = () => {
-        StudooAPI.getAPI().getLernvorliebe(this.state.profil.getLernvorliebeID())
-            .then(lernvorliebeBO => {
-                this.setState({
-                    lernvorliebe: lernvorliebeBO,
-                    error: null,
-                    loadingInProgress: false
-                });
-            }).catch(e => this.setState({
-            personen: ["wtf"],
-            error: e,
-            loadingInProgress: false
-        }));
-
-        this.setState({
-            loadingInProgress: true,
-            error: null
-        });
     }
 
     /** Handles the onClick event of the Popup person button */
@@ -98,7 +56,7 @@ class TeilnehmerListEntry extends Component {
 
     render() {
         const {classes} = this.props;
-        const {lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme, showProfilPopUp, profil, lernvorliebe} = this.state;
+        const {lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme, showProfilPopUp} = this.state;
 
         return (
             <Typography>
@@ -117,7 +75,7 @@ class TeilnehmerListEntry extends Component {
                         </>
                         : null
                 }
-                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson} profil={profil} lernvorliebe={lernvorliebe} onClose={this.popUpClosed} />
+                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson}  onClose={this.popUpClosed} />
             </Typography>
 
         )

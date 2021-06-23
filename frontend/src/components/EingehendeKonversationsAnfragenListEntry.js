@@ -23,9 +23,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
             entscheidung: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
             buttonPressed: false,
-            showProfilPopUp: null,
-            profil: null,
-            lernvorliebe: null
+            showProfilPopUp: null
         }
     }
 
@@ -94,47 +92,6 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         })
     }
 
-
-    getProfil = () => {
-        StudooAPI.getAPI().getProfil(this.state.anderePerson.getProfilId())
-        .then(profilBO => {
-            this.setState({
-                profil: profilBO,
-                error: null,
-                loadingInProgress: false
-            });
-        }).catch(e => this.setState({
-            profil: "No profil received.",
-            error: e,
-            loadingInProgress: false
-        }));
-
-        this.setState({
-            loadingInProgress: true,
-            error: null
-        });
-    }
-
-    getLernvorliebe = () => {
-        StudooAPI.getAPI().getLernvorliebe(this.state.profil.getLernvorliebeID())
-            .then(lernvorliebeBO => {
-                this.setState({
-                    lernvorliebe: lernvorliebeBO,
-                    error: null,
-                    loadingInProgress: false
-                });
-            }).catch(e => this.setState({
-            personen: ["wtf"],
-            error: e,
-            loadingInProgress: false
-        }));
-
-        this.setState({
-            loadingInProgress: true,
-            error: null
-        });
-    }
-
     /** Handles the onClick event of the Popup person button */
         popUpButtonClicked = (event) => {
         event.stopPropagation();
@@ -155,7 +112,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
 
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed,showProfilPopUp, profil, lernvorliebe} = this.state;
+        const {anfrage, anderePerson, buttonPressed,showProfilPopUp} = this.state;
 
         return (
             <>
@@ -181,7 +138,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
                                 }
                             </button>
                             <br/>--------------
-                            <PopUpProfil show={showProfilPopUp} person={anderePerson} profil={profil} lernvorliebe={lernvorliebe} onClose={this.popUpClosed} />
+                            <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed} />
                         </Typography>
                         :
                         null
