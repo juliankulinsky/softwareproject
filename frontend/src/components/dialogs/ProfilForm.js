@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
+import {
+  withStyles,
+  Button,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextField,
+  Slider,
+  Typography
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import {StudooAPI, PersonBO, LernvorliebeBO, ProfilBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
@@ -93,7 +105,8 @@ class ProfilForm extends Component {
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
-      updatingError: null
+      updatingError: null,
+      valuetext: 2
     };
     // save this state for canceling
     this.baseState = this.state;
@@ -239,13 +252,62 @@ class ProfilForm extends Component {
     this.props.onCloseL(null);
   }
 
+   valuetext = (value) =>{/*
+    return `${value}°C`;
+  }
+
+  handleChange = (event, value) => {
+    this.setState({
+            lerntyp: value
+          }
+      );*/
+  }
+
+
+  handleChangeLerntyp = (event, value) => {
+      this.setState({
+            lerntyp: value
+          }
+      );
+
+  }
+
+  handleChangeFrequenz = (event, value) => {
+      this.setState({
+            frequenz: value
+          }
+      );
+  }
+
+    handleChangeExtrovertiertheit = (event, value) => {
+      this.setState({
+            extrovertiertheit: value
+          }
+      );
+  }
+
+    handleChangeRemote = (event, value) => {
+      this.setState({
+            remote: value
+          }
+      );
+  }
+
+
+
+
   /** Renders the component */
   render() {
+    const marks = [{value: 1, label: 'Auditiv',},{value: 2, label: 'Motorisch',},{value: 5, label: 'Visuell',}]
+     /* const [value, setValue] = ([20, 37]);
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };*/
     const { classes, person, profil, lernvorliebe, show } = this.props;
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
-        beschreibung, beschreibungValidationFailed, beschreibungEdited, lerntyp, lerntypValidationFailed,
+        beschreibung, beschreibungValidationFailed, beschreibungEdited, lerntyp, lerntypValue, lerntypValidationFailed,
       lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited, extrovertiertheit,
       extrovertiertheitValidationFailed, extrovertiertheitEdited, remote, remoteValidationFailed, remoteEdited,
       vorkenntnisse, vorkenntnisseValidationFailed, vorkenntnisseEdited, lerninteressen,
@@ -295,10 +357,68 @@ class ProfilForm extends Component {
               <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
                 onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
                 helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
+              {/*<TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
                 onChange={this.textFieldValueChange} error={lerntypValidationFailed}
                 helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='frequenz' label='Frequenz:' value={frequenz}
+              <Slider
+                value={value}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                aria-labelledby="discrete-slider"
+                getAriaValueText={this.valuetext}
+              />*/}
+              <Typography>
+              Lerntyp:
+              </Typography>
+              <br/>
+              <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeLerntyp} />
+              <Typography>
+              Frequenz:
+              </Typography>
+              <br/>
+              <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeFrequenz} />
+              <Typography>
+              Extrovertiertheit:
+              </Typography>
+              <br/>
+              <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
+              <Typography>
+              Remote:
+              </Typography>
+              <br/>
+              <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeRemote} />
+
+              {/*
+              <Typography>
+              Lerntyp:
+              <input id="lerntyp" type="range" min="1" max="5" value={this.state.lerntyp}  onChange={this.handleChangeLerntyp}
+              step="1"/>
+                </Typography>
+              <br/>
+              <Typography>
+              Frequenz
+              <input id="frequenz" type="range" min="1" max="5" value={this.state.frequenz}  onChange={this.handleChangeFrequenz}
+              step="1"/>
+                </Typography>
+              <br/>
+              <Typography>
+              Extrovertiertheit
+              <input id="extro" type="range" min="1" max="5" value={this.state.extrovertiertheit}  onChange={this.handleChangeExtrovertiertheit}
+              step="1"/>
+                </Typography>
+              <br/>
+              <Typography>
+              Remote/Präsenz
+              <input id="remote" type="range" min="1"  max="5" value={this.state.remote}  onChange={this.handleChangeRemote}
+              step="1"/>
+                </Typography>*/}
+              <br/>
+
+              {/*<TextField type='text' required fullWidth margin='normal' id='frequenz' label='Frequenz:' value={frequenz}
                 onChange={this.textFieldValueChange} error={frequenzValidationFailed}
                 helperText={frequenzValidationFailed ? 'The alter must contain at least one character' : ' '} />
               <TextField type='text' required fullWidth margin='normal' id='extrovertiertheit' label='Extrovertiertheit:' value={extrovertiertheit}
@@ -306,7 +426,7 @@ class ProfilForm extends Component {
                 helperText={extrovertiertheitValidationFailed ? 'The last name must contain at least one character' : ' '} />
               <TextField type='text' required fullWidth margin='normal' id='remote' label='Remote/Präsenz:' value={remote}
                 onChange={this.textFieldValueChange} error={remoteValidationFailed}
-                helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />*/}
               <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
                 onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
                 helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />

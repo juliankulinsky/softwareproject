@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import { withStyles, Typography, Slider, Card, CardContent, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
@@ -94,12 +94,15 @@ class PersonEntry extends Component {
 
   /** Renders the component */
   render() {
+    const marks = [{value: 1, label: '1',}, {value: 5, label: '5',}]
     const {classes, selfperson} = this.props;
     // Use the states customer
     const {person, profil, lernvorliebe, showProfilForm} = this.state;
 
     return (
         <div>
+          <Card className={classes.root}>
+            <CardContent max-width="500px" flex-direction="row" align-items="center" justify-content="space-around" >
           {
             selfperson ?
                 <ButtonGroup variant='text' size='small'>
@@ -147,41 +150,57 @@ class PersonEntry extends Component {
           }
           {
             lernvorliebe ?
-                <Typography className={classes.heading}>
-                  Lerntyp:&nbsp;
-                  {
-                    lernvorliebe.get_lerntyp()
-                  }&nbsp;
+                <Grid>
+                  <Typography className={classes.heading}>
+                    <br/>
+                    Lerntyp:&nbsp;
+                    {/*
+                      lernvorliebe.get_lerntyp()
+                    */}
+                    <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                    &nbsp;
+                    Frequenz:&nbsp;
+                    {/*
+                      lernvorliebe.get_frequenz()
+                    */}
+                    <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                    &nbsp;
+                    Extro:&nbsp;
+                    {/*
+                      lernvorliebe.get_extrovertiertheit()
+                    */}
+                    <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                    RemPra:&nbsp;
+                    {/*
+                      lernvorliebe.get_remote_praesenz()
+                    */}
+                    <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                    Vorkenntnisse:&nbsp;
+                    {
+                      lernvorliebe.get_vorkenntnisse()
+                    }&nbsp;
 
-                  Frequenz:&nbsp;
-                  {
-                    lernvorliebe.get_frequenz()
-                  }&nbsp;
-
-                  Extro:&nbsp;
-                  {
-                    lernvorliebe.get_extrovertiertheit()
-                  }&nbsp;
-
-                  RemPra:&nbsp;
-                  {
-                    lernvorliebe.get_remote_praesenz()
-                  }&nbsp;
-
-                  Vorkenntnisse:&nbsp;
-                  {
-                    lernvorliebe.get_vorkenntnisse()
-                  }&nbsp;
-
-                  Lerninteressen:&nbsp;
-                  {
-                    lernvorliebe.get_lerninteressen()
-                  }
-                </Typography> : null
-          }
+                    Lerninteressen:&nbsp;
+                    {
+                      lernvorliebe.get_lerninteressen()
+                    }
+                  </Typography>
+                  </Grid>
+                 : null
+          }</CardContent>
+            </Card>
           {
             <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
-                        onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP} onCloseL={this.profilFormClosedL}/>
+                        onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP}
+                        onCloseL={this.profilFormClosedL}/>
           }
         </div>
 
@@ -193,6 +212,9 @@ class PersonEntry extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
+    minWidth: 300,
+    maxWidth: 600,
+    alignContent: 'center'
   }
 });
 
