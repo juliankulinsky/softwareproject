@@ -86,13 +86,13 @@ class GruppenAnfragenListEntry extends Component {
         this.setState({
           showProfilPopUp: true
         });
-      }
+    }
 
-      popUpClosed = (event) => {
+    popUpClosed = (event) => {
         this.setState({
           showProfilPopUp: false
         });
-      }
+    }
 
     componentDidMount() {
         this.getAnfragendePerson()
@@ -108,10 +108,10 @@ class GruppenAnfragenListEntry extends Component {
                     (anfrage && anfragendePerson) ?
                         <Typography>
                             Beitrittsanfrage von <Button onClick={this.popUpButtonClicked}>
-                                {
-                                    anfragendePerson.getName()
-                                }
-                            </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {
+                                            anfragendePerson.getName()
+                                        }
+                                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
