@@ -12,10 +12,12 @@ def secured(function):
     def wrapper(*args, **kwargs):
         # Verify Firebase auth.
         id_token = request.cookies.get("token")
+        """
         print("----------------")
         print("Das ist der Token: (aus SecurityDecorator.py)")
         print(id_token)
         print("----------------")
+        """
         error_message = None
         claims = None
         objects = None
@@ -45,12 +47,15 @@ def secured(function):
                         lv = adm.create_lernvorliebe()
                         profil = adm.create_profil(lv.get_id(), " ")
                         personen = adm.get_all_personen()
-                        print(personen)
+                        gruppen = adm.get_all_lerngruppen()
                         user = adm.create_person(name, email, google_user_id, profil_id=profil.get_id())
                         for person in personen:
-                            print("Neue Person ", user.get_id())
-                            print("Partner ", person.get_id())
                             adm.create_partnervorschlag(user.get_id(),person.get_id(), aehnlichkeit=0, matchpoints=0,entscheidung_person=False, entscheidung_partner=False)
+
+                        for gruppe in gruppen:
+                            adm.create_gruppenvorschlag(user.get_id(), gruppe.get_id(), aehnlichkeit=0, matchpoints=0, entscheidung_person=False, entscheidung_gruppe=False)
+
+
 
 
                     print(request.method, request.path, "angefragt durch:", name, email)

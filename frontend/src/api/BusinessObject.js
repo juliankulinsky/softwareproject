@@ -3,9 +3,9 @@
  */
 export default class BusinessObject {
 
-  constructor() {
-    this.id = 0;
-    this.erstellungszeitpunkt = new Date()
+  constructor(id=0,erstellungszeitpunkt=new Date()) {
+    this.id = id;
+    this.erstellungszeitpunkt = erstellungszeitpunkt
   }
 
   /**

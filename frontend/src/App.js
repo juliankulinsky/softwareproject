@@ -91,10 +91,12 @@ class App extends React.Component {
 				// token (which is verified server-side) in a cookie; do not add other
 				// user information.
 				document.cookie = `token=${token};path=/`;
+				/**
 				console.log("-------------")
 				console.log("Das ist der Token: (aus handleAuthState in App.js")
 				console.log(token)
 				console.log("-------------")
+				 */
 
 				// Set the user not before the token arrived
 				this.setState({
