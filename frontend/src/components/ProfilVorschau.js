@@ -57,6 +57,10 @@ class ProfilVorschau extends Component {
         }));
 	}
 
+	deletePerson = () => {
+      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+    }
+
   /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
   componentDidMount() {
     this.getCurrentPerson()
@@ -81,6 +85,14 @@ class ProfilVorschau extends Component {
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
+          {
+            selfperson ?
+                <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
+                      Profil löschen
+                </Button>
+                : null
+          }
+
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getCurrentPerson}/>

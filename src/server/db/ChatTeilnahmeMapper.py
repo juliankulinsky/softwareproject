@@ -63,6 +63,32 @@ class ChatTeilnahmeMapper (Mapper):
 
         return result
 
+    def find_all_by_person_id(self, person_key: int):
+        """
+
+        :param person_key:
+        :return:
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, erstellungszeitpunkt, person_id, konversation_id FROM chat_teilnahmen WHERE person_id={}"\
+            .format(person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, konversation_id) in tuples:
+            chat_teilnahme = ChatTeilnahme()
+            chat_teilnahme.set_id(id)
+            chat_teilnahme.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            chat_teilnahme.set_person_id(person_id)
+            chat_teilnahme.set_konversation_id(konversation_id)
+            result.append(chat_teilnahme)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_person_id_und_konversation_id(self, person_id: int, konversation_id: int):
         result = None
         cursor = self._cnx.cursor()

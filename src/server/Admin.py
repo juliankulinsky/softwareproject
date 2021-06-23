@@ -52,6 +52,11 @@ class Admin(object):
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_all()
 
+    def get_all_chatteilnahmen_by_person_id(self, person_id):
+        """Alle Chatteilnahmen ausgeben."""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_all_by_person_id(person_id)
+
     def get_chatteilnahme_by_id(self, key):
         """Die Chatteilnahme mit gegebener ID auslesen."""
         with ChatTeilnahmeMapper() as mapper:
@@ -182,6 +187,10 @@ class Admin(object):
         """Den besten Gruppenvorschlag für eine Person auslesen. """
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_best_for_person_id(person_id)
+
+    def get_all_offene_gruppenvorschlaege_for_person_id(self, person_id):
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_all_offene_for_person_id(person_id)
 
     def get_all_gruppenvorschlaege_for_person_id(self, person_id):
         with GruppenVorschlagMapper() as mapper:
@@ -399,6 +408,10 @@ class Admin(object):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_best_by_person_id(person_id)
 
+    def get_all_offene_partnervorschlaege_for_person_id(self, person_id):
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_all_offene_for_person_id(person_id)
+
     def get_all_partnervorschlaege_for_person_id(self, person_id):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_all_for_person_id(person_id)
@@ -531,9 +544,10 @@ class Admin(object):
                 lerninteressen_sammlung.append(lerninteresse)
 
         teilnahmen_anzahl = len(alle_teilnahmen)
-        frequenz_extro_remote_schnitt = []
-        for wert in frequenz_extro_remote_sammlung:
-            frequenz_extro_remote_schnitt.append(wert/teilnahmen_anzahl)
+        frequenz_extro_remote_schnitt = [0,0,0]
+        for index in range(0,3):
+            if teilnahmen_anzahl > 0:
+                frequenz_extro_remote_schnitt[index] = (frequenz_extro_remote_sammlung[index]/teilnahmen_anzahl)
 
         gruppen_lernvorliebe.set_frequenz(frequenz_extro_remote_schnitt[0])
         gruppen_lernvorliebe.set_extrovertiertheit(frequenz_extro_remote_schnitt[1])
