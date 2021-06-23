@@ -8,6 +8,8 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
+import ProfilForm from "./dialogs/ProfilForm";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -19,7 +21,8 @@ class TeilnehmerListEntry extends Component {
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
             lerngruppe: props.lerngruppe,
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
@@ -45,6 +48,20 @@ class TeilnehmerListEntry extends Component {
             })
 
     }
+    /** Handles the onClick event of the Popup person button */
+  popUpButtonClicked = (event) => {
+    event.stopPropagation();
+    this.setState({
+      showProfilPopUp: true
+    });
+  }
+
+  popUpClosed = (event) => {
+    this.setState({
+      showProfilPopUp: false
+    });
+  }
+
 
     componentDidMount() {
         this.getAktuellenTeilnehmer()
@@ -52,14 +69,18 @@ class TeilnehmerListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed } = this.state;
+        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed, showProfilPopUp } = this.state;
 
         return (
             <Typography>
                 {
                     teilnehmerPerson ?
                         <>
-                            {teilnehmerPerson.getName()}
+                            <Button onClick={this.popUpButtonClicked}>
+                                {
+                                    teilnehmerPerson.getName()
+                                }
+                            </Button>
                             {
                                 teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
                                     <Button disabled={buttonPressed} color={"secondary"}
@@ -71,6 +92,7 @@ class TeilnehmerListEntry extends Component {
                         </>
                         : null
                 }
+                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson}  onClose={this.popUpClosed} />
             </Typography>
         )
     }

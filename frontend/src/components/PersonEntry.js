@@ -112,23 +112,23 @@ class PersonEntry extends Component {
           {
             person ?
                 <Typography className={classes.heading}>
-                  Name:
+                  Name:&nbsp;
                   {
                     person.getName()
-                  }
-                  Alter:
+                  }&nbsp;
+                  Alter:&nbsp;
                   {
                     person.getAlter()
-                  }
-                  Wohnort:
+                  }&nbsp;
+                  Wohnort:&nbsp;
                   {
                     person.getWohnort()
-                  }
-                  Studiengang:
+                  }&nbsp;
+                  Studiengang:&nbsp;
                   {
                     person.getStudiengang()
-                  }
-                  Semester:
+                  }&nbsp;
+                  Semester:&nbsp;
                   {
                     person.getSemester()
                   }
@@ -138,7 +138,7 @@ class PersonEntry extends Component {
           {
             profil ?
                 <Typography className={classes.heading}>
-                  Beschreibung:
+                  Beschreibung:&nbsp;
                   {
                     profil.getBeschreibung()
                   }
@@ -148,32 +148,32 @@ class PersonEntry extends Component {
           {
             lernvorliebe ?
                 <Typography className={classes.heading}>
-                  Lerntyp:
+                  Lerntyp:&nbsp;
                   {
                     lernvorliebe.get_lerntyp()
-                  }
+                  }&nbsp;
 
-                  Frequenz:
+                  Frequenz:&nbsp;
                   {
                     lernvorliebe.get_frequenz()
-                  }
+                  }&nbsp;
 
-                  Extro:
+                  Extro:&nbsp;
                   {
                     lernvorliebe.get_extrovertiertheit()
-                  }
+                  }&nbsp;
 
-                  RemPra:
+                  RemPra:&nbsp;
                   {
                     lernvorliebe.get_remote_praesenz()
-                  }
+                  }&nbsp;
 
-                  Vorkenntnisse:
+                  Vorkenntnisse:&nbsp;
                   {
                     lernvorliebe.get_vorkenntnisse()
-                  }
+                  }&nbsp;
 
-                  Lerninteressen:
+                  Lerninteressen:&nbsp;
                   {
                     lernvorliebe.get_lerninteressen()
                   }

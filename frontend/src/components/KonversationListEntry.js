@@ -13,6 +13,7 @@ import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
 import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
+import PopUpProfil from "./dialogs/PopUpProfil";
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -31,7 +32,8 @@ class KonversationListEntry extends Component {
             error: null,
             loadingInProgress: false,
             addingInProgress: false,
-            addingError: null
+            addingError: null,
+            showProfilPopUp: false
         }
         this.baseState = this.state
     }
@@ -141,6 +143,20 @@ class KonversationListEntry extends Component {
         })
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
@@ -149,7 +165,7 @@ class KonversationListEntry extends Component {
     render() {
         const { classes } = this.props;
         const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed,
-            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog } = this.state;
+            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
 
         return (
             <div>
@@ -167,7 +183,12 @@ class KonversationListEntry extends Component {
                         chatpartner ?
                             <>
                                 <Typography>
-                                    Chat mit: {chatpartner.getName()} &nbsp;&nbsp;&nbsp;&nbsp;
+                                    Chat mit:&nbsp;
+                                    <Button onClick={this.popUpButtonClicked}>
+                                        {
+                                            chatpartner.getName()
+                                        }
+                                    </Button> &nbsp;&nbsp;&nbsp;&nbsp;
                                     <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
                                         Chat löschen
                                     </Button>
@@ -194,6 +215,8 @@ class KonversationListEntry extends Component {
                         Nachricht senden
                     </Button>
                     <br/>
+
+                <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
                 </Typography>
             </div>
         )
