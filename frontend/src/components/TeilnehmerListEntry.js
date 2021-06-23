@@ -8,6 +8,8 @@ import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
+import ProfilForm from "./dialogs/ProfilForm";
+import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
 
@@ -19,7 +21,10 @@ class TeilnehmerListEntry extends Component {
             lerngruppe: props.lerngruppe,
             aktuelleGruppenTeilnahme: props.gruppenteilnahme,
             teilnehmerPerson: null,
-            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme
+            eigeneGruppenTeilnahme: props.eigeneGruppenTeilnahme,
+            showProfilPopUp: null,
+            profil: null,
+            lernvorliebe: null
         }
     }
 
@@ -32,27 +37,87 @@ class TeilnehmerListEntry extends Component {
             })
     }
 
+    getProfil = () => {
+        StudooAPI.getAPI().getProfil(this.state.teilnehmerPerson.getProfilId())
+        .then(profilBO => {
+            this.setState({
+                profil: profilBO,
+                error: null,
+                loadingInProgress: false
+            });
+        }).catch(e => this.setState({
+            profil: "No profil received.",
+            error: e,
+            loadingInProgress: false
+        }));
+
+        this.setState({
+            loadingInProgress: true,
+            error: null
+        });
+    }
+
+    getLernvorliebe = () => {
+        StudooAPI.getAPI().getLernvorliebe(this.state.profil.getLernvorliebeID())
+            .then(lernvorliebeBO => {
+                this.setState({
+                    lernvorliebe: lernvorliebeBO,
+                    error: null,
+                    loadingInProgress: false
+                });
+            }).catch(e => this.setState({
+            personen: ["wtf"],
+            error: e,
+            loadingInProgress: false
+        }));
+
+        this.setState({
+            loadingInProgress: true,
+            error: null
+        });
+    }
+
+    /** Handles the onClick event of the Popup person button */
+  popUpButtonClicked = (event) => {
+    event.stopPropagation();
+    this.setState({
+      showProfilPopUp: true
+    });
+  }
+
+  popUpClosed = (event) => {
+    this.setState({
+      showProfilPopUp: false
+    });
+  }
+
 
     componentDidMount() {
         this.getTeilnehmer()
     }
 
     render() {
-        const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme } = this.state;
+        const {classes} = this.props;
+        const {lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, eigeneGruppenteilnahme, showProfilPopUp, profil, lernvorliebe} = this.state;
 
         return (
             <Typography>
                 {
                     teilnehmerPerson ?
                         <>
-                            {teilnehmerPerson.getName()}
+                            <button onClick={this.popUpButtonClicked}>
+                                {
+                                    teilnehmerPerson.getName()
+
+                                }
+                            </button>
                             <Button color={"secondary"}>
                                 Löschen (In Arbeit)
                             </Button>
                         </>
                         : null
                 }
+                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson} profil={profil} lernvorliebe={lernvorliebe} onClose={this.popUpClosed} />
             </Typography>
 
         )
