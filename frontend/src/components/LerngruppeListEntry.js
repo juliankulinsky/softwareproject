@@ -19,12 +19,23 @@ class LerngruppeListEntry extends Component {
 
         this.state = {
             lerngruppe: props.lerngruppe,
+            gruppenprofil: null,
             eigeneGruppenTeilnahme: null,
             beendenButtonPressed: false,
             expandedState: false,
             showUpdateGruppennameDialog: false
         }
     }
+
+    /** Lädt das Profil der als Props übergebenen Lerngruppe und setzt dieses und die Beschreibung als state */
+    getGruppenprofil = () => {
+        StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
+            .then(profil => {
+              this.setState({
+                gruppenprofil: profil
+              })
+            })
+      }
 
     /**
      * Um schauen zu können, ob man Admin in der Gruppe ist
@@ -74,12 +85,13 @@ class LerngruppeListEntry extends Component {
     }
 
     componentDidMount() {
+        this.getGruppenprofil()
         this.getEigeneGruppenTeilnahme()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog } = this.state;
+        const { lerngruppe, gruppenprofil, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog } = this.state;
 
         return (
                 <Typography className={classes.heading}>
@@ -108,6 +120,7 @@ class LerngruppeListEntry extends Component {
                                             <UpdateGruppennameDialog
                                                 show={showUpdateGruppennameDialog}
                                                 lerngruppe={lerngruppe}
+                                                gruppenprofil={gruppenprofil}
                                                 onClose={this.updateGruppennameDialogClosed}
                                             />
                                             <br/><br/>

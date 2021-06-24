@@ -26,11 +26,11 @@ class UpdateGruppennameDialog extends Component {
     // Init the state
     this.state = {
       lerngruppe: props.lerngruppe,
-      gruppenprofil: null,
+      gruppenprofil: props.gruppenprofil,
       gruppenname: props.lerngruppe.getGruppenname(),
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
-      gruppenbeschreibung: null,
+      gruppenbeschreibung: props.gruppenprofil.getBeschreibung(),
       gruppenbeschreibungEdited: false,
       gruppenbeschreibungValidationFailed: false,
       updatingInProgress: false,
@@ -88,21 +88,6 @@ class UpdateGruppennameDialog extends Component {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
-  }
-
-  /** Lädt das Profil der als Props übergebenen Lerngruppe und setzt dieses und die Beschreibung als state */
-  getGruppenprofil = () => {
-    StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
-        .then(profil => {
-          this.setState({
-            gruppenprofil: profil,
-            gruppenbeschreibung: profil.getBeschreibung()
-          })
-        })
-  }
-
-  componentDidMount() {
-    this.getGruppenprofil()
   }
 
   /** Rendert die Komponente */
