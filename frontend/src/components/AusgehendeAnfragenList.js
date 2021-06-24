@@ -55,7 +55,7 @@ class AusgehendeAnfragenList extends Component {
     }
 
     /**
-     * Lifecycle method, which is called when the component gets inserted into the browsers DOM.
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
      */
     componentDidMount() {

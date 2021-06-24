@@ -11,7 +11,11 @@ import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
-
+/**
+ * Rendert eine GruppenAnfrage mit der Option diese anzunehmen oder abzulehnen.
+ * Es handelt sich um ein spezifisches GruppenVorschlagBO Objekt, welches durch die Buttons "Annehmen" und "Ablehnen"
+ * geupdatet werden können.
+ */
 class GruppenAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +30,7 @@ class GruppenAnfragenListEntry extends Component {
         }
     }
 
+    /** Wird durch "Annehmen"-Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -35,6 +40,7 @@ class GruppenAnfragenListEntry extends Component {
         });
     }
 
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -44,6 +50,11 @@ class GruppenAnfragenListEntry extends Component {
         });
     }
 
+    /**
+     * Updaten des GruppenVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben und die Entscheidung der Gruppe auf true gesetzt wird, was bedeutet, dass die Gruppe sich
+     * entschieden hat.
+     */
     updateGruppenvorschlagsAnfrage = () => {
         let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.anfrage);
         updatedGruppenVorschlag.setEntscheidungGruppe(true)
@@ -68,6 +79,7 @@ class GruppenAnfragenListEntry extends Component {
         })
     }
 
+    /** Lädt die Person des GruppenVorschlagBO aus dem Backend */
     getAnfragendePerson = () => {
         StudooAPI.getAPI().getPerson(this.state.anfrage.getPersonID())
             .then(anfragendePerson => {
@@ -78,10 +90,15 @@ class GruppenAnfragenListEntry extends Component {
             })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getAnfragendePerson()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {anfrage, lerngruppe, buttonPressed, anfragendePerson} = this.state;
@@ -109,7 +126,7 @@ class GruppenAnfragenListEntry extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

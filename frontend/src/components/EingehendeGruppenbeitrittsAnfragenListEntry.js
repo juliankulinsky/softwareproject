@@ -11,7 +11,11 @@ import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
-
+/**
+ * Rendert eine eingehende Gruppenbeitrittsanfrage mit der Option, diese anzunehmen oder abzulehnen.
+ * Es handelt sich um ein spezifisches GruppenVorschlagBO-Objekt, das als Props übergeben wurde,
+ * welches durch den "Annehmen" und den "Ablehnen"-Button bearbeitet werden kann.
+ */
 class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +28,7 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
         }
     }
 
+    /** Lädt das LerngruppeBO des übergebenen GruppenVorschlags aus dem Backend */
     getLerngruppe = () => {
         StudooAPI.getAPI().getLerngruppe(this.state.anfrage.getGruppenID())
             .then(lerngruppe => {
@@ -33,6 +38,7 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
             })
     }
 
+    /** Wird durch "Annehmen"-Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -42,6 +48,7 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
         });
     }
 
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -51,6 +58,11 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
         });
     }
 
+    /**
+     * Updaten des GruppenVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben. Die Entscheidung der Person wird auf true gesetzt, was bedeutet, dass eine Entscheidung
+     * getroffen wurde
+     */
     updateGruppenvorschlagsAnfrage = () => {
         let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.anfrage);
         updatedGruppenVorschlag.setEntscheidungPerson(true)
@@ -75,10 +87,15 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getLerngruppe()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {anfrage, lerngruppe, buttonPressed} = this.state;
@@ -114,7 +131,7 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
 
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

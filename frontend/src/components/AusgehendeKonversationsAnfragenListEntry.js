@@ -95,7 +95,7 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
     }
 
     /**
-     * Lifecycle method, which is called when the component gets inserted into the browsers DOM.
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
