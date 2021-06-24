@@ -103,9 +103,9 @@ class LerngruppeListEntry extends Component {
         const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, showUpdateGruppennameDialog, open } = this.state;
 
         return (
-            <>
+            <div className="lerngruppeListWholeCard">
                 <Card>
-                    <CardContent >
+                    <CardContent>
                         <div className="lerngruppeListCard">
                         <Typography className={classes.heading} variant="h4">
                         {lerngruppe.getGruppenname()}
@@ -171,7 +171,7 @@ class LerngruppeListEntry extends Component {
                         </div>
                     </CardContent>
                 </Card>
-            </>
+            </div>
         )
     }
 }
@@ -180,7 +180,7 @@ class LerngruppeListEntry extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
-  }
+  },
 });
 
 /** PropTypes */
