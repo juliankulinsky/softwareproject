@@ -77,6 +77,10 @@ class PersonEntry extends Component {
     }
   }
 
+  deletePerson = () => {
+      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+    }
+
   /** Handles the onClose event of the ProfilForm */
   profilFormClosedL = (lernvorliebe) => {
 
@@ -118,13 +122,13 @@ class PersonEntry extends Component {
             <CardContent justify-content="" >
               <Grid container spacing={3}>
                   <Grid xs={12}>
-                    {
+                    {/*
                       selfperson ?
                         <ButtonGroup variant='text' size='small'>
-                          <Button color='primary' onClick={this.editProfilButtonClicked}>
+                          <Button variant={"contained"} color='primary' onClick={this.editProfilButtonClicked}>
                             edit
                           </Button>
-                        </ButtonGroup>:null
+                        </ButtonGroup>:null*/
                     }
                   </Grid>
                   <Grid item xs={6}>
@@ -181,6 +185,28 @@ class PersonEntry extends Component {
                                     person.getSemester()
                                   }
                                 </Typography>
+                                </Grid>
+                                <Grid xs={7} className={classes.pers}>
+                                  {
+                                    selfperson ?
+                                        <Button variant={"contained"} color='primary'
+                                                onClick={this.editProfilButtonClicked}>
+                                          Profil anpassen
+                                        </Button>:null
+                                  }
+                                </Grid>
+                                <Grid xs={1} className={classes.pers}>
+
+                                </Grid>
+                                <Grid xs={4} className={classes.pers}>
+                                  {
+                                    selfperson ?
+                                        <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
+                                            Profil löschen
+                                        </Button>: null
+
+                                  }
+
                                 </Grid>
                               </Grid>:null
                         }
@@ -266,7 +292,9 @@ const styles = theme => ({
   root: {
     width: '100%',
     minWidth: 410,
-    maxWidth: 750
+    maxWidth: 750,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   setFontSize: {
     fontSize: 30
