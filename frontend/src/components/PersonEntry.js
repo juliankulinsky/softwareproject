@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import ProfilForm from "./dialogs/ProfilForm";
 import StudooAPI from "../api/StudooAPI";
+import LoadingProgress from "./dialogs/LoadingProgress";
 
 
 /**
@@ -38,7 +39,8 @@ class PersonEntry extends Component {
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
-      showProfilForm: true
+      showProfilForm: true,
+      loadingInProgress: true
     });
   }
 
@@ -49,7 +51,8 @@ class PersonEntry extends Component {
     if (person) {
       this.setState({
         person: person,
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: true
       });
     } else {
       this.setState({
@@ -77,11 +80,13 @@ class PersonEntry extends Component {
   /** Handles the onClose event of the ProfilForm */
   profilFormClosedL = (lernvorliebe) => {
 
+    this.setState({loadingInProgress: true})
     // customer is not null and therefore changed
     if (lernvorliebe) {
       this.setState({
         lernvorliebe: lernvorliebe,
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     } else {
       this.setState({
@@ -104,9 +109,9 @@ class PersonEntry extends Component {
       label: '',}, {value: 4, label: '',}, {value: 5, label: 'Extrovertiert',}]
     const marksRemote = [{value: 1, label: 'Präsenz',},{value: 2, label: '',},,{value: 3,
       label: '',}, {value: 4, label: '',}, {value: 5, label: 'Remote',}]
-    const {classes, selfperson} = this.props;
+    const {classes, selfperson, show} = this.props;
     // Use the states customer
-    const {person, profil, lernvorliebe, showProfilForm} = this.state;
+    const {person, profil, lernvorliebe, showProfilForm, loadingInProgress} = this.state;
 
     return (
            <Card className={classes.root}>
@@ -201,7 +206,7 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="off" step={1} marks={marksLerntyp} min={1} max={4}/>
+                                          valueLabelDisplay="off"  step={1} marks={marksLerntyp} min={1} max={4}/>
                                   &nbsp;
                                   Frequenz:&nbsp;
                                   {/*
@@ -209,7 +214,7 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="off" step={1} marks={marksfrequenz} min={1} max={5}/>
+                                          valueLabelDisplay="off"  step={1} marks={marksfrequenz} min={1} max={5}/>
                                   &nbsp;
                                   Extrovertiertheit:&nbsp;
                                   {/*
@@ -217,14 +222,14 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="off" step={1} marks={marksExtro} min={1} max={5}/>&nbsp;
+                                          valueLabelDisplay="off"  step={1} marks={marksExtro} min={1} max={5}/>&nbsp;
                                   Remote/Präsenz:&nbsp;
                                   {/*
                                     lernvorliebe.get_remote_praesenz()
                                   */}
                                   <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="off" step={1} marks={marksRemote} min={1} max={5}/>&nbsp;
+                                          valueLabelDisplay="off"  step={1} marks={marksRemote} min={1} max={5}/>&nbsp;
                                 </Typography>
                             </div>
                                 <div>
@@ -248,7 +253,8 @@ class PersonEntry extends Component {
 
           <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
                         onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP}
-                        onCloseL={this.profilFormClosedL}/>
+                        onCloseL={this.profilFormClosedL}  />
+          <LoadingProgress show={loadingInProgress} />
           </CardContent>
           </Card>
     );

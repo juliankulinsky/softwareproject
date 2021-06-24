@@ -47,7 +47,7 @@ class PopUpProfil extends Component {
 
     return (
       show ?
-        <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
+        <Dialog open={show} onClose={this.handleClose} maxWidth='md'>
           <DialogTitle id='form-dialog-title'>
             <IconButton className={classes.closeButton} onClick={this.handleClose}>
               <CloseIcon />

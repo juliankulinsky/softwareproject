@@ -251,6 +251,9 @@ class ProfilForm extends Component {
     this.props.onClose(null);
     this.props.onCloseP(null);
     this.props.onCloseL(null);
+    this.props.show(true);
+    this.setState({loadingInProgress: true})
+
   }
 
    valuetext = (value) =>{/*
@@ -319,7 +322,7 @@ class ProfilForm extends Component {
       extrovertiertheitValidationFailed, extrovertiertheitEdited, remote, remoteValidationFailed, remoteEdited,
       vorkenntnisse, vorkenntnisseValidationFailed, vorkenntnisseEdited, lerninteressen,
       lerninteressenValidationFailed, lerninteressenEdited,addingInProgress, addingError, updatingInProgress,
-      updatingError } = this.state;
+      updatingError, loadingInProgress } = this.state;
 
     let title = '';
     let header = '';
