@@ -156,6 +156,7 @@ class LerngruppeListEntry extends Component {
                                                             <UpdateGruppennameDialog
                                                                 show={showUpdateGruppennameDialog}
                                                                 lerngruppe={lerngruppe}
+                                                                gruppenprofil={gruppenprofil}
                                                                 onClose={this.updateGruppennameDialogClosed}
                                                             />
                                                             <hr/>
