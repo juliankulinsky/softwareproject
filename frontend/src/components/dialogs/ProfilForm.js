@@ -299,7 +299,13 @@ class ProfilForm extends Component {
 
   /** Renders the component */
   render() {
-    const marks = [{value: 1, label: 'Auditiv',},{value: 2, label: 'Motorisch',},{value: 5, label: 'Visuell',}]
+    const marksLerntyp = [{value: 1, label: 'Auditiv',},{value: 2, label: 'Motorisch',},,{value: 3,
+      label: 'Motorisch',}, {value: 4, label: 'Kommunikativ',}]
+    const marks = [{value: 1, label: '1',},{value: 2, label: '2',},,{value: 3,
+      label: '3',}, {value: 4, label: '4',}, {value: 5, label: '5',}]
+    const marksfrequenz = [{value: 1, label: 'Selten',}, {value: 5, label: 'häufig',}]
+    const marksExtro = [{value: 1, label: 'Introvertiert',}, {value: 5, label: 'Extrovertiert',}]
+    const marksRemote = [{value: 1, label: 'Präsenz',}, {value: 5, label: 'Remote',}]
      /* const [value, setValue] = ([20, 37]);
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -382,25 +388,25 @@ class ProfilForm extends Component {
                   </Typography>
                   <br/>
                   <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeLerntyp} />
+                          valueLabelDisplay="on" step={1} marks={marksLerntyp} min={1} max={4} onChange={this.handleChangeLerntyp} />
                   <Typography>
                   Frequenz:
                   </Typography>
                   <br/>
                   <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeFrequenz} />
+                          valueLabelDisplay="on" step={1} marks={marksfrequenz} min={1} max={5} onChange={this.handleChangeFrequenz} />
                   <Typography>
                   Extrovertiertheit:
                   </Typography>
                   <br/>
                   <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
+                          valueLabelDisplay="on" step={1} marks={marksExtro} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
                   <Typography>
                   Remote:
                   </Typography>
                   <br/>
                   <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeRemote} />
+                          valueLabelDisplay="on" step={1} marks={marksRemote} min={1} max={5} onChange={this.handleChangeRemote} />
 
 
               {/*

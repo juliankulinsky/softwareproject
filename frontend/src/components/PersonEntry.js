@@ -94,7 +94,13 @@ class PersonEntry extends Component {
 
   /** Renders the component */
   render() {
-    const marks = [{value: 1, label: '1',}, {value: 5, label: '5',}]
+    const marksLerntyp = [{value: 1, label: 'Auditiv',},{value: 2, label: 'Motorisch',},,{value: 3,
+      label: 'Motorisch',}, {value: 4, label: 'Kommunikativ',}]
+    const marks = [{value: 1, label: '1',},{value: 2, label: '2',},,{value: 3,
+      label: '3',}, {value: 4, label: '4',}, {value: 5, label: '5',}]
+    const marksfrequenz = [{value: 1, label: 'Selten',}, {value: 5, label: 'häufig',}]
+    const marksExtro = [{value: 1, label: 'Introvertiert',}, {value: 5, label: 'Extrovertiert',}]
+    const marksRemote = [{value: 1, label: 'Präsenz',}, {value: 5, label: 'Remote',}]
     const {classes, selfperson} = this.props;
     // Use the states customer
     const {person, profil, lernvorliebe, showProfilForm} = this.state;
@@ -192,7 +198,7 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                                          valueLabelDisplay="on" step={1} marks={marksLerntyp} min={1} max={5}/>
                                   &nbsp;
                                   Frequenz:&nbsp;
                                   {/*
@@ -200,7 +206,7 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                                          valueLabelDisplay="on" step={1} marks={marksfrequenz} min={1} max={5}/>
                                   &nbsp;
                                   Extrovertiertheit:&nbsp;
                                   {/*
@@ -208,14 +214,14 @@ class PersonEntry extends Component {
                                   */}
                                   <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                                          valueLabelDisplay="on" step={1} marks={marksExtro} min={1} max={5}/>&nbsp;
                                   Remote/Präsenz:&nbsp;
                                   {/*
                                     lernvorliebe.get_remote_praesenz()
                                   */}
                                   <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
-                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                                          valueLabelDisplay="on" step={1} marks={marksRemote} min={1} max={5}/>&nbsp;
                                 </Typography>
                             </div>
                                 <div>
