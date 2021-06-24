@@ -100,110 +100,148 @@ class PersonEntry extends Component {
     const {person, profil, lernvorliebe, showProfilForm} = this.state;
 
     return (
-        <div>
-          <Card className={classes.root}>
-            <CardContent max-width="500px" flex-direction="row" align-items="center" justify-content="space-around" >
-          {
-            selfperson ?
-                <ButtonGroup variant='text' size='small'>
-                  <Button color='primary' onClick={this.editProfilButtonClicked}>
-                    edit
-                  </Button>
-                </ButtonGroup> :
-                null
-          }
-          {
-            person ?
-                <Typography className={classes.heading}>
-                  Name:&nbsp;
-                  {
-                    person.getName()
-                  }&nbsp;
-                  Alter:&nbsp;
-                  {
-                    person.getAlter()
-                  }&nbsp;
-                  Wohnort:&nbsp;
-                  {
-                    person.getWohnort()
-                  }&nbsp;
-                  Studiengang:&nbsp;
-                  {
-                    person.getStudiengang()
-                  }&nbsp;
-                  Semester:&nbsp;
-                  {
-                    person.getSemester()
-                  }
-                </Typography>
-                : null
-          }
-          {
-            profil ?
-                <Typography className={classes.heading}>
-                  Beschreibung:&nbsp;
-                  {
-                    profil.getBeschreibung()
-                  }
-                </Typography>
-                : null
-          }
-          {
-            lernvorliebe ?
-                <Grid>
-                  <Typography className={classes.heading}>
-                    <br/>
-                    Lerntyp:&nbsp;
-                    {/*
-                      lernvorliebe.get_lerntyp()
-                    */}
-                    <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
-                    &nbsp;
-                    Frequenz:&nbsp;
-                    {/*
-                      lernvorliebe.get_frequenz()
-                    */}
-                    <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
-                    &nbsp;
-                    Extro:&nbsp;
-                    {/*
-                      lernvorliebe.get_extrovertiertheit()
-                    */}
-                    <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
-                    RemPra:&nbsp;
-                    {/*
-                      lernvorliebe.get_remote_praesenz()
-                    */}
-                    <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
-                    Vorkenntnisse:&nbsp;
+           <Card className={classes.root}>
+            <CardContent justify-content="" >
+              <Grid container spacing={3}>
+                  <Grid xs={12}>
                     {
-                      lernvorliebe.get_vorkenntnisse()
-                    }&nbsp;
-
-                    Lerninteressen:&nbsp;
-                    {
-                      lernvorliebe.get_lerninteressen()
+                      selfperson ?
+                        <ButtonGroup variant='text' size='small'>
+                          <Button color='primary' onClick={this.editProfilButtonClicked}>
+                            edit
+                          </Button>
+                        </ButtonGroup>:null
                     }
-                  </Typography>
                   </Grid>
-                 : null
-          }</CardContent>
-            </Card>
-          {
-            <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
+                  <Grid item xs={6}>
+                    {
+                      person ?
+                          <Typography className={classes.setFontSize}>
+                            {
+                              person.getName()
+                            }
+                          </Typography>:null
+                    }
+                      <Grid item xs={12} className={classes.pers}>
+                      {
+                        profil ?
+                            <Typography className={classes.heading}>
+                              {
+                                profil.getBeschreibung()
+                              }
+                            </Typography>:null
+                      }
+                      </Grid>
+                      <Grid item xs={6} className={classes.pers}>
+                        {
+                          person ?
+                              <Grid container>
+                                <Grid xs={8} className={classes.pers}>
+                                  <Typography>
+                                    Alter:
+                                    {
+                                      person.getAlter()
+                                    }
+                                  </Typography>
+                                </Grid>
+                                <Grid xs={4} className={classes.pers}>
+                                <Typography>
+                                  Wohnort:
+                                  {
+                                    person.getWohnort()
+                                  }
+                                </Typography>
+                                </Grid>
+                                <Grid xs={12} className={classes.pers}>
+                                <Typography>
+                                  Studiengang:
+                                  {
+                                    person.getStudiengang()
+                                  }
+                                </Typography>
+                                </Grid>
+                                <Grid xs={12} className={classes.pers}>
+                                <Typography>
+                                  Semester:
+                                  {
+                                    person.getSemester()
+                                  }
+                                </Typography>
+                                </Grid>
+                              </Grid>:null
+                        }
+                      </Grid>
+                  </Grid>{
+               /* <Grid item xs={2}>
+
+                </Grid>
+              */}
+                  <Grid xs={5}>
+                    {
+                      lernvorliebe ?
+                          <div className={classes.lern}>
+
+                                <Typography className={classes.setFontSize}>
+                                  Lernvorlieben
+                                </Typography>
+                            <div className={classes.slid}>
+                                <Typography className={classes.heading}>
+                                  Lerntyp:&nbsp;
+                                  {/*
+                                    lernvorliebe.get_lerntyp()
+                                  */}
+                                  <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
+                                          aria-labelledby="discrete-slider"
+                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                                  &nbsp;
+                                  Frequenz:&nbsp;
+                                  {/*
+                                    lernvorliebe.get_frequenz()
+                                  */}
+                                  <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
+                                          aria-labelledby="discrete-slider"
+                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>
+                                  &nbsp;
+                                  Extrovertiertheit:&nbsp;
+                                  {/*
+                                    lernvorliebe.get_extrovertiertheit()
+                                  */}
+                                  <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
+                                          aria-labelledby="discrete-slider"
+                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                                  Remote/Präsenz:&nbsp;
+                                  {/*
+                                    lernvorliebe.get_remote_praesenz()
+                                  */}
+                                  <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
+                                          aria-labelledby="discrete-slider"
+                                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5}/>&nbsp;
+                                </Typography>
+                            </div>
+                                <div>
+                                  <Typography>
+                                    Vorkenntnisse:&nbsp;
+                                    {
+                                      lernvorliebe.get_vorkenntnisse()
+                                    }&nbsp;
+                                  </Typography>
+                                  <Typography>
+                                    Lerninteressen:&nbsp;
+                                    {
+                                      lernvorliebe.get_lerninteressen()
+                                    }
+                                  </Typography>
+                                </div>
+                          </div>:null
+                    }
+                  </Grid>
+                </Grid>
+
+          <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
                         onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP}
                         onCloseL={this.profilFormClosedL}/>
-          }
-        </div>
-
+          </CardContent>
+          </Card>
     );
   }
 }
@@ -212,9 +250,24 @@ class PersonEntry extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
-    minWidth: 300,
-    maxWidth: 600,
-    alignContent: 'center'
+    minWidth: 410,
+    maxWidth: 750
+  },
+  setFontSize: {
+    fontSize: 30
+  },
+  lern:{
+    maxWidth: '90%'
+  },
+  slid:{
+    paddingTop: '3%',
+    paddingLeft: '3%',
+    maxWidth: '90%',
+    backgroundColor: 'White'
+  },
+  pers:{
+    paddingTop: '5%',
+    backgroundColor: 'White'
   }
 });
 

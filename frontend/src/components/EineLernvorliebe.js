@@ -87,11 +87,7 @@ class EineLernvorliebe extends Component {
         const {lernvorliebe, person, error, showProfilForm, loadingInProgress} = this.state;
 
         return (
-            <div className={classes.root}>
-                <Grid>
-                    <Grid item>
-                    </Grid>
-                </Grid>
+            <div>
                 {
                     person ?
                         profil ?

@@ -70,7 +70,7 @@ class ProfilVorschau extends Component {
     const { person, loadingInProgress, error } = this.state;
 
     return (
-        <div className={classes.root}>
+        <div>
             {
                 user ?
                     <IconButton className={classes.avatarButton}>
@@ -90,7 +90,6 @@ class ProfilVorschau extends Component {
                 </Button>
                 : null
           }
-
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getCurrentPerson}/>
@@ -102,7 +101,8 @@ class ProfilVorschau extends Component {
 /** Component specific styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    alignContent: 'center',
+    alignItems: 'center'
   },
   personFilter: {
     marginTop: theme.spacing(2),

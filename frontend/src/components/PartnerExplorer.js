@@ -164,12 +164,10 @@ class PartnerExplorer extends Component {
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
-                                        <Typography variant="h3">
-                                            It's a match! &#127881;
-                                        </Typography>
                                         <Typography variant="h4">
-                                            {anderePerson.getName()}, {anderePerson.getAlter()}
+                                            Dein Vorschlag.
                                             <ProfilVorschau person={anderePerson} selfperson={false}/>
+                                            {/*anderePerson.getName()}, {anderePerson.getAlter()
                                         </Typography>
                                         <Typography variant="subtitle1">
                                             Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
@@ -181,13 +179,12 @@ class PartnerExplorer extends Component {
                                             Entscheide dich, indem du das Match annimmst oder ablehnst.
                                         </Typography>
                                         <Typography variant="h5">
-                                            Happy Learning! &#128640;
+                                            Happy Learning! &#128640;*/}
                                         </Typography>
                                     </div>
-
-                                    <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                    </div>
+                                        <div>
+                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        </div>
                                 </CardContent>
                             </Card>
 
