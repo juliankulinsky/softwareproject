@@ -8,17 +8,15 @@ import LoadingProgress from './LoadingProgress';
 
 
 /**
- * Shows a modal form dialog for a CustomerBO in prop customer. If the customer is set, the dialog is configured
- * as an edit dialog and the text fields of the form are filled from the given CustomerBO object.
- * If the customer is null, the dialog is configured as a new customer dialog and the textfields are empty.
- * In dependency of the edit/new state, the respective backend calls are made to update or create a customer.
- * After that, the function of the onClose prop is called with the created/update CustomerBO object as parameter.
- * When the dialog is canceled, onClose is called with null.
+ * Zeigt ein Form-Dialog zum Bearbeiten des Gruppennamens eines existierenden LerngruppeBO und dessen Profilbeschreibung.
+ * Die bestehenden Daten der Lerngruppe und dessen Profil werden als Defaultwerte in die Textfelder übernommen.
+ * Falls diese bearbeitet wurden, kann auf "Ändern' gedrückt werden, um die Änderungen in der Datenbank zu speichern.
+ * Durch onClose wird der Dialog geschlossen, dies passiert auch beim Abbruch.
  *
  * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
  * @see See Material-UIs [TextField](https://material-ui.com/components/text-fields//)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ * @author [Andreas Scheumann]
  */
 class UpdateGruppennameDialog extends Component {
 
@@ -28,9 +26,13 @@ class UpdateGruppennameDialog extends Component {
     // Init the state
     this.state = {
       lerngruppe: props.lerngruppe,
-      gruppenname: null,
+      gruppenprofil: props.gruppenprofil,
+      gruppenname: props.lerngruppe.getGruppenname(),
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
+      gruppenbeschreibung: props.gruppenprofil.getBeschreibung(),
+      gruppenbeschreibungEdited: false,
+      gruppenbeschreibungValidationFailed: false,
       updatingInProgress: false,
       updatingError: null
     };
@@ -38,8 +40,12 @@ class UpdateGruppennameDialog extends Component {
     this.baseState = this.state;
   }
 
-  /** Erstellt die Lerngruppe mit allem was dazu gehört */
+  /** Aktualisiert die Lerngruppe und ihr Profil mit den neuen Daten */
   updateLerngruppe = () => {
+    let updatedProfil = Object.assign(new ProfilBO(), this.state.gruppenprofil)
+    updatedProfil.setBeschreibung(this.state.gruppenbeschreibung)
+    StudooAPI.getAPI().updateProfil(updatedProfil)
+
     let updatedLerngruppe = Object.assign(new LerngruppeBO(), this.props.lerngruppe);
     updatedLerngruppe.setGruppenname(this.state.gruppenname)
     StudooAPI.getAPI().updateLerngruppe(updatedLerngruppe).then(lerngruppe => {
@@ -61,7 +67,7 @@ class UpdateGruppennameDialog extends Component {
     })
   }
 
-  /** Handles value changes of the forms textfields and validates them */
+  /** Handhabt den Wertwechsel der Textfelder und validiert diese */
   textFieldValueChange = (event) => {
     const value = event.target.value;
 
@@ -77,23 +83,24 @@ class UpdateGruppennameDialog extends Component {
     });
   }
 
-  /** Handles the close / cancel button click event */
+  /** Handhabt das Schließen/Abbrechen-Button-Event */
   handleClose = () => {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
   }
 
-  /** Renders the component */
+  /** Rendert die Komponente */
   render() {
     const { classes, person, show } = this.props;
-    const { lerngruppe, gruppenname, gruppennameEdited, gruppennameValidationFailed, updatingInProgress,updatingError } = this.state;
+    const { lerngruppe, gruppenprofil, gruppenname, gruppennameEdited, gruppennameValidationFailed, gruppenbeschreibung,
+      gruppenbeschreibungEdited, gruppenbeschreibungValidationFailed, updatingInProgress, updatingError } = this.state;
 
     let title = '';
     let header = '';
 
-    title = 'Ändern des Gruppenamens';
-    header = 'Gebe hier den Lerngruppenname ein';
+    title = 'Ändern der Gruppendaten';
+    header = 'Gebe hier die Lerngruppendaten ein';
 
     return (
       show ?
@@ -110,7 +117,11 @@ class UpdateGruppennameDialog extends Component {
             <form className={classes.root} noValidate autoComplete='off'>
               <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='neuer Gruppenname:' value={gruppenname}
                 onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
-                helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
+                helperText={gruppennameValidationFailed ? 'mindestens 3 Zeichen' : ' '} />
+            </form>
+            <form className={classes.root} noValidate autoComplete='off'>
+              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenbeschreibung' label='neue Gruppenbeschreibung:' value={gruppenbeschreibung}
+                onChange={this.textFieldValueChange}/>
             </form>
             <LoadingProgress show={updatingInProgress} />
             <ContextErrorMessage error={updatingError} contextErrorMsg={`Die Lerngruppe konnte nicht geändert werden.`} onReload={this.updateLerngruppe} />
@@ -119,7 +130,7 @@ class UpdateGruppennameDialog extends Component {
             <Button onClick={this.handleClose} color='secondary'>
               Abbrechen
             </Button>
-            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.updateLerngruppe} color='primary'>
+            <Button disabled={!((gruppennameEdited && !gruppennameValidationFailed) || (gruppenbeschreibungEdited && !gruppennameValidationFailed))} variant='contained' onClick={this.updateLerngruppe} color='primary'>
                 Ändern
             </Button>
           </DialogActions>
@@ -129,7 +140,7 @@ class UpdateGruppennameDialog extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
@@ -146,17 +157,15 @@ const styles = theme => ({
 UpdateGruppennameDialog.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
-  person: PropTypes.object,
   /** Das LerngruppeBO-Objekt, das man ändern will */
   lerngruppe: PropTypes.object,
-  /** If true, the form is rendered */
+  /** Wenn true, wird die Komponente gerendert */
   show: PropTypes.bool.isRequired,
   /**
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
+   * Handler function welche aufgerufen wird, wenn der Dialog geschlossen wird.
+   * Sendet die aktualisierte Lerngruppe, oder null, falls abgebrochen wurde zurück.
    *
-   * Signature: onClose(CustomerBO customer);
+   * Signature: onClose(LerngruppeBO lerngruppe);
    */
   onClose: PropTypes.func.isRequired,
 }
