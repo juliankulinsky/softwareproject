@@ -8,17 +8,15 @@ import LoadingProgress from './LoadingProgress';
 
 
 /**
- * Shows a modal form dialog for a CustomerBO in prop customer. If the customer is set, the dialog is configured
- * as an edit dialog and the text fields of the form are filled from the given CustomerBO object.
- * If the customer is null, the dialog is configured as a new customer dialog and the textfields are empty.
- * In dependency of the edit/new state, the respective backend calls are made to update or create a customer.
- * After that, the function of the onClose prop is called with the created/update CustomerBO object as parameter.
- * When the dialog is canceled, onClose is called with null.
+ * Zeigt ein Form-Dialog zum Bearbeiten des Gruppennamens eines existierenden LerngruppeBO und dessen Profilbeschreibung.
+ * Die bestehenden Daten der Lerngruppe und dessen Profil werden als Defaultwerte in die Textfelder übernommen.
+ * Falls diese bearbeitet wurden, kann auf "Ändern' gedrückt werden, um die Änderungen in der Datenbank zu speichern.
+ * Durch onClose wird der Dialog geschlossen, dies passiert auch beim Abbruch.
  *
  * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
  * @see See Material-UIs [TextField](https://material-ui.com/components/text-fields//)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
+ * @author [Andreas Scheumann]
  */
 class UpdateGruppennameDialog extends Component {
 
@@ -42,7 +40,7 @@ class UpdateGruppennameDialog extends Component {
     this.baseState = this.state;
   }
 
-  /** Erstellt die Lerngruppe mit allem was dazu gehört */
+  /** Aktualisiert die Lerngruppe und ihr Profil mit den neuen Daten */
   updateLerngruppe = () => {
     let updatedProfil = Object.assign(new ProfilBO(), this.state.gruppenprofil)
     updatedProfil.setBeschreibung(this.state.gruppenbeschreibung)
@@ -69,7 +67,7 @@ class UpdateGruppennameDialog extends Component {
     })
   }
 
-  /** Handles value changes of the forms textfields and validates them */
+  /** Handhabt den Wertwechsel der Textfelder und validiert diese */
   textFieldValueChange = (event) => {
     const value = event.target.value;
 
@@ -85,13 +83,14 @@ class UpdateGruppennameDialog extends Component {
     });
   }
 
-  /** Handles the close / cancel button click event */
+  /** Handhabt das Schließen/Abbrechen-Button-Event */
   handleClose = () => {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
   }
 
+  /** Lädt das Profil der als Props übergebenen Lerngruppe und setzt dieses und die Beschreibung als state */
   getGruppenprofil = () => {
     StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
         .then(profil => {
@@ -106,7 +105,7 @@ class UpdateGruppennameDialog extends Component {
     this.getGruppenprofil()
   }
 
-  /** Renders the component */
+  /** Rendert die Komponente */
   render() {
     const { classes, person, show } = this.props;
     const { lerngruppe, gruppenprofil, gruppenname, gruppennameEdited, gruppennameValidationFailed, gruppenbeschreibung,
@@ -156,7 +155,7 @@ class UpdateGruppennameDialog extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
@@ -173,17 +172,15 @@ const styles = theme => ({
 UpdateGruppennameDialog.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
-  person: PropTypes.object,
   /** Das LerngruppeBO-Objekt, das man ändern will */
   lerngruppe: PropTypes.object,
-  /** If true, the form is rendered */
+  /** Wenn true, wird die Komponente gerendert */
   show: PropTypes.bool.isRequired,
   /**
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
+   * Handler function welche aufgerufen wird, wenn der Dialog geschlossen wird.
+   * Sendet die aktualisierte Lerngruppe, oder null, falls abgebrochen wurde zurück.
    *
-   * Signature: onClose(CustomerBO customer);
+   * Signature: onClose(LerngruppeBO lerngruppe);
    */
   onClose: PropTypes.func.isRequired,
 }
