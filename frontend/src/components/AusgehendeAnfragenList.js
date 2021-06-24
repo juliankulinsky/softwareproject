@@ -13,7 +13,9 @@ import AusgehendeKonversationsAnfragenListEntry from "./AusgehendeKonversationsA
 import AusgehendeGruppenbeitrittsAnfragenListEntry from "./AusgehendeGruppenbeitrittsAnfragenListEntry";
 //import AccountList from './AccountList';
 
-
+/**
+ * Kontrolliert eine Liste von AusgehendeKonversationsAnfragenListEntrys und AusgehendeGruppenbeitrittsAnfragenListEntrys
+ */
 class AusgehendeAnfragenList extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +26,11 @@ class AusgehendeAnfragenList extends Component {
         }
     }
 
+    /**
+     * Lädt alle ausgehenden KonversationsAnfragen einer Person aus dem Backend, also alle PartnervorschlagBOs,
+     * bei der die aktuelle Person teilnimmt, sich für den Vorschlag entschieden hat und die andere Person des
+     * Vorschlags noch keine Entscheidung getroffen hat.
+     */
     getAusgehendeKonversationsAnfragen = () => {
         StudooAPI.getAPI().getAusgehendePartnerVorschlaegeForPersonID(this.props.person.getID())
             .then(anfragen => {
@@ -33,6 +40,11 @@ class AusgehendeAnfragenList extends Component {
             })
     }
 
+    /**
+     * Lädt alle ausgehenden GruppenbeitrittsAnfragen einer Person aus dem Backend, also alle GruppenvorschlagBOs,
+     * bei der die aktuelle Person teilnimmt, sich für den Vorschlag entschieden hat und die Gruppe des
+     * Vorschlags noch keine Entscheidung getroffen hat.
+     */
     getAusgehendeGruppenbeitrittsAnfragen = () => {
         StudooAPI.getAPI().getAusgehendeGruppenVorschlaegeForPersonID(this.props.person.getID())
             .then(anfragen => {
@@ -42,12 +54,16 @@ class AusgehendeAnfragenList extends Component {
             })
     }
 
-
+    /**
+     * Lifecycle method, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getAusgehendeKonversationsAnfragen();
         this.getAusgehendeGruppenbeitrittsAnfragen();
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { ausgehendeKonversationsAnfragen, ausgehendeGruppenbeitrittsAnfragen } = this.state;
@@ -100,7 +116,7 @@ class AusgehendeAnfragenList extends Component {
 
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
