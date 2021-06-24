@@ -27,10 +27,10 @@ class ErstelleLerngruppeDialog extends Component {
 
     // Init the state
     this.state = {
-      gruppenname: null,
+      gruppenname: "",
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
-      gruppenbeschreibung: null,
+      gruppenbeschreibung: "",
       gruppenbeschreibungEdited: false,
       gruppenbeschreibungValidationFailed: false,
       addingInProgress: false,
@@ -145,14 +145,12 @@ class ErstelleLerngruppeDialog extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='Gruppenname:' value={gruppenname}
-                onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
-                helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
+              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='Gruppenname: (mind. 3 Zeichen)' value={gruppenname}
+                onChange={this.textFieldValueChange} error={gruppennameValidationFailed}/>
             </form>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenbeschreibung' label='Gruppenbeschreibung:' value={gruppenbeschreibung}
-                onChange={this.textFieldValueChange} error={gruppenbeschreibungValidationFailed}
-                helperText={gruppennameValidationFailed ? 'Die Gruppenbeschreibung muss mindestens 3 Zeichen lang sein' : ' '} />
+              <TextField type='text' fullWidth margin='normal' id='gruppenbeschreibung' label='Gruppenbeschreibung: (optional)' value={gruppenbeschreibung}
+                onChange={this.textFieldValueChange}/>
             </form>
             <LoadingProgress show={addingInProgress} />
             <ContextErrorMessage error={addingError} contextErrorMsg={`Die Lerngruppe konnte nicht erstellt werden.`} onReload={this.erstelleLerngruppe} />
@@ -161,7 +159,7 @@ class ErstelleLerngruppeDialog extends Component {
             <Button onClick={this.handleClose} color='secondary'>
               Abbrechen
             </Button>
-            <Button disabled={!((gruppennameEdited && !gruppennameValidationFailed) && (gruppenbeschreibungEdited && !gruppenbeschreibungValidationFailed))}
+            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)}
                     variant='contained' onClick={this.erstelleLerngruppe} color='primary'>
                 Erstellen
             </Button>

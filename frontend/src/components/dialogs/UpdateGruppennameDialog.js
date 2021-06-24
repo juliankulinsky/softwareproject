@@ -29,7 +29,7 @@ class UpdateGruppennameDialog extends Component {
     this.state = {
       lerngruppe: props.lerngruppe,
       gruppenprofil: null,
-      gruppenname: null,
+      gruppenname: props.lerngruppe.getGruppenname(),
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
       gruppenbeschreibung: null,
@@ -96,7 +96,8 @@ class UpdateGruppennameDialog extends Component {
     StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
         .then(profil => {
           this.setState({
-            gruppenprofil: profil
+            gruppenprofil: profil,
+            gruppenbeschreibung: profil.getBeschreibung()
           })
         })
   }
@@ -132,7 +133,7 @@ class UpdateGruppennameDialog extends Component {
             <form className={classes.root} noValidate autoComplete='off'>
               <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='neuer Gruppenname:' value={gruppenname}
                 onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
-                helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
+                helperText={gruppennameValidationFailed ? 'mindestens 3 Zeichen' : ' '} />
             </form>
             <form className={classes.root} noValidate autoComplete='off'>
               <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenbeschreibung' label='neue Gruppenbeschreibung:' value={gruppenbeschreibung}
@@ -145,7 +146,7 @@ class UpdateGruppennameDialog extends Component {
             <Button onClick={this.handleClose} color='secondary'>
               Abbrechen
             </Button>
-            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.updateLerngruppe} color='primary'>
+            <Button disabled={!((gruppennameEdited && !gruppennameValidationFailed) || (gruppenbeschreibungEdited && !gruppennameValidationFailed))} variant='contained' onClick={this.updateLerngruppe} color='primary'>
                 Ändern
             </Button>
           </DialogActions>
