@@ -52,7 +52,7 @@ class LerngruppenList extends Component {
 
         return (
             <div className={classes.root}>
-                <Typography variant="h2" align="center" style={{padding: '2%', margin: '1%'}}>
+                <Typography variant="h4" align="center" style={{padding: '2%', margin: '1%'}}>
                     Deine Lerngruppen:
                 </Typography>
 

@@ -26,7 +26,6 @@ class LerngruppeListEntry extends Component {
             gruppenprofil: null,
             eigeneGruppenTeilnahme: null,
             beendenButtonPressed: false,
-            expandedState: false,
             showUpdateGruppennameDialog: false,
             open: false
         }
@@ -112,14 +111,14 @@ class LerngruppeListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, gruppenprofil, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog, open } = this.state;
+        const { lerngruppe, gruppenprofil, eigeneGruppenTeilnahme, beendenButtonPressed, showUpdateGruppennameDialog, open } = this.state;
 
         return (
             <div className="lerngruppeListWholeCard">
                 <Card>
-                    <CardContent>
+                    <CardContent >
                         <div className="lerngruppeListCard">
-                        <Typography className={classes.heading} variant="h4">
+                        <Typography className={classes.heading} variant="h5">
                         {lerngruppe.getGruppenname()}
                         </Typography>
 
@@ -180,6 +179,17 @@ class LerngruppeListEntry extends Component {
                                     null
                                     }
                             </div>
+                        </div>
+                        <div className="lerngruppeListCard">{
+                            gruppenprofil ?
+                                <Typography>
+                                    {
+                                        gruppenprofil.getBeschreibung()
+                                    }
+                                </Typography>
+                            :
+                                <Typography>Keine Beschreibung vorhanden.</Typography>
+                        }
                         </div>
                     </CardContent>
                 </Card>
