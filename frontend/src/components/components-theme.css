@@ -48,3 +48,27 @@
 .toggleExploreButtonPartner{
     color: red;
 }
+
+.lerngruppeListCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.lerngruppeListButtons {
+    display: flex;
+    align-items: center;
+}
+
+.lerngruppenListPopUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.anfrageRequest {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1%
+}

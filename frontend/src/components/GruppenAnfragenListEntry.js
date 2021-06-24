@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonForm from './dialogs/PersonForm';
@@ -9,7 +9,7 @@ import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
+import "./components-theme.css"
 
 
 class GruppenAnfragenListEntry extends Component {
@@ -72,7 +72,7 @@ class GruppenAnfragenListEntry extends Component {
         StudooAPI.getAPI().getPerson(this.state.anfrage.getPersonID())
             .then(anfragendePerson => {
                 this.setState({
-                    anfragendePerson: anfragendePerson
+                        anfragendePerson: anfragendePerson
                     }
                 )
             })
@@ -90,17 +90,21 @@ class GruppenAnfragenListEntry extends Component {
             <>
                 {
                     (anfrage && anfragendePerson) ?
-                        <Typography>
-                            Beitrittsanfrage von {anfragendePerson.getName()}&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div className="anfrageRequest">
+                            <Typography style={{display: 'flex', alignItems: 'center'}}>
+                                {anfragendePerson.getName()}
+                            </Typography>
+
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
                             </Button>
+
                             <Button disabled={buttonPressed} color={"secondary"}
                                     onClick={this.entscheidungFalse}>
                                 Ablehnen
                             </Button>
-                        </Typography>
+                        </div>
                         :
                         null
                 }

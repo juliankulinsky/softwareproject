@@ -42,25 +42,25 @@ class TeilnehmerListEntry extends Component {
                     buttonPressed: true
                 })
             })
-        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.state.teilnehmerPerson.getID(),this.props.lerngruppe.getKonversationId())
+        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.state.teilnehmerPerson.getID(), this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
             })
 
     }
     /** Handles the onClick event of the Popup person button */
-  popUpButtonClicked = (event) => {
-    event.stopPropagation();
-    this.setState({
-      showProfilPopUp: true
-    });
-  }
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showProfilPopUp: true
+        });
+    }
 
-  popUpClosed = (event) => {
-    this.setState({
-      showProfilPopUp: false
-    });
-  }
+    popUpClosed = (event) => {
+        this.setState({
+            showProfilPopUp: false
+        });
+    }
 
 
     componentDidMount() {
@@ -68,8 +68,8 @@ class TeilnehmerListEntry extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const { lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed, showProfilPopUp } = this.state;
+        const {classes} = this.props;
+        const {lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed, showProfilPopUp} = this.state;
 
         return (
             <Typography>
@@ -82,17 +82,17 @@ class TeilnehmerListEntry extends Component {
                                 }
                             </Button>
                             {
-                                teilnehmerPerson.getID()!==this.props.currentperson.getID() ?
+                                teilnehmerPerson.getID() !== this.props.currentperson.getID() ?
                                     <Button disabled={buttonPressed} color={"secondary"}
                                             onClick={this.deleteAktuelleTeilnahme}>
                                         Entfernen
                                     </Button>
-                                    : <> (DU)</>
+                                    : <>(Du)</>
                             }
                         </>
                         : null
                 }
-                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson}  onClose={this.popUpClosed} />
+                <PopUpProfil show={showProfilPopUp} person={teilnehmerPerson} onClose={this.popUpClosed}/>
             </Typography>
         )
     }

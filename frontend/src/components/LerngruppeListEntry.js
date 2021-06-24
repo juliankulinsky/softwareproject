@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
+import {
+    withStyles,
+    Typography,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Grid,
+    Popover,
+    IconButton, DialogTitle, DialogContent, Dialog
+} from '@material-ui/core';
+import { Button, ButtonGroup, Card, CardContent } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
@@ -10,10 +19,11 @@ import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import TeilnehmerList from "./TeilnehmerList";
 import GruppenAnfragenList from "./GruppenAnfragenList";
 import UpdateGruppennameDialog from "./dialogs/UpdateGruppennameDialog";
-//import AccountList from './AccountList';
-
+import "./components-theme.css";
+import CloseIcon from "@material-ui/icons/Close";
 
 class LerngruppeListEntry extends Component {
+
     constructor(props) {
         super(props);
 
@@ -22,7 +32,8 @@ class LerngruppeListEntry extends Component {
             eigeneGruppenTeilnahme: null,
             beendenButtonPressed: false,
             expandedState: false,
-            showUpdateGruppennameDialog: false
+            showUpdateGruppennameDialog: false,
+            open: false
         }
     }
 
@@ -49,17 +60,17 @@ class LerngruppeListEntry extends Component {
             })
     }
 
-    switchExpandedState = () => {
+/*    switchExpandedState = () => {
         if (this.state.expandedState){
             this.setState({
-                expandedState: false
+                expandedState: false,
             })
         } else {
             this.setState({
-                expandedState: true
+                expandedState: true,
             })
         }
-    }
+    }*/
 
     openUpdateGruppennameDialog = () => {
         this.setState({
@@ -73,62 +84,96 @@ class LerngruppeListEntry extends Component {
         })
     }
 
+    handleClose = () => {
+        // Reset the state
+        this.setState({
+        open: false
+        });
+  }
+
+    handleOpen = () => {
+        this.setState({
+            open: true
+        })
+    }
+
     componentDidMount() {
         this.getEigeneGruppenTeilnahme()
     }
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog, open } = this.state;
 
         return (
-                <Typography className={classes.heading}>
-                    ------------- <br/>
-                    Gruppenname:
-                    {
-                        lerngruppe.getGruppenname()
-                    } &nbsp;
-                    <Button disabled={beendenButtonPressed} color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
-                        Teilnahme beenden
-                    </Button>
-                    {
-                        eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
-                            <>
-                                &nbsp;
-                                <Button color={expandedState ? "disabled":"primary"} variant={"contained"} onClick={this.switchExpandedState}>
-                                    Verwalten { expandedState ? <> ˄</> : <> ˅</> }
+            <>
+                <Card>
+                    <CardContent >
+                        <div className="lerngruppeListCard">
+                        <Typography className={classes.heading} variant="h3">
+                        {lerngruppe.getGruppenname()}
+                        </Typography>
+
+                            <div className="lerngruppeListButtons">
+                                <Button disabled={beendenButtonPressed} color="secondary" variant="contained" onClick={this.deleteTeilnahme}>
+                                    Teilnahme beenden
                                 </Button>
-                                {
-                                    expandedState ?
-                                        <>
-                                            <br/>
-                                            <Button color={"primary"} onClick={this.openUpdateGruppennameDialog}>
-                                                Gruppenname ändern
+                                    {
+                                        eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
+                                    <>
+                                        &nbsp;
+
+                                            <Button color={"primary"} variant={"contained"}
+                                                    onClick={this.handleOpen}>
+                                                Verwalten
                                             </Button>
-                                            <UpdateGruppennameDialog
-                                                show={showUpdateGruppennameDialog}
-                                                lerngruppe={lerngruppe}
-                                                onClose={this.updateGruppennameDialogClosed}
-                                            />
-                                            <br/><br/>
-                                            <GruppenAnfragenList
-                                                currentperson={this.props.currentperson}
-                                                lerngruppe={lerngruppe}
-                                            />
-                                            <br/>
-                                            <TeilnehmerList
-                                                currentperson={this.props.currentperson}
-                                                lerngruppe={lerngruppe}
-                                            />
-                                        </>
-                                        : null
-                                }
-                            </>
-                            :
-                            null
-                    }
-                    <br/>-------------
-                </Typography>
+
+                                            {
+                                                open ?
+                                                    <>
+                                                    <Dialog open={open} onClose={this.handleClose} maxWidth='xs'>
+                                                        <div className="lerngruppeListCard">
+                                                        <DialogTitle id='form-dialog-title' >
+                                                            <Typography variant="h6">Gruppenverwaltung</Typography>
+                                                        </DialogTitle>
+                                                        <IconButton className={classes.closeButton} onClick={this.handleClose}>
+                                                                <CloseIcon />
+                                                        </IconButton>
+                                                        </div>
+                                                        <DialogContent>
+
+                                                            <Button color={"primary"}  onClick={this.openUpdateGruppennameDialog}>
+                                                                Gruppenname ändern
+                                                            </Button>
+                                                            <UpdateGruppennameDialog
+                                                                show={showUpdateGruppennameDialog}
+                                                                lerngruppe={lerngruppe}
+                                                                onClose={this.updateGruppennameDialogClosed}
+                                                            />
+                                                            <hr/>
+                                                            <GruppenAnfragenList
+                                                                currentperson={this.props.currentperson}
+                                                                lerngruppe={lerngruppe}
+                                                            />
+                                                            <hr/>
+                                                            <TeilnehmerList
+                                                                currentperson={this.props.currentperson}
+                                                                lerngruppe={lerngruppe}
+                                                            />
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                    </>
+                                                    : null
+                                            }
+                                    </>
+                                    :
+                                    null
+                            }
+                        </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </>
         )
     }
 }

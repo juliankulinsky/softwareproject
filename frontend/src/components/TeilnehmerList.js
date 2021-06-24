@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup, Box } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonForm from './dialogs/PersonForm';
 import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
@@ -43,8 +43,8 @@ class TeilnehmerList extends Component {
             <Typography>
                 {
                     alleGruppenTeilnahmen ?
-                        <Typography>
-                            Das sind alle Gruppenteilnehmer: <br/><br/>
+                        <Box>
+                            <Typography variant="h6" style={{marginTop: "2%", marginBottom: "2%"}}>Gruppenmitglieder</Typography>
                             {
                                 alleGruppenTeilnahmen.map(gruppenteilnahme =>
                                     <TeilnehmerListEntry
@@ -54,7 +54,7 @@ class TeilnehmerList extends Component {
                                     />
                                 )
                             }
-                        </Typography>
+                        </Box>
                         :
                         null
                 }
