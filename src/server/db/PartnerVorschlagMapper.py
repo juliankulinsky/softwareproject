@@ -1,5 +1,6 @@
 from server.bo.PartnerVorschlag import PartnerVorschlag
 from server.db.Mapper import Mapper
+from datetime import datetime
 
 
 class PartnerVorschlagMapper (Mapper):
@@ -225,6 +226,38 @@ class PartnerVorschlagMapper (Mapper):
 
         return result
 
+    def find_all_anfragen(self):
+        """Auslesen aller PartnerVorschlag-Objekte aus der Datenbank, welche als Anfragen gezählt werden,
+        also die eine einseitige, positive Entscheidung haben, aber noch nicht angenommen oder abgelehnt wurden
+
+        :return:
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM partner_vorschlaege WHERE matchpoints=1 AND " \
+                  "((entscheidung_person=TRUE AND entscheidung_partner=FALSE) " \
+                  "OR (entscheidung_partner=TRUE AND entscheidung_person=FALSE)) "
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, partner_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_partner) in tuples:
+            partner_vorschlag = PartnerVorschlag()
+            partner_vorschlag.set_id(id)
+            partner_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            partner_vorschlag.set_person_id(person_id)
+            partner_vorschlag.set_partner_id(partner_id)
+            partner_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            partner_vorschlag.set_matchpoints(matchpoints)
+            partner_vorschlag.set_entscheidung_person(entscheidung_person)
+            partner_vorschlag.set_entscheidung_partner(entscheidung_partner)
+            result.append(partner_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, partner_vorschlag: PartnerVorschlag):
         """
 
@@ -266,9 +299,10 @@ class PartnerVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE partner_vorschlaege SET person_id=%s, partner_id=%s, " \
+        command = "UPDATE partner_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, partner_id=%s, " \
                   "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_partner=%s WHERE id=%s"
         data = (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             partner_vorschlag.get_person_id(),
             partner_vorschlag.get_partner_id(),
             partner_vorschlag.get_aehnlichkeit(),

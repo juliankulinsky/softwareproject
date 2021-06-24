@@ -3,6 +3,7 @@ Hier implementieren wir eine Administrationsklasse. Sie ist erforderlich, um Dat
 aus der Datenbank auslesen bzw. in die Datenbank inserieren zu können.
 Mithilfe dieser Klasse können wir also mit dem Frontend kommunizieren (Service Layer).
 """
+from datetime import datetime
 
 from .bo.ChatTeilnahme import ChatTeilnahme
 from .bo.GruppenTeilnahme import GruppenTeilnahme
@@ -515,6 +516,30 @@ class Admin(object):
         """Das Profil aus unserem System löschen."""
         with ProfilMapper() as mapper:
             mapper.delete(profil)
+
+    def check_anfragen(self):
+        """ Überprüft alle Partner- & Gruppenanfragen (einseitig entschiedene Vorschläge), nach ihrem Datum
+        und setzt diese zurück, falls sie mindestens fünf Tage alt sind """
+        with PartnerVorschlagMapper() as partnervorschlagmapper:
+            with GruppenVorschlagMapper() as gruppenvorschlagmapper:
+                partneranfragen = partnervorschlagmapper.find_all_anfragen()
+                for anfrage in partneranfragen:
+                    anfragenzeitpunkt = datetime.strptime(anfrage.get_erstellungszeitpunkt(), '%Y-%m-%d %H:%M:%S')
+                    tage = (datetime.now() - anfragenzeitpunkt).days
+                    if tage >= 5:
+                        anfrage.set_matchpoints(0)
+                        anfrage.set_entscheidung_person(False)
+                        anfrage.set_entscheidung_partner(False)
+                        partnervorschlagmapper.update(anfrage)
+                gruppenanfragen = gruppenvorschlagmapper.find_all_anfragen()
+                for anfrage in gruppenanfragen:
+                    anfragenzeitpunkt = datetime.strptime(anfrage.get_erstellungszeitpunkt(), '%Y-%m-%d %H:%M:%S')
+                    tage = (datetime.now() - anfragenzeitpunkt).days
+                    if tage >= 5:
+                        anfrage.set_matchpoints(0)
+                        anfrage.set_entscheidung_person(False)
+                        anfrage.set_entscheidung_gruppe(False)
+                        gruppenvorschlagmapper.update(anfrage)
 
     def berechne_gruppen_lernvorlieben(self, gruppen_id: int):
         """ Berechnet die Lernvorlieben einer Lerngruppe aus ihren Teilnehmern """
