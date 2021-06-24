@@ -11,7 +11,8 @@ import {
   DialogActions,
   TextField,
   Slider,
-  Typography
+  Typography,
+  Grid
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import {StudooAPI, PersonBO, LernvorliebeBO, ProfilBO} from '../../api';
@@ -328,7 +329,7 @@ class ProfilForm extends Component {
 
     return (
       show ?
-        <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
+        <Dialog open={show} onClose={this.handleClose} maxWidth='md'>
           <DialogTitle id='form-dialog-title'>{title}
             <IconButton className={classes.closeButton} onClick={this.handleClose}>
               <CloseIcon />
@@ -339,24 +340,30 @@ class ProfilForm extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
-                onChange={this.textFieldValueChange} error={nameValidationFailed}
-                helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
-                onChange={this.textFieldValueChange} error={alterValidationFailed}
-                helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
-                onChange={this.textFieldValueChange} error={wohnortValidationFailed}
-                helperText={wohnortValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
-                onChange={this.textFieldValueChange} error={studiengangValidationFailed}
-                helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
-                onChange={this.textFieldValueChange} error={semesterValidationFailed}
-                helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
-                onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
-                helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <Grid container spacing={3}>
+                  <Grid xs={5}>
+                    <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
+                      onChange={this.textFieldValueChange} error={nameValidationFailed}
+                      helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
+                      onChange={this.textFieldValueChange} error={alterValidationFailed}
+                      helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
+                      onChange={this.textFieldValueChange} error={wohnortValidationFailed}
+                      helperText={wohnortValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
+                      onChange={this.textFieldValueChange} error={studiengangValidationFailed}
+                      helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
+                      onChange={this.textFieldValueChange} error={semesterValidationFailed}
+                      helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <Grid xs={12}>
+                      <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
+                        onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
+                        helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    </Grid>
+                  </Grid>
+
               {/*<TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
                 onChange={this.textFieldValueChange} error={lerntypValidationFailed}
                 helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
@@ -366,31 +373,35 @@ class ProfilForm extends Component {
                 valueLabelDisplay="auto"
                 aria-labelledby="discrete-slider"
                 getAriaValueText={this.valuetext}
-              />*/}
-              <Typography>
-              Lerntyp:
-              </Typography>
-              <br/>
-              <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeLerntyp} />
-              <Typography>
-              Frequenz:
-              </Typography>
-              <br/>
-              <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeFrequenz} />
-              <Typography>
-              Extrovertiertheit:
-              </Typography>
-              <br/>
-              <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
-              <Typography>
-              Remote:
-              </Typography>
-              <br/>
-              <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                      valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeRemote} />
+              />*/}<Grid xs={2}>
+
+              </Grid>
+                <Grid xs={5}>
+                  <Typography>
+                  Lerntyp:
+                  </Typography>
+                  <br/>
+                  <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeLerntyp} />
+                  <Typography>
+                  Frequenz:
+                  </Typography>
+                  <br/>
+                  <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeFrequenz} />
+                  <Typography>
+                  Extrovertiertheit:
+                  </Typography>
+                  <br/>
+                  <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
+                  <Typography>
+                  Remote:
+                  </Typography>
+                  <br/>
+                  <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                          valueLabelDisplay="on" step={1} marks={marks} min={1} max={5} onChange={this.handleChangeRemote} />
+
 
               {/*
               <Typography>
@@ -427,12 +438,15 @@ class ProfilForm extends Component {
               <TextField type='text' required fullWidth margin='normal' id='remote' label='Remote/Präsenz:' value={remote}
                 onChange={this.textFieldValueChange} error={remoteValidationFailed}
                 helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />*/}
-              <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
-                onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
-                helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
-                onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
-                helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
+
+                  <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
+                    onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
+                    helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                  <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
+                    onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
+                    helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                </Grid>
+              </Grid>
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
@@ -478,7 +492,7 @@ class ProfilForm extends Component {
 /** Component specific styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',
