@@ -2,7 +2,7 @@ from server.bo.Nachricht import Nachricht
 from server.db.Mapper import Mapper
 
 
-class NachrichtMapper (Mapper):
+class NachrichtMapper(Mapper):
     """Mapper-Klasse, die Konversation-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
@@ -45,8 +45,9 @@ class NachrichtMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten WHERE id={}"\
-            .format(key)
+        command = "SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten WHERE id={}".format(
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -76,8 +77,12 @@ class NachrichtMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten "
-                       "WHERE konversation_id={} ORDER BY erstellungszeitpunkt ASC".format(konversation_key))
+        cursor.execute(
+            "SELECT id, erstellungszeitpunkt, inhalt, absender_id, konversation_id FROM nachrichten "
+            "WHERE konversation_id={} ORDER BY erstellungszeitpunkt ASC".format(
+                konversation_key
+            )
+        )
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) in tuples:
@@ -106,17 +111,19 @@ class NachrichtMapper (Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM nachrichten")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            nachricht.set_id(maxid[0]+1)
+        for maxid in tuples:
+            nachricht.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) " \
-                  "VALUES (%s,%s,%s,%s,%s)"
+        command = (
+            "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) "
+            "VALUES (%s,%s,%s,%s,%s)"
+        )
         data = (
             nachricht.get_id(),
             nachricht.get_erstellungszeitpunkt(),
             nachricht.get_inhalt(),
             nachricht.get_absender_id(),
-            nachricht.get_konversation_id()
+            nachricht.get_konversation_id(),
         )
         cursor.execute(command, data)
 
@@ -138,7 +145,7 @@ class NachrichtMapper (Mapper):
             nachricht.get_inhalt(),
             nachricht.get_absender_id(),
             nachricht.get_konversation_id(),
-            nachricht.get_id()
+            nachricht.get_id(),
         )
         cursor.execute(command, data)
 
@@ -161,7 +168,7 @@ class NachrichtMapper (Mapper):
 
 """Testbereich, ob die Klasse funktioniert"""
 
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     with NachrichtMapper() as mapper:
 
         neu = Nachricht()

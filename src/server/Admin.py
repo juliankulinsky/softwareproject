@@ -38,6 +38,7 @@ class Admin(object):
     """
         ChatTeilnahme - Spezifische Methoden
     """
+
     def create_chatteilnahme(self, person_id, konversation_id):
         """Eine Chatteilnahme erstellen"""
         chat_teilnahme = ChatTeilnahme()
@@ -62,10 +63,14 @@ class Admin(object):
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_by_key(key)
 
-    def get_chatteilnahme_by_person_id_und_konversation_id(self, person_id: int, konversation_id: int):
+    def get_chatteilnahme_by_person_id_und_konversation_id(
+        self, person_id: int, konversation_id: int
+    ):
         """Die Chatteilnahme mit PersonID und KonversationID auslesen"""
         with ChatTeilnahmeMapper() as mapper:
-            return mapper.find_by_person_id_und_konversation_id(person_id,konversation_id)
+            return mapper.find_by_person_id_und_konversation_id(
+                person_id, konversation_id
+            )
 
     def save_chatteilnahme(self, chat_teilnahme: ChatTeilnahme):
         """Die gegebene Chatteilnahme speichern."""
@@ -80,6 +85,7 @@ class Admin(object):
     """
         GruppenTeilnahme - Spezifische Methoden
     """
+
     def create_gruppen_teilnahme(self, person_id, gruppen_id, ist_admin):
         """Gruppen_Teilnahme erstellen"""
         gruppenteilnahme = GruppenTeilnahme()
@@ -129,13 +135,23 @@ class Admin(object):
             deleted_gruppen_teilnahme = gruppen_teilnahme
             mapper.delete(gruppen_teilnahme)
             adm = Admin()
-            adm.berechne_gruppen_lernvorlieben(deleted_gruppen_teilnahme.get_gruppen_id())
+            adm.berechne_gruppen_lernvorlieben(
+                deleted_gruppen_teilnahme.get_gruppen_id()
+            )
 
     """
         GruppenVorschlag - Spezifische Methoden
     """
-    def create_gruppenvorschlag(self, person_id, gruppen_id, aehnlichkeit=0, matchpoints=0,
-                                entscheidung_person=False, entscheidung_gruppe=False):
+
+    def create_gruppenvorschlag(
+        self,
+        person_id,
+        gruppen_id,
+        aehnlichkeit=0,
+        matchpoints=0,
+        entscheidung_person=False,
+        entscheidung_gruppe=False,
+    ):
         """Einen Gruppenvorschlag erstellen."""
         gruppenvorschlag = GruppenVorschlag()
         gruppenvorschlag.set_person_id(person_id)
@@ -184,7 +200,7 @@ class Admin(object):
             return mapper.find_by_gruppen_id(gruppen_id)
 
     def get_best_gruppenvorschlag_for_person_id(self, person_id):
-        """Den besten Gruppenvorschlag für eine Person auslesen. """
+        """Den besten Gruppenvorschlag für eine Person auslesen."""
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_best_for_person_id(person_id)
 
@@ -209,6 +225,7 @@ class Admin(object):
     """
         Konversation - Spezifische Methoden
     """
+
     def create_konversation(self, ist_gruppenchat):
         """
         Erstellen einer Konversation nach erfolgreichem Match.
@@ -248,10 +265,11 @@ class Admin(object):
     """
         Lerngruppe - Spezifische Methoden
     """
+
     def create_lerngruppe(self, gruppenname, profil_id, konversation_id):
         """
-            Lerngruppe erstellen:
-            Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
+        Lerngruppe erstellen:
+        Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
         """
         lerngruppe = Lerngruppe()
         lerngruppe.set_gruppenname(gruppenname)
@@ -293,7 +311,16 @@ class Admin(object):
     """
         Lernvorliebe - Spezifische Methoden
     """
-    def create_lernvorliebe(self, lerntyp=0, frequenz=0, extrovertiertheit=0, remote_praesenz=0, vorkenntnisse="", lerninteressen=""):
+
+    def create_lernvorliebe(
+        self,
+        lerntyp=0,
+        frequenz=0,
+        extrovertiertheit=0,
+        remote_praesenz=0,
+        vorkenntnisse="",
+        lerninteressen="",
+    ):
         """
         Lernvorlieben erstellen:
         Diese Klasse wird bei der Profilerstellung instanziiert.
@@ -331,8 +358,9 @@ class Admin(object):
     """
         Nachricht - Spezifische Methoden
     """
+
     def create_nachricht(self, inhalt, absender_id, konversation_id):
-        """ Eine Nachricht erstellen """
+        """Eine Nachricht erstellen"""
         nachricht = Nachricht()
         nachricht.set_inhalt(inhalt)
         nachricht.set_absender_id(absender_id)
@@ -352,25 +380,33 @@ class Admin(object):
             return mapper.find_by_konversation_id(konversation_id)
 
     def get_nachricht_by_id(self, id):
-        """ Eine Nachricht anhand der ID auslesen """
+        """Eine Nachricht anhand der ID auslesen"""
         with NachrichtMapper() as mapper:
             return mapper.find_by_key(id)
 
     def save_nachricht(self, nachricht: Nachricht):
-        """ Änderungen einer Nachricht speichern """
+        """Änderungen einer Nachricht speichern"""
         with NachrichtMapper() as mapper:
             mapper.update(nachricht)
 
     def delete_nachricht(self, nachricht: Nachricht):
-        """ Löschen einer Nachricht """
+        """Löschen einer Nachricht"""
         with NachrichtMapper() as mapper:
             mapper.delete(nachricht)
 
     """
         PartnerVorschlag - Spezifische Methoden
     """
-    def create_partnervorschlag(self, person_id, partner_id, aehnlichkeit, matchpoints,
-                                entscheidung_person, entscheidung_partner):
+
+    def create_partnervorschlag(
+        self,
+        person_id,
+        partner_id,
+        aehnlichkeit,
+        matchpoints,
+        entscheidung_person,
+        entscheidung_partner,
+    ):
         """Ein PartnerVorschlag anlegen"""
         partner_vorschlag = PartnerVorschlag()
         partner_vorschlag.set_person_id(person_id)
@@ -429,8 +465,19 @@ class Admin(object):
     """
         Person - Spezifische Methoden
     """
-    def create_person(self, name, email, google_user_id, alter=0, studiengang="", wohnort="", semester=0, profil_id=0):
-        """ Eine Person erstellen """
+
+    def create_person(
+        self,
+        name,
+        email,
+        google_user_id,
+        alter=0,
+        studiengang="",
+        wohnort="",
+        semester=0,
+        profil_id=0,
+    ):
+        """Eine Person erstellen"""
         person = Person()
         person.set_name(name)
         person.set_email(email)
@@ -445,43 +492,44 @@ class Admin(object):
             return mapper.insert(person)
 
     def get_all_personen(self):
-        """ Alle Personen auslesen """
+        """Alle Personen auslesen"""
         with PersonMapper() as mapper:
             return mapper.find_all()
 
     def get_person_by_id(self, id):
-        """ Eine Person anhand der ID auslesen """
+        """Eine Person anhand der ID auslesen"""
         with PersonMapper() as mapper:
             return mapper.find_by_key(id)
 
     def get_person_by_google_user_id(self, google_user_id):
-        """ Eine Person anhand der Google_User_ID auslesen """
+        """Eine Person anhand der Google_User_ID auslesen"""
         with PersonMapper() as mapper:
             return mapper.find_by_google_user_id(google_user_id)
 
     def get_personen_by_konversation_id(self, konversation_id):
-        """ Alle Personen, die an einer bestimmten Konversation teilnehmen, auslesen"""
+        """Alle Personen, die an einer bestimmten Konversation teilnehmen, auslesen"""
         with PersonMapper() as mapper:
             return mapper.find_by_konversation_id(konversation_id)
 
     def get_person_by_profil_id(self, profil_id):
-        """ Eine Person anhand der Profil_ID auslesen"""
+        """Eine Person anhand der Profil_ID auslesen"""
         with PersonMapper() as mapper:
             return mapper.find_by_profil_id(profil_id)
 
     def save_person(self, person: Person):
-        """ Änderungen einer Person speichern """
+        """Änderungen einer Person speichern"""
         with PersonMapper() as mapper:
             mapper.update(person)
 
     def delete_person(self, person: Person):
-        """ Löschen einer Person """
+        """Löschen einer Person"""
         with PersonMapper() as mapper:
             mapper.delete(person)
 
     """
         Profil - Spezifische Methoden
     """
+
     def create_profil(self, lernvorlieben_id, beschreibung=""):
         """Ein Profil anlegen"""
         profil = Profil()
@@ -517,37 +565,55 @@ class Admin(object):
             mapper.delete(profil)
 
     def berechne_gruppen_lernvorlieben(self, gruppen_id: int):
-        """ Berechnet die Lernvorlieben einer Lerngruppe aus ihren Teilnehmern """
+        """Berechnet die Lernvorlieben einer Lerngruppe aus ihren Teilnehmern"""
         adm = Admin()
-        gruppen_profil = adm.get_profil_by_id(adm.get_lerngruppe_by_id(gruppen_id).get_profil_id())
-        gruppen_lernvorliebe = adm.get_lernvorliebe_by_id(gruppen_profil.get_lernvorlieben_id())
+        gruppen_profil = adm.get_profil_by_id(
+            adm.get_lerngruppe_by_id(gruppen_id).get_profil_id()
+        )
+        gruppen_lernvorliebe = adm.get_lernvorliebe_by_id(
+            gruppen_profil.get_lernvorlieben_id()
+        )
         alle_teilnahmen = adm.get_all_gruppen_teilnahmen_for_gruppen_id(gruppen_id)
         lerntypen_sammlung = []
         vorkenntnisse_sammlung = []
         lerninteressen_sammlung = []
         frequenz_extro_remote_sammlung = [0, 0, 0]
         for teilnahme in alle_teilnahmen:
-            person_profil = adm.get_profil_by_id(adm.get_person_by_id(teilnahme.get_person_id()).get_profil_id())
-            person_lernvorliebe = adm.get_lernvorliebe_by_id(person_profil.get_lernvorlieben_id())
+            person_profil = adm.get_profil_by_id(
+                adm.get_person_by_id(teilnahme.get_person_id()).get_profil_id()
+            )
+            person_lernvorliebe = adm.get_lernvorliebe_by_id(
+                person_profil.get_lernvorlieben_id()
+            )
             frequenz_extro_remote_sammlung[0] += person_lernvorliebe.get_frequenz()
-            frequenz_extro_remote_sammlung[1] += person_lernvorliebe.get_extrovertiertheit()
-            frequenz_extro_remote_sammlung[2] += person_lernvorliebe.get_remote_praesenz()
+            frequenz_extro_remote_sammlung[
+                1
+            ] += person_lernvorliebe.get_extrovertiertheit()
+            frequenz_extro_remote_sammlung[
+                2
+            ] += person_lernvorliebe.get_remote_praesenz()
             lerntypen_sammlung.append(person_lernvorliebe.get_lerntyp())
-            vorkenntnisse_person = person_lernvorliebe.get_vorkenntnisse().lower().replace(" ", "")
+            vorkenntnisse_person = (
+                person_lernvorliebe.get_vorkenntnisse().lower().replace(" ", "")
+            )
             vorkenntnisse_list_person = vorkenntnisse_person.split(",")
             for vorkenntniss in vorkenntnisse_list_person:
                 vorkenntnisse_sammlung.append(vorkenntniss)
 
-            lerninteressen_person = person_lernvorliebe.get_lerninteressen().lower().replace(" ", "")
+            lerninteressen_person = (
+                person_lernvorliebe.get_lerninteressen().lower().replace(" ", "")
+            )
             lerninteressen_list_person = lerninteressen_person.split(",")
             for lerninteresse in lerninteressen_list_person:
                 lerninteressen_sammlung.append(lerninteresse)
 
         teilnahmen_anzahl = len(alle_teilnahmen)
-        frequenz_extro_remote_schnitt = [0,0,0]
-        for index in range(0,3):
+        frequenz_extro_remote_schnitt = [0, 0, 0]
+        for index in range(0, 3):
             if teilnahmen_anzahl > 0:
-                frequenz_extro_remote_schnitt[index] = (frequenz_extro_remote_sammlung[index]/teilnahmen_anzahl)
+                frequenz_extro_remote_schnitt[index] = (
+                    frequenz_extro_remote_sammlung[index] / teilnahmen_anzahl
+                )
 
         gruppen_lernvorliebe.set_frequenz(frequenz_extro_remote_schnitt[0])
         gruppen_lernvorliebe.set_extrovertiertheit(frequenz_extro_remote_schnitt[1])
@@ -597,12 +663,22 @@ class Admin(object):
         partner = a.get_person_by_id(partnerid)
         personprofil = a.get_profil_by_id(person.get_profil_id())
         partnerprofil = a.get_profil_by_id(partner.get_profil_id())
-        lernvorliebeperson = a.get_lernvorliebe_by_id(personprofil.get_lernvorlieben_id())
-        lernvorliebepartner = a.get_lernvorliebe_by_id(partnerprofil.get_lernvorlieben_id())
-        listeperson = [lernvorliebeperson.get_frequenz(), lernvorliebeperson.get_extrovertiertheit(),
-                       lernvorliebeperson.get_remote_praesenz()]
-        listepartner = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(),
-                        lernvorliebepartner.get_remote_praesenz()]
+        lernvorliebeperson = a.get_lernvorliebe_by_id(
+            personprofil.get_lernvorlieben_id()
+        )
+        lernvorliebepartner = a.get_lernvorliebe_by_id(
+            partnerprofil.get_lernvorlieben_id()
+        )
+        listeperson = [
+            lernvorliebeperson.get_frequenz(),
+            lernvorliebeperson.get_extrovertiertheit(),
+            lernvorliebeperson.get_remote_praesenz(),
+        ]
+        listepartner = [
+            lernvorliebepartner.get_frequenz(),
+            lernvorliebepartner.get_extrovertiertheit(),
+            lernvorliebepartner.get_remote_praesenz(),
+        ]
 
         aehnlichkeit = 0
         count = 0
@@ -610,13 +686,19 @@ class Admin(object):
             if aufruf - listepartner[count] == 0:
                 aehnlichkeit += 10
                 count += 1
-            elif aufruf - listepartner[count] == 1 or aufruf - listepartner[count] == -1:
+            elif (
+                aufruf - listepartner[count] == 1 or aufruf - listepartner[count] == -1
+            ):
                 aehnlichkeit += 5
                 count += 1
-            elif aufruf - listepartner[count] == 2 or aufruf - listepartner[count] == -2:
+            elif (
+                aufruf - listepartner[count] == 2 or aufruf - listepartner[count] == -2
+            ):
                 aehnlichkeit += 1
                 count += 1
-            elif aufruf - listepartner[count] == 3 or aufruf - listepartner[count] == -3:
+            elif (
+                aufruf - listepartner[count] == 3 or aufruf - listepartner[count] == -3
+            ):
                 aehnlichkeit -= 2
                 count += 1
             else:
@@ -625,8 +707,12 @@ class Admin(object):
         if lernvorliebeperson.get_lerntyp() == lernvorliebepartner.get_lerntyp():
             aehnlichkeit += 10
 
-        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
-        lerninteressenpartner = lernvorliebepartner.get_lerninteressen().lower().replace(" ", "")
+        lerninteressenperson = (
+            lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        )
+        lerninteressenpartner = (
+            lernvorliebepartner.get_lerninteressen().lower().replace(" ", "")
+        )
         lerninteressen_list_person = lerninteressenperson.split(",")
         lerninteressen_list_partner = lerninteressenpartner.split(",")
         for lerninteresse in lerninteressen_list_person:
@@ -646,12 +732,22 @@ class Admin(object):
         gruppe = a.get_lerngruppe_by_id(gruppenid)
         personprofil = a.get_profil_by_id(person.get_profil_id())
         gruppenprofil = a.get_profil_by_id(gruppe.get_profil_id())
-        lernvorliebeperson = a.get_lernvorliebe_by_id(personprofil.get_lernvorlieben_id())
-        lernvorliebegruppe = a.get_lernvorliebe_by_id(gruppenprofil.get_lernvorlieben_id())
-        listeperson = [lernvorliebeperson.get_frequenz(), lernvorliebeperson.get_extrovertiertheit(),
-                       lernvorliebeperson.get_remote_praesenz()]
-        listegruppe = [lernvorliebegruppe.get_frequenz(), lernvorliebegruppe.get_extrovertiertheit(),
-                       lernvorliebegruppe.get_remote_praesenz()]
+        lernvorliebeperson = a.get_lernvorliebe_by_id(
+            personprofil.get_lernvorlieben_id()
+        )
+        lernvorliebegruppe = a.get_lernvorliebe_by_id(
+            gruppenprofil.get_lernvorlieben_id()
+        )
+        listeperson = [
+            lernvorliebeperson.get_frequenz(),
+            lernvorliebeperson.get_extrovertiertheit(),
+            lernvorliebeperson.get_remote_praesenz(),
+        ]
+        listegruppe = [
+            lernvorliebegruppe.get_frequenz(),
+            lernvorliebegruppe.get_extrovertiertheit(),
+            lernvorliebegruppe.get_remote_praesenz(),
+        ]
 
         aehnlichkeit = 0
         count = 0
@@ -675,8 +771,12 @@ class Admin(object):
             aehnlichkeit += 10
         lerninteressenperson = lernvorliebeperson.get_lerninteressen()
         lerninteressengruppe = lernvorliebegruppe.get_lerninteressen()
-        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
-        lerninteressengruppe = lernvorliebegruppe.get_lerninteressen().lower().replace(" ", "")
+        lerninteressenperson = (
+            lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        )
+        lerninteressengruppe = (
+            lernvorliebegruppe.get_lerninteressen().lower().replace(" ", "")
+        )
         lerninteressen_list_person = lerninteressenperson.split(",")
         lerninteressen_list_gruppe = lerninteressengruppe.split(",")
         for lerninteresse in lerninteressen_list_person:

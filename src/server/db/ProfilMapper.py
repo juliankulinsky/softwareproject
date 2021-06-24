@@ -38,7 +38,9 @@ class ProfilMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE id={}".format(key)
+        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE id={}".format(
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -71,8 +73,10 @@ class ProfilMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE " \
-                  "lernvorlieben_id={}".format(lernvorlieben_id)
+        command = (
+            "SELECT id, erstellungszeitpunkt, lernvorlieben_id, beschreibung FROM profile WHERE "
+            "lernvorlieben_id={}".format(lernvorlieben_id)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -111,7 +115,7 @@ class ProfilMapper(Mapper):
             profil.get_id(),
             profil.get_erstellungszeitpunkt(),
             profil.get_lernvorlieben_id(),
-            profil.get_beschreibung()
+            profil.get_beschreibung(),
         )
         cursor.execute(command, data)
 
@@ -131,7 +135,7 @@ class ProfilMapper(Mapper):
         data = (
             profil.get_lernvorlieben_id(),
             profil.get_beschreibung(),
-            profil.get_id()
+            profil.get_id(),
         )
         cursor.execute(command, data)
 

@@ -5,10 +5,13 @@ class GruppenVorschlag(vo.Vorschlag):
     """Realisierung der Klasse GruppenVorschlag, welche von der abstrakten Klasse Vorschlag seine Grundstruktur erbt.
     Zusätzliche Attribute sind auf die vorgeschlagene Lerngruppe bezogen
     """
+
     def __init__(self):
         super().__init__()
-        self._gruppen_id = 0        # Fremdschlüsselbeziehung zur vorgeschlagenen Gruppe
-        self._entscheidung_gruppe = False  # Ob die Gruppe schon eine Entscheidung zum Vorschlag getroffen hat
+        self._gruppen_id = 0  # Fremdschlüsselbeziehung zur vorgeschlagenen Gruppe
+        self._entscheidung_gruppe = (
+            False  # Ob die Gruppe schon eine Entscheidung zum Vorschlag getroffen hat
+        )
 
     def get_gruppen_id(self):
         return self._gruppen_id
@@ -27,8 +30,13 @@ class GruppenVorschlag(vo.Vorschlag):
         :return: String, der die Klasse beschreibt.
         """
         return "Nr.{}: Person {} und Gruppe {} mit Ähnl. {}: {} & {}".format(
-            self.get_id(),self.get_person_id(),self.get_gruppen_id(),self.get_aehnlichkeit(),self.get_matchpoints(),
-            self.get_entscheidung_person(),self.get_entscheidung_gruppe()
+            self.get_id(),
+            self.get_person_id(),
+            self.get_gruppen_id(),
+            self.get_aehnlichkeit(),
+            self.get_matchpoints(),
+            self.get_entscheidung_person(),
+            self.get_entscheidung_gruppe(),
         )
 
     @staticmethod

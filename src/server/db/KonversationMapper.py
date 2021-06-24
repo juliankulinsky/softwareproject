@@ -80,17 +80,19 @@ class KonversationMapper(Mapper):
 
     def find_by_person_id(self, person_key):
         """
-                Extrahieren aller Konversationsobjekte an denen die Person mit der ID person_key teilnimmt
-                :return: Sammlung von Konversations-Objekten
-                """
+        Extrahieren aller Konversationsobjekte an denen die Person mit der ID person_key teilnimmt
+        :return: Sammlung von Konversations-Objekten
+        """
 
         result = []
         cursor = self._cnx.cursor()
         # Hier wird nun das SQL-Statement ausgeführt, um Konversations-Objekte aus der Datenbank zu extrahieren.
-        cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.ist_gruppenchat "
-                       "FROM konversationen AS L LEFT OUTER JOIN chat_teilnahmen AS R "
-                       "ON R.konversation_id=L.id "
-                       "WHERE R.person_id={}".format(person_key))
+        cursor.execute(
+            "SELECT L.id, L.erstellungszeitpunkt, L.ist_gruppenchat "
+            "FROM konversationen AS L LEFT OUTER JOIN chat_teilnahmen AS R "
+            "ON R.konversation_id=L.id "
+            "WHERE R.person_id={}".format(person_key)
+        )
         tuples = cursor.fetchall()
 
         # Im nächsten Schritt wird über die extrahierten Objekte iteriert und eine Konversationsinstanz erstellt
@@ -144,13 +146,8 @@ class KonversationMapper(Mapper):
         """
 
         cursor = self._cnx.cursor()
-        command = (
-            "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
-        )
-        data = (
-            konversation.get_ist_gruppenchat(),
-            konversation.get_id()
-        )
+        command = "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
+        data = (konversation.get_ist_gruppenchat(), konversation.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

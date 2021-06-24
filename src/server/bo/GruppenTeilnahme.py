@@ -2,12 +2,14 @@ from server.bo import BusinessObject as bo
 
 
 class GruppenTeilnahme(bo.BusinessObject):
-    """Realisierung der Klasse GruppenTeilnahme zur Zuordnung von Personen zu Gruppen
-    """
+    """Realisierung der Klasse GruppenTeilnahme zur Zuordnung von Personen zu Gruppen"""
+
     def __init__(self):
         super().__init__()
-        self._person_id = 0          # Fremdschlüsselbeziehung zur Person, welche an einer Lerngruppe teilnimmt
-        self._gruppen_id = 0         # Fremdschlüsselbeziehung zur Lerngruppe, an welcher die Person teilnimmt
+        self._person_id = 0  # Fremdschlüsselbeziehung zur Person, welche an einer Lerngruppe teilnimmt
+        self._gruppen_id = (
+            0  # Fremdschlüsselbeziehung zur Lerngruppe, an welcher die Person teilnimmt
+        )
         self._ist_admin = False
 
     def get_person_id(self):

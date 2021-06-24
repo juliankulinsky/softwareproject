@@ -2,10 +2,9 @@ from server.bo.ChatTeilnahme import ChatTeilnahme
 from server.db.Mapper import Mapper
 
 
-class ChatTeilnahmeMapper (Mapper):
-    """
+class ChatTeilnahmeMapper(Mapper):
+    """ """
 
-    """
     def __init__(self):
         super().__init__()
 
@@ -40,8 +39,9 @@ class ChatTeilnahmeMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, person_id, konversation_id FROM chat_teilnahmen WHERE id={}"\
-            .format(key)
+        command = "SELECT id, erstellungszeitpunkt, person_id, konversation_id FROM chat_teilnahmen WHERE id={}".format(
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -54,8 +54,7 @@ class ChatTeilnahmeMapper (Mapper):
             chat_teilnahme.set_konversation_id(konversation_id)
             result = chat_teilnahme
         except IndexError:
-            """
-            """
+            """ """
             result = None
 
         self._cnx.commit()
@@ -71,8 +70,9 @@ class ChatTeilnahmeMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, person_id, konversation_id FROM chat_teilnahmen WHERE person_id={}"\
-            .format(person_key)
+        command = "SELECT id, erstellungszeitpunkt, person_id, konversation_id FROM chat_teilnahmen WHERE person_id={}".format(
+            person_key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -89,11 +89,14 @@ class ChatTeilnahmeMapper (Mapper):
 
         return result
 
-    def find_by_person_id_und_konversation_id(self, person_id: int, konversation_id: int):
+    def find_by_person_id_und_konversation_id(
+        self, person_id: int, konversation_id: int
+    ):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM chat_teilnahmen WHERE person_id={} AND konversation_id={}" \
-            .format(person_id,konversation_id)
+        command = "SELECT * FROM chat_teilnahmen WHERE person_id={} AND konversation_id={}".format(
+            person_id, konversation_id
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -106,8 +109,7 @@ class ChatTeilnahmeMapper (Mapper):
             chat_teilnahme.set_konversation_id(konversation_id)
             result = chat_teilnahme
         except IndexError:
-            """
-            """
+            """ """
             result = None
 
         self._cnx.commit()
@@ -125,16 +127,18 @@ class ChatTeilnahmeMapper (Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM chat_teilnahmen")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            chat_teilnahme.set_id(maxid[0]+1)
+        for maxid in tuples:
+            chat_teilnahme.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO chat_teilnahmen (id, erstellungszeitpunkt, person_id, konversation_id) " \
-                  "VALUES (%s,%s,%s,%s)"
+        command = (
+            "INSERT INTO chat_teilnahmen (id, erstellungszeitpunkt, person_id, konversation_id) "
+            "VALUES (%s,%s,%s,%s)"
+        )
         data = (
             chat_teilnahme.get_id(),
             chat_teilnahme.get_erstellungszeitpunkt(),
             chat_teilnahme.get_person_id(),
-            chat_teilnahme.get_konversation_id()
+            chat_teilnahme.get_konversation_id(),
         )
         cursor.execute(command, data)
 
@@ -151,11 +155,13 @@ class ChatTeilnahmeMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE chat_teilnahmen SET person_id=%s, konversation_id=%s WHERE id=%s"
+        command = (
+            "UPDATE chat_teilnahmen SET person_id=%s, konversation_id=%s WHERE id=%s"
+        )
         data = (
             chat_teilnahme.get_person_id(),
             chat_teilnahme.get_konversation_id(),
-            chat_teilnahme.get_id()
+            chat_teilnahme.get_id(),
         )
         cursor.execute(command, data)
 
@@ -170,7 +176,9 @@ class ChatTeilnahmeMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM chat_teilnahmen WHERE id={}".format(chat_teilnahme.get_id())
+        command = "DELETE FROM chat_teilnahmen WHERE id={}".format(
+            chat_teilnahme.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()
@@ -179,7 +187,7 @@ class ChatTeilnahmeMapper (Mapper):
 
 """Testbereich, ob die Klasse funktioniert"""
 
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     with ChatTeilnahmeMapper() as mapper:
         print("--TESTING FIND_ALL")
         result = mapper.find_all()

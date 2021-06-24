@@ -2,12 +2,12 @@ from server.bo import BusinessObject as bo
 
 
 class ChatTeilnahme(bo.BusinessObject):
-    """Realisierung der Klasse ChatTeilnahme zur Zuordnung von Personen zu Konversationen
-    """
+    """Realisierung der Klasse ChatTeilnahme zur Zuordnung von Personen zu Konversationen"""
+
     def __init__(self):
         super().__init__()
-        self._person_id = 0          # Fremdschlüsselbeziehung zur Person, welche an einer Konversation teilnimmt
-        self._konversation_id = 0    # Fremdschlüsselbeziehung zur Konversation, an welcher die Person teilnimmt
+        self._person_id = 0  # Fremdschlüsselbeziehung zur Person, welche an einer Konversation teilnimmt
+        self._konversation_id = 0  # Fremdschlüsselbeziehung zur Konversation, an welcher die Person teilnimmt
 
     def get_person_id(self):
         return self._person_id
@@ -22,8 +22,12 @@ class ChatTeilnahme(bo.BusinessObject):
         self._konversation_id = konversation_id
 
     def __str__(self):
-        return "Nr.{}: Person {} nimmt bei Chat {} teil (seit: {})"\
-            .format(self.get_id(),self.get_person_id(),self.get_konversation_id(),self.get_erstellungszeitpunkt())
+        return "Nr.{}: Person {} nimmt bei Chat {} teil (seit: {})".format(
+            self.get_id(),
+            self.get_person_id(),
+            self.get_konversation_id(),
+            self.get_erstellungszeitpunkt(),
+        )
 
     @staticmethod
     def from_dict(dictionary=dict()):

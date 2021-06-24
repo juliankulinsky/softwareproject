@@ -29,7 +29,8 @@ def secured(function):
                 # Ist eine Anleitung wie man sessions erstellt und prüft, ob der user eingelogged ist.
                 # Weiß noch nicht wie ich es implementiere
                 claims = google.oauth2.id_token.verify_firebase_token(
-                    id_token, firebase_request_adapter)
+                    id_token, firebase_request_adapter
+                )
 
                 if claims is not None:
                     adm = Admin()
@@ -48,28 +49,41 @@ def secured(function):
                         profil = adm.create_profil(lv.get_id(), " ")
                         personen = adm.get_all_personen()
                         gruppen = adm.get_all_lerngruppen()
-                        user = adm.create_person(name, email, google_user_id, profil_id=profil.get_id())
+                        user = adm.create_person(
+                            name, email, google_user_id, profil_id=profil.get_id()
+                        )
                         for person in personen:
-                            adm.create_partnervorschlag(user.get_id(),person.get_id(), aehnlichkeit=0, matchpoints=0,entscheidung_person=False, entscheidung_partner=False)
+                            adm.create_partnervorschlag(
+                                user.get_id(),
+                                person.get_id(),
+                                aehnlichkeit=0,
+                                matchpoints=0,
+                                entscheidung_person=False,
+                                entscheidung_partner=False,
+                            )
 
                         for gruppe in gruppen:
-                            adm.create_gruppenvorschlag(user.get_id(), gruppe.get_id(), aehnlichkeit=0, matchpoints=0, entscheidung_person=False, entscheidung_gruppe=False)
-
-
-
+                            adm.create_gruppenvorschlag(
+                                user.get_id(),
+                                gruppe.get_id(),
+                                aehnlichkeit=0,
+                                matchpoints=0,
+                                entscheidung_person=False,
+                                entscheidung_gruppe=False,
+                            )
 
                     print(request.method, request.path, "angefragt durch:", name, email)
 
                     objects = function(*args, **kwargs)
                     return objects
                 else:
-                    return '', 401  # UNAUTHORIZED !!!
+                    return "", 401  # UNAUTHORIZED !!!
             except ValueError as exc:
                 # This will be raised if the token is expired or any other
                 # verification checks fail.
                 error_message = str(exc)
                 return exc, 401  # UNAUTHORIZED !!!
 
-        return '', 401  # UNAUTHORIZED !!!
+        return "", 401  # UNAUTHORIZED !!!
 
     return wrapper

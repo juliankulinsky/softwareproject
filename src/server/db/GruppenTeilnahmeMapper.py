@@ -37,7 +37,9 @@ class GruppenTeilnahmeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from gruppen_teilnahmen WHERE gruppen_id={}".format(gruppen_id))
+        cursor.execute(
+            "SELECT * from gruppen_teilnahmen WHERE gruppen_id={}".format(gruppen_id)
+        )
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) in tuples:
@@ -61,7 +63,9 @@ class GruppenTeilnahmeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from gruppen_teilnahmen WHERE person_id={}".format(person_id))
+        cursor.execute(
+            "SELECT * from gruppen_teilnahmen WHERE person_id={}".format(person_id)
+        )
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) in tuples:
@@ -113,8 +117,8 @@ class GruppenTeilnahmeMapper(Mapper):
     def find_by_person_id_und_gruppen_id(self, person_id: int, gruppen_id: int):
         result = None
         cursor = self._cnx.cursor()
-        command = (
-            "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(person_id,gruppen_id)
+        command = "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(
+            person_id, gruppen_id
         )
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -185,7 +189,7 @@ class GruppenTeilnahmeMapper(Mapper):
             gruppenteilnahme.get_person_id(),
             gruppenteilnahme.get_gruppen_id(),
             gruppenteilnahme.get_ist_admin(),
-            gruppenteilnahme.get_id()
+            gruppenteilnahme.get_id(),
         )
         cursor.execute(command, data)
 

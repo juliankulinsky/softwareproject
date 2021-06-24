@@ -2,8 +2,8 @@ from server.bo import BusinessObject as bo
 
 
 class Lernvorliebe(bo.BusinessObject):
-    """Realisierung der Klasse Lernvorlieben, welche einem Profil zugeordnet wird.
-    """
+    """Realisierung der Klasse Lernvorlieben, welche einem Profil zugeordnet wird."""
+
     def __init__(self):
         super().__init__()
         self._lerntyp = 0

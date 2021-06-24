@@ -5,10 +5,11 @@ class PartnerVorschlag(vo.Vorschlag):
     """Realisierung der Klasse PartnerVorschlag, welche von der abstrakten Klasse Vorschlag seine Grundstruktur erbt.
     Zusätzliche Attribute sind auf den vorgeschlagenen Lernpartner bezogen
     """
+
     def __init__(self):
         super().__init__()
-        self._partner_id = 0       # Fremdschlüsselbeziehung zur vorgeschlagenen Person
-        self._entscheidung_partner = False   # Ob sich der Partner entschieden hat
+        self._partner_id = 0  # Fremdschlüsselbeziehung zur vorgeschlagenen Person
+        self._entscheidung_partner = False  # Ob sich der Partner entschieden hat
 
     def get_partner_id(self):
         return self._partner_id
@@ -24,8 +25,13 @@ class PartnerVorschlag(vo.Vorschlag):
 
     def __str__(self):
         return "Nr.{}: Person {} und Person {} mit Ähnl. {}: {} & {}".format(
-            self.get_id(),self.get_person_id(),self.get_partner_id(),self.get_aehnlichkeit(),self.get_matchpoints(),
-            self.get_entscheidung_person(),self.get_entscheidung_partner()
+            self.get_id(),
+            self.get_person_id(),
+            self.get_partner_id(),
+            self.get_aehnlichkeit(),
+            self.get_matchpoints(),
+            self.get_entscheidung_person(),
+            self.get_entscheidung_partner(),
         )
 
     @staticmethod

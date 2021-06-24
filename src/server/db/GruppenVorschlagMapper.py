@@ -2,10 +2,9 @@ from server.bo.GruppenVorschlag import GruppenVorschlag
 from server.db.Mapper import Mapper
 
 
-class GruppenVorschlagMapper (Mapper):
-    """
+class GruppenVorschlagMapper(Mapper):
+    """ """
 
-    """
     def __init__(self):
         super().__init__()
 
@@ -19,8 +18,16 @@ class GruppenVorschlagMapper (Mapper):
         cursor.execute("SELECT * from gruppen_vorschlaege")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -45,14 +52,26 @@ class GruppenVorschlagMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints," \
-                  " entscheidung_person, entscheidung_gruppe FROM gruppen_vorschlaege WHERE id={}".format(key)
+        command = (
+            "SELECT id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints,"
+            " entscheidung_person, entscheidung_gruppe FROM gruppen_vorschlaege WHERE id={}".format(
+                key
+            )
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) = tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                person_id,
+                gruppen_id,
+                aehnlichkeit,
+                matchpoints,
+                entscheidung_person,
+                entscheidung_gruppe,
+            ) = tuples[0]
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -64,7 +83,7 @@ class GruppenVorschlagMapper (Mapper):
             gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
             result = gruppen_vorschlag
         except IndexError:
-            """"""
+            """ """
             result = None
 
         self._cnx.commit()
@@ -80,13 +99,23 @@ class GruppenVorschlagMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND gruppen_id={}".format(person_key,gruppen_key)
+        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND gruppen_id={}".format(
+            person_key, gruppen_key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) = tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                person_id,
+                gruppen_id,
+                aehnlichkeit,
+                matchpoints,
+                entscheidung_person,
+                entscheidung_gruppe,
+            ) = tuples[0]
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -98,7 +127,7 @@ class GruppenVorschlagMapper (Mapper):
             gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
             result = gruppen_vorschlag
         except IndexError:
-            """"""
+            """ """
             result = None
 
         self._cnx.commit()
@@ -109,14 +138,25 @@ class GruppenVorschlagMapper (Mapper):
     def find_eingehende_by_person_id(self, person_key):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE " \
-                  "(person_id={} AND entscheidung_person=FALSE AND entscheidung_gruppe=TRUE AND matchpoints=1) " \
-                  .format(person_key)
+        command = (
+            "SELECT * FROM gruppen_vorschlaege WHERE "
+            "(person_id={} AND entscheidung_person=FALSE AND entscheidung_gruppe=TRUE AND matchpoints=1) ".format(
+                person_key
+            )
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -136,14 +176,25 @@ class GruppenVorschlagMapper (Mapper):
     def find_ausgehende_by_person_id(self, person_key):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE " \
-                  "(person_id={} AND entscheidung_person=TRUE AND entscheidung_gruppe=FALSE AND matchpoints=1) " \
-                  .format(person_key)
+        command = (
+            "SELECT * FROM gruppen_vorschlaege WHERE "
+            "(person_id={} AND entscheidung_person=TRUE AND entscheidung_gruppe=FALSE AND matchpoints=1) ".format(
+                person_key
+            )
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -163,14 +214,25 @@ class GruppenVorschlagMapper (Mapper):
     def find_eingehende_by_gruppen_id(self, gruppen_key):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE " \
-                  "(gruppen_id={} AND entscheidung_person=TRUE AND entscheidung_gruppe=FALSE AND matchpoints=1) " \
-                  .format(gruppen_key)
+        command = (
+            "SELECT * FROM gruppen_vorschlaege WHERE "
+            "(gruppen_id={} AND entscheidung_person=TRUE AND entscheidung_gruppe=FALSE AND matchpoints=1) ".format(
+                gruppen_key
+            )
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -190,13 +252,22 @@ class GruppenVorschlagMapper (Mapper):
     def find_by_gruppen_id(self, gruppen_key):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE gruppen_id={} " \
-                  .format(gruppen_key)
+        command = "SELECT * FROM gruppen_vorschlaege WHERE gruppen_id={} ".format(
+            gruppen_key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -216,14 +287,24 @@ class GruppenVorschlagMapper (Mapper):
     def find_best_for_person_id(self, person_id: int):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person=FALSE " \
-                  "ORDER BY aehnlichkeit DESC ".format(person_id)
+        command = (
+            "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person=FALSE "
+            "ORDER BY aehnlichkeit DESC ".format(person_id)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) = tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                person_id,
+                gruppen_id,
+                aehnlichkeit,
+                matchpoints,
+                entscheidung_person,
+                entscheidung_gruppe,
+            ) = tuples[0]
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -235,7 +316,7 @@ class GruppenVorschlagMapper (Mapper):
             gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
             result = gruppen_vorschlag
         except IndexError:
-            """"""
+            """ """
             result = None
 
         self._cnx.commit()
@@ -246,13 +327,22 @@ class GruppenVorschlagMapper (Mapper):
     def find_all_offene_for_person_id(self, person_key: int):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person is FALSE "\
-            .format(person_key)
+        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person is FALSE ".format(
+            person_key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -272,13 +362,22 @@ class GruppenVorschlagMapper (Mapper):
     def find_all_for_person_id(self, person_key: int):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} "\
-            .format(person_key)
+        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} ".format(
+            person_key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
-             entscheidung_gruppe) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            person_id,
+            gruppen_id,
+            aehnlichkeit,
+            matchpoints,
+            entscheidung_person,
+            entscheidung_gruppe,
+        ) in tuples:
             gruppen_vorschlag = GruppenVorschlag()
             gruppen_vorschlag.set_id(id)
             gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -305,12 +404,14 @@ class GruppenVorschlagMapper (Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM gruppen_vorschlaege")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            gruppen_vorschlag.set_id(maxid[0]+1)
+        for maxid in tuples:
+            gruppen_vorschlag.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO gruppen_vorschlaege (id, erstellungszeitpunkt, person_id, gruppen_id, " \
-                  "aehnlichkeit, matchpoints, entscheidung_person, entscheidung_gruppe) " \
-                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        command = (
+            "INSERT INTO gruppen_vorschlaege (id, erstellungszeitpunkt, person_id, gruppen_id, "
+            "aehnlichkeit, matchpoints, entscheidung_person, entscheidung_gruppe) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        )
         data = (
             gruppen_vorschlag.get_id(),
             gruppen_vorschlag.get_erstellungszeitpunkt(),
@@ -319,7 +420,7 @@ class GruppenVorschlagMapper (Mapper):
             gruppen_vorschlag.get_aehnlichkeit(),
             gruppen_vorschlag.get_matchpoints(),
             gruppen_vorschlag.get_entscheidung_person(),
-            gruppen_vorschlag.get_entscheidung_gruppe()
+            gruppen_vorschlag.get_entscheidung_gruppe(),
         )
         cursor.execute(command, data)
 
@@ -336,8 +437,10 @@ class GruppenVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE gruppen_vorschlaege SET person_id=%s, gruppen_id=%s, " \
-                  "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
+        command = (
+            "UPDATE gruppen_vorschlaege SET person_id=%s, gruppen_id=%s, "
+            "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
+        )
         data = (
             gruppen_vorschlag.get_person_id(),
             gruppen_vorschlag.get_gruppen_id(),
@@ -345,7 +448,7 @@ class GruppenVorschlagMapper (Mapper):
             gruppen_vorschlag.get_matchpoints(),
             gruppen_vorschlag.get_entscheidung_person(),
             gruppen_vorschlag.get_entscheidung_gruppe(),
-            gruppen_vorschlag.get_id()
+            gruppen_vorschlag.get_id(),
         )
         cursor.execute(command, data)
 
@@ -360,7 +463,9 @@ class GruppenVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM gruppen_vorschlaege WHERE id={}".format(gruppen_vorschlag.get_id())
+        command = "DELETE FROM gruppen_vorschlaege WHERE id={}".format(
+            gruppen_vorschlag.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()
@@ -369,7 +474,7 @@ class GruppenVorschlagMapper (Mapper):
 
 """Testbereich, ob die Klasse funktioniert"""
 
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     with GruppenVorschlagMapper() as mapper:
         print("--TESTING FIND_ALL")
         result = mapper.find_all()
