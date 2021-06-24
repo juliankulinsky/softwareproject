@@ -130,7 +130,8 @@ class LerngruppeListEntry extends Component {
                                         eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
                                     <>
                                         &nbsp;
-                                            <Button color={"primary"} variant={"contained"}
+                                            <Button disabled={beendenButtonPressed}
+                                                    color={"primary"} variant={"contained"}
                                                     onClick={this.handleOpen}>
                                                 Verwalten
                                             </Button>
