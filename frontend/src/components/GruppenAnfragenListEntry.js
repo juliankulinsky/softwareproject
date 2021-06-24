@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
-import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
+import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css"
 
 
@@ -26,6 +20,9 @@ class GruppenAnfragenListEntry extends Component {
         }
     }
 
+    /**
+     * Die Gruppenanfrage annehmen
+     */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -35,6 +32,9 @@ class GruppenAnfragenListEntry extends Component {
         });
     }
 
+    /**
+     * Die Gruppenanfrage ablehnen
+     */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -44,6 +44,10 @@ class GruppenAnfragenListEntry extends Component {
         });
     }
 
+    /**
+     * Nach einer Entscheidung wird die Gruppenanfrage intern bearbeitet (db).
+     * Hierzu werden die Matchpoints erhöht und der State neu gesetzt.
+     */
     updateGruppenvorschlagsAnfrage = () => {
         let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.anfrage);
         updatedGruppenVorschlag.setEntscheidungGruppe(true)
@@ -68,6 +72,9 @@ class GruppenAnfragenListEntry extends Component {
         })
     }
 
+    /**
+     * Anfragende Person auslesen
+     */
     getAnfragendePerson = () => {
         StudooAPI.getAPI().getPerson(this.state.anfrage.getPersonID())
             .then(anfragendePerson => {
@@ -84,7 +91,7 @@ class GruppenAnfragenListEntry extends Component {
 
     render() {
         const {classes} = this.props;
-        const {anfrage, lerngruppe, buttonPressed, anfragendePerson} = this.state;
+        const {anfrage, buttonPressed, anfragendePerson} = this.state;
 
         return (
             <>
@@ -122,9 +129,7 @@ const styles = theme => ({
 
 /** PropTypes */
 GruppenAnfragenListEntry.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(GruppenAnfragenListEntry);

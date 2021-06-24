@@ -2,15 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import ProfilForm from "./dialogs/ProfilForm";
 import PopUpProfil from "./dialogs/PopUpProfil";
-//import AccountList from './AccountList';
 
 
 class TeilnehmerListEntry extends Component {
@@ -26,6 +19,9 @@ class TeilnehmerListEntry extends Component {
         }
     }
 
+    /**
+     * Die aktuellen Teilnehmer der entsprechenden Gruppen auslesen
+     */
     getAktuellenTeilnehmer = () => {
         StudooAPI.getAPI().getPerson(this.state.aktuelleGruppenTeilnahme.get_person_id())
             .then(teilnehmerPerson => {
@@ -35,6 +31,9 @@ class TeilnehmerListEntry extends Component {
             })
     }
 
+    /**
+     * Die aktuellen Teilnehmer der entsprechenden Gruppen entfernen
+     */
     deleteAktuelleTeilnahme = () => {
         StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.aktuelleGruppenTeilnahme.getID())
             .then(gruppenTeilnahme => {
@@ -48,7 +47,10 @@ class TeilnehmerListEntry extends Component {
             })
 
     }
-    /** Handles the onClick event of the Popup person button */
+
+    /**
+     * Event für Klicken auf den Button (öffnen)
+     */
     popUpButtonClicked = (event) => {
         event.stopPropagation();
         this.setState({
@@ -56,6 +58,9 @@ class TeilnehmerListEntry extends Component {
         });
     }
 
+    /**
+     * Event für Klicken auf den Button (schließen)
+     */
     popUpClosed = (event) => {
         this.setState({
             showProfilPopUp: false
@@ -69,7 +74,7 @@ class TeilnehmerListEntry extends Component {
 
     render() {
         const {classes} = this.props;
-        const {lerngruppe, aktuelleGruppenTeilnahme, teilnehmerPerson, buttonPressed, showProfilPopUp} = this.state;
+        const { teilnehmerPerson, buttonPressed, showProfilPopUp } = this.state;
 
         return (
             <Typography>
@@ -107,9 +112,7 @@ const styles = theme => ({
 
 /** PropTypes */
 TeilnehmerListEntry.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(TeilnehmerListEntry);

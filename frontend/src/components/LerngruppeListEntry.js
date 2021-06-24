@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import {
     withStyles,
     Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Grid,
-    Popover,
-    IconButton, DialogTitle, DialogContent, Dialog
+    IconButton,
+    DialogTitle,
+    DialogContent,
+    Dialog
 } from '@material-ui/core';
-import { Button, ButtonGroup, Card, CardContent } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { Button, Card, CardContent } from '@material-ui/core';
 import {StudooAPI} from "../api";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import TeilnehmerList from "./TeilnehmerList";
 import GruppenAnfragenList from "./GruppenAnfragenList";
 import UpdateGruppennameDialog from "./dialogs/UpdateGruppennameDialog";
@@ -49,6 +43,9 @@ class LerngruppeListEntry extends Component {
             })
     }
 
+    /**
+     * Um die eigene Teilnahme einer Lerngruppe zu löschen
+     */
     deleteTeilnahme = () => {
         this.setState({
             beendenButtonPressed: true
@@ -60,37 +57,37 @@ class LerngruppeListEntry extends Component {
             })
     }
 
-/*    switchExpandedState = () => {
-        if (this.state.expandedState){
-            this.setState({
-                expandedState: false,
-            })
-        } else {
-            this.setState({
-                expandedState: true,
-            })
-        }
-    }*/
-
+    /**
+     * Änderung für Gruppennamen über einen sich öffnenden Dialog
+     */
     openUpdateGruppennameDialog = () => {
         this.setState({
             showUpdateGruppennameDialog: true
         })
     }
 
+    /**
+     * Den Gruppennamen-Dialog schließen
+     */
     updateGruppennameDialogClosed = () => {
         this.setState({
             showUpdateGruppennameDialog: false
         })
     }
 
+    /**
+     * Den Verwaltungs-Dialog schließen
+     */
     handleClose = () => {
         // Reset the state
         this.setState({
         open: false
         });
-  }
+    }
 
+    /**
+     * Den Verwaltungs-Dialog öffnen
+     */
     handleOpen = () => {
         this.setState({
             open: true
@@ -103,14 +100,14 @@ class LerngruppeListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, expandedState, showUpdateGruppennameDialog, open } = this.state;
+        const { lerngruppe, eigeneGruppenTeilnahme, beendenButtonPressed, showUpdateGruppennameDialog, open } = this.state;
 
         return (
             <>
                 <Card>
                     <CardContent >
                         <div className="lerngruppeListCard">
-                        <Typography className={classes.heading} variant="h3">
+                        <Typography className={classes.heading} variant="h4">
                         {lerngruppe.getGruppenname()}
                         </Typography>
 
@@ -122,7 +119,6 @@ class LerngruppeListEntry extends Component {
                                         eigeneGruppenTeilnahme && eigeneGruppenTeilnahme.get_ist_admin() ?
                                     <>
                                         &nbsp;
-
                                             <Button color={"primary"} variant={"contained"}
                                                     onClick={this.handleOpen}>
                                                 Verwalten
@@ -133,13 +129,14 @@ class LerngruppeListEntry extends Component {
                                                     <>
                                                     <Dialog open={open} onClose={this.handleClose} maxWidth='xs'>
                                                         <div className="lerngruppeListCard">
-                                                        <DialogTitle id='form-dialog-title' >
-                                                            <Typography variant="h6">Gruppenverwaltung</Typography>
-                                                        </DialogTitle>
-                                                        <IconButton className={classes.closeButton} onClick={this.handleClose}>
-                                                                <CloseIcon />
-                                                        </IconButton>
-                                                        </div>
+                                                            <DialogTitle id='form-dialog-title' >
+                                                                <Typography variant="h6">Gruppenverwaltung</Typography>
+                                                            </DialogTitle>
+                                                            <IconButton className={classes.closeButton} onClick={this.handleClose}>
+                                                                    <CloseIcon />
+                                                            </IconButton>
+                                                            </div>
+
                                                         <DialogContent>
 
                                                             <Button color={"primary"}  onClick={this.openUpdateGruppennameDialog}>
@@ -160,6 +157,7 @@ class LerngruppeListEntry extends Component {
                                                                 currentperson={this.props.currentperson}
                                                                 lerngruppe={lerngruppe}
                                                             />
+
                                                         </DialogContent>
                                                     </Dialog>
                                                     </>
@@ -168,8 +166,8 @@ class LerngruppeListEntry extends Component {
                                     </>
                                     :
                                     null
-                            }
-                        </div>
+                                    }
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
@@ -187,11 +185,7 @@ const styles = theme => ({
 
 /** PropTypes */
 LerngruppeListEntry.propTypes = {
-  /** @ignore */
-  //classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be rendered */
   lerngruppe: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(LerngruppeListEntry);
