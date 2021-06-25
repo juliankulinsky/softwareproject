@@ -97,38 +97,7 @@ class KonversationListEntry extends Component {
         }
     }
 
-    textFieldValueChange = (event) => {
-        const value = event.target.value;
 
-        let error = false;
-        if (value.trim().length === 0) {
-            error= true;
-        }
-
-        this.setState({
-            [event.target.id]: event.target.value,
-            [event.target.id + 'ValidationFailed']: error,
-            [event.target.id + 'Edited']: true
-        })
-    }
-
-    addNachricht = () => {
-        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
-            this.state.konversation.getID());
-        StudooAPI.getAPI().addNachricht(newNachricht)
-            .then(nachricht => {
-                this.setState(this.baseState)
-            }).catch(e =>
-        this.setState({
-            addingInProgress: false,
-            addingError: e
-        }));
-
-        this.setState({
-            addingInProgress: true,
-            addingError: null
-        })
-    }
 
     deleteChatTeilnahme = () => {
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())

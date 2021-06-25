@@ -24,6 +24,7 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import KonversationListEntry from "./KonversationListEntry";
 import NachrichtenList from "./NachrichtenList";
 import "./components-theme.css";
+import {NachrichtBO} from "../api";
 
 class KonversationenList extends Component {
 
@@ -33,6 +34,9 @@ class KonversationenList extends Component {
         this.state = {
             konversationen: [],
             aktuellekonversation: null,
+            neueNachricht: null,
+            neueNachrichtValidationFailed: false,
+            neueNachrichtEdited: false,
             error: null,
             loadingInProgress: false
         };
@@ -64,6 +68,39 @@ class KonversationenList extends Component {
         })
     }
 
+    textFieldValueChange = (event) => {
+        const value = event.target.value;
+
+        let error = false;
+        if (value.trim().length === 0) {
+            error= true;
+        }
+
+        this.setState({
+            [event.target.id]: event.target.value,
+            [event.target.id + 'ValidationFailed']: error,
+            [event.target.id + 'Edited']: true
+        })
+    }
+
+    addNachricht = () => {
+        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
+            this.state.konversation.getID());
+        StudooAPI.getAPI().addNachricht(newNachricht)
+            .then(nachricht => {
+                this.setState(this.baseState)
+            }).catch(e =>
+        this.setState({
+            addingInProgress: false,
+            addingError: e
+        }));
+
+        this.setState({
+            addingInProgress: true,
+            addingError: null
+        })
+    }
+
     componentDidMount() {
         this.getKonversationen();
     }
@@ -91,7 +128,8 @@ class KonversationenList extends Component {
 
     render() {
         const {classes} = this.props;
-        const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
+        const {konversationen, aktuellekonversation, neueNachricht, neueNachrichtValidationFailed,
+            neueNachrichtEdited, error, loadingInProgress} = this.state;
 
         return (
             <Box className={classes.root}>
@@ -107,23 +145,33 @@ class KonversationenList extends Component {
                         error={error} contextErrorMsg={`Nicht geklappt`}
                         onReload={this.getKonversationen}
                     />
-
-                    {
-                        aktuellekonversation ?
-                            <NachrichtenList
-                                konversation={aktuellekonversation}
-                                currentPerson={this.props.person}
-                            />
-
-                            :
-                            <Typography>
-                                Du hast noch <b>keine</b> Konversation ausgewählt.
-                            </Typography>
-                    }
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <Typography>Test</Typography>
+                        {
+                            aktuellekonversation ?
+                                <>
+                                <NachrichtenList
+                                    konversation={aktuellekonversation}
+                                    currentPerson={this.props.person}
+                                />
+
+                                <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
+                                error={neueNachrichtValidationFailed}>
+                                    Test
+                                </TextField> &nbsp;&nbsp;
+
+                                <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
+                                onClick={this.addNachricht}>
+                                    Nachricht senden
+                                </Button>
+                                </>
+
+                                :
+                                <Typography>
+                                    Du hast noch <b>keine</b> Konversation ausgewählt.
+                                </Typography>
+                        }
 
                         {/*<Typography>
                         <b>KonversationsID: {konversation.getID()}</b> <br/><br/>

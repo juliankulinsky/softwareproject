@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     withStyles,
+    Container,
+    Card,
     Button,
     TextField,
     InputAdornment,
     IconButton,
     Grid,
     Typography,
-    Card,
     CardContent
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -78,7 +79,8 @@ class NachrichtenList extends Component {
         const {classes} = this.props;
         const {nachrichten=[], error, loadingInProgress} = this.state;
         return (
-            <div className={classes.root} >
+            <Container className={classes.root}>
+                <Card>
                     {
                         this.Anzeige()
                     }
@@ -87,7 +89,8 @@ class NachrichtenList extends Component {
                         error={error} contextErrorMsg={`Nicht geklappt`}
                         onReload={this.getNachrichten}
                     />
-            </div>
+                </Card>
+            </Container>
         )
     }
 }
