@@ -166,8 +166,7 @@ class KonversationListEntry extends Component {
 
         return (
             <Box>
-                <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                <Container>
                         <ListItem alignItems="flex-start">
 
                             <ListItemAvatar>
@@ -212,11 +211,11 @@ class KonversationListEntry extends Component {
                                 }
                             />
                         </ListItem>
-                    </Grid>
 
+                    {/*
                     <Grid item xs>
                         <Typography>
-                            {/*<b>KonversationsID: {konversation.getID()}</b> <br/><br/>
+                            <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
 
                             <NachrichtenList
                                 currentPerson={this.props.person}
@@ -233,12 +232,12 @@ class KonversationListEntry extends Component {
                             onClick={this.addNachricht}>
                                 Nachricht senden
                             </Button>
-                            <br/>*/}
-
+                            <br/>
                         </Typography>
                     </Grid>
+                    */}
 
-                </Grid>
+                </Container>
             </Box>
         )
     }

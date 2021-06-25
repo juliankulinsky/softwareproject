@@ -68,17 +68,7 @@ class KonversationenList extends Component {
         this.getKonversationen();
     }
 
-    whoseConversations() {
-        return <Typography>
-            Das sind die Konversationen von:&nbsp;
-            {
-                this.props.person.getName()
-            }
-            <br/><br/>
-        </Typography>
-    }
-
-    Anzeige = () => {
+    Chats = () => {
         let konversationen = this.state.konversationen
 
 
@@ -105,52 +95,59 @@ class KonversationenList extends Component {
 
         return (
             <Box className={classes.root}>
-                {
-                    this.Anzeige()
-                }
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                    {
+                        this.Chats()
+                    }
 
-                <LoadingProgress show={loadingInProgress}/>
+                    <LoadingProgress show={loadingInProgress}/>
 
-                <ContextErrorMessage
-                    error={error} contextErrorMsg={`Nicht geklappt`}
-                    onReload={this.getKonversationen}
-                />
+                    <ContextErrorMessage
+                        error={error} contextErrorMsg={`Nicht geklappt`}
+                        onReload={this.getKonversationen}
+                    />
 
-                {
-                    aktuellekonversation ?
-                        <NachrichtenList
-                            konversation={aktuellekonversation}
-                            currentPerson={this.props.person}
-                        />
-
-                        :
-                        <Typography>
-                            Du hast noch <b>keine</b> Konversation ausgewählt.
-                        </Typography>
-                }
-
-
-                {/*<Typography>
-                            <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
-
+                    {
+                        aktuellekonversation ?
                             <NachrichtenList
+                                konversation={aktuellekonversation}
                                 currentPerson={this.props.person}
-                                konversation={konversation}
                             />
-                            <br/>
 
-                            <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                            error={neueNachrichtValidationFailed}>
-                                Test
-                            </TextField>&nbsp;&nbsp;
+                            :
+                            <Typography>
+                                Du hast noch <b>keine</b> Konversation ausgewählt.
+                            </Typography>
+                    }
+                    </Grid>
 
-                            <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                            onClick={this.addNachricht}>
-                                Nachricht senden
-                            </Button>
-                            <br/>
+                    <Grid item xs={12} sm={6}>
+                        <Typography>Test</Typography>
 
-                        </Typography>*/}
+                        {/*<Typography>
+                        <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
+
+                                <NachrichtenList
+                                    currentPerson={this.props.person}
+                                    konversation={konversation}
+                                />
+                                <br/>
+
+                                <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
+                                error={neueNachrichtValidationFailed}>
+                                    Test
+                                </TextField>&nbsp;&nbsp;
+
+                                <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
+                                onClick={this.addNachricht}>
+                                    Nachricht senden
+                                </Button>
+                                <br/>
+                      </Typography>*/}
+
+                    </Grid>
+                </Grid>
             </Box>
         )
     }
