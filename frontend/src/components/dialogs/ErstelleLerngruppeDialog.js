@@ -27,9 +27,12 @@ class ErstelleLerngruppeDialog extends Component {
 
     // Init the state
     this.state = {
-      gruppenname: null,
+      gruppenname: "",
       gruppennameEdited: false,
       gruppennameValidationFailed: false,
+      gruppenbeschreibung: "",
+      gruppenbeschreibungEdited: false,
+      gruppenbeschreibungValidationFailed: false,
       addingInProgress: false,
       addingError: null
     };
@@ -42,7 +45,7 @@ class ErstelleLerngruppeDialog extends Component {
     /** Zuerst neue Lernvorlieben, neues Profil, das auf diese Lernvorlieben weist und eine neue Konversation erstellen */
     let newLernvorlieben = new LernvorliebeBO()
     StudooAPI.getAPI().addLernvorliebe(newLernvorlieben).then(lernvorlieben => {
-      let newProfil = new ProfilBO(lernvorlieben.getID())
+      let newProfil = new ProfilBO(lernvorlieben.getID(),this.state.gruppenbeschreibung)
       StudooAPI.getAPI().addProfil(newProfil).then(profil => {
         let newKonversation = new KonversationBO(true)
         StudooAPI.getAPI().addKonversation(newKonversation).then(konversation => {
@@ -120,13 +123,14 @@ class ErstelleLerngruppeDialog extends Component {
   /** Renders the component */
   render() {
     const { classes, person, show } = this.props;
-    const { gruppenname, gruppennameEdited, gruppennameValidationFailed, addingInProgress, addingError } = this.state;
+    const { gruppenname, gruppennameEdited, gruppennameValidationFailed, gruppenbeschreibung, gruppenbeschreibungEdited,
+      gruppenbeschreibungValidationFailed, addingInProgress, addingError } = this.state;
 
     let title = '';
     let header = '';
 
     title = 'Erstelle eine Lerngruppe';
-    header = 'Gebe hier den Lerngruppenname ein';
+    header = 'Gebe hier die Lerngruppendaten ein';
 
     return (
       show ?
@@ -141,9 +145,12 @@ class ErstelleLerngruppeDialog extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='Gruppenname:' value={gruppenname}
-                onChange={this.textFieldValueChange} error={gruppennameValidationFailed}
-                helperText={gruppennameValidationFailed ? 'Der Gruppenname muss mindestens 3 Zeichen lang sein' : ' '} />
+              <TextField autoFocus type='text' required fullWidth margin='normal' id='gruppenname' label='Gruppenname: (mind. 3 Zeichen)' value={gruppenname}
+                onChange={this.textFieldValueChange} error={gruppennameValidationFailed}/>
+            </form>
+            <form className={classes.root} noValidate autoComplete='off'>
+              <TextField type='text' fullWidth margin='normal' id='gruppenbeschreibung' label='Gruppenbeschreibung: (optional)' value={gruppenbeschreibung}
+                onChange={this.textFieldValueChange}/>
             </form>
             <LoadingProgress show={addingInProgress} />
             <ContextErrorMessage error={addingError} contextErrorMsg={`Die Lerngruppe konnte nicht erstellt werden.`} onReload={this.erstelleLerngruppe} />
@@ -152,7 +159,8 @@ class ErstelleLerngruppeDialog extends Component {
             <Button onClick={this.handleClose} color='secondary'>
               Abbrechen
             </Button>
-            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)} variant='contained' onClick={this.erstelleLerngruppe} color='primary'>
+            <Button disabled={!(gruppennameEdited && !gruppennameValidationFailed)}
+                    variant='contained' onClick={this.erstelleLerngruppe} color='primary'>
                 Erstellen
             </Button>
           </DialogActions>

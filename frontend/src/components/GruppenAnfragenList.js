@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles, Typography, Box} from '@material-ui/core';
 import {StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
-import EingehendeKonversationsAnfragenListEntry from "./EingehendeKonversationsAnfragenListEntry";
-import EingehendeGruppenbeitrittsAnfragenListEntry from "./EingehendeGruppenbeitrittsAnfragenListEntry";
 import GruppenAnfragenListEntry from "./GruppenAnfragenListEntry";
-//import AccountList from './AccountList';
 
 /**
  * Kontrolliert eine Liste von GruppenAnfragenListEntrys
@@ -51,18 +41,20 @@ class GruppenAnfragenList extends Component {
 
     /** Rendert die Komponente */
     render() {
-        const { classes } = this.props;
-        const { gruppenBeitrittsAnfragen, lerngruppe } = this.state;
+        const {classes} = this.props;
+        const {gruppenBeitrittsAnfragen, lerngruppe} = this.state;
 
         return (
             <>
-                <Typography>
+                <Box>
                     {
                         gruppenBeitrittsAnfragen.length > 0 ?
-                            <Typography>
-                                Das sind alle eingehenden Gruppenbeitrittsanfragen für {this.props.lerngruppe.getGruppenname()}: <br/>
+                            <Box>
+                                <Typography variant="h6" style={{marginTop: "2%", marginBottom: "2%"}}>
+                                    Eingehende Gruppenbeitrittsanfragen für {this.props.lerngruppe.getGruppenname()}:
+                                </Typography>
                                 {
-                                    gruppenBeitrittsAnfragen.map( anfrage =>
+                                    gruppenBeitrittsAnfragen.map(anfrage =>
                                         <GruppenAnfragenListEntry
                                             person={this.props.person}
                                             anfrage={anfrage}
@@ -70,17 +62,16 @@ class GruppenAnfragenList extends Component {
                                         />
                                     )
                                 }
-                            </Typography>
+                            </Box>
                             :
                             <Typography>
                                 Es gibt keine Gruppenbeitrittsanfragen
                             </Typography>
                     }
-                </Typography>
+                </Box>
             </>
         )
     }
-
 }
 
 /** Komponent-spezifische Styles */
@@ -92,9 +83,7 @@ const styles = theme => ({
 
 /** PropTypes */
 GruppenAnfragenList.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(GruppenAnfragenList);

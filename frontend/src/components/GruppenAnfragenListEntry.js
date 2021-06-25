@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
-import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
+import {GruppenVorschlagBO, StudooAPI} from "../api";
+import "./components-theme.css"
 
 /**
  * Rendert eine GruppenAnfrage mit der Option diese anzunehmen oder abzulehnen.
@@ -30,7 +24,9 @@ class GruppenAnfragenListEntry extends Component {
         }
     }
 
-    /** Wird durch "Annehmen"-Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
+    /** Wird durch "Annehmen"-Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf
+     * Die Gruppenanfrage annehmen
+     */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -40,7 +36,9 @@ class GruppenAnfragenListEntry extends Component {
         });
     }
 
-    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf
+     * Die Gruppenanfrage ablehnen
+     */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -79,12 +77,14 @@ class GruppenAnfragenListEntry extends Component {
         })
     }
 
-    /** Lädt die Person des GruppenVorschlagBO aus dem Backend */
+    /** Lädt die Person des GruppenVorschlagBO aus dem Backend
+     * Anfragende Person auslesen
+     */
     getAnfragendePerson = () => {
         StudooAPI.getAPI().getPerson(this.state.anfrage.getPersonID())
             .then(anfragendePerson => {
                 this.setState({
-                    anfragendePerson: anfragendePerson
+                        anfragendePerson: anfragendePerson
                     }
                 )
             })
@@ -101,23 +101,27 @@ class GruppenAnfragenListEntry extends Component {
     /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, lerngruppe, buttonPressed, anfragendePerson} = this.state;
+        const {anfrage, buttonPressed, anfragendePerson} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anfragendePerson) ?
-                        <Typography>
-                            Beitrittsanfrage von {anfragendePerson.getName()}&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div className="anfrageRequest">
+                            <Typography style={{display: 'flex', alignItems: 'center'}}>
+                                {anfragendePerson.getName()}
+                            </Typography>
+
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
                             </Button>
+
                             <Button disabled={buttonPressed} color={"secondary"}
                                     onClick={this.entscheidungFalse}>
                                 Ablehnen
                             </Button>
-                        </Typography>
+                        </div>
                         :
                         null
                 }
@@ -135,9 +139,7 @@ const styles = theme => ({
 
 /** PropTypes */
 GruppenAnfragenListEntry.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(GruppenAnfragenListEntry);

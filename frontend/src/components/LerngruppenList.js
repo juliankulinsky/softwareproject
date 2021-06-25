@@ -52,12 +52,8 @@ class LerngruppenList extends Component {
 
         return (
             <div className={classes.root}>
-                <Typography>
-                    Das sind die Lerngruppen von &nbsp;
-                    {
-                        this.props.person.getName()
-                    }
-                   :
+                <Typography variant="h4" align="center" style={{padding: '2%', margin: '1%'}}>
+                    Deine Lerngruppen:
                 </Typography>
 
                 {
