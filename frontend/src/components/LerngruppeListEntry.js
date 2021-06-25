@@ -152,7 +152,7 @@ class LerngruppeListEntry extends Component {
                                                         <DialogContent>
 
                                                             <Button color={"primary"}  onClick={this.openUpdateGruppennameDialog}>
-                                                                Gruppenname ändern
+                                                                Gruppendaten ändern
                                                             </Button>
                                                             <UpdateGruppennameDialog
                                                                 show={showUpdateGruppennameDialog}
