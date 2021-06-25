@@ -190,7 +190,7 @@ class App extends React.Component {
 																<LernvorliebenList/>
 															</Route>
 															<Route path='/nachrichten'>
-																<NachrichtenList/>
+																<NachrichtenList person={currentPersonBO}/>
 															</Route>
 															<Route path='/konversationen'>
 																<KonversationenList person={currentPersonBO}/>

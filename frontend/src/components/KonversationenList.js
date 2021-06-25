@@ -33,10 +33,9 @@ class KonversationenList extends Component {
 
         this.state = {
             konversationen: [],
+            person: props.person,
+            konversation: null,
             aktuellekonversation: null,
-            neueNachricht: null,
-            neueNachrichtValidationFailed: false,
-            neueNachrichtEdited: false,
             error: null,
             loadingInProgress: false
         };
@@ -68,39 +67,6 @@ class KonversationenList extends Component {
         })
     }
 
-    textFieldValueChange = (event) => {
-        const value = event.target.value;
-
-        let error = false;
-        if (value.trim().length === 0) {
-            error= true;
-        }
-
-        this.setState({
-            [event.target.id]: event.target.value,
-            [event.target.id + 'ValidationFailed']: error,
-            [event.target.id + 'Edited']: true
-        })
-    }
-
-    addNachricht = () => {
-        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
-            this.state.konversation.getID());
-        StudooAPI.getAPI().addNachricht(newNachricht)
-            .then(nachricht => {
-                this.setState(this.baseState)
-            }).catch(e =>
-        this.setState({
-            addingInProgress: false,
-            addingError: e
-        }));
-
-        this.setState({
-            addingInProgress: true,
-            addingError: null
-        })
-    }
-
     componentDidMount() {
         this.getKonversationen();
     }
@@ -128,13 +94,12 @@ class KonversationenList extends Component {
 
     render() {
         const {classes} = this.props;
-        const {konversationen, aktuellekonversation, neueNachricht, neueNachrichtValidationFailed,
-            neueNachrichtEdited, error, loadingInProgress} = this.state;
+        const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
 
         return (
             <Box className={classes.root}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
+                <Grid container spacing={2}>
+                    <Grid item xs={3}>
                     {
                         this.Chats()
                     }
@@ -147,53 +112,23 @@ class KonversationenList extends Component {
                     />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs>
                         {
                             aktuellekonversation ?
-                                <>
-                                <NachrichtenList
-                                    konversation={aktuellekonversation}
-                                    currentPerson={this.props.person}
-                                />
+                                <Card className={classes.c}>
+                                    {/*KonversationsID: {konversation.getID()}*/}
 
-                                <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                                error={neueNachrichtValidationFailed}>
-                                    Test
-                                </TextField> &nbsp;&nbsp;
-
-                                <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                                onClick={this.addNachricht}>
-                                    Nachricht senden
-                                </Button>
-                                </>
+                                    <NachrichtenList
+                                        konversation={aktuellekonversation}
+                                        currentPerson={this.props.person}
+                                    />
+                                </Card>
 
                                 :
                                 <Typography>
                                     Du hast noch <b>keine</b> Konversation ausgewählt.
                                 </Typography>
                         }
-
-                        {/*<Typography>
-                        <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
-
-                                <NachrichtenList
-                                    currentPerson={this.props.person}
-                                    konversation={konversation}
-                                />
-                                <br/>
-
-                                <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                                error={neueNachrichtValidationFailed}>
-                                    Test
-                                </TextField>&nbsp;&nbsp;
-
-                                <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                                onClick={this.addNachricht}>
-                                    Nachricht senden
-                                </Button>
-                                <br/>
-                      </Typography>*/}
-
                     </Grid>
                 </Grid>
             </Box>
@@ -203,7 +138,12 @@ class KonversationenList extends Component {
 
 const styles = theme => ({
   root: {
-    width: '100%',
+      width: '100%',
+      flexGrow: 1
+  },
+
+    c: {
+      padding: '5px'
   },
 });
 

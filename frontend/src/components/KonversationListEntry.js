@@ -97,8 +97,6 @@ class KonversationListEntry extends Component {
         }
     }
 
-
-
     deleteChatTeilnahme = () => {
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
             .then(chatTeilnahme => {
@@ -134,8 +132,7 @@ class KonversationListEntry extends Component {
 
 
         return (
-            <Box>
-                <Container>
+            <Container>
                         <ListItem alignItems="flex-start">
 
                             <ListItemAvatar>
@@ -180,34 +177,7 @@ class KonversationListEntry extends Component {
                                 }
                             />
                         </ListItem>
-
-                    {/*
-                    <Grid item xs>
-                        <Typography>
-                            <b>KonversationsID: {konversation.getID()}</b> <br/><br/>
-
-                            <NachrichtenList
-                                currentPerson={this.props.person}
-                                konversation={konversation}
-                            />
-                            <br/>
-
-                            <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                            error={neueNachrichtValidationFailed}>
-                                Test
-                            </TextField>&nbsp;&nbsp;
-
-                            <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                            onClick={this.addNachricht}>
-                                Nachricht senden
-                            </Button>
-                            <br/>
-                        </Typography>
-                    </Grid>
-                    */}
-
-                </Container>
-            </Box>
+            </Container>
         )
     }
 }
