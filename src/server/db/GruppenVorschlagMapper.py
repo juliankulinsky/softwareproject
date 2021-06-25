@@ -1,5 +1,6 @@
 from server.bo.GruppenVorschlag import GruppenVorschlag
 from server.db.Mapper import Mapper
+from datetime import datetime
 
 
 class GruppenVorschlagMapper (Mapper):
@@ -295,6 +296,33 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
+    def find_all_anfragen(self):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE matchpoints=1 AND " \
+                  "((entscheidung_person=TRUE AND entscheidung_gruppe=FALSE) " \
+                  "OR (entscheidung_gruppe=TRUE AND entscheidung_person=FALSE)) "
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) in tuples:
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result.append(gruppen_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, gruppen_vorschlag: GruppenVorschlag):
         """
 
@@ -336,9 +364,10 @@ class GruppenVorschlagMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE gruppen_vorschlaege SET person_id=%s, gruppen_id=%s, " \
+        command = "UPDATE gruppen_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, gruppen_id=%s, " \
                   "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
         data = (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             gruppen_vorschlag.get_person_id(),
             gruppen_vorschlag.get_gruppen_id(),
             gruppen_vorschlag.get_aehnlichkeit(),

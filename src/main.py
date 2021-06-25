@@ -699,6 +699,7 @@ class PartnervorschlagForPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_best_partner_vorschlag_for_person_id(person_id)
 
 
@@ -710,6 +711,7 @@ class EingehendePartnervorschlaegeForPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_partner_vorschlaege_for_person_id(person_id)
 
 
@@ -721,6 +723,7 @@ class AusgehendePartnervorschlaegeForPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_ausgehende_partner_vorschlaege_for_person_id(person_id)
 
 
@@ -805,6 +808,7 @@ class GruppenvorschlagByPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_best_gruppenvorschlag_for_person_id(person_id)
 
 
@@ -816,6 +820,7 @@ class EingehendeGruppenvorschlaegeForPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
@@ -827,6 +832,7 @@ class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
     @secured
     def get(self, person_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
@@ -838,6 +844,7 @@ class EingehendeGruppenvorschlaegeForGruppenIDOperations(Resource):
     @secured
     def get(self, gruppen_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
 
 
@@ -849,6 +856,7 @@ class GruppenvorschlaegeForGruppenIDOperations(Resource):
     @secured
     def get(self, gruppen_id):
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
 
 
