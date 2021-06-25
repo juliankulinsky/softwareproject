@@ -50,6 +50,7 @@ class NachrichtListEntry extends Component {
             buttonPressed: true,
         })
         StudooAPI.getAPI().deleteNachricht(this.state.nachricht.getID())
+        setTimeout(this.refreshPage,100)
     }
 
     EigeneNachricht = () => {
@@ -92,6 +93,10 @@ class NachrichtListEntry extends Component {
 
     componentDidMount() {
         this.getAbsenderPerson()
+    }
+
+    refreshPage = () => {
+        window.location.reload()
     }
 
     render() {

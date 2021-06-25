@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     withStyles,
@@ -33,7 +33,8 @@ class KonversationListEntry extends Component {
             loadingInProgress: false,
             addingInProgress: false,
             addingError: null,
-            showProfilPopUp: false
+            showProfilPopUp: false,
+            reload: false
         }
         this.baseState = this.state
     }
@@ -118,6 +119,7 @@ class KonversationListEntry extends Component {
             addingInProgress: true,
             addingError: null
         })
+        setTimeout(this.refreshPage,100)
     }
 
     deleteChatTeilnahme = () => {
@@ -129,6 +131,7 @@ class KonversationListEntry extends Component {
                 })
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
             })
+        setTimeout(this.refreshPage,100)
     }
 
     openErstelleLerngruppeDialog = () => {
@@ -155,6 +158,10 @@ class KonversationListEntry extends Component {
         this.setState({
           showProfilPopUp: false
         });
+    }
+
+    refreshPage = () => {
+        window.location.reload()
     }
 
     componentDidMount() {

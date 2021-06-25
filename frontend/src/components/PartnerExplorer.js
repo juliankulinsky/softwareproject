@@ -88,6 +88,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     entscheidungFalse = () => {
@@ -97,6 +98,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     updatePartnervorschlag = () => {
@@ -128,6 +130,10 @@ class PartnerExplorer extends Component {
             updatingInProgress: true,
             updatingError: null
         })
+    }
+
+    refreshPage = () => {
+        window.location.reload()
     }
 
     componentDidMount() {
