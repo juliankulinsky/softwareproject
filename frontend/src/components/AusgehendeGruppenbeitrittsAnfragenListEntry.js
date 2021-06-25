@@ -11,7 +11,11 @@ import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 //import AccountList from './AccountList';
 
-
+/**
+ * Rendert eine ausgehende Gruppenbeitrittsanfrage mit der Option, diese zurückzuziehen.
+ * Es handelt sich um ein spezifisches GruppenVorschlagBO-Objekt, das als Props übergeben wurde,
+ * welches durch den "Zurückziehen"-Button bearbeitet werden kann.
+ */
 class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +28,7 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
         }
     }
 
+    /** Lädt das LerngruppeBO des übergebenen GruppenVorschlags aus dem Backend */
     getLerngruppe = () => {
         StudooAPI.getAPI().getLerngruppe(this.state.anfrage.getGruppenID())
             .then(lerngruppe => {
@@ -33,6 +38,10 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
             })
     }
 
+    /**
+     * Updaten des GruppenVorschlagBO ausgelöst durch den "Zurückziehen"-Button, wobei die Matchpoints um 1 niedriger
+     * gesetzt werden, was bedeutet, dass die ausgehende GruppenBeitrittsAnfrage zurückgezogen wird.
+     */
     updateGruppenvorschlagsAnfrage = () => {
         this.setState({
             buttonPressed: true
@@ -57,10 +66,15 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getLerngruppe()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {anfrage, lerngruppe, buttonPressed} = this.state;
@@ -92,7 +106,7 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
 
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

@@ -13,7 +13,9 @@ import EingehendeKonversationsAnfragenListEntry from "./EingehendeKonversationsA
 import EingehendeGruppenbeitrittsAnfragenListEntry from "./EingehendeGruppenbeitrittsAnfragenListEntry";
 //import AccountList from './AccountList';
 
-
+/**
+ * Kontrolliert eine Liste von EingehendeKonversationsAnfragenListEntrys und EingehendeGruppenbeitrittsAnfragenListEntrys
+ */
 class EingehendeAnfragenList extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +26,11 @@ class EingehendeAnfragenList extends Component {
         }
     }
 
+    /**
+     * Lädt alle eingehenden KonversationsAnfragen einer Person aus dem Backend, also alle PartnervorschlagBOs,
+     * bei der die aktuelle Person teilnimmt, die andere Person des Vorschlags sich für den Vorschlag entschieden hat
+     * und die aktuelle Person noch keine Entscheidung getroffen hat.
+     */
     getEingehendeKonversationsAnfragen = () => {
         StudooAPI.getAPI().getEingehendePartnerVorschlaegeForPersonID(this.props.person.getID())
             .then(anfragen => {
@@ -33,6 +40,12 @@ class EingehendeAnfragenList extends Component {
             })
     }
 
+    /**
+     * Lädt alle eingehenden GruppenbeitrittsAnfragen einer Person aus dem Backend, also alle GruppenvorschlagBOs,
+     * bei der die aktuelle Person teilnimmt, die Gruppe des Vorschlags sich für den Vorschlag entschieden hat und die
+     * aktuelle Person noch keine Entscheidung getroffen hat.
+     * Dies kommt nur vor, wenn eine andere Person in einem Partnerchat mit der aktuellen Person eine Gruppe erstellt.
+     */
     getEingehendeGruppenbeitrittsAnfragen = () => {
         StudooAPI.getAPI().getEingehendeGruppenVorschlaegeForPersonID(this.props.person.getID())
             .then(anfragen => {
@@ -42,12 +55,16 @@ class EingehendeAnfragenList extends Component {
             })
     }
 
-
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getEingehendeKonversationsAnfragen();
         this.getEingehendeGruppenbeitrittsAnfragen()
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { eingehendeKonversationsAnfragen, eingehendeGruppenbeitrittsAnfragen } = this.state;

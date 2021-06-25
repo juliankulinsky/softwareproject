@@ -4,7 +4,9 @@ import { withStyles, Typography, Box} from '@material-ui/core';
 import {StudooAPI} from "../api";
 import GruppenAnfragenListEntry from "./GruppenAnfragenListEntry";
 
-
+/**
+ * Kontrolliert eine Liste von GruppenAnfragenListEntrys
+ */
 class GruppenAnfragenList extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +18,9 @@ class GruppenAnfragenList extends Component {
     }
 
     /**
-     * Alle Gruppenbetrittsanfragen auslesen
+     * Lädt alle eingehende Gruppenanfragen einer Gruppe, also alle GruppenVorschlagBOs, bei denen die Entscheidung der
+     * Person des Vorschlags getroffen wurde (true ist), die Matchpoints auf 1 sind (also die Person sich für den
+     * Vorschlag entschieden hat) und die Gruppe sich noch nicht entschieden hat.
      */
     getAlleGruppenbeitrittsAnfragen = () => {
         StudooAPI.getAPI().getEingehendeGruppenVorschlaegeForGruppenID(this.props.lerngruppe.getID())
@@ -27,11 +31,15 @@ class GruppenAnfragenList extends Component {
             })
     }
 
-
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getAlleGruppenbeitrittsAnfragen()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {gruppenBeitrittsAnfragen, lerngruppe} = this.state;
@@ -66,7 +74,7 @@ class GruppenAnfragenList extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

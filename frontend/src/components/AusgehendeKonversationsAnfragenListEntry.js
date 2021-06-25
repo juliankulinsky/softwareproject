@@ -12,7 +12,11 @@ import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import PopUpProfil from "./dialogs/PopUpProfil";
 //import AccountList from './AccountList';
 
-
+/**
+ * Rendert eine ausgehende KonversationsAnfrage mit der Option, diese zurückzuziehen.
+ * Es handelt sich um ein spezifisches PartnerVorschlagBO-Objekt, das als Props übergeben wurde,
+ * welches durch den "Zurückziehen"-Button bearbeitet werden kann.
+ */
 class AusgehendeKonversationsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +30,11 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
         }
     }
 
+    /**
+     * Lädt die andere Person des PartnerVorschlagBO aus dem Backend. Falls die "Person" des Vorschlags die aktuelle
+     * Person ist, wird der "Partner" des Vorschlags geladen, und falls der "Partner" des Vorschlags die aktuelle Person
+     * ist, wird die "Person" des Vorschlags geladen.
+     */
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.anfrage.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.anfrage.getPartnerID())
@@ -42,6 +51,10 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
         }
     }
 
+    /**
+     * Updaten des PartnerVorschlagBO ausgelöst durch den "Zurückziehen"-Button, wobei die Matchpoints um 1 niedriger
+     * gesetzt werden, was bedeutet, dass die ausgehende KonversationsAnfrage zurückgezogen wird.
+     */
     updateKonversationsAnfrage = () => {
         this.setState({
             buttonPressed: true
@@ -66,24 +79,30 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
         })
     }
 
-    /** Handles the onClick event of the Popup person button */
-        popUpButtonClicked = (event) => {
+    /** Handhabt das onClick-Event des Popup-Person-Buttons */
+    popUpButtonClicked = (event) => {
         event.stopPropagation();
         this.setState({
           showProfilPopUp: true
         });
     }
 
+    /** Handhabt das Schließen des Popup-Person-Buttons */
     popUpClosed = (event) => {
         this.setState({
           showProfilPopUp: false
         });
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getAnderePerson()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {anfrage, anderePerson, buttonPressed,showProfilPopUp} = this.state;
@@ -121,7 +140,7 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
 
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
