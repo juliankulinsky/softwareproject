@@ -20,7 +20,7 @@ class Nachricht(bo.BusinessObject):
         return self._inhalt
 
     def set_inhalt(self, inhalt: str):
-        """Festlegen des Inhalts einer Nachricht"""
+        """Setzen des Inhalts einer Nachricht"""
         self._inhalt = inhalt
 
     def get_absender_id(self):
@@ -28,7 +28,7 @@ class Nachricht(bo.BusinessObject):
         return self._absender_id
 
     def set_absender_id(self, absender_id: int):
-        """Festlegen der Absender_ID einer Nachricht"""
+        """Setzen der Absender_ID einer Nachricht"""
         self._absender_id = absender_id
 
     def get_konversation_id(self):
@@ -36,7 +36,7 @@ class Nachricht(bo.BusinessObject):
         return self._konversation_id
 
     def set_konversation_id(self, konversation_id: int):
-        """Festlegen der Konversation_ID einer Nachricht"""
+        """Setzen der Konversation_ID einer Nachricht"""
         self._konversation_id = konversation_id
 
     """Im Folgenden werden weitere Funktionen definiert"""

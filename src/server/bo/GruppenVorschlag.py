@@ -11,15 +11,19 @@ class GruppenVorschlag(vo.Vorschlag):
         self._entscheidung_gruppe = False  # Ob die Gruppe schon eine Entscheidung zum Vorschlag getroffen hat
 
     def get_gruppen_id(self):
+        """Auslesen der Gruppen ID"""
         return self._gruppen_id
 
     def set_gruppen_id(self, gruppen_id: int):
+        """Setzen der Gruppen ID"""
         self._gruppen_id = gruppen_id
 
     def get_entscheidung_gruppe(self):
+        """Auslesen der Entscheidung der Gruppe"""
         return self._entscheidung_gruppe
 
     def set_entscheidung_gruppe(self, entscheidung_getroffen: bool):
+        """Setzen der der Enscheidung der Gruppe"""
         self._entscheidung_gruppe = entscheidung_getroffen
 
     def __str__(self):
