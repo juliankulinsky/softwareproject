@@ -35,6 +35,7 @@ class ProfilVorschau extends Component {
     // Init an empty state
     this.state = {
       person: null,
+      deleteButtonPressed: false,
       error: null,
       loadingInProgress: false
     };
@@ -56,6 +57,9 @@ class ProfilVorschau extends Component {
 	}
 
 	deletePerson = () => {
+      this.setState({
+          deleteButtonPressed: true,
+      })
       StudooAPI.getAPI().deletePerson(this.props.person.getID())
     }
 
@@ -67,7 +71,7 @@ class ProfilVorschau extends Component {
   /** Renders the component */
   render() {
     const {classes, user, selfperson} = this.props;
-    const { person, loadingInProgress, error } = this.state;
+    const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
 
     return (
         <div className={classes.root}>
@@ -85,7 +89,7 @@ class ProfilVorschau extends Component {
           }
           {
             selfperson ?
-                <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
+                <Button disabled={deleteButtonPressed} variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
                       Profil löschen
                 </Button>
                 : null

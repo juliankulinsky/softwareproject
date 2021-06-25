@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { Box } from '@material-ui/core';
 import {StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
 
 
 class TeilnehmerList extends Component {
@@ -22,6 +16,9 @@ class TeilnehmerList extends Component {
         }
     }
 
+    /**
+     * Alle Gruppenteilnehmer auslesen
+     */
     getAlleGruppenTeilnahmenForGruppe = () => {
         StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
             .then(gruppenTeilnahmen => {
@@ -43,8 +40,8 @@ class TeilnehmerList extends Component {
             <Typography>
                 {
                     alleGruppenTeilnahmen ?
-                        <Typography>
-                            Das sind alle Gruppenteilnehmer: <br/><br/>
+                        <Box>
+                            <Typography variant="h6" style={{marginTop: "2%", marginBottom: "2%"}}>Gruppenmitglieder</Typography>
                             {
                                 alleGruppenTeilnahmen.map(gruppenteilnahme =>
                                     <TeilnehmerListEntry
@@ -54,7 +51,7 @@ class TeilnehmerList extends Component {
                                     />
                                 )
                             }
-                        </Typography>
+                        </Box>
                         :
                         null
                 }
@@ -72,9 +69,7 @@ const styles = theme => ({
 
 /** PropTypes */
 TeilnehmerList.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(TeilnehmerList);
