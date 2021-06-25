@@ -166,7 +166,9 @@ class App extends React.Component {
 														<>
 															<Registrieren person={currentPersonBO} user={currentUser}/>
 														</>
+
 														:
+
 														<>
 															<HeaderComplete user={currentUser}/>
 																{/**

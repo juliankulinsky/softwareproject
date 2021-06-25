@@ -63,6 +63,9 @@ class KonversationenList extends Component {
 
     setAktuelleKonversation = (konversation) => {
         this.setState({
+            aktuellekonversation: null
+        })
+        this.setState({
             aktuellekonversation: konversation
         })
     }
@@ -72,15 +75,15 @@ class KonversationenList extends Component {
     }
 
     Chats = () => {
-        let konversationen = this.state.konversationen
-
+        const konversationen = this.state.konversationen
 
         if (konversationen.length === 0) {
             return <Typography>Du nimmst an keinen Konversationen teil.</Typography>
+
         } else return konversationen.map(konversation =>
             <Card>
                 <ButtonBase
-                    onClick={(event) => this.setAktuelleKonversation(konversation)}>
+                    onClick={() => this.setAktuelleKonversation(konversation)}>
 
                     <KonversationListEntry
                         key={konversation.getID()}
@@ -93,7 +96,7 @@ class KonversationenList extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, person} = this.props;
         const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
 
         return (
@@ -119,8 +122,9 @@ class KonversationenList extends Component {
                                     {/*KonversationsID: {konversation.getID()}*/}
 
                                     <NachrichtenList
+                                        key={aktuellekonversation.getID()}
                                         konversation={aktuellekonversation}
-                                        currentPerson={this.props.person}
+                                        currentPerson={person}
                                     />
                                 </Card>
 

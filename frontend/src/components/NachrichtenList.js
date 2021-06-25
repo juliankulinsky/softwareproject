@@ -27,7 +27,6 @@ class NachrichtenList extends Component {
         super(props);
 
         this.state = {
-            konversation: props.konversation,
             nachrichten: [],
             person: props.person,
             neueNachricht: null,
@@ -64,19 +63,19 @@ class NachrichtenList extends Component {
 
         let error = false;
         if (value.trim().length === 0) {
-            error= true;
+            error=true;
         }
 
         this.setState({
-            [event.target.id]: event.target.value,
-            [event.target.id + 'ValidationFailed']: error,
-            [event.target.id + 'Edited']: true
+            neueNachricht: value,
+            neueNachrichtValidationFailed: error,
+            neueNachrichtEdited: true
         })
     }
 
     addNachricht = () => {
         let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.currentPerson.getID(),
-            this.state.konversation.getID());
+            this.props.konversation.getID());
 
         StudooAPI.getAPI().addNachricht(newNachricht)
             .then(nachricht => {
@@ -91,14 +90,28 @@ class NachrichtenList extends Component {
             addingInProgress: true,
             addingError: null
         })
+
+        let tempNachrichten = this.state.nachrichten
+        tempNachrichten.push(newNachricht)
+        this.setState({
+            nachrichten:tempNachrichten,
+            neueNachricht:"",
+            neueNachrichtValidationFailed: false,
+            neueNachrichtEdited: false
+        })
     }
 
     componentDidMount() {
         this.getNachrichten();
+        this.interval = setInterval(() => this.getNachrichten(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     Anzeige = () => {
-        let nachrichten = this.state.nachrichten
+        const nachrichten = this.state.nachrichten
 
         if (nachrichten.length===0) {
             return <Typography>
@@ -115,7 +128,6 @@ class NachrichtenList extends Component {
                             />)
     }
 
-
     render() {
         const {classes} = this.props;
         const {nachrichten=[], error, loadingInProgress, neueNachricht, neueNachrichtValidationFailed,
@@ -126,7 +138,6 @@ class NachrichtenList extends Component {
                     this.Anzeige()
                 }
 
-                <LoadingProgress show={loadingInProgress} />
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getNachrichten}
