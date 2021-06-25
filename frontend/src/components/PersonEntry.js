@@ -103,7 +103,7 @@ class PersonEntry extends Component {
 
   /** Renders the component */
   render() {
-    const marksLerntyp = [{value: 1, label: 'Auditiv',},{value: 2, label: 'Motorisch',},,{value: 3,
+    const marksLerntyp = [{value: 1, label: 'Motorisch',},{value: 2, label: 'Auditiv',},,{value: 3,
       label: 'Kommunikativ',}, {value: 4, label: 'Visuell',}]
     const marks = [{value: 1, label: '1',},{value: 2, label: '2',},,{value: 3,
       label: '3',}, {value: 4, label: '4',}, {value: 5, label: '5',}]
@@ -154,7 +154,7 @@ class PersonEntry extends Component {
                         {
                           person ?
                               <Grid container>
-                                <Grid xs={8} className={classes.pers}>
+                                <Grid xs={12} className={classes.pers}>
                                   <Typography>
                                     Alter:
                                     {
@@ -162,7 +162,7 @@ class PersonEntry extends Component {
                                     }
                                   </Typography>
                                 </Grid>
-                                <Grid xs={4} className={classes.pers}>
+                                <Grid xs={12} className={classes.pers}>
                                 <Typography>
                                   Wohnort:
                                   {
