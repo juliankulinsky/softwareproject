@@ -41,6 +41,9 @@ class ProfilVorschau extends Component {
     };
   }
 
+  /**
+   * API Call eines Person Objekts aus der Datenbank anhand der Google User ID des aktuell angemeldeten Benutzer
+   * */
   getCurrentPerson = () => {
     StudooAPI.getAPI().getPersonByUID(this.props.person.getGoogleUserID())
         .then(personBO => {
@@ -56,6 +59,7 @@ class ProfilVorschau extends Component {
         }));
 	}
 
+
 	deletePerson = () => {
       this.setState({
           deleteButtonPressed: true,
@@ -63,12 +67,12 @@ class ProfilVorschau extends Component {
       StudooAPI.getAPI().deletePerson(this.props.person.getID())
     }
 
-  /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
+  /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
   componentDidMount() {
     this.getCurrentPerson()
   }
 
-  /** Renders the component */
+  /** Rendern der Komponente ProfilVorschau */
   render() {
     const {classes, user, selfperson} = this.props;
     const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
@@ -84,6 +88,7 @@ class ProfilVorschau extends Component {
             */}
             {
             person ?
+                /** Aufruf der Komponente AktuellesProfil mit den Properties person und selfperson */
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
@@ -103,7 +108,7 @@ class ProfilVorschau extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     marginLeft: 'auto',

@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { withStyles, Typography, Slider, Card, CardContent, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import ProfilForm from "./dialogs/ProfilForm";
 import StudooAPI from "../api/StudooAPI";
 import LoadingProgress from "./dialogs/LoadingProgress";
 
 
 /**
- *  Displays all information of a single Person
+ *  Zeigt alle Informationen einer Person und deren Lernvorlieben an
  */
 class PersonEntry extends Component {
 
@@ -35,7 +34,7 @@ class PersonEntry extends Component {
     })
   }
 
-  /** Handles the onClick event of the edit person button */
+  /** Verarbeitet das onClick Event des Profil anpassen Buttons */
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
@@ -44,10 +43,8 @@ class PersonEntry extends Component {
     });
   }
 
-  /** Handles the onClose event of the ProfilForm */
+  /** Verarbeitet das onClose Event der ProfilForm der Person */
   profilFormClosed = (person) => {
-    console.log("Person", person)
-    // customer is not null and therefore changed
     if (person) {
       this.setState({
         person: person,
@@ -61,10 +58,8 @@ class PersonEntry extends Component {
     }
   }
 
-  /** Handles the onClose event of the ProfilForm */
+  /** Verarbeitet das onClose Event der ProfilForm des Profils */
   profilFormClosedP = (profil) => {
-
-    // customer is not null and therefore changed
     if (profil) {
       this.setState({
         profil: profil,
@@ -81,11 +76,10 @@ class PersonEntry extends Component {
       StudooAPI.getAPI().deletePerson(this.props.person.getID())
     }
 
-  /** Handles the onClose event of the ProfilForm */
+  /** Verarbeitet das onClose Event der ProfilForm der Lernvorlieben */
   profilFormClosedL = (lernvorliebe) => {
 
     this.setState({loadingInProgress: true})
-    // customer is not null and therefore changed
     if (lernvorliebe) {
       this.setState({
         lernvorliebe: lernvorliebe,
@@ -97,12 +91,11 @@ class PersonEntry extends Component {
         showProfilForm: false
       });
     }
-    console.log("Lernvorliebe", lernvorliebe)
-    //window.location.reload();
   }
 
-  /** Renders the component */
+  /** Rendert die Komponente */
   render() {
+    /** Legt die verschieden Beschriftungen der Slider fest */
     const marksLerntyp = [{value: 1, label: 'Motorisch',},{value: 2, label: 'Auditiv',},,{value: 3,
       label: 'Kommunikativ',}, {value: 4, label: 'Visuell',}]
     const marks = [{value: 1, label: '1',},{value: 2, label: '2',},,{value: 3,
@@ -121,16 +114,6 @@ class PersonEntry extends Component {
            <Card className={classes.root}>
             <CardContent justify-content="" >
               <Grid container spacing={3}>
-                  <Grid xs={12}>
-                    {/*
-                      selfperson ?
-                        <ButtonGroup variant='text' size='small'>
-                          <Button variant={"contained"} color='primary' onClick={this.editProfilButtonClicked}>
-                            edit
-                          </Button>
-                        </ButtonGroup>:null*/
-                    }
-                  </Grid>
                   <Grid item xs={6}>
                     {
                       person ?
@@ -204,55 +187,36 @@ class PersonEntry extends Component {
                                         <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
                                             Profil löschen
                                         </Button>: null
-
                                   }
-
                                 </Grid>
                               </Grid>:null
                         }
                       </Grid>
-                  </Grid>{
-               /* <Grid item xs={2}>
-
-                </Grid>
-              */}
+                  </Grid>
                   <Grid xs={5}>
                     {
                       lernvorliebe ?
                           <div className={classes.lern}>
-
                                 <Typography className={classes.setFontSize}>
                                   Lernvorlieben
                                 </Typography>
                             <div className={classes.slid}>
                                 <Typography className={classes.heading}>
                                   Lerntyp:&nbsp;
-                                  {/*
-                                    lernvorliebe.get_lerntyp()
-                                  */}
                                   <Slider value={lernvorliebe.get_lerntyp()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
                                           valueLabelDisplay="off"  step={1} marks={marksLerntyp} min={1} max={4}/>
                                   &nbsp;
                                   Frequenz:&nbsp;
-                                  {/*
-                                    lernvorliebe.get_frequenz()
-                                  */}
                                   <Slider value={lernvorliebe.get_frequenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
                                           valueLabelDisplay="off"  step={1} marks={marksfrequenz} min={1} max={5}/>
                                   &nbsp;
                                   Extrovertiertheit:&nbsp;
-                                  {/*
-                                    lernvorliebe.get_extrovertiertheit()
-                                  */}
                                   <Slider value={lernvorliebe.get_extrovertiertheit()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
                                           valueLabelDisplay="off"  step={1} marks={marksExtro} min={1} max={5}/>&nbsp;
                                   Remote/Präsenz:&nbsp;
-                                  {/*
-                                    lernvorliebe.get_remote_praesenz()
-                                  */}
                                   <Slider value={lernvorliebe.get_remote_praesenz()} getAriaValueText={this.valuetext}
                                           aria-labelledby="discrete-slider"
                                           valueLabelDisplay="off"  step={1} marks={marksRemote} min={1} max={5}/>&nbsp;
@@ -276,7 +240,10 @@ class PersonEntry extends Component {
                     }
                   </Grid>
                 </Grid>
-
+              {/** Aufruf der ProfilForm Komponente zum Bearbeiten der Informationen des Profils.
+               Properties welche übergeben werden sind: show, profil, person und lernvorlieben. Zusätzlich die
+               passenden OnClose Funktionen.
+               */}
           <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
                         onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP}
                         onCloseL={this.profilFormClosedL}  />
@@ -287,7 +254,7 @@ class PersonEntry extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

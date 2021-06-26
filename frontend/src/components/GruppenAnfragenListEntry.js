@@ -4,6 +4,7 @@ import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid }
 import { Button, ButtonGroup } from '@material-ui/core';
 import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css"
+import PopUpProfil from "./dialogs/PopUpProfil";
 
 /**
  * Rendert eine GruppenAnfrage mit der Option diese anzunehmen oder abzulehnen.
@@ -116,7 +117,7 @@ class GruppenAnfragenListEntry extends Component {
     /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, buttonPressed, anfragendePerson} = this.state;
+        const {anfrage, buttonPressed, anfragendePerson, showProfilPopUp} = this.state;
 
         return (
             <>

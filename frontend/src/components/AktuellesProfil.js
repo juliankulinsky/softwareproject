@@ -38,7 +38,7 @@ class AktuellesProfil extends Component {
     }
 
     /**
-     * API call get the Profil of the current Person by the ProfilId stored in the PersonBO
+     * API Call eines Profil Objektes der angemeldeten Person anhand der Profil ID welche in PersonBO gespeichert ist
      * */
     getProfil = () => {
         StudooAPI.getAPI().getProfil(this.props.person.getProfilId())
@@ -60,7 +60,7 @@ class AktuellesProfil extends Component {
         });
     }
 
-    /** Lifecycle Method which is called when the component is rendered on DOM */
+    /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
     componentDidMount() {
     this.getProfil();
     }
@@ -78,6 +78,7 @@ class AktuellesProfil extends Component {
                 }
                 {
                     profil ?
+                        /** Aufruf der Komponente EineLernvorliebe mit den Properties lvId, person, profil und selfperson */
                         <EineLernvorliebe lvId={profil.getLernvorliebeID()} person={person} profil={profil} selfperson={selfperson} />
                     : null
                 }
@@ -91,7 +92,7 @@ class AktuellesProfil extends Component {
 }
 
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
