@@ -20,11 +20,10 @@ from flask_restx import Api, Resource, fields, namespace
 # Um CORS zu ermöglichen benötigen wir das entsprechende Package
 from flask_cors import CORS
 
-# SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
+# Damit nur von Google authentifizierte User die Operationen durchführen können, benötigen wir den SecurityDecorator.
 from SecurityDecorator import secured
 
-# Mapper implementieren
-
+# Zunächst werden unsere BusinessObjects importiert
 from server.bo.ChatTeilnahme import ChatTeilnahme
 from server.bo.GruppenTeilnahme import GruppenTeilnahme
 from server.bo.GruppenVorschlag import GruppenVorschlag
@@ -42,20 +41,33 @@ from server.Admin import Admin
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
 """
+
+# Grundlegende App-Konfigurationen
 app = Flask(__name__)
 
+"""
+Alle Ressourcen mit dem Präfix /studoo für Cross-Origin Resource Sharing (CORS) freigeben.
+Diese Zeile setzt die Installation des Package flask-cors voraus.
+"""
 CORS(app, resources=r'/studoo/*')
 
+"""
+In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt, 
+auf deren Basis Clients und Server Daten austauschen. Grundlage hierfür ist das Package flask-restx.
+"""
 api = Api(app)
 
+"""Anlegen eines Namespace
+
+Namespaces erlauben die Strukturierung von APIs. In diesem Fall fasst dieser Namespace alle
+relevanten Operationen unter dem Präfix /studoo zusammen. """
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
-# CORS implementieren
-
 """
-Implementation Flask REST
+Nun folgt die Überführung der Strukturen des BusinessObjects in das api-Model.
+Dazu werden die BusinessObjects der jeweiligen Methode api.model() übergeben und die Parameter entsprechend den
+BusinessObjects-Attributen definiert. Diese Struktur wird im weiteren Verlauf für unsere API benötigt.
 """
-#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
 bo = api.model(
     'BusinessObject',
@@ -72,8 +84,6 @@ nachricht = api.inherit(
         "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
     }
 )
-
-### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
 gruppenteilnahme = api.inherit(
     "GruppenTeilnahme", bo,
@@ -172,9 +182,12 @@ gruppenvorschlag = api.inherit(
 )
 
 """
-API Routes
+Nun werden die API Routes festgelegt, damit das Frontend mit unseren Endpoints kommunizieren kann und die Daten 
+ausgelesen werden können.
+Genauer gesagt ist das die Service Layer, die einen RESTful Service darstellt. Über vordefinierte HTTP-Anfragemethoden
+können Daten von der Datenbank an den Client übergeben werden.
+Folgende Anfragenmethoden sind dabei möglich: GET, POST, PUT, DELETE.
 """
-
 
 @studoo.route('/nachrichten')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
