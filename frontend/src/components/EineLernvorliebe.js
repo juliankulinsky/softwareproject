@@ -57,37 +57,15 @@ class EineLernvorliebe extends Component {
         });
     }
 
-    /** Verarbeitet das onClick event of the edit person button */
-    editProfilButtonClicked = (event) => {
-        event.stopPropagation();
-        this.setState({
-            showProfilForm: true
-        });
-    }
-
-    /** Handles the onClose event of the ProfilForm */
-    profilFormClosed = (person) => {
-        // customer is not null and therefor changed
-        if (person) {
-            this.setState({
-                person: person,
-                showProfilForm: false
-            });
-        } else {
-            this.setState({
-                showProfilForm: false
-            });
-        }
-    }
-
     /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
     componentDidMount() {
         this.getLernvorliebe();
     }
 
+    /** Rendern der Komponente EineLernvorliebe */
     render() {
-        const {classes, selfperson, profil} = this.props;
-        const {lernvorliebe, person, error, showProfilForm, loadingInProgress} = this.state;
+        const {selfperson, profil} = this.props;
+        const {lernvorliebe, person, error, loadingInProgress} = this.state;
 
         return (
             <div>

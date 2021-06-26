@@ -93,19 +93,18 @@ class PersonEntry extends Component {
     }
   }
 
-  /** Rendert die Komponente */
+  /** Rendern der Komponente PersonEntry */
   render() {
     /** Legt die verschieden Beschriftungen der Slider fest */
     const marksLerntyp = [{value: 1, label: 'Motorisch',},{value: 2, label: 'Auditiv',},,{value: 3,
       label: 'Kommunikativ',}, {value: 4, label: 'Visuell',}]
-    const marks = [{value: 1, label: '1',},{value: 2, label: '2',},,{value: 3,
-      label: '3',}, {value: 4, label: '4',}, {value: 5, label: '5',}]
     const marksfrequenz = [{value: 1, label: 'Selten',},{value: 2, label: '',},,{value: 3,
       label: '',}, {value: 4, label: '',}, {value: 5, label: 'häufig',}]
     const marksExtro = [{value: 1, label: 'Introvertiert',},{value: 2, label: '',},,{value: 3,
       label: '',}, {value: 4, label: '',}, {value: 5, label: 'Extrovertiert',}]
     const marksRemote = [{value: 1, label: 'Präsenz',},{value: 2, label: '',},,{value: 3,
       label: '',}, {value: 4, label: '',}, {value: 5, label: 'Remote',}]
+
     const {classes, selfperson, show} = this.props;
     // Use the states customer
     const {person, profil, lernvorliebe, showProfilForm, loadingInProgress} = this.state;

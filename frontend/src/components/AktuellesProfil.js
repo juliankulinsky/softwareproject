@@ -65,17 +65,12 @@ class AktuellesProfil extends Component {
     this.getProfil();
     }
 
-
+  /** Rendern der Komponente AktuellesProfil */
     render() {
         const {classes, selfperson} = this.props;
         const {profil, person, error, loadingInProgress} = this.state;
         return (
             <div>
-                {/*
-                    person ?
-                        <PersonEntry person={person}/>
-                    : null*/
-                }
                 {
                     profil ?
                         /** Aufruf der Komponente EineLernvorliebe mit den Properties lvId, person, profil und selfperson */

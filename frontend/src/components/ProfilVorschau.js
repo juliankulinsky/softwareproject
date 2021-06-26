@@ -79,26 +79,11 @@ class ProfilVorschau extends Component {
 
     return (
         <div>
-            {/*
-                user ?
-                    <IconButton className={classes.avatarButton}>
-                        <Avatar src={user.photoURL}/>
-                    </IconButton>
-                    :null
-            */}
             {
             person ?
                 /** Aufruf der Komponente AktuellesProfil mit den Properties person und selfperson */
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
-          }
-          {/*
-            selfperson ?
-                <Button disabled={deleteButtonPressed} variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
-                      Profil löschen
-                </Button>
-                : null
-                */
           }
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
