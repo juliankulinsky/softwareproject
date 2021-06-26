@@ -5,7 +5,9 @@ import { Box } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
 
-
+/**
+ * Kontrolliert eine Liste an TeilnehmerListEntrys
+ */
 class TeilnehmerList extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,7 @@ class TeilnehmerList extends Component {
     }
 
     /**
-     * Alle Gruppenteilnehmer auslesen
+     * Alle GruppenTeilnahmeBOs einer übergebenen Lerngruppe aus dem Backend auslesen.
      */
     getAlleGruppenTeilnahmenForGruppe = () => {
         StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
@@ -28,10 +30,15 @@ class TeilnehmerList extends Component {
             })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getAlleGruppenTeilnahmenForGruppe()
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { lerngruppe, alleGruppenTeilnahmen } = this.state;
@@ -60,7 +67,7 @@ class TeilnehmerList extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

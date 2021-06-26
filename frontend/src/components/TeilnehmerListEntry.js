@@ -5,7 +5,10 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import PopUpProfil from "./dialogs/PopUpProfil";
 
-
+/**
+ * Rendert einen Teilnehmer, mit der Option diesen aus der Gruppe zu entfernen, falls die Teilnehmer-PersonBO nicht
+ * die aktuelle Person ist. Das Entfernen geschieht über den "Entfernen"-Button
+ */
 class TeilnehmerListEntry extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +23,7 @@ class TeilnehmerListEntry extends Component {
     }
 
     /**
-     * Die aktuellen Teilnehmer der entsprechenden Gruppen auslesen
+     * Das PersonBO des Teilnehmers der übergebenen GruppenTeilnahme aus dem Backend auslesen.
      */
     getAktuellenTeilnehmer = () => {
         StudooAPI.getAPI().getPerson(this.state.aktuelleGruppenTeilnahme.get_person_id())
@@ -32,7 +35,8 @@ class TeilnehmerListEntry extends Component {
     }
 
     /**
-     * Die aktuellen Teilnehmer der entsprechenden Gruppen entfernen
+     * Durch den Button "Verwalten" aufgerufene Funktion, durch die die aktuelle GruppenTeilnahmeBO, sowie die zur
+     * Gruppe gehörende ChatTeilnahmeBO im Backend gelöscht wird.
      */
     deleteAktuelleTeilnahme = () => {
         StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.aktuelleGruppenTeilnahme.getID())
@@ -49,7 +53,7 @@ class TeilnehmerListEntry extends Component {
     }
 
     /**
-     * Event für Klicken auf den Button (öffnen)
+     * Event für Klicken auf den Person-Button (öffnen), zum Anschauen des Profils des Teilnehmers
      */
     popUpButtonClicked = (event) => {
         event.stopPropagation();
@@ -59,7 +63,7 @@ class TeilnehmerListEntry extends Component {
     }
 
     /**
-     * Event für Klicken auf den Button (schließen)
+     * Handhabt das Schließen des Profil-Popups
      */
     popUpClosed = (event) => {
         this.setState({
@@ -67,11 +71,15 @@ class TeilnehmerListEntry extends Component {
         });
     }
 
-
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getAktuellenTeilnehmer()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const { teilnehmerPerson, buttonPressed, showProfilPopUp } = this.state;
@@ -103,7 +111,7 @@ class TeilnehmerListEntry extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

@@ -16,6 +16,10 @@ import UpdateGruppennameDialog from "./dialogs/UpdateGruppennameDialog";
 import "./components-theme.css";
 import CloseIcon from "@material-ui/icons/Close";
 
+/**
+ * Rendert ein LerngruppeBO, mit der Möglichkeit mit dem "Teilnahme beenden"-Button die eigene Teilnahme zu dieser
+ * Gruppe zu beenden, und falls man Admin der Gruppe ist, kann diese Gruppe über den "Verwalten"-Button verwaltet werden
+ */
 class LerngruppeListEntry extends Component {
 
     constructor(props) {
@@ -31,7 +35,7 @@ class LerngruppeListEntry extends Component {
         }
     }
 
-    /** Lädt das Profil der als Props übergebenen Lerngruppe und setzt dieses und die Beschreibung als state */
+    /** Lädt das ProfilBO der als Props übergebenen Lerngruppe und setzt dieses als state */
     getGruppenprofil = () => {
         StudooAPI.getAPI().getProfil(this.props.lerngruppe.getProfilId())
             .then(profil => {
@@ -42,7 +46,8 @@ class LerngruppeListEntry extends Component {
       }
 
     /**
-     * Um schauen zu können, ob man Admin in der Gruppe ist
+     * Lädt das eigene GruppenTeilnahmeBO durch die ID der aktuellen Person und der ID der übergebenen Lerngruppe
+     * Dies wird gemacht, um schauen zu können, ob die aktuelle Person Admin der Gruppe ist.
      */
     getEigeneGruppenTeilnahme = () => {
         StudooAPI.getAPI().getGruppenTeilnahmeByPersonIDundGruppenID(this.props.currentperson.getID(),this.props.lerngruppe.getID())
@@ -54,7 +59,8 @@ class LerngruppeListEntry extends Component {
     }
 
     /**
-     * Um die eigene Teilnahme einer Lerngruppe zu löschen
+     * Löschen der eigenen GruppenTeilnahmeBO an der Lerngruppe und der dazugehörenden ChatTeilnahmeBO im Backend,
+     * aufgerufen durch den "Teilnahme beenden"-Button
      */
     deleteTeilnahme = () => {
         this.setState({
@@ -68,7 +74,7 @@ class LerngruppeListEntry extends Component {
     }
 
     /**
-     * Änderung für Gruppennamen über einen sich öffnenden Dialog
+     * Handhabt das Öffnen des Dialogs, um den Gruppenname und die Gruppenbeschreibung ändern zu können
      */
     openUpdateGruppennameDialog = () => {
         this.setState({
@@ -77,7 +83,7 @@ class LerngruppeListEntry extends Component {
     }
 
     /**
-     * Den Gruppennamen-Dialog schließen
+     * Handhabt das Schließen des Dialogs, um den Gruppenname und die Gruppenbeschreibung ändern zu können
      */
     updateGruppennameDialogClosed = () => {
         this.setState({
@@ -86,7 +92,7 @@ class LerngruppeListEntry extends Component {
     }
 
     /**
-     * Den Verwaltungs-Dialog schließen
+     * Handhabt das Schließen des Verwaltungs-Dialog schließen
      */
     handleClose = () => {
         // Reset the state
@@ -96,7 +102,7 @@ class LerngruppeListEntry extends Component {
     }
 
     /**
-     * Den Verwaltungs-Dialog öffnen
+     * Handhabt das Öffnen des Verwaltungs-Dialog schließen
      */
     handleOpen = () => {
         this.setState({
@@ -104,11 +110,16 @@ class LerngruppeListEntry extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getGruppenprofil()
         this.getEigeneGruppenTeilnahme()
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { lerngruppe, gruppenprofil, eigeneGruppenTeilnahme, beendenButtonPressed, showUpdateGruppennameDialog, open } = this.state;
@@ -200,7 +211,7 @@ class LerngruppeListEntry extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
