@@ -81,3 +81,11 @@
     box-shadow: 5px 5px 5px lightgray;
     width: 90%;
 }
+
+.anfragencard {
+    margin-top: 5%;
+}
+
+.buttonAlign {
+    text-align:center;
+}
