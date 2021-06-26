@@ -161,16 +161,16 @@ class PartnerExplorer extends Component {
                                 <CancelIcon fontSize="large"/>
                             </Fab>
 
+                            <div className="partnercard">
+                                <Typography variant="h4">
+                                          {/*  Dein Vorschlag!
+
                             <Card>
-                                <CardContent className="partnercard">
-                                    <div>
-                                        <Typography variant="h3">
-                                            It's a match! &#127881;
-                                        </Typography>
-                                        <Typography variant="h4">
-                                            {anderePerson.getName()}, {anderePerson.getAlter()}
-                                            <ProfilVorschau person={anderePerson} selfperson={false}/>
-                                        </Typography>
+                                <CardContent className="partnercard">*/}
+
+                                        <ProfilVorschau person={anderePerson} selfperson={false}/>
+                                            {/*anderePerson.getName()}, {anderePerson.getAlter()
+
                                         <Typography variant="subtitle1">
                                             Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
                                         </Typography>
@@ -182,14 +182,16 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                         <Typography variant="h5">
                                             Happy Learning! &#128640;
-                                        </Typography>
+                                        </Typography>*/}
+                                    </Typography>
                                     </div>
-
-                                    <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                         {/*
+                                        <div>
+                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        </div>
+                                    */}
+                            {/*</CardContent>
+                            </Card>*/}
 
                             <Fab disabled={this.state.buttonPressed}
                                     onClick={this.entscheidungTrue} size="large" className="buttonTrue">
@@ -223,9 +225,11 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                     </div>
 
-                                    <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                    </div>
+                                    {/*
+                                        <div>
+                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        </div>
+                                    */}
                                 </CardContent>
                             </Card>
 

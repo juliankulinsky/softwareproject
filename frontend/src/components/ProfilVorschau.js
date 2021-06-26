@@ -74,27 +74,27 @@ class ProfilVorschau extends Component {
     const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
 
     return (
-        <div className={classes.root}>
-            {
+        <div>
+            {/*
                 user ?
                     <IconButton className={classes.avatarButton}>
                         <Avatar src={user.photoURL}/>
                     </IconButton>
                     :null
-            }
+            */}
             {
             person ?
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
-          {
+          {/*
             selfperson ?
                 <Button disabled={deleteButtonPressed} variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
                       Profil löschen
                 </Button>
                 : null
+                */
           }
-
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getCurrentPerson}/>
@@ -106,11 +106,16 @@ class ProfilVorschau extends Component {
 /** Component specific styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   personFilter: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
+  },
+  avatarButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   }
 });
 

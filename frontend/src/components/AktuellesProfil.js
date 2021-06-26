@@ -70,11 +70,7 @@ class AktuellesProfil extends Component {
         const {classes, selfperson} = this.props;
         const {profil, person, error, loadingInProgress} = this.state;
         return (
-            <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                    </Grid>
-                </Grid>
+            <div>
                 {/*
                     person ?
                         <PersonEntry person={person}/>

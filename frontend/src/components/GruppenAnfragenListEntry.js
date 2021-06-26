@@ -20,7 +20,8 @@ class GruppenAnfragenListEntry extends Component {
             anfragendePerson: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
             entscheidung: null,
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
@@ -90,6 +91,20 @@ class GruppenAnfragenListEntry extends Component {
             })
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     /**
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
@@ -108,10 +123,18 @@ class GruppenAnfragenListEntry extends Component {
                 {
                     (anfrage && anfragendePerson) ?
                         <div className="anfrageRequest">
+                            {/*
                             <Typography style={{display: 'flex', alignItems: 'center'}}>
                                 {anfragendePerson.getName()}
-                            </Typography>
+                            </Typography>*/}
 
+                            <Typography style={{display: 'flex', alignItems: 'center'}}>
+                                Beitrittsanfrage von <Button onClick={this.popUpButtonClicked}>
+                                        {
+                                            anfragendePerson.getName()
+                                        }
+                                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </Typography>
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
@@ -121,7 +144,9 @@ class GruppenAnfragenListEntry extends Component {
                                     onClick={this.entscheidungFalse}>
                                 Ablehnen
                             </Button>
+                            <PopUpProfil show={showProfilPopUp} person={anfragendePerson}  onClose={this.popUpClosed} />
                         </div>
+
                         :
                         null
                 }
