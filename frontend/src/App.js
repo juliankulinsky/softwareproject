@@ -22,6 +22,7 @@ import ProfilForm from "./components/dialogs/ProfilForm";
 import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
+
 /**
  * The main studoo app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -171,7 +172,7 @@ class App extends React.Component {
 														<LernvorliebenList/>
 													</Route>
 													<Route path='/nachrichten'>
-														<NachrichtenList/>
+														<NachrichtenList person={currentPersonBO}/>
 													</Route>
 													<Route path='/konversationen'>
 														<KonversationenList person={currentPersonBO}/>
@@ -205,5 +206,4 @@ class App extends React.Component {
 		);
 	}
 }
-
 export default App;

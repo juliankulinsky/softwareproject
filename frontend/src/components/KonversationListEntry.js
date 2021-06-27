@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+    Box,
+    Container,
+    Grid,
     withStyles,
     Typography,
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    Grid,
-    TextField, Button
-} from '@material-ui/core';
+    TextField,
+    Button,
+    List,
+    ListItem,
+    Divider,
+    ListItemText,
+    ListItemAvatar,
+    Avatar}
+    from '@material-ui/core';
 import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
 import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
 import PopUpProfil from "./dialogs/PopUpProfil";
+import "./components-theme.css";
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -87,39 +97,6 @@ class KonversationListEntry extends Component {
         }
     }
 
-    textFieldValueChange = (event) => {
-        const value = event.target.value;
-
-        let error = false;
-        if (value.trim().length === 0) {
-            error= true;
-        }
-
-        this.setState({
-            [event.target.id]: event.target.value,
-            [event.target.id + 'ValidationFailed']: error,
-            [event.target.id + 'Edited']: true
-        })
-    }
-
-    addNachricht = () => {
-        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.person.getID(),
-            this.state.konversation.getID());
-        StudooAPI.getAPI().addNachricht(newNachricht)
-            .then(nachricht => {
-                this.setState(this.baseState)
-            }).catch(e =>
-        this.setState({
-            addingInProgress: false,
-            addingError: e
-        }));
-
-        this.setState({
-            addingInProgress: true,
-            addingError: null
-        })
-    }
-
     deleteChatTeilnahme = () => {
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
             .then(chatTeilnahme => {
@@ -168,64 +145,66 @@ class KonversationListEntry extends Component {
             neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
 
         return (
-            <div>
-                <Typography>
-                        ----------------- <br/>
-                        KonversationsID: {konversation.getID()} <br/>
-                    {
-                        lerngruppe ?
-                            <Typography>
-                                Gruppenchat von "{lerngruppe.getGruppenname()}"
-                            </Typography>
-                            : null
-                    }
-                    {
-                        chatpartner ?
-                            <>
-                                <Typography>
-                                    Chat mit:&nbsp;
-                                    <Button onClick={this.popUpButtonClicked}>
-                                        {
-                                            chatpartner.getName()
-                                        }
-                                    </Button> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
-                                        Chat löschen
-                                    </Button>
-                                    <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
-                                        Gruppe erstellen
-                                    </Button>
-                                    <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog} person={this.props.person} chatpartner={chatpartner} onClose={this.erstelleLerngruppeDialogClosed}/>
-                                </Typography>
-                            </>
-                            : null
-                    }
-                        -----------------
-                        <NachrichtenList
-                            currentPerson={this.props.person}
-                            konversation={konversation}
-                        />
-                    <br/>
-                    <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                    error={neueNachrichtValidationFailed}>
-                        Test
-                    </TextField>&nbsp;&nbsp;
-                    <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                    onClick={this.addNachricht}>
-                        Nachricht senden
-                    </Button>
-                    <br/>
+            <Container>
+                        <ListItem alignItems="flex-start">
 
-                <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
-                </Typography>
-            </div>
+                            <ListItemAvatar>
+                                <Avatar alt="Wir brauchen noch Bilder" src="/components/chat/avatardummy.png"/>
+                            </ListItemAvatar>
+
+                            <ListItemText
+                                primary = {
+                                    <>
+                                        {
+                                            lerngruppe ?
+                                                <Typography>
+                                                    {lerngruppe.getGruppenname()}
+                                                </Typography>
+                                                : null
+                                        }
+                                        {
+                                            chatpartner ?
+                                                <>
+                                                    <Typography>
+                                                        <Button onClick={this.popUpButtonClicked}>
+                                                            {
+                                                                chatpartner.getName()
+                                                            }
+                                                        </Button>  <br/>
+                                                        <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
+                                                            Gruppe erstellen
+                                                        </Button>
+                                                        <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog} person={this.props.person} chatpartner={chatpartner} onClose={this.erstelleLerngruppeDialogClosed}/>
+                                                        <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
+                                                            Chat löschen
+                                                        </Button>
+                                                    </Typography>
+                                                </>
+                                                : null
+                                        }
+                                    </>
+                                }
+
+                                secondary = {
+                                    <React.Fragment>
+                                        <Typography>
+                                            Klicke hier, um den Chat aufzurufen
+                                        </Typography>
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+
+                        <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
+            </Container>
         )
     }
 }
 
 const styles = theme => ({
     root: {
-        width: '1ßß%',
+        width: '100%',
+        flexGrow: 1
     }
 });
 

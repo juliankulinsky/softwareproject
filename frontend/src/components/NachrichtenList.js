@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     withStyles,
+    Container,
+    Card,
     Button,
     TextField,
     InputAdornment,
     IconButton,
     Grid,
     Typography,
-    Card,
     CardContent
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,6 +19,7 @@ import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import NachrichtListEntry from "./NachrichtListEntry";
+import {NachrichtBO} from "../api";
 
 class NachrichtenList extends Component {
 
@@ -25,8 +27,11 @@ class NachrichtenList extends Component {
         super(props);
 
         this.state = {
-            konversation: props.konversation,
             nachrichten: [],
+            person: props.person,
+            neueNachricht: null,
+            neueNachrichtValidationFailed: false,
+            neueNachrichtEdited: false,
             error: null,
             loadingInProgress: false
         }
@@ -53,18 +58,68 @@ class NachrichtenList extends Component {
         });
     }
 
+    textFieldValueChange = (event) => {
+        const value = event.target.value;
+
+        let error = false;
+        if (value.trim().length === 0) {
+            error=true;
+        }
+
+        this.setState({
+            neueNachricht: value,
+            neueNachrichtValidationFailed: error,
+            neueNachrichtEdited: true
+        })
+    }
+
+    addNachricht = () => {
+        let newNachricht = new NachrichtBO(this.state.neueNachricht, this.props.currentPerson.getID(),
+            this.props.konversation.getID());
+
+        StudooAPI.getAPI().addNachricht(newNachricht)
+            .then(nachricht => {
+                this.setState(this.baseState)
+            }).catch(e =>
+        this.setState({
+            addingInProgress: false,
+            addingError: e
+        }));
+
+        this.setState({
+            addingInProgress: true,
+            addingError: null
+        })
+
+        let tempNachrichten = this.state.nachrichten
+        tempNachrichten.push(newNachricht)
+        this.setState({
+            nachrichten:tempNachrichten,
+            neueNachricht:"",
+            neueNachrichtValidationFailed: false,
+            neueNachrichtEdited: false
+        })
+    }
+
     componentDidMount() {
         this.getNachrichten();
+        this.interval = setInterval(() => this.getNachrichten(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     Anzeige = () => {
-        let nachrichten = this.state.nachrichten
+        const nachrichten = this.state.nachrichten
+
         if (nachrichten.length===0) {
             return <Typography>
                         In dieser Konversation gibt es noch keine Nachrichten! <br/>
                         Sei der Erste!
                    </Typography>
         }
+
         else return nachrichten.map(nachricht =>
                             <NachrichtListEntry
                                 key={nachricht.getID()}
@@ -73,23 +128,37 @@ class NachrichtenList extends Component {
                             />)
     }
 
-
     render() {
         const {classes} = this.props;
-        const {nachrichten=[], error, loadingInProgress} = this.state;
+        const {nachrichten=[], error, loadingInProgress, neueNachricht, neueNachrichtValidationFailed,
+            neueNachrichtEdited} = this.state;
         return (
-            <div className={classes.root} >
-                <div>
-                    {
-                        this.Anzeige()
-                    }
-                    <LoadingProgress show={loadingInProgress} />
-                    <ContextErrorMessage
-                        error={error} contextErrorMsg={`Nicht geklappt`}
-                        onReload={this.getNachrichten}
-                    />
-                </div>
-            </div>
+            <Container className={classes.root}>
+                {
+                    this.Anzeige()
+                }
+
+                <ContextErrorMessage
+                    error={error} contextErrorMsg={`Nicht geklappt`}
+                    onReload={this.getNachrichten}
+                />
+
+                <TextField type='text'
+                           id='neueNachricht'
+                           value={neueNachricht}
+                           onChange={this.textFieldValueChange}
+                           error={neueNachrichtValidationFailed}>
+                    Test
+                </TextField> &nbsp;&nbsp;
+
+                <Button color="primary"
+                        variant='contained'
+                        disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
+                        onClick={this.addNachricht}>
+                    Senden
+                </Button>
+
+            </Container>
         )
     }
 }
@@ -98,7 +167,8 @@ class NachrichtenList extends Component {
 /** Component specific styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+      width: '100%',
+      flexGrow: 1
   },
   personFilter: {
     marginTop: theme.spacing(2),
