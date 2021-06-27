@@ -128,8 +128,10 @@ class LerngruppenExplorer extends Component {
                 updatingError: e
             }));
         this.setState({
+            gruppenvorschlag: null,
             updatingInProgress: true,
-            updatingError: null
+            updatingError: null,
+            buttonPressed: false
         })
     }
 
@@ -138,7 +140,12 @@ class LerngruppenExplorer extends Component {
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
-        this.getBestGruppenvorschlag()
+        this.getBestGruppenvorschlag();
+        this.interval = setInterval(() => this.getBestGruppenvorschlag(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
