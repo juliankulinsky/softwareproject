@@ -12,8 +12,10 @@ class LerngruppeMapper(Mapper):
         super().__init__()
 
     def find_all(self):
-        """Extrahieren aller Lerngruppe-Objekte."""
+        """Auslesen aller Lerngruppe-Objekte
 
+        :return: Sammlung aller Lerngruppen-Objekte
+        """
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT * from lerngruppen")  # SQL Statement
@@ -39,7 +41,11 @@ class LerngruppeMapper(Mapper):
         return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
     def find_by_key(self, key: int):
-        """Suchen einer Lerngruppe mit vorgegebener ID."""
+        """Auslesen einer Lerngruppe mit vorgegebener Lerngruppen ID
+
+        :param key: Lerngruppen ID
+        :return: Sammlung aller Lerngruppen-Objekte
+        """
 
         result = None
         cursor = self._cnx.cursor()
@@ -67,8 +73,11 @@ class LerngruppeMapper(Mapper):
         return result  # Der Rückgabe der ID entsprechendes Lerngruppe-Objekt (None bei fehlender DB-Tupel)
 
     def find_by_person_id(self, person_key: int):
-        """Suchen von Lerngruppen, an denen eine bestimmte Person mit einer ID teilnimmt"""
+        """Auslesen aller Lerngruppen-Objekte der gegebenen Person ID
 
+        :param person_key: Person ID
+        :return: Sammlung aller Lerngruppen-Objekte, der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.gruppenname, L.profil_id, L.konversation_id "
@@ -97,8 +106,11 @@ class LerngruppeMapper(Mapper):
         return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
     def find_by_konversation_id(self, konversation_key: int):
-        """Suchen von Lerngruppen, an denen eine bestimmte Person mit einer ID teilnimmt"""
+        """Auslesen aller Lerngruppen-Objekte der gegebenen Konversation ID
 
+        :param konversation_key: Konversation ID
+        :return: Sammlung aller Lerngruppen-Objekte, der gegebenen Konversation ID
+        """
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
@@ -125,9 +137,13 @@ class LerngruppeMapper(Mapper):
         return result  # Rückgabe der Sammlung aller Lerngruppe-Objekte
 
     def insert(self, lerngruppe: Lerngruppe):
-        """Einfügen eines Lerngruppe-Objekts in die Datenbank.
-        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt."""
+        """Einfügen eines Lerngruppe-Objekts in die Datenbank
 
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
+
+        :param lerngruppe: Das zu speichernde Lerngruppen-Objekt
+        :return: Das bereits übergebene Lerngruppen-Objekt, jedoch mit ggf, korrigierter ID.
+        """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM lerngruppen")
         tuples = cursor.fetchall()
@@ -152,8 +168,11 @@ class LerngruppeMapper(Mapper):
         return lerngruppe  # Rückgabe des bereits übergebenen Objektes, ggf. mit korrigierter ID
 
     def update(self, lerngruppe: Lerngruppe):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID."""
+        """
+        Aktualisieren eines Lerngruppen-Objekts in der Datenbank anhand seiner ID
 
+        :param lerngruppe: Lerngruppen-Objekt, das in der Datenbank übergeschrieben werden soll
+        """
         cursor = self._cnx.cursor()
 
         command = (
@@ -171,7 +190,10 @@ class LerngruppeMapper(Mapper):
         cursor.close()
 
     def delete(self, lerngruppe: Lerngruppe):
-        """Löschen eines Lerngruppe-Objekts aus der Datenbank."""
+        """
+        Löschen der Daten eines Lerngruppen-Objekts
+        :param lerngruppe: Das aus der Datenbank zu löschende Lerngruppen-Objekt
+        """
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM lerngruppen WHERE id={}".format(lerngruppe.get_id())

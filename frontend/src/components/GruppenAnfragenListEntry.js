@@ -4,6 +4,7 @@ import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid }
 import { Button, ButtonGroup } from '@material-ui/core';
 import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css"
+import PopUpProfil from "./dialogs/PopUpProfil";
 
 /**
  * Rendert eine GruppenAnfrage mit der Option diese anzunehmen oder abzulehnen.
@@ -20,7 +21,8 @@ class GruppenAnfragenListEntry extends Component {
             anfragendePerson: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
             entscheidung: null,
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
@@ -90,6 +92,20 @@ class GruppenAnfragenListEntry extends Component {
             })
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     /**
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
@@ -101,17 +117,25 @@ class GruppenAnfragenListEntry extends Component {
     /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, buttonPressed, anfragendePerson} = this.state;
+        const {anfrage, buttonPressed, anfragendePerson, showProfilPopUp} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anfragendePerson) ?
                         <div className="anfrageRequest">
+                            {/*
                             <Typography style={{display: 'flex', alignItems: 'center'}}>
                                 {anfragendePerson.getName()}
-                            </Typography>
+                            </Typography>*/}
 
+                            <Typography style={{display: 'flex', alignItems: 'center'}}>
+                                Beitrittsanfrage von <Button onClick={this.popUpButtonClicked}>
+                                        {
+                                            anfragendePerson.getName()
+                                        }
+                                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </Typography>
                             <Button disabled={buttonPressed} color={"primary"}
                                     onClick={this.entscheidungTrue}>
                                 Annehmen
@@ -121,7 +145,9 @@ class GruppenAnfragenListEntry extends Component {
                                     onClick={this.entscheidungFalse}>
                                 Ablehnen
                             </Button>
+                            <PopUpProfil show={showProfilPopUp} person={anfragendePerson}  onClose={this.popUpClosed} />
                         </div>
+
                         :
                         null
                 }

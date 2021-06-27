@@ -18,7 +18,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._lerntyp
 
     def set_lerntyp(self, wert: int):
-        """Festlegen des Lerntyps"""
+        """Setzen des Lerntyps"""
         self._lerntyp = wert
 
     def get_frequenz(self):
@@ -26,7 +26,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._frequenz
 
     def set_frequenz(self, wert: int):
-        """Festlegen der Lernfrequenz"""
+        """Setzen der Lernfrequenz"""
         self._frequenz = wert
 
     def get_extrovertiertheit(self):
@@ -34,7 +34,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._extrovertiertheit
 
     def set_extrovertiertheit(self, wert: int):
-        """Festlegen der Extrovertiertheit"""
+        """Setzen der Extrovertiertheit"""
         self._extrovertiertheit = wert
 
     def get_remote_praesenz(self):
@@ -42,7 +42,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._remote_praesenz
 
     def set_remote_praesenz(self, wert: int):
-        """Festlegen der Lernart"""
+        """Setzen der Lernart"""
         self._remote_praesenz = wert
 
     def get_vorkenntnisse(self):
@@ -50,7 +50,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._vorkenntnisse
 
     def set_vorkenntnisse(self, liste: str):
-        """Festlegen der Vorkenntnisse"""
+        """Setzen der Vorkenntnisse"""
         self._vorkenntnisse = liste
 
     def get_lerninteressen(self):
@@ -58,7 +58,7 @@ class Lernvorliebe(bo.BusinessObject):
         return self._lerninteressen
 
     def set_lerninteressen(self, liste: str):
-        """Festlegen der Lerninteressen"""
+        """Setzen der Lerninteressen"""
         self._lerninteressen = liste
 
     @staticmethod

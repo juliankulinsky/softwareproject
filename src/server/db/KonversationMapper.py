@@ -17,11 +17,10 @@ class KonversationMapper(Mapper):
         super().__init__()
 
     def find_all(self):
-        """
-        Extrahieren aller Konversationsobjekte
-        :return: Sammlung von Konversations-Objekten
-        """
+        """ Auslesen aller Konversations-Objekte
 
+        :return: Sammlung aller Konversations-Objekte
+        """
         result = []
         cursor = self._cnx.cursor()
         # Hier wird nun das SQL-Statement ausgeführt, um Konversations-Objekte aus der Datenbank zu extrahieren.
@@ -46,11 +45,12 @@ class KonversationMapper(Mapper):
 
     def find_by_key(self, key: int):
         """
-        Suchen einer Konversation mit vorgegebener ID.
-        :param key: Primärschlüsselattribut der relationalen Datenbank Konversation
-        :return: Konversation-Objekt mit id=key
-        """
+        Auslesen eines Konversations-Objektes der gegebenen Konversations ID
 
+        :param key: Konversations ID
+                    Primärschlüsselattribut der relationalen Datenbank Konversation
+        :return: Ein einzelnes Konversations-Objekt der gegeben Konversations ID
+        """
         result = None
         cursor = self._cnx.cursor()
         # Definieren des SQL-Statements, der das Objekt anhand der ID filtert
@@ -80,10 +80,11 @@ class KonversationMapper(Mapper):
 
     def find_by_person_id(self, person_key):
         """
-                Extrahieren aller Konversationsobjekte an denen die Person mit der ID person_key teilnimmt
-                :return: Sammlung von Konversations-Objekten
-                """
+        Auslesen aller Konversations-Objekte mit der gegebenen Person ID
 
+        :param person_key: Person ID
+        :return: Sammlung aller Konversations-Objekte der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         # Hier wird nun das SQL-Statement ausgeführt, um Konversations-Objekte aus der Datenbank zu extrahieren.
@@ -111,11 +112,13 @@ class KonversationMapper(Mapper):
 
     def insert(self, konversation: Konversation):
         """
-        Einfügen eines Konverastion-Objektes in die DB
-        :param konversation: Das zu speichernde Konversations-Objekt
-        :return: das übergebene Objekt
-        """
+        Einfügen eines Konverastion-Objekts in die Datenbank
 
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
+
+        :param konversation: Das zu speichernde Konversations-Objekt
+        :return: Das bereits übergebene Konversations-Objekt, jedoch mit ggf, korrigierter ID.
+        """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM konversationen")
         tuples = cursor.fetchall()
@@ -139,10 +142,10 @@ class KonversationMapper(Mapper):
 
     def update(self, konversation: Konversation):
         """
-        Aktualisieren einer Konversation
-        :param konversation: Konversations-objekt, das in DB geschrieben soll
-        """
+        Aktualisieren einer Konversations-Objekt in der Datenbank anhand seiner ID
 
+        :param konversation: Konversations-objekt, das in der Datenbank übergeschrieben werden soll
+        """
         cursor = self._cnx.cursor()
         command = (
             "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
@@ -158,10 +161,9 @@ class KonversationMapper(Mapper):
 
     def delete(self, konversation: Konversation):
         """
-        Löschen einer Konversation
-        :param konversation: Zu löschendes Konversations-objekt
+        Löschen der Daten eines Konversations-Objekts
+        :param konversation: Das aus der Datenbank zu löschende Konversations-Objekt
         """
-
         cursor = self._cnx.cursor()
         # Löschen von Konversation mit übergebener ID (durch parameter konversation)
         command = "DELETE FROM konversationen WHERE id={}".format(konversation.get_id())

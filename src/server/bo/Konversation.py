@@ -14,9 +14,11 @@ class Konversation(bo.BusinessObject):
     """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
     def get_ist_gruppenchat(self):
+        """Auslesen des Attributs ob es sich bei der Konversation um einen Gruppenchat handelt"""
         return self._ist_gruppenchat
 
     def set_ist_gruppenchat(self, wert: bool):
+        """Setzen des Attributs ob es sich bei der Konversation um einen Gruppenchat handelt"""
         self._ist_gruppenchat = wert
 
     @staticmethod

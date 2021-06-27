@@ -16,27 +16,35 @@ class Vorschlag(bo.BusinessObject, ABC):
         self._entscheidung_person = False   # Ob die Person eine Entscheidung getroffen hat
 
     def get_person_id(self):
+        """Auslesen der Person ID"""
         return self._person_id
 
     def set_person_id(self, person_id: int):
+        """Setzen der Person ID"""
         self._person_id = person_id
 
     def get_aehnlichkeit(self):
+        """Auslesen der Ähnlichkeit"""
         return self._aehnlichkeit
 
     def set_aehnlichkeit(self, wert: float):
+        """Setzen der Ähnlichkeit"""
         self._aehnlichkeit = wert
 
     def get_matchpoints(self):
+        """Auslesen der Matchpoints"""
         return self._matchpoints
 
     def set_matchpoints(self, wert: int):
+        """Setzen der Matchpoints"""
         self._matchpoints = wert
 
     def get_entscheidung_person(self):
+        """Auslesen der Entscheidung der Person"""
         return self._entscheidung_person
 
     def set_entscheidung_person(self, entscheidung: bool):
+        """Setzen der Entscheidung der Person"""
         self._entscheidung_person = entscheidung
 
     @staticmethod

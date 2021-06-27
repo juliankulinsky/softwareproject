@@ -11,21 +11,27 @@ class GruppenTeilnahme(bo.BusinessObject):
         self._ist_admin = False
 
     def get_person_id(self):
+        """Auslesen der Person ID"""
         return self._person_id
 
     def set_person_id(self, person_id: int):
+        """Setzen der Person ID"""
         self._person_id = person_id
 
     def get_gruppen_id(self):
+        """Auslesen der Gruppen ID"""
         return self._gruppen_id
 
     def set_gruppen_id(self, gruppen_id: int):
+        """Setzen der Gruppen ID"""
         self._gruppen_id = gruppen_id
 
     def get_ist_admin(self):
+        """Auslesen des boolschen Wertes, ob eine Person der Admin einer Gruppe ist"""
         return self._ist_admin
 
     def set_ist_admin(self, wert: bool):
+        """Setzen des boolschen Wertes, ob eine Person der Admin einer Gruppe ist"""
         self._ist_admin = wert
 
     @staticmethod

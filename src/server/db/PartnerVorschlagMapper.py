@@ -13,7 +13,7 @@ class PartnerVorschlagMapper (Mapper):
     def find_all(self):
         """Auslesen aller PartnerVorschlag-Objekte aus der Datenbank
 
-        :return:
+        :return: Sammlung mit PartnerVorschlag-Objekten
         """
         result = []
         cursor = self._cnx.cursor()
@@ -39,10 +39,10 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_by_key(self, key):
-        """
+        """Auslesen aller PartnerVorschlag-Objekte der zugehörigen PartnerVorschlag ID
 
-        :param key:
-        :return:
+        :param key: PartnerVorschlag ID
+        :return: Sammlung mit PartnerVorschlag-Objekten, der zugehörigen PartnerVorschlag ID
         """
         result = None
         cursor = self._cnx.cursor()
@@ -74,6 +74,12 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_eingehende_by_person_id(self, person_key):
+        """ Auslesen der PartnerVorschlag-Objekte der gegebenen Person ID bei dem die Entscheidung des Partners schon
+                    getroffen ist, die Entscheidung der Person jedoch noch nicht
+
+        :param person_key: Person ID
+        :return: Sammlung mit PartnerVorschlag-Objekten, der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM partner_vorschlaege WHERE " \
@@ -102,6 +108,12 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_ausgehende_by_person_id(self, person_key):
+        """ Auslesen der PartnerVorschlags-Objekte der gegebenen Person ID bei dem die Entscheidung der Person schon
+                           getroffen ist, die Entscheidung des Partners jedoch noch nicht
+
+                :param person_key: Person ID
+                :return: Sammlung mit PartnerVorschlag-Objekten, der gegebenen Person ID
+                """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM partner_vorschlaege WHERE " \
@@ -130,10 +142,11 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_best_by_person_id(self, person_key):
-        """
+        """ Auslesen der PartnerVorschlags-Objekte der gegebenen Person ID, bei denen noch keine Entscheidung der
+            Person getroffen wurde in absteigender Reihenfolge
 
-        :param person_key:
-        :return:
+        :param person_key: Person ID
+        :return: Sammlung mit PartnerVorschlag-Objekten, der gegebenen Person ID
         """
         result = None
         cursor = self._cnx.cursor()
@@ -168,9 +181,11 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_all_offene_for_person_id(self, person_key):
-        """Auslesen aller PartnerVorschlag-Objekte aus der Datenbank
+        """ Auslesen aller PartnerVorschlags-Objekte der gegebenen Person ID, bei denen noch keine Entscheidung der
+                    Person getroffen
 
-        :return:
+        :param person_key: Person ID
+        :return: Sammlung mit PartnerVorschlag-Objekten, der gegebenen Person ID
         """
         result = []
         cursor = self._cnx.cursor()
@@ -198,9 +213,10 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def find_all_for_person_id(self, person_key):
-        """Auslesen aller PartnerVorschlag-Objekte aus der Datenbank
+        """ Auslesen aller PartnerVorschlags-Objekte der gegebenen Person ID
 
-        :return:
+        :param person_key: Person ID
+        :return: Sammlung mit PartnerVorschlags-Objekten, der gegebenen Person ID
         """
         result = []
         cursor = self._cnx.cursor()
@@ -232,6 +248,11 @@ class PartnerVorschlagMapper (Mapper):
 
         :return:
         """
+        """ Auslesen aller GruppenVorschlags-Objekte, deren Matchpoints auf 1 gesetzt ist, entweder durch eine
+                    Entscheidung seitens der Gruppe, oder der Person, jedoch nicht beiderseits
+
+        :return: Sammlung mit GruppenVorschlags-Objekten
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM partner_vorschlaege WHERE matchpoints=1 AND " \
@@ -259,10 +280,12 @@ class PartnerVorschlagMapper (Mapper):
         return result
 
     def insert(self, partner_vorschlag: PartnerVorschlag):
-        """
+        """Einfügen eines PartnerVorschlags-Objekts in die Datenbank.
 
-        :param partner_vorschlag:
-        :return:
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
+
+        :param: partner_vorschlag : Das zu speichernde PartnerVorschlags-Objekt
+        :return: Das bereits übergebene PartnerVorschlags-Objekt, jedoch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM partner_vorschlaege")
@@ -292,10 +315,9 @@ class PartnerVorschlagMapper (Mapper):
         return partner_vorschlag
 
     def update(self, partner_vorschlag: PartnerVorschlag):
-        """
+        """Aktualisieren eines PartnerVorschlags-Objekts in der Datenbank anhand seiner ID
 
-        :param partner_vorschlag:
-        :return:
+        :param partner_vorschlag: Das PartnerVorschlags-Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -317,10 +339,9 @@ class PartnerVorschlagMapper (Mapper):
         cursor.close()
 
     def delete(self, partner_vorschlag: PartnerVorschlag):
-        """
+        """Löschen der Daten eines PartnerVorschlags-Objekts aus der Datenbank.
 
-        :param partner_vorschlag:
-        :return:
+        :param partner_vorschlag: Das aus der Datenbank zu löschende PartnerVorschlags-Objekt
         """
         cursor = self._cnx.cursor()
 

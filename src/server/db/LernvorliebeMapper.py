@@ -43,10 +43,11 @@ class LernvorliebeMapper(Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """Suchen einer Nachricht mit vorgegebener Nachrichten-ID
+        """Auslesen eines Lernvorliebe-Objekts anhand der Lernvorliebe ID
 
-        :param: key Primärschlüsselattribut
-        :return: Lernvorliebe-Objekt, das dem übergebenen Schlüssel entspricht, None bei nicht vorhandenem DB-Tupel
+        :param: key: Lernvorliebe ID, Primärschlüsselattribut
+        :return: Ein einzelnes Lernvorliebe-Objekt, das dem übergebenen Schlüssel entspricht,
+                None bei nicht vorhandenem DB-Tupel
         """
         result = None
         cursor = self._cnx.cursor()
@@ -87,12 +88,12 @@ class LernvorliebeMapper(Mapper):
         return result
 
     def insert(self, lernvorliebe: Lernvorliebe):
-        """Einfügen eines Nachricht-Objekts in die Datenbank.
+        """Einfügen eines Lernvorliebe-Objekts in die Datenbank.
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
 
-        :param: lernvorliebe das zu speichernde Objekt
-        :return: das bereits übergebene Objekt, jeodch mit ggf, korrigierter ID.
+        :param: lernvorliebe: Das zu speichernde Lernvorliebe-Objekt
+        :return: Das bereits übergebene Lernvorliebe-Objekt, jeodch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM lernvorlieben")
@@ -123,9 +124,9 @@ class LernvorliebeMapper(Mapper):
         return lernvorliebe
 
     def update(self, lernvorliebe: Lernvorliebe):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
+        """Aktualisieren eines Lernvorliebe-Objekts in der Datenbank anhand seiner ID
 
-        :param lernvorliebe: das Objekt, das in die DB geschrieben werden soll
+        :param lernvorliebe: Das Lernvorliebe-Objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -148,9 +149,9 @@ class LernvorliebeMapper(Mapper):
         cursor.close()
 
     def delete(self, lernvorliebe: Lernvorliebe):
-        """Löschen der Daten eines Nachricht-Objekts aus der Datenbank.
+        """Löschen der Daten eines Lernvorliebe-Objekts aus der Datenbank.
 
-        :param lernvorliebe: das aus der Datenbank zu löschende Objekt
+        :param lernvorliebe: Das aus der Datenbank zu löschende Lernvorliebe-Objekt
         """
         cursor = self._cnx.cursor()
 
