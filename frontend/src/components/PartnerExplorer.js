@@ -185,54 +185,21 @@ class PartnerExplorer extends Component {
                     (partnervorschlag && anderePerson) ?
                         <div className="partnervorschlag">
                             <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                 onClick={this.entscheidungFalse} className="buttonFalse">
                                 <CancelIcon fontSize="large"/>
                             </Fab>
 
                             <div className="partnercard">
-                                <Typography variant="h4">
-                                          {/*  Dein Vorschlag!
-
-                            <Card>
-                                <CardContent className="partnercard">*/}
-
-                                        <ProfilVorschau person={anderePerson} selfperson={false}/>
-                                            {/*anderePerson.getName()}, {anderePerson.getAlter()
-
-                                        <Typography variant="subtitle1">
-                                            Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
-                                        </Typography>
-                                        <Typography variant="h5">
-                                            Happy Learning! &#128640;
-                                        </Typography>*/}
-                                    </Typography>
-                                    </div>
-                                         {/*
-                                        <div>
-                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                        </div>
-                                    */}
-                            {/*</CardContent>
-                            </Card>*/}
+                                <ProfilVorschau person={anderePerson} selfperson={false}/>
+                            </div>
 
                             <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                 onClick={this.entscheidungTrue} size="large" className="buttonTrue">
                                 <CheckCircleIcon fontSize="large"/>
                             </Fab>
                         </div>
                         :
-                        <div className="partnervorschlag">
-                            <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
-                                <CancelIcon fontSize="large"/>
-                            </Fab>
-
+                        <div className="partnervorschlagNotFound">
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
@@ -253,18 +220,13 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                     </div>
 
-                                    {/*
-                                        <div>
-                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                        </div>
-                                    */}
+                                    <div>
+                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                    </div>
                                 </CardContent>
                             </Card>
 
-                            <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
-                                <CheckCircleIcon fontSize="large"/>
-                            </Fab>
+
                         </div>
                 }
 

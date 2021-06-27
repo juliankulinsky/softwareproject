@@ -203,12 +203,7 @@ class LerngruppenExplorer extends Component {
                             </Fab>
                         </div>
                         :
-                        <div className="partnervorschlag">
-                            <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
-                                <CancelIcon fontSize="large"/>
-                            </Fab>
-
+                        <div className="partnervorschlagNotFound">
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
@@ -216,7 +211,7 @@ class LerngruppenExplorer extends Component {
                                             It should be a match! &#128580;
                                         </Typography>
                                         <Typography variant="h4">
-                                            Und hier sollte dein Partner stehen ...
+                                            Und hier sollte deine neue Lerngruppe stehen ...
                                         </Typography>
                                         <Typography variant="subtitle1">
                                             Irgendwas ist da nicht ganz richtig.
@@ -234,11 +229,6 @@ class LerngruppenExplorer extends Component {
                                     </div>
                                 </CardContent>
                             </Card>
-
-                            <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
-                                <CheckCircleIcon fontSize="large"/>
-                            </Fab>
                         </div>
                 }
 
