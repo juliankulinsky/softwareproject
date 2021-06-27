@@ -25,7 +25,7 @@ class LerngruppenList extends Component {
     }
 
     /**
-     * Alle LerngruppeBOs einer der aktuellen Person aus dem Backend auslesen.
+     * Alle LerngruppeBOs der aktuellen Person aus dem Backend auslesen.
      */
     getLerngruppen = () => {
         StudooAPI.getAPI().getLerngruppenForPersonID(this.props.person.getID())
