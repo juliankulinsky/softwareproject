@@ -115,8 +115,13 @@ class LerngruppeListEntry extends Component {
      * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
      */
     componentDidMount() {
-        this.getGruppenprofil()
-        this.getEigeneGruppenTeilnahme()
+        this.getGruppenprofil();
+        this.getEigeneGruppenTeilnahme();
+        this.interval = setInterval(() => this.getGruppenprofil(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
@@ -129,9 +134,13 @@ class LerngruppeListEntry extends Component {
                 <Card>
                     <CardContent >
                         <div className="lerngruppeListCard">
-                        <Typography className={classes.heading} variant="h5">
-                        {lerngruppe.getGruppenname()}
-                        </Typography>
+                            { lerngruppe ?
+                                <Typography className={classes.heading} variant="h5">
+                                    {lerngruppe.getGruppenname()}
+                                </Typography>
+                                : null
+                            }
+
 
                             <div className="lerngruppeListButtons">
                                 <Button disabled={beendenButtonPressed} color="secondary" variant="contained" onClick={this.deleteTeilnahme}>

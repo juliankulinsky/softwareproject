@@ -53,6 +53,11 @@ class LerngruppenList extends Component {
      */
     componentDidMount() {
         this.getLerngruppen();
+        this.interval = setInterval(() => this.getLerngruppen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
