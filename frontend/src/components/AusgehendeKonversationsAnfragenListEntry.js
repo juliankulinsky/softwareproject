@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles, Typography, Card, CardContent } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import {PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import PopUpProfil from "./dialogs/PopUpProfil";
-//import AccountList from './AccountList';
+import "./components-theme.css";
 
 /**
  * Rendert eine ausgehende KonversationsAnfrage mit der Option, diese zurückzuziehen.
@@ -83,14 +77,14 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
     popUpButtonClicked = (event) => {
         event.stopPropagation();
         this.setState({
-          showProfilPopUp: true
+            showProfilPopUp: true
         });
     }
 
     /** Handhabt das Schließen des Popup-Person-Buttons */
     popUpClosed = (event) => {
         this.setState({
-          showProfilPopUp: false
+            showProfilPopUp: false
         });
     }
 
@@ -105,39 +99,48 @@ class AusgehendeKonversationsAnfragenListEntry extends Component {
     /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed,showProfilPopUp} = this.state;
+        const {anfrage, anderePerson, buttonPressed, showProfilPopUp} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anderePerson) ?
-                        <Typography>
-                            -------------- <br/>
-                            Das ist eine ausgehende Partneranfrage #{anfrage.getID()}<br/>
-                            Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.updateKonversationsAnfrage}>
-                                Zurückziehen
-                            </Button>
-                            <br/>
-                            Partnername:
-                            <button onClick={this.popUpButtonClicked}>
-                                {
-                                     anderePerson.getName()
-                                }
-                            </button>
-                            <br/>--------------
-                            <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed} />
-                        </Typography>
+                        <Card className="anfragencard">
+                            <CardContent>
+
+                                <Typography variant="h6">
+                                    Du hast eine Anfrage an {anderePerson.getName()} gesendet!
+                                </Typography>
+
+                                <Typography>
+                                    Sehe dir {anderePerson.getName()}'s Profil an:&nbsp;
+                                    <Button onClick={this.popUpButtonClicked} color="primary" variant="outlined"
+                                            size="small">
+                                        {
+                                            anderePerson.getName()
+                                        }
+                                    </Button>
+                                </Typography>
+
+                                <br/>
+
+                                <div className="buttonAlign">
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
+                                            onClick={this.updateKonversationsAnfrage}>
+                                        Zurückziehen
+                                    </Button>
+                                </div>
+
+                                <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed}/>
+
+                            </CardContent>
+                        </Card>
                         :
                         null
                 }
             </>
-
-
         )
     }
-
 }
 
 /** Komponent-spezifische Styles */

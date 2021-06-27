@@ -80,10 +80,10 @@ class App extends React.Component {
 				// user information.
 				document.cookie = `token=${token};path=/`;
 				/**
-				console.log("-------------")
-				console.log("Das ist der Token: (aus handleAuthState in App.js")
-				console.log(token)
-				console.log("-------------")
+				 console.log("-------------")
+				 console.log("Das ist der Token: (aus handleAuthState in App.js")
+				 console.log(token)
+				 console.log("-------------")
 				 */
 
 				// Set the user not before the token arrived
@@ -164,7 +164,8 @@ class App extends React.Component {
 														<LerngruppenList person={currentPersonBO}/>
 													</Route>
 													<Route path='/profil'>
-														<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
+														<ProfilVorschau person={currentPersonBO} user={currentUser}
+																		selfperson={true}/>
 													</Route>
 													<Route path='/lernvorlieben'>
 														<LernvorliebenList/>
@@ -183,6 +184,8 @@ class App extends React.Component {
 													</Route>
 													<Route path='/anfragen'>
 														<EingehendeAnfragenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/anfragenausgehend'>
 														<AusgehendeAnfragenList person={currentPersonBO}/>
 													</Route>
 												</>

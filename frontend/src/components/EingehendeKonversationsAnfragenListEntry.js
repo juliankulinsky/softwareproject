@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles, Typography } from '@material-ui/core';
+import { Button, Card, CardContent } from '@material-ui/core';
 import {PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import PopUpProfil from "./dialogs/PopUpProfil";
-//import AccountList from './AccountList';
+import "./components-theme.css";
 
 /**
  * Rendert eine eingehende KonversationsAnfrage mit der Option, diese anzunehmen oder abzulehnen.
@@ -109,17 +103,17 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
     }
 
     /** Handhabt das onClick-Event des Popup-Person-Buttons */
-        popUpButtonClicked = (event) => {
+    popUpButtonClicked = (event) => {
         event.stopPropagation();
         this.setState({
-          showProfilPopUp: true
+            showProfilPopUp: true
         });
     }
 
     /** Handhabt das Schließen des Popup-Person-Buttons */
     popUpClosed = (event) => {
         this.setState({
-          showProfilPopUp: false
+            showProfilPopUp: false
         });
     }
 
@@ -134,34 +128,46 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
     /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed,showProfilPopUp} = this.state;
+        const {anfrage, anderePerson, buttonPressed, showProfilPopUp} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anderePerson) ?
-                        <Typography>
-                            -------------- <br/>
-                            Das ist eine eingehende Partneranfrage #{anfrage.getID()}<br/>
-                            Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
-                                    onClick={this.entscheidungTrue}>
-                                Annehmen
-                            </Button> &nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.entscheidungFalse}>
-                                Ablehnen
-                            </Button>
-                            <br/>
-                            Partnername:
-                            <button onClick={this.popUpButtonClicked}>
-                                {
-                                     anderePerson.getName()
-                                }
-                            </button>
-                            <br/>--------------
-                            <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed} />
-                        </Typography>
+                        <Card className="anfragencard">
+                            <CardContent>
+
+                                <Typography variant="h6">
+                                    {anderePerson.getName()} möchte mit dir chatten!
+                                </Typography>
+
+                                <Typography>
+                                    Sehe dir {anderePerson.getName()}'s Profil an:&nbsp;
+                                    <Button onClick={this.popUpButtonClicked} color="primary" variant="outlined" size="small">
+                                        {
+                                            anderePerson.getName()
+                                        }
+                                    </Button>
+                                </Typography>
+
+                                <br/>
+
+                                <div className="buttonAlign">
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
+                                            onClick={this.entscheidungTrue}>
+                                        Annehmen
+                                    </Button> &nbsp;
+
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
+                                            onClick={this.entscheidungFalse}>
+                                        Ablehnen
+                                    </Button>
+                                </div>
+
+                                <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed}/>
+
+                            </CardContent>
+                        </Card>
                         :
                         null
                 }

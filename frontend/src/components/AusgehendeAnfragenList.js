@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid, Box } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
 import AusgehendeKonversationsAnfragenListEntry from "./AusgehendeKonversationsAnfragenListEntry";
 import AusgehendeGruppenbeitrittsAnfragenListEntry from "./AusgehendeGruppenbeitrittsAnfragenListEntry";
-//import AccountList from './AccountList';
+import {NavLink} from "react-router-dom";
+import "./components-theme.css";
 
 /**
  * Kontrolliert eine Liste von AusgehendeKonversationsAnfragenListEntrys und AusgehendeGruppenbeitrittsAnfragenListEntrys
@@ -69,12 +64,31 @@ class AusgehendeAnfragenList extends Component {
         const { ausgehendeKonversationsAnfragen, ausgehendeGruppenbeitrittsAnfragen } = this.state;
 
         return (
-            <>
-                <Typography>
+            <div>
+                <div className="toggleExplore">
+                    <NavLink to="/anfragen" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButtonPartner">
+                            <Typography>Eingehend</Typography>
+                        </Button>
+                    </NavLink>
+                    <NavLink to="/anfragenausgehend" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButton">
+                            <Typography style={{color: '#04A2CA'}}>Ausgehend</Typography>
+                        </Button>
+                    </NavLink>
+                </div>
+                <Typography variant="h4" align="center" style={{padding: '2%', marginBottom: '1%'}}>
+                    Das sind deine ausgehenden Anfragen
+                </Typography>
+
+                <div style={{display: "flex", flexDirection:"row", justifyContent: "space-around"}}>
+                <Box>
                     {
                         ausgehendeKonversationsAnfragen.length > 0 ?
-                            <Typography>
-                                Das sind alle ausgehenden Konversationsanfragen von {this.props.person.getName()}: <br/>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Chats
+                                </Typography>
                                 {
                                     ausgehendeKonversationsAnfragen.map( anfrage =>
                                         <AusgehendeKonversationsAnfragenListEntry
@@ -83,18 +97,25 @@ class AusgehendeAnfragenList extends Component {
                                         />
                                     )
                                 }
-                            </Typography>
+                            </Box>
                             :
-                            <Typography>
-                                Du hast keine ausgehenden Konversationsanfragen :/
-                            </Typography>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Chats
+                                </Typography>
+                                <Typography>
+                                    Keine Anfragen vorhanden.
+                                </Typography>
+                            </Box>
                     }
-                </Typography>
-                <Typography>
+                </Box>
+                <Box>
                     {
                         ausgehendeGruppenbeitrittsAnfragen.length > 0 ?
-                            <Typography>
-                                Das sind alle ausgehenden Gruppenbeitrittsanfragen von {this.props.person.getName()}: <br/>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Gruppen
+                                </Typography>
                                 {
                                     ausgehendeGruppenbeitrittsAnfragen.map( anfrage =>
                                         <AusgehendeGruppenbeitrittsAnfragenListEntry
@@ -103,14 +124,15 @@ class AusgehendeAnfragenList extends Component {
                                         />
                                     )
                                 }
-                            </Typography>
+                            </Box>
                             :
                             <Typography>
-                                Du hast keine ausgehenden Gruppenbeitrittsanfragen :/
+                                Du hast keine ausgehenden Gruppenbeitrittsanfragen.
                             </Typography>
                     }
-                </Typography>
-            </>
+                </Box>
+                </div>
+            </div>
         )
     }
 
