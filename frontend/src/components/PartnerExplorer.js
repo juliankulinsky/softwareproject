@@ -54,10 +54,13 @@ class PartnerExplorer extends Component {
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
-                .then(anderePerson =>
+                .then(anderePerson => {
                     this.setState({
                         anderePerson: anderePerson
-                    }))
+                    })
+                console.log("andere p", anderePerson)})
+
+
         } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
                 .then(anderePerson =>
@@ -83,6 +86,7 @@ class PartnerExplorer extends Component {
                     this.setState({
                         matchpoints: partnervorschlagBO.getMatchpoints()
                     })
+                    console.log("dsas", partnervorschlagBO)
                     this.getAnderePerson()
                 }
             }).catch(e => this.setState({
@@ -159,7 +163,12 @@ class PartnerExplorer extends Component {
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
-        this.getBestPartnervorschlag()
+        this.getBestPartnervorschlag();
+        this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
@@ -228,10 +237,6 @@ class PartnerExplorer extends Component {
                         </div>
                         :
                         <div className="partnervorschlag">
-                            <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
-                                <CancelIcon fontSize="large"/>
-                            </Fab>
 
                             <Card>
                                 <CardContent className="partnercard">
@@ -260,11 +265,6 @@ class PartnerExplorer extends Component {
                                     */}
                                 </CardContent>
                             </Card>
-
-                            <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
-                                <CheckCircleIcon fontSize="large"/>
-                            </Fab>
                         </div>
                 }
 
