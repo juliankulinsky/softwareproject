@@ -111,7 +111,7 @@ class PersonEntry extends Component {
     return (
            <Card className={classes.root}>
             <CardContent justify-content="" >
-              <Grid container spacing={3}>
+              <Grid container>
                   <Grid item xs={6}>
                     {
                       person ?
