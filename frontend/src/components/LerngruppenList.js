@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import PersonForm from './dialogs/PersonForm';
 import LerngruppeListEntry from "./LerngruppeListEntry";
 
 /**
