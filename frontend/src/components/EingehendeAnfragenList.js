@@ -49,13 +49,22 @@ class EingehendeAnfragenList extends Component {
             })
     }
 
+    getAnfragen = () => {
+        this.getEingehendeKonversationsAnfragen()
+        this.getEingehendeGruppenbeitrittsAnfragen()
+    }
+
     /**
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
-        this.getEingehendeKonversationsAnfragen();
-        this.getEingehendeGruppenbeitrittsAnfragen()
+        this.getAnfragen();
+        this.interval = setInterval(() => this.getAnfragen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
