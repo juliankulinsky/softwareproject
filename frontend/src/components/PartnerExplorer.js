@@ -43,7 +43,6 @@ class PartnerExplorer extends Component {
             updatingError: null,
             buttonPressed: false
         }
-        this.baseState = this.state;
     }
 
     /**
@@ -146,15 +145,16 @@ class PartnerExplorer extends Component {
                     updatingInProgress: false,
                     updatingError: null
                 });
-                this.baseState.entscheidung = this.state.entscheidung;
             }).catch(e =>
             this.setState({
                 updatingInProgress: false,
                 updatingError: e
             }));
         this.setState({
+            partnervorschlag: null,
             updatingInProgress: true,
-            updatingError: null
+            updatingError: null,
+            buttonPressed: false
         })
     }
 
