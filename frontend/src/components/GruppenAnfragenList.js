@@ -36,7 +36,12 @@ class GruppenAnfragenList extends Component {
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
-        this.getAlleGruppenbeitrittsAnfragen()
+        this.getAlleGruppenbeitrittsAnfragen();
+        this.interval = setInterval(() => this.getAlleGruppenbeitrittsAnfragen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */

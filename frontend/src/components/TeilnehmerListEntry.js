@@ -39,12 +39,10 @@ class TeilnehmerListEntry extends Component {
      * Gruppe gehörende ChatTeilnahmeBO im Backend gelöscht wird.
      */
     deleteAktuelleTeilnahme = () => {
+        this.setState({
+            buttonPressed: true
+        })
         StudooAPI.getAPI().deleteGruppenTeilnahme(this.state.aktuelleGruppenTeilnahme.getID())
-            .then(gruppenTeilnahme => {
-                this.setState({
-                    buttonPressed: true
-                })
-            })
         StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.state.teilnehmerPerson.getID(), this.props.lerngruppe.getKonversationId())
             .then(chatTeilnahme => {
                 StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
@@ -76,7 +74,12 @@ class TeilnehmerListEntry extends Component {
      * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
      */
     componentDidMount() {
-        this.getAktuellenTeilnehmer()
+        this.getAktuellenTeilnehmer();
+        this.interval = setInterval(() => this.getAktuellenTeilnehmer(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */

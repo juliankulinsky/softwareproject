@@ -35,12 +35,7 @@ class TeilnehmerList extends Component {
      * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
      */
     componentDidMount() {
-        this.getAlleGruppenTeilnahmenForGruppe();
-        this.interval = setInterval(() => this.getAlleGruppenTeilnahmenForGruppe(), 3000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
+        this.getAlleGruppenTeilnahmenForGruppe()
     }
 
     /** Rendert die Komponente */

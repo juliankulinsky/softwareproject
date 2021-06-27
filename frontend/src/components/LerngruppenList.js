@@ -42,7 +42,6 @@ class LerngruppenList extends Component {
         }));
 
         this.setState({
-            loadingInProgress: true,
             error: null
         });
     }
