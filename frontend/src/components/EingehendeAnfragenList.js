@@ -134,9 +134,14 @@ class EingehendeAnfragenList extends Component {
                                 }
                             </Box>
                             :
-                            <Typography>
-                                Du hast keine eingehenden Gruppenbeitrittsanfragen.
-                            </Typography>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Gruppen
+                                </Typography>
+                                <Typography>
+                                Keine Anfragen vorhanden.
+                                </Typography>
+                            </Box>
                     }
                 </Box>
                 </div>
