@@ -3,24 +3,29 @@ import PropTypes from 'prop-types';
 import {
     withStyles,
     Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
     Typography,
     Card,
-    CardContent
+    CardContent,
+    Fab,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import PartnervorschlaegeEntry from "./PartnervorschlaegeEntry";
 import {PartnerVorschlagBO} from "../api";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from '@material-ui/icons/Cancel';
+import "./components-theme.css"
 import ProfilVorschau from "./ProfilVorschau";
 
+/**
+ * Rendert den am besten zur aktuellen Person passenden PartnerVorschlagBO mit Anzeigen von Informationen über die
+ * vorgeschlagene Person. Zusätzlich besteht die Möglichkeit, diesen Vorschlag über zwei Button entweder anzunehmen,
+ * wodurch der PartnerVorschlagBO aktualisiert wird. In beiden Fällen wird die Entscheidung der aktuellen Person auf
+ * true gesetzt, was konkret entweder die EntscheidungPerson oder die EntscheidungPartner des PartnerVorschlagBO ist,
+ * abhängig davon, welche Rolle die aktuelle Person in diesem PartnerVorschlagBO einnimmt.
+ * Bei Annehmen werden die Matchpoints um 1 erhöht und bei Ablehnen werden die Matchpoints nicht verändert
+ */
 class PartnerExplorer extends Component {
 
     constructor(props) {
@@ -41,22 +46,31 @@ class PartnerExplorer extends Component {
         this.baseState = this.state;
     }
 
+    /**
+     * Auslesen der anderen Person, die in diesem PartnerVorschlagBO teilnimmt. Falls die aktuelle Person die "Person"
+     * des PartnerVorschlagBO ist, wird der "Partner" geladen, und falls die aktuelle Person der "Partner" des
+     * PartnerVorschlagBO ist, wird die "Person" geladen.
+     */
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
                 .then(anderePerson =>
-                this.setState({
-                    anderePerson: anderePerson
-                }))
+                    this.setState({
+                        anderePerson: anderePerson
+                    }))
         } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
                 .then(anderePerson =>
-                this.setState({
-                    anderePerson: anderePerson
-                }))
+                    this.setState({
+                        anderePerson: anderePerson
+                    }))
         }
     }
 
+    /**
+     * Auslesen des PartnerVorschlagBO mit der höchsten Ähnlichkeit, an der die aktuelle Person teilnimmt, bei dem
+     * die aktuelle Person noch keine Entscheidung getroffen hat.
+     */
     getBestPartnervorschlag = () => {
         StudooAPI.getAPI().getPartnerVorschlagByPersonID(this.props.person.getID())
             .then(partnervorschlagBO => {
@@ -84,6 +98,7 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /** Wird durch grünen Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -93,6 +108,7 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -102,6 +118,11 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /**
+     * Updaten des PartnerVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben. Die Entscheidung der "Person" oder des "Partners" (abhängig davon welche "Rolle" die aktuelle
+     * Person im Vorschlag spielt) wird auf true gesetzt, was bedeutet, dass eine Entscheidung getroffen wurde.
+     */
     updatePartnervorschlag = () => {
         let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
@@ -133,41 +154,118 @@ class PartnerExplorer extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getBestPartnervorschlag()
     }
 
-
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {partnervorschlag, anderePerson, error, loadingInProgress} = this.state;
 
         return (
             <div className={classes.root}>
+                <div className="toggleExplore">
+                    <NavLink to="/explorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButtonPartner">
+                            <Typography style={{color: '#04A2CA'}}>Partner</Typography>
+                        </Button>
+                    </NavLink>
+                    <NavLink to="/groupexplorer" className="toggleExploreNavLink">
+                        <Button className="toggleExploreButton">
+                            <Typography>Gruppen</Typography>
+                        </Button>
+                    </NavLink>
+                </div>
                 {
                     (partnervorschlag && anderePerson) ?
-                        <Typography>
-                            Auf dich zugeschnittener Partnervorschlag mit der ID#{partnervorschlag.getID()}<br/>
-                            PartnerID: {anderePerson.getID()}&nbsp;
-                            mit einer Ähnlichkeit von: {partnervorschlag.getAehnlichkeit()}
-                            <ProfilVorschau person={anderePerson} selfperson={false}/>
-                            <Typography>
-                                Name: {anderePerson.getName()}<br/>
-                                Matchpoints: {partnervorschlag.getMatchpoints()}
-                            </Typography>
-                            Willst du eine Konversation mit {anderePerson.getName()} anfangen?
-                            <br/>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungTrue}>
-                                JA
-                            </Button>
-                            <Button disabled={this.state.buttonPressed} variant='contained' onClick={this.entscheidungFalse}>
-                                NEIN
-                            </Button>
-                        </Typography>
+                        <div className="partnervorschlag">
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
+
+                            <div className="partnercard">
+                                <Typography variant="h4">
+                                          {/*  Dein Vorschlag!
+
+                            <Card>
+                                <CardContent className="partnercard">*/}
+
+                                        <ProfilVorschau person={anderePerson} selfperson={false}/>
+                                            {/*anderePerson.getName()}, {anderePerson.getAlter()
+
+                                        <Typography variant="subtitle1">
+                                            Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Learning! &#128640;
+                                        </Typography>*/}
+                                    </Typography>
+                                    </div>
+                                         {/*
+                                        <div>
+                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        </div>
+                                    */}
+                            {/*</CardContent>
+                            </Card>*/}
+
+                            <Fab disabled={this.state.buttonPressed}
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
+                        </div>
                         :
-                        <Typography>
-                            Es gibt momentan leider keine Partnervorschläge für dich :/
-                        </Typography>
+                        <div className="partnervorschlag">
+                            <Fab disabled={this.state.buttonPressed} size="large"
+                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                <CancelIcon fontSize="large"/>
+                            </Fab>
+
+                            <Card>
+                                <CardContent className="partnercard">
+                                    <div>
+                                        <Typography variant="h3">
+                                            It should be a match! &#128580;
+                                        </Typography>
+                                        <Typography variant="h4">
+                                            Und hier sollte dein Partner stehen ...
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Irgendwas ist da nicht ganz richtig.
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
+                                        </Typography>
+                                        <Typography variant="h5">
+                                            Happy Waiting for Solution! &#128540;
+                                        </Typography>
+                                    </div>
+
+                                    {/*
+                                        <div>
+                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        </div>
+                                    */}
+                                </CardContent>
+                            </Card>
+
+                            <Fab disabled={this.state.buttonPressed}
+                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                <CheckCircleIcon fontSize="large"/>
+                            </Fab>
+                        </div>
                 }
 
                 <ContextErrorMessage
@@ -179,9 +277,7 @@ class PartnerExplorer extends Component {
     }
 }
 
-
-
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

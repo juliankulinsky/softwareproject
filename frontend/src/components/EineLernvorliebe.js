@@ -16,8 +16,6 @@ import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import LernvorliebenListEntry from "./LernvorliebenListEntry";
-import ProfilForm from "./dialogs/ProfilForm";
 import PersonEntry from "./PersonEntry";
 
 
@@ -35,6 +33,10 @@ class EineLernvorliebe extends Component {
         };
     }
 
+    /**
+     * API Call eines Lernvorlieben Objektes der angemeldeten Person anhand der Lernvorliebe ID welche in ProfilBO
+     * gespeichert ist
+     * */
     getLernvorliebe = () => {
         StudooAPI.getAPI().getLernvorliebe(this.props.lvId)
             .then(lernvorliebeBO => {
@@ -55,51 +57,28 @@ class EineLernvorliebe extends Component {
         });
     }
 
-    /** Handles the onClick event of the edit person button */
-    editProfilButtonClicked = (event) => {
-        event.stopPropagation();
-        this.setState({
-            showProfilForm: true
-        });
-    }
-
-    /** Handles the onClose event of the ProfilForm */
-    profilFormClosed = (person) => {
-        // customer is not null and therefor changed
-        if (person) {
-            this.setState({
-                person: person,
-                showProfilForm: false
-            });
-        } else {
-            this.setState({
-                showProfilForm: false
-            });
-        }
-    }
-
+    /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
     componentDidMount() {
         this.getLernvorliebe();
     }
 
+    /** Rendern der Komponente EineLernvorliebe */
     render() {
-        const {classes, selfperson, profil} = this.props;
-        const {lernvorliebe, person, error, showProfilForm, loadingInProgress} = this.state;
+        const {selfperson, profil} = this.props;
+        const {lernvorliebe, person, error, loadingInProgress} = this.state;
 
         return (
-            <div className={classes.root}>
-                <Grid>
-                    <Grid item>
-                    </Grid>
-                </Grid>
+            <div>
                 {
                     person ?
                         profil ?
-                        lernvorliebe ?
-                            <PersonEntry profil={profil} person={person} lernvorliebe={lernvorliebe} selfperson={selfperson}/>
-                        : null
+                            lernvorliebe ?
+                                /** Aufruf der Komponente PersonEntry mit den Properties profil, person, lernvorliebe und
+                                * selfperson */
+                                <PersonEntry profil={profil} person={person} lernvorliebe={lernvorliebe} selfperson={selfperson}/>
+                            : null
                         :null
-                        :null
+                    :null
                 }
                 <LoadingProgress show={loadingInProgress}/>
                 <ContextErrorMessage
@@ -111,7 +90,7 @@ class EineLernvorliebe extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 //import { StudooAPI } from '../api';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
-import PersonListEntry from './PersonListEntry';
 import LerngruppeListEntry from "./LerngruppeListEntry";
 
-
+/**
+ * Kontrolliert eine Liste an LerngruppenListEntrys
+ */
 class LerngruppenList extends Component {
 
     constructor(props) {
@@ -25,6 +24,9 @@ class LerngruppenList extends Component {
         };
     }
 
+    /**
+     * Alle LerngruppeBOs einer der aktuellen Person aus dem Backend auslesen.
+     */
     getLerngruppen = () => {
         StudooAPI.getAPI().getLerngruppenForPersonID(this.props.person.getID())
             .then(lerngruppenBOs => {
@@ -45,22 +47,23 @@ class LerngruppenList extends Component {
         });
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getLerngruppen();
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { lerngruppen, error, loadingInProgress } = this.state;
 
         return (
             <div className={classes.root}>
-                <Typography>
-                    Das sind die Lerngruppen von &nbsp;
-                    {
-                        this.props.person.getName()
-                    }
-                   :
+                <Typography variant="h4" align="center" style={{padding: '2%', margin: '1%'}}>
+                    Deine Lerngruppen:
                 </Typography>
 
                 {
@@ -81,7 +84,7 @@ class LerngruppenList extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

@@ -20,11 +20,10 @@ from flask_restx import Api, Resource, fields, namespace
 # Um CORS zu ermöglichen benötigen wir das entsprechende Package
 from flask_cors import CORS
 
-# SECURITY DECORATOR IMPORTIEREN (muss noch gecodet werden)
+# Damit nur von Google authentifizierte User die Operationen durchführen können, benötigen wir den SecurityDecorator.
 from SecurityDecorator import secured
 
-# Mapper implementieren
-
+# Zunächst werden unsere BusinessObjects importiert
 from server.bo.ChatTeilnahme import ChatTeilnahme
 from server.bo.GruppenTeilnahme import GruppenTeilnahme
 from server.bo.GruppenVorschlag import GruppenVorschlag
@@ -42,20 +41,33 @@ from server.Admin import Admin
 Zuerst wird Flask instanziiert.
 Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Argument.
 """
+
+# Grundlegende App-Konfigurationen
 app = Flask(__name__)
 
+"""
+Alle Ressourcen mit dem Präfix /studoo für Cross-Origin Resource Sharing (CORS) freigeben.
+Diese Zeile setzt die Installation des Package flask-cors voraus.
+"""
 CORS(app, resources=r'/studoo/*')
 
+"""
+In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt, 
+auf deren Basis Clients und Server Daten austauschen. Grundlage hierfür ist das Package flask-restx.
+"""
 api = Api(app)
 
+"""Anlegen eines Namespace
+
+Namespaces erlauben die Strukturierung von APIs. In diesem Fall fasst dieser Namespace alle
+relevanten Operationen unter dem Präfix /studoo zusammen. """
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
-# CORS implementieren
-
 """
-Implementation Flask REST
+Nun folgt die Überführung der Strukturen des BusinessObjects in das api-Model.
+Dazu werden die BusinessObjects der jeweiligen Methode api.model() übergeben und die Parameter entsprechend den
+BusinessObjects-Attributen definiert. Diese Struktur wird im weiteren Verlauf für unsere API benötigt.
 """
-#  Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
 bo = api.model(
     'BusinessObject',
@@ -72,8 +84,6 @@ nachricht = api.inherit(
         "konversation_id": fields.Integer(attribute="_konversation_id", description="Konversationszugehörigkeit")
     }
 )
-
-### Hier drunter die BO implementieren als model -> api.inherit("<name>", bo, {...})
 
 gruppenteilnahme = api.inherit(
     "GruppenTeilnahme", bo,
@@ -172,9 +182,12 @@ gruppenvorschlag = api.inherit(
 )
 
 """
-API Routes
+Nun werden die API Routes festgelegt, damit das Frontend mit unseren Endpoints kommunizieren kann und die Daten 
+ausgelesen werden können.
+Genauer gesagt ist das die Service Layer, die einen RESTful Service darstellt. Über vordefinierte HTTP-Anfragemethoden
+können Daten von der Datenbank an den Client übergeben werden.
+Folgende Anfragenmethoden sind dabei möglich: GET, POST, PUT, DELETE.
 """
-
 
 @studoo.route('/nachrichten')
 @studoo.response(500, 'Falls es zu einem Fehler kommt')
@@ -183,6 +196,9 @@ class NachrichtenListOperations(Resource):
     @studoo.marshal_list_with(nachricht)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden Nachrichten
+        """
         adm = Admin()
         return adm.get_all_nachrichten()
 
@@ -190,6 +206,11 @@ class NachrichtenListOperations(Resource):
     @studoo.expect(nachricht)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen Nachricht-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = Nachricht.from_dict(api.payload)
         if proposal is not None:
@@ -206,6 +227,10 @@ class NachrichtOperations(Resource):
     @studoo.marshal_with(nachricht)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten Nachrichten-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_nachricht_by_id(id)
 
@@ -213,6 +238,11 @@ class NachrichtOperations(Resource):
     @studoo.expect(nachricht, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten Nachricht-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = Nachricht.from_dict(api.payload)
 
@@ -225,6 +255,10 @@ class NachrichtOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten Nachricht-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         message = adm.get_nachricht_by_id(id)
         adm.delete_nachricht(message)
@@ -238,6 +272,10 @@ class NachrichtenByKonversationIDOperations(Resource):
     @studoo.marshal_with(nachricht)
     @secured
     def get(self, konversation_id):
+        """Auslesen von Nachrichten eines Konversation-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_nachrichten_by_konversation_id(konversation_id)
 
@@ -249,6 +287,10 @@ class KonversationOperations(Resource):
     @studoo.marshal_with(konversation)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten Konversation-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_konversation_by_id(id)
 
@@ -256,6 +298,11 @@ class KonversationOperations(Resource):
     @studoo.expect(konversation, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten Konversation-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = Konversation.from_dict(api.payload)
 
@@ -268,6 +315,10 @@ class KonversationOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten Konversation-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         conv = adm.get_konversation_by_id(id)
         adm.delete_konversation(conv)
@@ -281,6 +332,9 @@ class KonversationListOperations(Resource):
     @studoo.marshal_list_with(konversation)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden Konversationen
+        """
         adm = Admin()
         return adm.get_all_konversationen()
 
@@ -288,6 +342,11 @@ class KonversationListOperations(Resource):
     @studoo.expect(konversation)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen Konversation-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = Konversation.from_dict(api.payload)
         if proposal is not None:
@@ -304,7 +363,10 @@ class KonversationenByPersonIDOperations(Resource):
     @studoo.marshal_with(konversation)
     @secured
     def get(self, person_id):
-        """Auslesen einer bestimmten Lerngruppe."""
+        """Auslesen aller Konversationen einer bestimmten Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         admin = Admin()
         return admin.get_konversationen_by_person_id(person_id)
 
@@ -316,6 +378,9 @@ class PersonenListOperations(Resource):
     @studoo.marshal_list_with(person)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden Personen
+        """
         adm = Admin()
         return adm.get_all_personen()
 
@@ -323,6 +388,11 @@ class PersonenListOperations(Resource):
     @studoo.expect(person)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen Person-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = Person.from_dict(api.payload)
         if proposal is not None:
@@ -341,6 +411,10 @@ class PersonenByKonversationIDOperations(Resource):
     @studoo.marshal_list_with(person)
     @secured
     def get(self, konversation_id):
+        """Auslesen der Personen eines bestimmten Konversations-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_personen_by_konversation_id(konversation_id)
 
@@ -352,6 +426,10 @@ class PersonOperations(Resource):
     @studoo.marshal_with(person)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten Person-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_person_by_id(id)
 
@@ -359,6 +437,11 @@ class PersonOperations(Resource):
     @studoo.expect(person, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten Person-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = Person.from_dict(api.payload)
 
@@ -371,9 +454,29 @@ class PersonOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten Person-Objekts.
+
+        Hierzu werden auch alle zugehörigen Gruppen- bzw. Partnervorschläge sowie Chat- bzw. Gruppenteilnahmen gelöscht
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
-        pers = adm.get_person_by_id(id)
-        adm.delete_person(pers)
+        person = adm.get_person_by_id(id)
+
+        for pers_gruppenvorschlag in adm.get_all_gruppenvorschlaege_for_person_id(person.get_id()):
+            adm.delete_gruppenvorschlag(pers_gruppenvorschlag)
+        for pers_partnervorschlag in adm.get_all_partnervorschlaege_for_person_id(person.get_id()):
+            adm.delete_partner_vorschlag(pers_partnervorschlag)
+        for pers_chatteilnahme in adm.get_all_chatteilnahmen_by_person_id(person.get_id()):
+            adm.delete_chatteilnahme(pers_chatteilnahme)
+        for pers_gruppenteilnahme in adm.get_all_gruppen_teilnahmen_for_person_id(person.get_id()):
+            adm.delete_gruppen_teilnahme(pers_gruppenteilnahme)
+
+        profil = adm.get_profil_by_id(person.get_profil_id())
+        lernvorliebe = adm.get_lernvorliebe_by_id(profil.get_lernvorlieben_id())
+        adm.delete_lernvorliebe(lernvorliebe)
+        adm.delete_profil(profil)
+
+        adm.delete_person(person)
         return '', 200
 
 
@@ -384,6 +487,10 @@ class PersonUIDOperations(Resource):
     @studoo.marshal_with(person)
     @secured
     def get(self, uid):
+        """Auslesen eines bestimmten Person-Objekts über die Google-UserID.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_person_by_google_user_id(uid)
 
@@ -395,7 +502,9 @@ class LernvorliebenListOperations(Resource):
     @studoo.marshal_list_with(lernvorlieben)
     @secured
     def get(self):
-        """Auslesen aller Lernvorlieben"""
+        """
+        Auslesen aller der im System existierenden LernvorliebenBOs
+        """
         adm = Admin()
         return adm.get_all_lernvorlieben()
 
@@ -403,7 +512,11 @@ class LernvorliebenListOperations(Resource):
     @studoo.expect(lernvorlieben)
     @secured
     def post(self):
-        """Anlegen eines neuer Lernvorlieben"""
+        """
+        Anlegen eines neuen Lernvorlieben-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = Lernvorliebe.from_dict(api.payload)
         if proposal is not None:
@@ -422,7 +535,10 @@ class LernvorliebeOperations(Resource):
     @studoo.marshal_with(lernvorlieben)
     @secured
     def get(self, id):
-        """Auslesen einer bestimmten Lernvorliebe"""
+        """Auslesen eines bestimmten Lernvorlieben-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_lernvorliebe_by_id(id)
 
@@ -430,7 +546,11 @@ class LernvorliebeOperations(Resource):
     @studoo.expect(lernvorlieben, validate=True)
     @secured
     def put(self, id):
-        """Update einer bestimmten Lernvorliebe"""
+        """Update eines bestimmten Lernvorlieben-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         lernv = Lernvorliebe.from_dict(api.payload)
 
@@ -438,8 +558,8 @@ class LernvorliebeOperations(Resource):
             lernv.set_id(id)
             adm.save_lernvorliebe(lernv)
             person = adm.get_person_by_profil_id(adm.get_profil_by_lernvorlieben_id(id).get_id())
-            partnervorschlaege = adm.get_all_partnervorschlaege_for_person_id(person.get_id())
-            gruppenvorschlaege = adm.get_all_gruppenvorschlaege_for_person_id(person.get_id())
+            partnervorschlaege = adm.get_all_offene_partnervorschlaege_for_person_id(person.get_id())
+            gruppenvorschlaege = adm.get_all_offene_gruppenvorschlaege_for_person_id(person.get_id())
             for vorschlag in partnervorschlaege:
                 adm.match(vorschlag)
 
@@ -456,7 +576,10 @@ class LernvorliebeOperations(Resource):
 
     @secured
     def delete(self, id):
-        """Löschen einer bestimmten Lernvorliebe"""
+        """Löschen eines bestimmten Lernvorlieben-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         lv = adm.get_lernvorliebe_by_id(id)
         adm.delete_lernvorliebe(lv)
@@ -470,7 +593,9 @@ class GruppenTeilnahmeListOperations(Resource):
     @studoo.marshal_list_with(gruppenteilnahme)
     @secured
     def get(self):
-        """Auslesen aller GruppenTeilnahme-Objekte"""
+        """
+        Auslesen aller der im System existierenden GruppenTeilnahmeBOs
+        """
         adm = Admin()
         gt = adm.get_all_gruppen_teilnahme()
         return gt
@@ -479,7 +604,11 @@ class GruppenTeilnahmeListOperations(Resource):
     @studoo.expect(gruppenteilnahme)
     @secured
     def post(self):
-        """Anlegen eines neuen GruppenTeilnahme-Objektes"""
+        """
+        Anlegen eines neuen GruppenTeilnahme-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = GruppenTeilnahme.from_dict(api.payload)
         if proposal is not None:
@@ -496,7 +625,10 @@ class GruppenTeilnahmeOperations(Resource):
     @studoo.marshal_with(gruppenteilnahme)
     @secured
     def get(self, id):
-        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        """Auslesen eines bestimmten GruppenTeilnahme-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_gruppen_teilnahme_by_id(id)
 
@@ -504,7 +636,11 @@ class GruppenTeilnahmeOperations(Resource):
     @studoo.expect(gruppenteilnahme, validate=True)
     @secured
     def put(self, id):
-        """Update eines bestimmten GruppenTeilnahme-Objektes"""
+        """Update eines bestimmten GruppenTeilnahme-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         gt = GruppenTeilnahme.from_dict(api.payload)
 
@@ -517,7 +653,10 @@ class GruppenTeilnahmeOperations(Resource):
 
     @secured
     def delete(self, id):
-        """Löschen eines bestimmten GruppenTeilnahme-Objektes"""
+        """Löschen eines bestimmten GruppenTeilnahme-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         gruppenteil = adm.get_gruppen_teilnahme_by_id(id)
         adm.delete_gruppen_teilnahme(gruppenteil)
@@ -531,7 +670,10 @@ class GruppenTeilnahmeByPersonIDundGruppenIDOperations(Resource):
     @studoo.marshal_with(gruppenteilnahme)
     @secured
     def get(self, person_id, gruppen_id):
-        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        """Auslesen eines bestimmten GruppenTeilnahme-Objekts durch die PersonID und GruppenID.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_gruppen_teilnahme_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
@@ -543,7 +685,10 @@ class GruppenTeilnahmenByGruppenIDOperations(Resource):
     @studoo.marshal_with(gruppenteilnahme)
     @secured
     def get(self, gruppen_id):
-        """Auslesen eines bestimmten GruppenTeilnahme-Objektes"""
+        """Auslesen der GruppenTeilnahmen eines bestimmten Gruppen-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_all_gruppen_teilnahmen_for_gruppen_id(gruppen_id)
 
@@ -555,6 +700,9 @@ class ChatteilnahmenListOperations(Resource):
     @studoo.marshal_list_with(chatteilnahme)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden ChatTeilnahmenBOs
+        """
         adm = Admin()
         return adm.get_all_chatteilnahmen()
 
@@ -562,6 +710,11 @@ class ChatteilnahmenListOperations(Resource):
     @studoo.expect(chatteilnahme)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen ChatTeilnahme-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = ChatTeilnahme.from_dict(api.payload)
         if proposal is not None:
@@ -578,6 +731,10 @@ class ChatteilnahmeOperations(Resource):
     @studoo.marshal_with(chatteilnahme)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten ChatTeilnahmen-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_chatteilnahme_by_id(id)
 
@@ -585,6 +742,11 @@ class ChatteilnahmeOperations(Resource):
     @studoo.expect(chatteilnahme, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten ChatTeilnahme-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = ChatTeilnahme.from_dict(api.payload)
 
@@ -597,6 +759,10 @@ class ChatteilnahmeOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten ChatTeilnahme-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         ct = adm.get_chatteilnahme_by_id(id)
         adm.delete_chatteilnahme(ct)
@@ -610,6 +776,10 @@ class ChatteilnahmeByPersonIDundKonversationIDOperations(Resource):
     @studoo.marshal_with(chatteilnahme)
     @secured
     def get(self, person_id, konversation_id):
+        """Auslesen eines bestimmten ChatTeilnahmen-Objekts über PersonID und KonversationID.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_chatteilnahme_by_person_id_und_konversation_id(person_id, konversation_id)
 
@@ -621,6 +791,9 @@ class PartnervorschlaegeListOperations(Resource):
     @studoo.marshal_list_with(partnervorschlag)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden PartnerVorschlagBOs
+        """
         adm = Admin()
         return adm.get_all_partner_vorschlag()
 
@@ -628,6 +801,11 @@ class PartnervorschlaegeListOperations(Resource):
     @studoo.expect(partnervorschlag)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen PartnerVorschlag-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = PartnerVorschlag.from_dict(api.payload)
         if proposal is not None:
@@ -646,6 +824,10 @@ class PartnervorschlagOperations(Resource):
     @studoo.marshal_with(partnervorschlag)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten PartnerVorschlag-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_partner_vorschlag_by_id(id)
 
@@ -653,6 +835,11 @@ class PartnervorschlagOperations(Resource):
     @studoo.expect(partnervorschlag, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten PartnerVorschlag-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = PartnerVorschlag.from_dict(api.payload)
 
@@ -670,6 +857,10 @@ class PartnervorschlagOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten PartnerVorschlag-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         pv = adm.get_partner_vorschlag_by_id(id)
         adm.delete_partner_vorschlag(pv)
@@ -683,7 +874,12 @@ class PartnervorschlagForPersonIDOperations(Resource):
     @studoo.marshal_with(partnervorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen des besten PartnerVorschlag-Objekts für eine bestimmte Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_best_partner_vorschlag_for_person_id(person_id)
 
 
@@ -694,7 +890,12 @@ class EingehendePartnervorschlaegeForPersonIDOperations(Resource):
     @studoo.marshal_with(partnervorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen der PartnerVorschlag-Objekte für eine bestimmte Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_partner_vorschlaege_for_person_id(person_id)
 
 
@@ -705,7 +906,12 @@ class AusgehendePartnervorschlaegeForPersonIDOperations(Resource):
     @studoo.marshal_with(partnervorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen der ausgehenden PartnerVorschlag-Objekts für eine bestimmte Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_ausgehende_partner_vorschlaege_for_person_id(person_id)
 
 
@@ -716,6 +922,9 @@ class GruppenvorschlaegeListOperations(Resource):
     @studoo.marshal_list_with(gruppenvorschlag)
     @secured
     def get(self):
+        """
+        Auslesen aller der im System existierenden GruppenVorschlaegeBOs
+        """
         adm = Admin()
         return adm.get_all_gruppenvorschlaege()
 
@@ -723,6 +932,11 @@ class GruppenvorschlaegeListOperations(Resource):
     @studoo.expect(gruppenvorschlag)
     @secured
     def post(self):
+        """
+        Anlegen eines neuen GruppenVorschlag-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = GruppenVorschlag.from_dict(api.payload)
         if proposal is not None:
@@ -741,6 +955,10 @@ class GruppenvorschlagOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, id):
+        """Auslesen eines bestimmten GruppenVorschlag-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_gruppenvorschlag_by_id(id)
 
@@ -748,6 +966,11 @@ class GruppenvorschlagOperations(Resource):
     @studoo.expect(gruppenvorschlag, validate=True)
     @secured
     def put(self, id):
+        """Update eines bestimmten GruppenVorschlag-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = GruppenVorschlag.from_dict(api.payload)
 
@@ -765,6 +988,10 @@ class GruppenvorschlagOperations(Resource):
 
     @secured
     def delete(self, id):
+        """Löschen eines bestimmten GruppenVorschlag-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         pv = adm.get_gruppenvorschlag_by_id(id)
         adm.delete_gruppenvorschlag(pv)
@@ -778,6 +1005,10 @@ class GruppenvorschlagByPersonIDundGruppenIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, person_id, gruppen_id):
+        """Auslesen eines bestimmten GruppenVorschlag-Objekts über PersonID und GruppenID.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_gruppenvorschlag_by_person_id_und_gruppen_id(person_id, gruppen_id)
 
@@ -789,7 +1020,12 @@ class GruppenvorschlagByPersonIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen der besten GruppenVorschlag-Objekts für eine bestimmte Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_best_gruppenvorschlag_for_person_id(person_id)
 
 
@@ -800,7 +1036,12 @@ class EingehendeGruppenvorschlaegeForPersonIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen der eingehenden GruppenVorschläge-Objekte über einer bestimmten Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
@@ -811,7 +1052,12 @@ class AusgehendeGruppenvorschlaegeForPersonIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, person_id):
+        """Auslesen der ausgehenden GruppenVorschläge-Objekte einer bestimmten Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_ausgehende_gruppen_vorschlaege_for_person_id(person_id)
 
 
@@ -822,7 +1068,12 @@ class EingehendeGruppenvorschlaegeForGruppenIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, gruppen_id):
+        """Auslesen der eingehenden GruppenVorschläge-Objekte einer bestimmten Gruppe.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_eingehende_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
 
 
@@ -833,7 +1084,12 @@ class GruppenvorschlaegeForGruppenIDOperations(Resource):
     @studoo.marshal_with(gruppenvorschlag)
     @secured
     def get(self, gruppen_id):
+        """Auslesen der GruppenVorschläge-Objekte einer bestimmten Gruppe.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
+        adm.check_anfragen()
         return adm.get_gruppen_vorschlaege_for_gruppen_id(gruppen_id)
 
 
@@ -844,7 +1100,9 @@ class LerngruppenListOperations(Resource):
     @studoo.marshal_list_with(lerngruppe)
     @secured
     def get(self):
-        """Auslesen aller Lerngruppen."""
+        """
+        Auslesen aller der im System existierenden Lerngruppen
+        """
         admin = Admin()
         lerngruppen = admin.get_all_lerngruppen()
         return lerngruppen
@@ -853,7 +1111,11 @@ class LerngruppenListOperations(Resource):
     @studoo.expect(lerngruppe)
     @secured
     def post(self):
-        """Anlegen einer bestimmten Lerngruppe."""
+        """
+        Anlegen eines neuen Lerngruppe-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         admin = Admin()
         proposal = Lerngruppe.from_dict(api.payload)
         if proposal is not None:
@@ -874,7 +1136,10 @@ class LerngruppenOperations(Resource):
     @studoo.marshal_with(lerngruppe)
     @secured
     def get(self, id):
-        """Auslesen einer bestimmten Lerngruppe."""
+        """Auslesen eines bestimmten Lerngruppen-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         admin = Admin()
         return admin.get_lerngruppe_by_id(id)
 
@@ -882,7 +1147,11 @@ class LerngruppenOperations(Resource):
     @studoo.expect(lerngruppe, validate=True)
     @secured
     def put(self, id):
-        """Update einer bestimmten Lerngruppe."""
+        """Update eines bestimmten Lerngruppe-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         admin = Admin()
         lg = Lerngruppe.from_dict(api.payload)
 
@@ -895,7 +1164,10 @@ class LerngruppenOperations(Resource):
 
     @secured
     def delete(self, id):
-        """Löschen einer bestimmten Lerngruppe."""
+        """Löschen eines bestimmten Lerngruppe-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         admin = Admin()
         lg = admin.get_lerngruppe_by_id(id)
         admin.delete_lerngruppe(lg)
@@ -909,7 +1181,10 @@ class LerngruppenByPersonIDOperations(Resource):
     @studoo.marshal_with(lerngruppe)
     @secured
     def get(self, person_id):
-        """Auslesen einer bestimmten Lerngruppe."""
+        """Auslesen der Lerngruppen-Objekte einer bestimmten Person.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         admin = Admin()
         return admin.get_lerngruppen_by_person_id(person_id)
 
@@ -921,7 +1196,10 @@ class LerngruppenByKonversationIDOperations(Resource):
     @studoo.marshal_with(lerngruppe)
     @secured
     def get(self, konversation_id):
-        """Auslesen einer bestimmten Lerngruppe."""
+        """Auslesen des Lerngruppen-Objekts einer bestimmten Konversation.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         admin = Admin()
         return admin.get_lerngruppe_by_konversation_id(konversation_id)
 
@@ -933,7 +1211,9 @@ class ProfilListOperations(Resource):
     @studoo.marshal_list_with(profil)
     @secured
     def get(self):
-        """Auslesen aller Profil-Objekte"""
+        """
+        Auslesen aller der im System existierenden Profile
+        """
         adm = Admin()
         p = adm.get_all_profile()
         return p
@@ -942,7 +1222,11 @@ class ProfilListOperations(Resource):
     @studoo.expect(profil)
     @secured
     def post(self):
-        """Anlegen eines neuen Profil-Objektes"""
+        """
+        Anlegen eines neuen Profil-Objekts.
+        Die vom Client gesendeten Daten werden über die in jeder BO-Klasse verfügbaren Methode from_dict in das
+        jeweilige BO überführt und anschließend in die Datenbank geschrieben.
+        """
         adm = Admin()
         proposal = Profil.from_dict(api.payload)
         if proposal is not None:
@@ -959,7 +1243,10 @@ class ProfilOperations(Resource):
     @studoo.marshal_with(profil)
     @secured
     def get(self, id):
-        """Auslesen eines bestimmten Profil-Objektes"""
+        """Auslesen eines bestimmten Profil-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         return adm.get_profil_by_id(id)
 
@@ -967,7 +1254,11 @@ class ProfilOperations(Resource):
     @studoo.expect(profil, validate=True)
     @secured
     def put(self, id):
-        """Update eines bestimmten Profil-Objektes"""
+        """Update eines bestimmten Profil-Objekts.
+
+        Die über die URI übermittelte ID überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Objekts.
+        """
         adm = Admin()
         p = Profil.from_dict(api.payload)
 
@@ -980,7 +1271,10 @@ class ProfilOperations(Resource):
 
     @secured
     def delete(self, id):
-        """Löschen eines bestimmten Profil-Objektes"""
+        """Löschen eines bestimmten Profil-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
         adm = Admin()
         pr = adm.get_profil_by_id(id)
         adm.delete_profil(pr)

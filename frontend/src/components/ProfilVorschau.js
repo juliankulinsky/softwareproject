@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography, Avatar} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
+
 import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
-import PersonListEntry from './PersonListEntry';
 import {PersonBO} from "../api";
 import LernvorliebenList from "./LernvorliebenList";
 import AllProfile from "./AllProfile";
@@ -37,11 +35,15 @@ class ProfilVorschau extends Component {
     // Init an empty state
     this.state = {
       person: null,
+      deleteButtonPressed: false,
       error: null,
       loadingInProgress: false
     };
   }
 
+  /**
+   * API Call eines Person Objekts aus der Datenbank anhand der Google User ID des aktuell angemeldeten Benutzer
+   * */
   getCurrentPerson = () => {
     StudooAPI.getAPI().getPersonByUID(this.props.person.getGoogleUserID())
         .then(personBO => {
@@ -57,27 +59,29 @@ class ProfilVorschau extends Component {
         }));
 	}
 
-  /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
+
+	deletePerson = () => {
+      this.setState({
+          deleteButtonPressed: true,
+      })
+      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+    }
+
+  /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
   componentDidMount() {
     this.getCurrentPerson()
   }
 
-  /** Renders the component */
+  /** Rendern der Komponente ProfilVorschau */
   render() {
     const {classes, user, selfperson} = this.props;
-    const { person, loadingInProgress, error } = this.state;
+    const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
 
     return (
-        <div className={classes.root}>
-            {
-                user ?
-                    <IconButton className={classes.avatarButton}>
-                        <Avatar src={user.photoURL}/>
-                    </IconButton>
-                    :null
-            }
+        <div>
             {
             person ?
+                /** Aufruf der Komponente AktuellesProfil mit den Properties person und selfperson */
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
@@ -89,14 +93,19 @@ class ProfilVorschau extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   personFilter: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
+  },
+  avatarButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   }
 });
 

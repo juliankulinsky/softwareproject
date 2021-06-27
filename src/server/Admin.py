@@ -1,8 +1,9 @@
 """
 Hier implementieren wir eine Administrationsklasse. Sie ist erforderlich, um Daten per HTTP-Request
 aus der Datenbank auslesen bzw. in die Datenbank inserieren zu können.
-Mithilfe dieser Klasse können wir also mit dem Frontend kommunizieren (Service Layer).
+Diese Klasse wird von den Methoden der main.py aufgerufen und stellt die Applikationslogik dar.
 """
+from datetime import datetime
 
 from .bo.ChatTeilnahme import ChatTeilnahme
 from .bo.GruppenTeilnahme import GruppenTeilnahme
@@ -36,7 +37,7 @@ class Admin(object):
         pass
 
     """
-        ChatTeilnahme - Spezifische Methoden
+    ChatTeilnahme - Spezifische Methoden
     """
     def create_chatteilnahme(self, person_id, konversation_id):
         """Eine Chatteilnahme erstellen"""
@@ -51,6 +52,11 @@ class Admin(object):
         """Alle Chatteilnahmen ausgeben."""
         with ChatTeilnahmeMapper() as mapper:
             return mapper.find_all()
+
+    def get_all_chatteilnahmen_by_person_id(self, person_id):
+        """Alle Chatteilnahmen ausgeben."""
+        with ChatTeilnahmeMapper() as mapper:
+            return mapper.find_all_by_person_id(person_id)
 
     def get_chatteilnahme_by_id(self, key):
         """Die Chatteilnahme mit gegebener ID auslesen."""
@@ -73,10 +79,10 @@ class Admin(object):
             mapper.delete(chat_teilnahme)
 
     """
-        GruppenTeilnahme - Spezifische Methoden
+    GruppenTeilnahme - Spezifische Methoden
     """
     def create_gruppen_teilnahme(self, person_id, gruppen_id, ist_admin):
-        """Gruppen_Teilnahme erstellen"""
+        """Eine GruppenTeilnahme erstellen"""
         gruppenteilnahme = GruppenTeilnahme()
         gruppenteilnahme.set_person_id(person_id)
         gruppenteilnahme.set_gruppen_id(gruppen_id)
@@ -127,7 +133,7 @@ class Admin(object):
             adm.berechne_gruppen_lernvorlieben(deleted_gruppen_teilnahme.get_gruppen_id())
 
     """
-        GruppenVorschlag - Spezifische Methoden
+    GruppenVorschlag - Spezifische Methoden
     """
     def create_gruppenvorschlag(self, person_id, gruppen_id, aehnlichkeit=0, matchpoints=0,
                                 entscheidung_person=False, entscheidung_gruppe=False):
@@ -183,6 +189,10 @@ class Admin(object):
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_best_for_person_id(person_id)
 
+    def get_all_offene_gruppenvorschlaege_for_person_id(self, person_id):
+        with GruppenVorschlagMapper() as mapper:
+            return mapper.find_all_offene_for_person_id(person_id)
+
     def get_all_gruppenvorschlaege_for_person_id(self, person_id):
         with GruppenVorschlagMapper() as mapper:
             return mapper.find_all_for_person_id(person_id)
@@ -198,12 +208,11 @@ class Admin(object):
             mapper.delete(gruppenvorschlag)
 
     """
-        Konversation - Spezifische Methoden
+    Konversation - Spezifische Methoden
     """
     def create_konversation(self, ist_gruppenchat):
         """
         Erstellen einer Konversation nach erfolgreichem Match.
-        :return: Konversation, an der n>1 Parteien teilnehmen können.
         """
         konversation = Konversation()
         konversation.set_ist_gruppenchat(ist_gruppenchat)
@@ -237,12 +246,12 @@ class Admin(object):
             mapper.delete(konversation)
 
     """
-        Lerngruppe - Spezifische Methoden
+    Lerngruppe - Spezifische Methoden
     """
     def create_lerngruppe(self, gruppenname, profil_id, konversation_id):
         """
-            Lerngruppe erstellen:
-            Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
+        Lerngruppe erstellen:
+        Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
         """
         lerngruppe = Lerngruppe()
         lerngruppe.set_gruppenname(gruppenname)
@@ -282,7 +291,7 @@ class Admin(object):
             mapper.delete(lerngruppe)
 
     """
-        Lernvorliebe - Spezifische Methoden
+    Lernvorliebe - Spezifische Methoden
     """
     def create_lernvorliebe(self, lerntyp=0, frequenz=0, extrovertiertheit=0, remote_praesenz=0, vorkenntnisse="", lerninteressen=""):
         """
@@ -320,7 +329,7 @@ class Admin(object):
             mapper.delete(lernvorliebe)
 
     """
-        Nachricht - Spezifische Methoden
+    Nachricht - Spezifische Methoden
     """
     def create_nachricht(self, inhalt, absender_id, konversation_id):
         """ Eine Nachricht erstellen """
@@ -358,7 +367,7 @@ class Admin(object):
             mapper.delete(nachricht)
 
     """
-        PartnerVorschlag - Spezifische Methoden
+    PartnerVorschlag - Spezifische Methoden
     """
     def create_partnervorschlag(self, person_id, partner_id, aehnlichkeit, matchpoints,
                                 entscheidung_person, entscheidung_partner):
@@ -399,6 +408,10 @@ class Admin(object):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_best_by_person_id(person_id)
 
+    def get_all_offene_partnervorschlaege_for_person_id(self, person_id):
+        with PartnerVorschlagMapper() as mapper:
+            return mapper.find_all_offene_for_person_id(person_id)
+
     def get_all_partnervorschlaege_for_person_id(self, person_id):
         with PartnerVorschlagMapper() as mapper:
             return mapper.find_all_for_person_id(person_id)
@@ -414,7 +427,7 @@ class Admin(object):
             mapper.delete(partner_vorschlag)
 
     """
-        Person - Spezifische Methoden
+    Person - Spezifische Methoden
     """
     def create_person(self, name, email, google_user_id, alter=0, studiengang="", wohnort="", semester=0, profil_id=0):
         """ Eine Person erstellen """
@@ -467,7 +480,7 @@ class Admin(object):
             mapper.delete(person)
 
     """
-        Profil - Spezifische Methoden
+    Profil - Spezifische Methoden
     """
     def create_profil(self, lernvorlieben_id, beschreibung=""):
         """Ein Profil anlegen"""
@@ -503,6 +516,30 @@ class Admin(object):
         with ProfilMapper() as mapper:
             mapper.delete(profil)
 
+    def check_anfragen(self):
+        """ Überprüft alle Partner- & Gruppenanfragen (einseitig entschiedene Vorschläge), nach ihrem Datum
+        und setzt diese zurück, falls sie mindestens fünf Tage alt sind """
+        with PartnerVorschlagMapper() as partnervorschlagmapper:
+            with GruppenVorschlagMapper() as gruppenvorschlagmapper:
+                partneranfragen = partnervorschlagmapper.find_all_anfragen()
+                for anfrage in partneranfragen:
+                    anfragenzeitpunkt = datetime.strptime(anfrage.get_erstellungszeitpunkt(), '%Y-%m-%d %H:%M:%S')
+                    tage = (datetime.now() - anfragenzeitpunkt).days
+                    if tage >= 5:
+                        anfrage.set_matchpoints(0)
+                        anfrage.set_entscheidung_person(False)
+                        anfrage.set_entscheidung_partner(False)
+                        partnervorschlagmapper.update(anfrage)
+                gruppenanfragen = gruppenvorschlagmapper.find_all_anfragen()
+                for anfrage in gruppenanfragen:
+                    anfragenzeitpunkt = datetime.strptime(anfrage.get_erstellungszeitpunkt(), '%Y-%m-%d %H:%M:%S')
+                    tage = (datetime.now() - anfragenzeitpunkt).days
+                    if tage >= 5:
+                        anfrage.set_matchpoints(0)
+                        anfrage.set_entscheidung_person(False)
+                        anfrage.set_entscheidung_gruppe(False)
+                        gruppenvorschlagmapper.update(anfrage)
+
     def berechne_gruppen_lernvorlieben(self, gruppen_id: int):
         """ Berechnet die Lernvorlieben einer Lerngruppe aus ihren Teilnehmern """
         adm = Admin()
@@ -531,9 +568,10 @@ class Admin(object):
                 lerninteressen_sammlung.append(lerninteresse)
 
         teilnahmen_anzahl = len(alle_teilnahmen)
-        frequenz_extro_remote_schnitt = []
-        for wert in frequenz_extro_remote_sammlung:
-            frequenz_extro_remote_schnitt.append(wert/teilnahmen_anzahl)
+        frequenz_extro_remote_schnitt = [0,0,0]
+        for index in range(0,3):
+            if teilnahmen_anzahl > 0:
+                frequenz_extro_remote_schnitt[index] = (frequenz_extro_remote_sammlung[index]/teilnahmen_anzahl)
 
         gruppen_lernvorliebe.set_frequenz(frequenz_extro_remote_schnitt[0])
         gruppen_lernvorliebe.set_extrovertiertheit(frequenz_extro_remote_schnitt[1])
@@ -589,12 +627,7 @@ class Admin(object):
                        lernvorliebeperson.get_remote_praesenz()]
         listepartner = [lernvorliebepartner.get_frequenz(), lernvorliebepartner.get_extrovertiertheit(),
                         lernvorliebepartner.get_remote_praesenz()]
-        spperson = lernvorliebeperson.get_lerninteressen()
-        sppartner = lernvorliebepartner.get_lerninteressen()
-        durchlaufpersonunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spperson.split(',')])
-        durchlaufperson = list(durchlaufpersonunbearbeitet)
-        durchlaufpartnerunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in sppartner.split(',')])
-        durchlaufpartner = list(durchlaufpartnerunbearbeitet)
+
         aehnlichkeit = 0
         count = 0
         for aufruf in listeperson:
@@ -615,10 +648,15 @@ class Admin(object):
                 count += 1
         if lernvorliebeperson.get_lerntyp() == lernvorliebepartner.get_lerntyp():
             aehnlichkeit += 10
-        for wort in range(len(durchlaufperson)):
-            for lv in range(len(durchlaufpartner)):
-                if durchlaufperson[wort] in durchlaufpartner[lv]:
-                    aehnlichkeit += 15
+
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        lerninteressenpartner = lernvorliebepartner.get_lerninteressen().lower().replace(" ", "")
+        lerninteressen_list_person = lerninteressenperson.split(",")
+        lerninteressen_list_partner = lerninteressenpartner.split(",")
+        for lerninteresse in lerninteressen_list_person:
+            if lerninteressen_list_partner.count(lerninteresse) > 0:
+                aehnlichkeit += 15
+
         with PartnerVorschlagMapper() as mapper:
             result = mapper.find_by_key(partnervorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)
@@ -638,12 +676,7 @@ class Admin(object):
                        lernvorliebeperson.get_remote_praesenz()]
         listegruppe = [lernvorliebegruppe.get_frequenz(), lernvorliebegruppe.get_extrovertiertheit(),
                        lernvorliebegruppe.get_remote_praesenz()]
-        spperson = lernvorliebeperson.get_lerninteressen()
-        spgruppe = lernvorliebegruppe.get_lerninteressen()
-        durchlaufpersonunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spperson.split(',')])
-        durchlaufperson = list(durchlaufpersonunbearbeitet)
-        durchlaufgruppeunbearbeitet = map(lambda x: x.lower(), [x.strip() for x in spgruppe.split(',')])
-        durchlaufgruppe = list(durchlaufgruppeunbearbeitet)
+
         aehnlichkeit = 0
         count = 0
         for aufruf in listeperson:
@@ -664,10 +697,16 @@ class Admin(object):
                 count += 1
         if lernvorliebeperson.get_lerntyp() == lernvorliebegruppe.get_lerntyp():
             aehnlichkeit += 10
-        for wort in range(len(durchlaufperson)):
-            for lv in range(len(durchlaufgruppe)):
-                if durchlaufperson[wort] in durchlaufgruppe[lv]:
-                    aehnlichkeit += 15
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen()
+        lerninteressengruppe = lernvorliebegruppe.get_lerninteressen()
+        lerninteressenperson = lernvorliebeperson.get_lerninteressen().lower().replace(" ", "")
+        lerninteressengruppe = lernvorliebegruppe.get_lerninteressen().lower().replace(" ", "")
+        lerninteressen_list_person = lerninteressenperson.split(",")
+        lerninteressen_list_gruppe = lerninteressengruppe.split(",")
+        for lerninteresse in lerninteressen_list_person:
+            if lerninteressen_list_gruppe.count(lerninteresse) > 0:
+                aehnlichkeit += 15
+
         with GruppenVorschlagMapper() as mapper:
             result = mapper.find_by_key(gruppenvorschlag.get_id())
             result.set_aehnlichkeit(aehnlichkeit)

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles, Typography, Card, CardContent  } from '@material-ui/core';
+import { Button,  } from '@material-ui/core';
 import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
+import "./components-theme.css";
 
-
+/**
+ * Rendert eine ausgehende Gruppenbeitrittsanfrage mit der Option, diese zurückzuziehen.
+ * Es handelt sich um ein spezifisches GruppenVorschlagBO-Objekt, das als Props übergeben wurde,
+ * welches durch den "Zurückziehen"-Button bearbeitet werden kann.
+ */
 class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +22,7 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
         }
     }
 
+    /** Lädt das LerngruppeBO des übergebenen GruppenVorschlags aus dem Backend */
     getLerngruppe = () => {
         StudooAPI.getAPI().getLerngruppe(this.state.anfrage.getGruppenID())
             .then(lerngruppe => {
@@ -33,6 +32,10 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
             })
     }
 
+    /**
+     * Updaten des GruppenVorschlagBO ausgelöst durch den "Zurückziehen"-Button, wobei die Matchpoints um 1 niedriger
+     * gesetzt werden, was bedeutet, dass die ausgehende GruppenBeitrittsAnfrage zurückgezogen wird.
+     */
     updateGruppenvorschlagsAnfrage = () => {
         this.setState({
             buttonPressed: true
@@ -57,10 +60,15 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getLerngruppe()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {anfrage, lerngruppe, buttonPressed} = this.state;
@@ -69,30 +77,32 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
             <>
                 {
                     (anfrage && lerngruppe) ?
-                        <Typography>
-                            -------------- <br/>
-                            Das ist eine ausgehende Gruppenbeitrittsanfrage #{anfrage.getID()}<br/>
-                            Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.updateGruppenvorschlagsAnfrage}>
-                                Zurückziehen
-                            </Button>
-                            <br/>
-                            Gruppenname: {lerngruppe.getGruppenname()}
-                            <br/>--------------
-                        </Typography>
+                        <Card className="anfragencard">
+                            <CardContent>
+
+                                <Typography variant="h6">
+                                    Du möchtest der Gruppe "{lerngruppe.getGruppenname()}" beitreten!
+                                </Typography>
+
+                                <br/>
+
+                                <div className="buttonAlign">
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
+                                            onClick={this.updateGruppenvorschlagsAnfrage}>
+                                        Zurückziehen
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
                         :
                         null
                 }
             </>
-
-
         )
     }
-
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

@@ -4,7 +4,6 @@ import {
     Box,
     Container,
     Grid,
-
     withStyles,
     Typography,
     Accordion,
@@ -12,7 +11,6 @@ import {
     AccordionDetails,
     TextField,
     Button,
-
     List,
     ListItem,
     Divider,
@@ -24,6 +22,7 @@ import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
 import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
+import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
 
 class KonversationListEntry extends Component {
@@ -43,7 +42,8 @@ class KonversationListEntry extends Component {
             error: null,
             loadingInProgress: false,
             addingInProgress: false,
-            addingError: null
+            addingError: null,
+            showProfilPopUp: false
         }
         this.baseState = this.state
     }
@@ -120,6 +120,20 @@ class KonversationListEntry extends Component {
         })
     }
 
+    /** Handles the onClick event of the Popup person button */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+          showProfilPopUp: true
+        });
+    }
+
+    popUpClosed = (event) => {
+        this.setState({
+          showProfilPopUp: false
+        });
+    }
+
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
@@ -128,8 +142,7 @@ class KonversationListEntry extends Component {
     render() {
         const { classes } = this.props;
         const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed,
-            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog } = this.state;
-
+            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
 
         return (
             <Container>
@@ -153,7 +166,11 @@ class KonversationListEntry extends Component {
                                             chatpartner ?
                                                 <>
                                                     <Typography>
-                                                        {chatpartner.getName()}  <br/>
+                                                        <Button onClick={this.popUpButtonClicked}>
+                                                            {
+                                                                chatpartner.getName()
+                                                            }
+                                                        </Button>  <br/>
                                                         <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
                                                             Gruppe erstellen
                                                         </Button>
@@ -177,6 +194,8 @@ class KonversationListEntry extends Component {
                                 }
                             />
                         </ListItem>
+
+                        <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
             </Container>
         )
     }

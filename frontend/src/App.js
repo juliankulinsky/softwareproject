@@ -1,26 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import {Container, ThemeProvider, CssBaseline, Typography} from '@material-ui/core';
-import PersonenList from './components/PersonenList';
-import PersonListEntry from "./components/PersonListEntry";
 import LerngruppenList from "./components/LerngruppenList";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Registrieren from './components/pages/Registrieren'
-/*import TransactionList from './components/TransactionList';
-import About from './components/pages/About';
-import AllAccountList from './components/AllAccountList';
-import Theme from './Theme';
-
- */
 import SignIn from './components/pages/SignIn';
 import LoadingProgress from './components/dialogs/LoadingProgress';
 import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
 import AllProfile from './components/AllProfile';
 import ProfilEntry from "./components/ProfilEntry";
-import AllGruppenvorschlaege from './components/AllGruppenvorschlaege';
-import AllPartnervorschlaege from './components/AllPartnervorschlaege';
 import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
@@ -35,7 +24,7 @@ import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
 
 /**
- * The main bank administration app. It uses Googles firebase to log into the bank end. For routing the
+ * The main studoo app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
  *
  * @see See Google [firebase.auth()](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
@@ -72,7 +61,7 @@ class App extends React.Component {
 
 	getCurrentPerson = (uid) => {
 		StudooAPI.getAPI().getPersonByUID(uid)
-        .then(personBO => this.setState({
+			.then(personBO => this.setState({
 				currentPersonBO: personBO
 			}));
 	}
@@ -92,10 +81,10 @@ class App extends React.Component {
 				// user information.
 				document.cookie = `token=${token};path=/`;
 				/**
-				console.log("-------------")
-				console.log("Das ist der Token: (aus handleAuthState in App.js")
-				console.log(token)
-				console.log("-------------")
+				 console.log("-------------")
+				 console.log("Das ist der Token: (aus handleAuthState in App.js")
+				 console.log(token)
+				 console.log("-------------")
 				 */
 
 				// Set the user not before the token arrived
@@ -149,76 +138,71 @@ class App extends React.Component {
 	}
 
 	/** Renders the whole app <AktuellesProfil person={currentPersonBO} user={currentUser} />
-										*/
+	 */
 	render() {
 		const {currentUser, currentPersonBO, appError, authError, authLoading} = this.state;
 
 		return (
-				<Router basename={process.env.PUBLIC_URL}>
-						{
-							currentUser ?
-								<>
-									{
-										currentPersonBO ?
-											<>
-												{
-													currentPersonBO.getAlter() === 0 ?
-														<>
-															<Registrieren person={currentPersonBO} user={currentUser}/>
-														</>
-
-														:
-
-														<>
-															<HeaderComplete user={currentUser}/>
-																{/**
-																 <Redirect from='/' to='/partnervorschlaege' />
-																 */}
-
-															<Route path='/lerngruppen'>
-																<LerngruppenList person={currentPersonBO}/>
-															</Route>
-															<Route path='/personen'>
-																<PersonenList user={currentUser}/>
-															</Route>
-															<Route path='/profil'>
-																<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
-															</Route>
-															<Route path='/vorschlaege'>
-																<AllPartnervorschlaege person={currentPersonBO}/>
-																<AllGruppenvorschlaege person={currentPersonBO}/>
-															</Route>
-															<Route path='/lernvorlieben'>
-																<LernvorliebenList/>
-															</Route>
-															<Route path='/nachrichten'>
-																<NachrichtenList person={currentPersonBO}/>
-															</Route>
-															<Route path='/konversationen'>
-																<KonversationenList person={currentPersonBO}/>
-															</Route>
-															<Route path='/explorer'>
-																<PartnerExplorer person={currentPersonBO}/> <br/> <br/>
-																<LerngruppenExplorer person={currentPersonBO}/>
-															</Route>
-															<Route path='/anfragen'>
-																<EingehendeAnfragenList person={currentPersonBO}/> <br/> <br/>
-																<AusgehendeAnfragenList person={currentPersonBO}/>
-															</Route>
-														</>
-												}
-											</>
-											:
-											null
-									}
-								</>
-								:
-								<>
-									<Redirect to='/index.html'/>
-									<SignIn onSignIn={this.handleSignIn}/>
-								</>
-						}
-				</Router>
+			<Router basename={process.env.PUBLIC_URL}>
+				{
+					currentUser ?
+						<>
+							{
+								currentPersonBO ?
+									<>
+										{
+											currentPersonBO.getAlter() === 0 ?
+												<>
+													<Registrieren person={currentPersonBO} user={currentUser}/>
+												</>
+												:
+												<>
+													<HeaderComplete user={currentUser}/>
+													{/**
+													 <Redirect from='/' to='/partnervorschlaege' />
+													 */}
+													<Route path='/lerngruppen'>
+														<LerngruppenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/profil'>
+														<ProfilVorschau person={currentPersonBO} user={currentUser}
+																		selfperson={true}/>
+													</Route>
+													<Route path='/lernvorlieben'>
+														<LernvorliebenList/>
+													</Route>
+													<Route path='/nachrichten'>
+														<NachrichtenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/konversationen'>
+														<KonversationenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/explorer'>
+														<PartnerExplorer person={currentPersonBO}/>
+													</Route>
+													<Route path='/groupexplorer'>
+														<LerngruppenExplorer person={currentPersonBO}/>
+													</Route>
+													<Route path='/anfragen'>
+														<EingehendeAnfragenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/anfragenausgehend'>
+														<AusgehendeAnfragenList person={currentPersonBO}/>
+													</Route>
+												</>
+										}
+									</>
+									:
+									null
+							}
+						</>
+						:
+						<>
+							<Redirect to='/index.html'/>
+							<SignIn onSignIn={this.handleSignIn}/>
+						</>
+				}
+			</Router>
 		);
 	}
 }

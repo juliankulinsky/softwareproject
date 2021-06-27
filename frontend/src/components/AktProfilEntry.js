@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+{/* import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
@@ -38,7 +38,7 @@ class AktProfilEntry extends Component {
                             Lernvorliebe ID:
                             {
                                 profil.getLernvorliebeID()
-                            */
+
                             }
                             {
                                 <EineLernvorliebe lvId={profil.getLernvorliebeID()} />
@@ -52,20 +52,21 @@ class AktProfilEntry extends Component {
 
 }
 
-/** Component specific styles */
+/** Component specific styles
 const styles = theme => ({
   root: {
     width: '100%',
   }
 });
 
-/** PropTypes */
+/** PropTypes
 AktProfilEntry.propTypes = {
-  /** @ignore */
+  /** @ignore
   //classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be rendered */
+  /** The CustomerBO to be rendered
   //nachricht: PropTypes.object.isRequired,
 
 }
 
 export default withStyles(styles)(AktProfilEntry);
+*/}

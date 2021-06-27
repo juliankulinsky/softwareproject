@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+{/* import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
 import { Button, ButtonGroup } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ProfilForm from "./dialogs/ProfilForm";
 
-/** KANN GELÖSCHT WERRDEN LUL */
+/** KANN GELÖSCHT WERRDEN LUL
 
 class LernvorliebenListEntry extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class LernvorliebenListEntry extends Component {
         }
     }
 
-    /** Handles the onClick event of the edit customer button */
+    /** Handles the onClick event of the edit customer button
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
@@ -24,7 +24,7 @@ class LernvorliebenListEntry extends Component {
     });
   }
 
-  /** Handles the onClose event of the CustomerForm */
+  /** Handles the onClose event of the CustomerForm
   profilFormClosed = (lernvorliebe) => {
     // Lernvorliebe is not null and therefor changed
     if (lernvorliebe) {
@@ -53,7 +53,7 @@ class LernvorliebenListEntry extends Component {
                                     edit
                                 </Button>
                             </ButtonGroup>
-                            */
+
                         }<Typography className={classes.heading}>
                             Lerntyp:
                             {
@@ -90,26 +90,27 @@ class LernvorliebenListEntry extends Component {
                 {/*
                     <ProfilLernvorliebenForm show={showProfilLernvorliebenForm} lernvorliebe={lernvorliebe}
                                              onClose={this.profilLernvorliebenFormClosed}/>
-                */}
+
             </div>
         )
     }
 }
 
-/** Component specific styles */
+/** Component specific styles
 const styles = theme => ({
   root: {
     width: '100%',
   }
 });
 
-/** PropTypes */
+/** PropTypes
 LernvorliebenListEntry.propTypes = {
-  /** @ignore */
+  /** @ignore
   //classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be rendered */
+  /** The CustomerBO to be rendered
   lernvorliebe: PropTypes.object.isRequired,
 
 }
 
 export default withStyles(styles)(LernvorliebenListEntry);
+*/}

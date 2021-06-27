@@ -16,7 +16,7 @@ class PersonMapper (Mapper):
     def find_all(self):
         """Auslesen aller Person-Objekte
 
-        :return: Sammlung mit Person-Objekten, die sämtliche Kunden repräsentieren
+        :return: Sammlung mit Person-Objekten
         """
         result = []
         cursor = self._cnx.cursor()
@@ -43,10 +43,10 @@ class PersonMapper (Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """Suchen einer Person mit vorgegebener Person-ID
+        """Suchen einer Person mit gegebener Person-ID
 
-        :param: key Primärschlüsselattribut
-        :return: Person-Objekt, das dem übergebenen Schlüssel entspricht, None bei nicht vorhandenem DB-Tupel
+        :param: key: Person ID, Primärschlüsselattribut
+        :return: Ein einzelnes Person-Objekt mit gegebender Person ID, None bei nicht vorhandenem DB-Tupel
         """
         result = None
         cursor = self._cnx.cursor()
@@ -80,10 +80,10 @@ class PersonMapper (Mapper):
         return result
 
     def find_by_google_user_id(self, key: str):
-        """Suchen eines Person-Objekts mit der angegebenen Google-User-ID
+        """Auslesen eines Person-Objekts mit der gegebenen Google User ID
 
-        :param key:
-        :return: das gesuchte Person-Objekt
+        :param key: Google User ID
+        :return: Ein einzelnes Person-Objekt mit der passenden Google User ID
         """
         result = None
         cursor = self._cnx.cursor()
@@ -118,6 +118,11 @@ class PersonMapper (Mapper):
         return result
 
     def find_by_konversation_id(self, konversation_id):
+        """Auslesen eines Person-Objekts mit der gegebenen Konversation ID
+
+        :param konversation_id: Konversation ID
+        :return: Ein einzelnes Person-Objekt, welches an der gegebener Konversation teilnimmt
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT L.* FROM personen AS L " \
@@ -146,9 +151,9 @@ class PersonMapper (Mapper):
         return result
 
     def find_by_profil_id(self, profil_id: int):
-        """Suchen eines Person-Objekts mit der angegebenen Google-User-ID
+        """Auslesen eines Person-Objekts mit der gegebenen Profil ID
 
-        :param key:
+        :param profil_id: Profil ID
         :return: das gesuchte Person-Objekt
         """
         result = None
@@ -188,8 +193,8 @@ class PersonMapper (Mapper):
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
 
-        :param: person das zu speichernde Objekt
-        :return: das bereits übergebene Objekt, jeodch mit ggf, korrigierter ID.
+        :param: person: Das zu speichernde Person-Objekt
+        :return: Das bereits übergebene Person-Objekt, jeodch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM personen")
@@ -220,9 +225,9 @@ class PersonMapper (Mapper):
         return person
 
     def update(self, person: Person):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
+        """Aktualisieren eines Person-Objekts in der Datenbank anhand seiner ID
 
-        :param person: das Objekt, das in die DB geschrieben werden soll
+        :param person: Das Person-Objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -248,7 +253,7 @@ class PersonMapper (Mapper):
     def delete(self, person: Person):
         """Löschen der Daten eines Person-Objekts aus der Datenbank.
 
-        :param person: das aus der Datenbank zu löschende Objekt
+        :param person: Das aus der Datenbank zu löschende Person-Objekt
         """
         cursor = self._cnx.cursor()
 

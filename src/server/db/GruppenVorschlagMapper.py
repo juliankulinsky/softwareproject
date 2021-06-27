@@ -1,5 +1,6 @@
 from server.bo.GruppenVorschlag import GruppenVorschlag
 from server.db.Mapper import Mapper
+from datetime import datetime
 
 
 class GruppenVorschlagMapper (Mapper):
@@ -12,7 +13,7 @@ class GruppenVorschlagMapper (Mapper):
     def find_all(self):
         """Auslesen aller GruppenVorschlag-Objekte aus der Datenbank
 
-        :return:
+        :return: Sammlung mit GruppenVorschlag-Objekten
         """
         result = []
         cursor = self._cnx.cursor()
@@ -38,10 +39,10 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """
+        """Auslesen aller GruppenVorschläge-Objekte der zugehörigen Gruppenvorschlags ID
 
-        :param key:
-        :return:
+        :param key: GruppenVorschlags ID
+        :return: Sammlung mit GruppenVorschlag-Objekten, der zugehörigen Gruppenvorschlags ID
         """
         result = None
         cursor = self._cnx.cursor()
@@ -73,10 +74,11 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_by_person_id_und_gruppen_id(self, person_key: int, gruppen_key: int):
-        """
+        """Auslesen des GruppenVorschlags-Objekt der gegebenen Person ID und Gruppen ID
 
-        :param key:
-        :return:
+        :param person_key: Person ID
+        :param gruppen_key: Gruppen ID
+        :return: Ein einzelnes GruppenVorschlag-Objekt, der gegebenen Person ID und Gruppen ID
         """
         result = None
         cursor = self._cnx.cursor()
@@ -107,6 +109,12 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_eingehende_by_person_id(self, person_key):
+        """ Auslesen der GruppenVorschlags-Objekte der gegebenen Person ID bei dem die Entscheidung der Gruppe schon
+            getroffen ist, die Entscheidung der Person jedoch noch nicht
+
+        :param person_key: Person ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE " \
@@ -134,6 +142,12 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_ausgehende_by_person_id(self, person_key):
+        """ Auslesen der GruppenVorschlags-Objekte der gegebenen Person ID bei dem die Entscheidung der Person schon
+                   getroffen ist, die Entscheidung der Gruppe jedoch noch nicht
+
+        :param person_key: Person ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE " \
@@ -161,6 +175,12 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_eingehende_by_gruppen_id(self, gruppen_key):
+        """ Auslesen der GruppenVorschlags-Objekte der gegebenen Gruppen ID bei dem die Entscheidung der Person schon
+                           getroffen ist, die Entscheidung der Gruppe jedoch noch nicht
+
+        :param gruppen_key: Gruppen ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Gruppen ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE " \
@@ -188,6 +208,11 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_by_gruppen_id(self, gruppen_key):
+        """ Auslesen der GruppenVorschlags-Objekte der gegebenen Gruppen ID
+
+        :param gruppen_key: Gruppen ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Gruppen ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE gruppen_id={} " \
@@ -214,6 +239,12 @@ class GruppenVorschlagMapper (Mapper):
         return result
 
     def find_best_for_person_id(self, person_id: int):
+        """ Auslesen der GruppenVorschlags-Objekte der gegebenen Person ID, bei denen noch keine Entscheidung der
+            Person getroffen wurde in absteigender Reihenfolge
+
+        :param person_id: Person ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Person ID
+        """
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person=FALSE " \
@@ -243,7 +274,13 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
-    def find_all_for_person_id(self, person_key: int):
+    def find_all_offene_for_person_id(self, person_key: int):
+        """ Auslesen aller GruppenVorschlags-Objekte der gegebenen Person ID, bei denen noch keine Entscheidung der
+                    Person getroffen
+
+        :param person_key: Person ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Person ID
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} AND entscheidung_person is FALSE "\
@@ -269,11 +306,76 @@ class GruppenVorschlagMapper (Mapper):
 
         return result
 
-    def insert(self, gruppen_vorschlag: GruppenVorschlag):
-        """
+    def find_all_for_person_id(self, person_key: int):
+        """ Auslesen aller GruppenVorschlags-Objekte der gegebenen Person ID
 
-        :param gruppen_vorschlag:
-        :return:
+        :param person_key: Person ID
+        :return: Sammlung mit GruppenVorschlags-Objekten, der gegebenen Person ID
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE person_id={} "\
+            .format(person_key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) in tuples:
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result.append(gruppen_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_all_anfragen(self):
+        """ Auslesen aller GruppenVorschlags-Objekte, deren Matchpoints auf 1 gesetzt ist, entweder durch eine
+            Entscheidung seitens der Gruppe, oder der Person, jedoch nicht beiderseits
+
+        :return: Sammlung mit GruppenVorschlags-Objekten
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM gruppen_vorschlaege WHERE matchpoints=1 AND " \
+                  "((entscheidung_person=TRUE AND entscheidung_gruppe=FALSE) " \
+                  "OR (entscheidung_gruppe=TRUE AND entscheidung_person=FALSE)) "
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, erstellungszeitpunkt, person_id, gruppen_id, aehnlichkeit, matchpoints, entscheidung_person,
+             entscheidung_gruppe) in tuples:
+            gruppen_vorschlag = GruppenVorschlag()
+            gruppen_vorschlag.set_id(id)
+            gruppen_vorschlag.set_erstellungszeitpunkt(erstellungszeitpunkt)
+            gruppen_vorschlag.set_person_id(person_id)
+            gruppen_vorschlag.set_gruppen_id(gruppen_id)
+            gruppen_vorschlag.set_aehnlichkeit(aehnlichkeit)
+            gruppen_vorschlag.set_matchpoints(matchpoints)
+            gruppen_vorschlag.set_entscheidung_person(entscheidung_person)
+            gruppen_vorschlag.set_entscheidung_gruppe(entscheidung_gruppe)
+            result.append(gruppen_vorschlag)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def insert(self, gruppen_vorschlag: GruppenVorschlag):
+        """Einfügen eines GruppenVorschlags-Objekts in die Datenbank.
+
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
+
+        :param: gruppen_vorschlag: Das zu speichernde GruppenVorschlags-Objekt
+        :return: Das bereits übergebene GruppenVorschlags-Objekt, jedoch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM gruppen_vorschlaege")
@@ -303,16 +405,16 @@ class GruppenVorschlagMapper (Mapper):
         return gruppen_vorschlag
 
     def update(self, gruppen_vorschlag: GruppenVorschlag):
-        """
+        """Aktualisieren eines GruppenVorschlags-Objekts in der Datenbank anhand seiner ID
 
-        :param gruppen_vorschlag:
-        :return:
+        :param gruppen_vorschlag: Das GruppenVorschlags-Objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE gruppen_vorschlaege SET person_id=%s, gruppen_id=%s, " \
+        command = "UPDATE gruppen_vorschlaege SET erstellungszeitpunkt=%s, person_id=%s, gruppen_id=%s, " \
                   "aehnlichkeit=%s, matchpoints=%s, entscheidung_person=%s, entscheidung_gruppe=%s WHERE id=%s"
         data = (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             gruppen_vorschlag.get_person_id(),
             gruppen_vorschlag.get_gruppen_id(),
             gruppen_vorschlag.get_aehnlichkeit(),
@@ -327,10 +429,9 @@ class GruppenVorschlagMapper (Mapper):
         cursor.close()
 
     def delete(self, gruppen_vorschlag: GruppenVorschlag):
-        """
+        """Löschen der Daten eines GruppenVorschlags-Objekts aus der Datenbank.
 
-        :param gruppen_vorschlag:
-        :return:
+        :param gruppen_vorschlag: Das aus der Datenbank zu löschende GruppenVorschlags-Objekt
         """
         cursor = self._cnx.cursor()
 

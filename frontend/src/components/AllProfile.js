@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+{/*import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     withStyles,
@@ -91,7 +91,7 @@ class AllProfile extends Component {
 }
 
 
-/** Component specific styles */
+/** Component specific styles
 const styles = theme => ({
   root: {
     width: '100%',
@@ -102,10 +102,11 @@ const styles = theme => ({
   }
 });
 
-/** PropTypes */
+/** PropTypes
 AllProfile.propTypes = {
-  /** @ignore */
+  /** @ignore
   classes: PropTypes.object.isRequired
 }
 
 export default withRouter(withStyles(styles)(AllProfile));
+*/}

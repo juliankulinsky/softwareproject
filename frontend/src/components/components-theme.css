@@ -1,0 +1,91 @@
+.partnercard {
+    display: flex;
+}
+
+.partnervorschlag {
+    display: flex;
+}
+
+/* Fullscreen */
+@media only screen and (min-width: 401px) {
+    .partnervorschlag {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        margin: 2%;
+        padding: 5%;
+    }
+
+    .partnercard {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+}
+
+.partnervorschlag Button {
+    color: green;
+    background-color: #FFF;
+    box-shadow: none;
+}
+
+.partnervorschlag > *:first-child {
+    color: red;
+}
+
+.partnercard div {
+    padding: 0 2% 2% 2%;
+}
+
+.toggleExplore{
+    text-align: center;
+    margin-top: 2%;
+    padding: 1%;
+}
+.toggleExploreNavLink{
+    text-decoration: none;
+}
+.toggleExploreButtonPartner{
+    color: red;
+}
+
+.lerngruppeListCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.lerngruppeListButtons {
+    display: flex;
+    align-items: center;
+}
+
+.lerngruppenListPopUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.anfrageRequest {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1%
+}
+
+.lerngruppeListWholeCard {
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 5px 5px lightgray;
+    width: 90%;
+}
+
+.anfragencard {
+    margin-top: 5%;
+}
+
+.buttonAlign {
+    text-align:center;
+}

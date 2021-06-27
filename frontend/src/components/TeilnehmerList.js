@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { Box } from '@material-ui/core';
 import {StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
 
-
+/**
+ * Kontrolliert eine Liste an TeilnehmerListEntrys
+ */
 class TeilnehmerList extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +18,9 @@ class TeilnehmerList extends Component {
         }
     }
 
+    /**
+     * Alle GruppenTeilnahmeBOs einer übergebenen Lerngruppe aus dem Backend auslesen.
+     */
     getAlleGruppenTeilnahmenForGruppe = () => {
         StudooAPI.getAPI().getGruppenTeilnahmenForGruppenID(this.props.lerngruppe.getID())
             .then(gruppenTeilnahmen => {
@@ -31,10 +30,15 @@ class TeilnehmerList extends Component {
             })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getAlleGruppenTeilnahmenForGruppe()
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { lerngruppe, alleGruppenTeilnahmen } = this.state;
@@ -43,8 +47,8 @@ class TeilnehmerList extends Component {
             <Typography>
                 {
                     alleGruppenTeilnahmen ?
-                        <Typography>
-                            Das sind alle Gruppenteilnehmer: <br/><br/>
+                        <Box>
+                            <Typography variant="h6" style={{marginTop: "2%", marginBottom: "2%"}}>Gruppenmitglieder</Typography>
                             {
                                 alleGruppenTeilnahmen.map(gruppenteilnahme =>
                                     <TeilnehmerListEntry
@@ -54,7 +58,7 @@ class TeilnehmerList extends Component {
                                     />
                                 )
                             }
-                        </Typography>
+                        </Box>
                         :
                         null
                 }
@@ -63,7 +67,7 @@ class TeilnehmerList extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
@@ -72,9 +76,7 @@ const styles = theme => ({
 
 /** PropTypes */
 TeilnehmerList.propTypes = {
-  /** @ignore */
   classes: PropTypes.object.isRequired,
-
 }
 
 export default withStyles(styles)(TeilnehmerList);

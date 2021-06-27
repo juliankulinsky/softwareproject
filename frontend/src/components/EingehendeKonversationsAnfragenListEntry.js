@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles, Typography } from '@material-ui/core';
+import { Button, Card, CardContent } from '@material-ui/core';
 import {PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
+import PopUpProfil from "./dialogs/PopUpProfil";
+import "./components-theme.css";
 
-
+/**
+ * Rendert eine eingehende KonversationsAnfrage mit der Option, diese anzunehmen oder abzulehnen.
+ * Es handelt sich um ein spezifisches PartnerVorschlagBO-Objekt, das als Props übergeben wurde,
+ * welches durch den "Annehmen" und "Ablehnen"-Button bearbeitet werden kann.
+ */
 class EingehendeKonversationsAnfragenListEntry extends Component {
     constructor(props) {
         super(props);
@@ -21,10 +20,16 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
             anderePerson: null,
             entscheidung: null,
             matchpoints: this.props.anfrage.getMatchpoints(),
-            buttonPressed: false
+            buttonPressed: false,
+            showProfilPopUp: false
         }
     }
 
+    /**
+     * Lädt die andere Person des PartnerVorschlagBO aus dem Backend. Falls die "Person" des Vorschlags die aktuelle
+     * Person ist, wird der "Partner" des Vorschlags geladen, und falls der "Partner" des Vorschlags die aktuelle Person
+     * ist, wird die "Person" des Vorschlags geladen.
+     */
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.anfrage.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.anfrage.getPartnerID())
@@ -41,6 +46,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         }
     }
 
+    /** Wird durch "Annehmen"-Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -50,6 +56,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         });
     }
 
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -59,6 +66,11 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         });
     }
 
+    /**
+     * Updaten des PartnerVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben. Die Entscheidung der "Person" oder des "Partners" (abhängig davon welche "Rolle" die aktuelle
+     * Person im Vorschlag spielt) wird auf true gesetzt, was bedeutet, dass eine Entscheidung getroffen wurde.
+     */
     updatePartnervorschlag = () => {
         let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.anfrage);
         if (this.props.person.getID() === this.state.anfrage.getPersonID()) {
@@ -90,34 +102,72 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
         })
     }
 
+    /** Handhabt das onClick-Event des Popup-Person-Buttons */
+    popUpButtonClicked = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showProfilPopUp: true
+        });
+    }
+
+    /** Handhabt das Schließen des Popup-Person-Buttons */
+    popUpClosed = (event) => {
+        this.setState({
+            showProfilPopUp: false
+        });
+    }
+
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getAnderePerson()
     }
 
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
-        const {anfrage, anderePerson, buttonPressed} = this.state;
+        const {anfrage, anderePerson, buttonPressed, showProfilPopUp} = this.state;
 
         return (
             <>
                 {
                     (anfrage && anderePerson) ?
-                        <Typography>
-                            -------------- <br/>
-                            Das ist eine eingehende Partneranfrage #{anfrage.getID()}<br/>
-                            Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
-                                    onClick={this.entscheidungTrue}>
-                                Annehmen
-                            </Button> &nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.entscheidungFalse}>
-                                Ablehnen
-                            </Button>
-                            <br/>
-                            Partnername: {anderePerson.getName()}
-                            <br/>--------------
-                        </Typography>
+                        <Card className="anfragencard">
+                            <CardContent>
+
+                                <Typography variant="h6">
+                                    {anderePerson.getName()} möchte mit dir chatten!
+                                </Typography>
+
+                                <Typography>
+                                    Sehe dir {anderePerson.getName()}'s Profil an:&nbsp;
+                                    <Button onClick={this.popUpButtonClicked} color="primary" variant="outlined" size="small">
+                                        {
+                                            anderePerson.getName()
+                                        }
+                                    </Button>
+                                </Typography>
+
+                                <br/>
+
+                                <div className="buttonAlign">
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
+                                            onClick={this.entscheidungTrue}>
+                                        Annehmen
+                                    </Button> &nbsp;
+
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
+                                            onClick={this.entscheidungFalse}>
+                                        Ablehnen
+                                    </Button>
+                                </div>
+
+                                <PopUpProfil show={showProfilPopUp} person={anderePerson} onClose={this.popUpClosed}/>
+
+                            </CardContent>
+                        </Card>
                         :
                         null
                 }
@@ -129,7 +179,7 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
 
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
