@@ -117,8 +117,6 @@ class NachrichtListEntry extends Component {
                     }
                 </Typography>
 
-                <LoadingProgress show={loadingInProgress} />
-
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getAbsenderPerson}
@@ -126,7 +124,6 @@ class NachrichtListEntry extends Component {
             </Container>
         )
     }
-
 }
 
 /** Component specific styles */

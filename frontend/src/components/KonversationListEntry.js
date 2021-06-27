@@ -171,7 +171,7 @@ class KonversationListEntry extends Component {
                                 secondary = {
                                     <React.Fragment>
                                         <Typography>
-                                            Nachrichtenvorschau
+                                            Klicke hier, um den Chat aufzurufen
                                         </Typography>
                                     </React.Fragment>
                                 }

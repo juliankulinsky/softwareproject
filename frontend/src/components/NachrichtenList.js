@@ -143,15 +143,20 @@ class NachrichtenList extends Component {
                     onReload={this.getNachrichten}
                 />
 
-                <TextField type='text' id='neueNachricht' value={neueNachricht} onChange={this.textFieldValueChange}
-                                    error={neueNachrichtValidationFailed}>
-                                        Test
-                                    </TextField> &nbsp;&nbsp;
+                <TextField type='text'
+                           id='neueNachricht'
+                           value={neueNachricht}
+                           onChange={this.textFieldValueChange}
+                           error={neueNachrichtValidationFailed}>
+                    Test
+                </TextField> &nbsp;&nbsp;
 
-                                    <Button color="primary" variant='contained' disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
-                                    onClick={this.addNachricht}>
-                                        Senden
-                                    </Button>
+                <Button color="primary"
+                        variant='contained'
+                        disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
+                        onClick={this.addNachricht}>
+                    Senden
+                </Button>
 
             </Container>
         )
