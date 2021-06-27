@@ -15,6 +15,8 @@ import {GruppenVorschlagBO, LerngruppeBO} from "../api";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import "./components-theme.css";
+import Delayed from "./Delay";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 /**
  * Rendert den am besten zur aktuellen Person passenden GruppenVorschlagBO mit Anzeigen von Informationen über die
@@ -214,26 +216,27 @@ class LerngruppenExplorer extends Component {
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
-                                        <Typography variant="h3">
-                                            It should be a match! &#128580;
-                                        </Typography>
-                                        <Typography variant="h4">
-                                            Und hier sollte deine neue Lerngruppe stehen ...
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Irgendwas ist da nicht ganz richtig.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
-                                        </Typography>
                                         <Typography variant="h5">
-                                            Happy Waiting for Solution! &#128540;
+                                            Dein neuer Vorschlag wird berechnet ...
                                         </Typography>
+                                        <Delayed waitBeforeShow={7500}>
+                                            <Typography variant="h6">
+                                                Aktuell gibt es wohl keine passenden Lerngruppen für dich.
+                                            </Typography>
+                                            <Typography variant="h6">
+                                                Empfehle die App deinen Kommilitonen weiter und freue dich auf deine
+                                                nächsten Matches!
+                                            </Typography>
+                                            <Typography variant="h5">
+                                                Stay tuned &#129299;
+                                            </Typography>
+                                        </Delayed>
                                     </div>
 
                                     <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        <CircularProgress/>
                                     </div>
+
                                 </CardContent>
                             </Card>
                         </div>
