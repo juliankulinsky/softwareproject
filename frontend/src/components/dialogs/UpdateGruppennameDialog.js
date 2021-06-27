@@ -12,11 +12,6 @@ import LoadingProgress from './LoadingProgress';
  * Die bestehenden Daten der Lerngruppe und dessen Profil werden als Defaultwerte in die Textfelder übernommen.
  * Falls diese bearbeitet wurden, kann auf "Ändern' gedrückt werden, um die Änderungen in der Datenbank zu speichern.
  * Durch onClose wird der Dialog geschlossen, dies passiert auch beim Abbruch.
- *
- * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
- * @see See Material-UIs [TextField](https://material-ui.com/components/text-fields//)
- *
- * @author [Andreas Scheumann]
  */
 class UpdateGruppennameDialog extends Component {
 
@@ -36,7 +31,6 @@ class UpdateGruppennameDialog extends Component {
       updatingInProgress: false,
       updatingError: null
     };
-    // save this state for canceling
     this.baseState = this.state;
   }
 

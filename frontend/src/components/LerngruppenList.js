@@ -9,7 +9,9 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import PersonForm from './dialogs/PersonForm';
 import LerngruppeListEntry from "./LerngruppeListEntry";
 
-
+/**
+ * Kontrolliert eine Liste an LerngruppenListEntrys
+ */
 class LerngruppenList extends Component {
 
     constructor(props) {
@@ -22,6 +24,9 @@ class LerngruppenList extends Component {
         };
     }
 
+    /**
+     * Alle LerngruppeBOs einer der aktuellen Person aus dem Backend auslesen.
+     */
     getLerngruppen = () => {
         StudooAPI.getAPI().getLerngruppenForPersonID(this.props.person.getID())
             .then(lerngruppenBOs => {
@@ -42,10 +47,15 @@ class LerngruppenList extends Component {
         });
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methoden auf, welche die Daten aus dem Backend laden.
+     */
     componentDidMount() {
         this.getLerngruppen();
     }
 
+    /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
         const { lerngruppen, error, loadingInProgress } = this.state;
@@ -74,7 +84,7 @@ class LerngruppenList extends Component {
     }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

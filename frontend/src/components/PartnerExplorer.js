@@ -18,6 +18,14 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
 import ProfilVorschau from "./ProfilVorschau";
 
+/**
+ * Rendert den am besten zur aktuellen Person passenden PartnerVorschlagBO mit Anzeigen von Informationen über die
+ * vorgeschlagene Person. Zusätzlich besteht die Möglichkeit, diesen Vorschlag über zwei Button entweder anzunehmen,
+ * wodurch der PartnerVorschlagBO aktualisiert wird. In beiden Fällen wird die Entscheidung der aktuellen Person auf
+ * true gesetzt, was konkret entweder die EntscheidungPerson oder die EntscheidungPartner des PartnerVorschlagBO ist,
+ * abhängig davon, welche Rolle die aktuelle Person in diesem PartnerVorschlagBO einnimmt.
+ * Bei Annehmen werden die Matchpoints um 1 erhöht und bei Ablehnen werden die Matchpoints nicht verändert
+ */
 class PartnerExplorer extends Component {
 
     constructor(props) {
@@ -38,6 +46,11 @@ class PartnerExplorer extends Component {
         this.baseState = this.state;
     }
 
+    /**
+     * Auslesen der anderen Person, die in diesem PartnerVorschlagBO teilnimmt. Falls die aktuelle Person die "Person"
+     * des PartnerVorschlagBO ist, wird der "Partner" geladen, und falls die aktuelle Person der "Partner" des
+     * PartnerVorschlagBO ist, wird die "Person" geladen.
+     */
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
@@ -54,6 +67,10 @@ class PartnerExplorer extends Component {
         }
     }
 
+    /**
+     * Auslesen des PartnerVorschlagBO mit der höchsten Ähnlichkeit, an der die aktuelle Person teilnimmt, bei dem
+     * die aktuelle Person noch keine Entscheidung getroffen hat.
+     */
     getBestPartnervorschlag = () => {
         StudooAPI.getAPI().getPartnerVorschlagByPersonID(this.props.person.getID())
             .then(partnervorschlagBO => {
@@ -81,6 +98,7 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /** Wird durch grünen Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -90,6 +108,7 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -99,6 +118,11 @@ class PartnerExplorer extends Component {
         });
     }
 
+    /**
+     * Updaten des PartnerVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben. Die Entscheidung der "Person" oder des "Partners" (abhängig davon welche "Rolle" die aktuelle
+     * Person im Vorschlag spielt) wird auf true gesetzt, was bedeutet, dass eine Entscheidung getroffen wurde.
+     */
     updatePartnervorschlag = () => {
         let updatedPartnerVorschlag = Object.assign(new PartnerVorschlagBO(), this.state.partnervorschlag);
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
@@ -130,11 +154,15 @@ class PartnerExplorer extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getBestPartnervorschlag()
     }
 
-
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {partnervorschlag, anderePerson, error, loadingInProgress} = this.state;
@@ -245,9 +273,7 @@ class PartnerExplorer extends Component {
     }
 }
 
-
-
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
