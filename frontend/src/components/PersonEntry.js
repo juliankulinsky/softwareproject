@@ -37,8 +37,7 @@ class PersonEntry extends Component {
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
-      showProfilForm: true,
-      loadingInProgress: true
+      showProfilForm: true
     });
   }
 
@@ -52,7 +51,8 @@ class PersonEntry extends Component {
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }
@@ -62,11 +62,13 @@ class PersonEntry extends Component {
     if (profil) {
       this.setState({
         profil: profil,
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: true
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }
@@ -87,7 +89,8 @@ class PersonEntry extends Component {
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }

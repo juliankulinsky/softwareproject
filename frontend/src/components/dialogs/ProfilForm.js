@@ -116,7 +116,8 @@ class ProfilForm extends Component {
       updatingInProgress: false,
       addingError: null,
       updatingError: null,
-      valuetext: 2
+      valuetext: 2,
+      edited: false
     };
 
     /** Speichern des States im Falle eines Abbruchs */
@@ -260,7 +261,10 @@ class ProfilForm extends Component {
     this.props.onClose(null);
     this.props.onCloseP(null);
     this.props.onCloseL(null);
-    this.setState({loadingInProgress: true})
+    if(this.state.edited == true){
+      this.setState({loadingInProgress: true})
+    }
+
 
   }
 
@@ -278,7 +282,8 @@ class ProfilForm extends Component {
   /** Verarbeitet die Wertänderung des Sliders Lerntyp */
   handleChangeLerntyp = (event, value) => {
       this.setState({
-            lerntyp: value
+            lerntyp: value,
+            edited: true
           }
       );
 
@@ -287,7 +292,8 @@ class ProfilForm extends Component {
   /** Verarbeitet die Wertänderung des Sliders Frequenz */
   handleChangeFrequenz = (event, value) => {
       this.setState({
-            frequenz: value
+            frequenz: value,
+            edited: true
           }
       );
   }
@@ -295,7 +301,8 @@ class ProfilForm extends Component {
   /** Verarbeitet die Wertänderung des Sliders Extrovertiertheit */
   handleChangeExtrovertiertheit = (event, value) => {
     this.setState({
-          extrovertiertheit: value
+          extrovertiertheit: value,
+            edited: true
         }
     );
   }
@@ -303,13 +310,11 @@ class ProfilForm extends Component {
   /** Verarbeitet die Wertänderung des Sliders Remote/Präsenz */
   handleChangeRemote = (event, value) => {
     this.setState({
-          remote: value
+          remote: value,
+            edited: true
         }
     );
   }
-
-
-
 
   /** Rendern des Dialogs ProfilForm */
   render() {
