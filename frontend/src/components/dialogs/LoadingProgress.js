@@ -39,7 +39,7 @@ LoadingProgress.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired,
   /** If true, the loading progress is rendered */
-  show: PropTypes.bool.isRequired,
+  show: PropTypes.bool,
 }
 
 export default withStyles(styles)(LoadingProgress);

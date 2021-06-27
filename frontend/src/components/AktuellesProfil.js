@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
-    Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
-    Typography,
-    Card,
-    CardContent
+    withStyles
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import AktProfilEntry from "./AktProfilEntry";
-import PersonEntry from "./PersonEntry";
 import EineLernvorliebe from "./EineLernvorliebe";
 
 
@@ -101,7 +89,7 @@ const styles = theme => ({
 /** PropTypes */
 AktuellesProfil.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object
 }
 
 export default withRouter(withStyles(styles)(AktuellesProfil));

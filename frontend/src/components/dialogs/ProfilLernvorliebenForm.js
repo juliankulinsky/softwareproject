@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+{/*import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,7 +8,7 @@ import LoadingProgress from './LoadingProgress';
 
 /**
  * Form which displays the Lernvorlieben of the current Person in Textfields and allows to edit the given information.
- * */
+ *
 class ProfilLernvorliebenForm extends Component {
 
   constructor(props) {
@@ -16,7 +16,7 @@ class ProfilLernvorliebenForm extends Component {
 
     /**
      * Init empty variable and set Lernvorliebe values of the given Person
-     * */
+     *
     let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
     if (props.lernvorliebe) {
       lt = props.lernvorliebe.get_lerntyp();
@@ -56,7 +56,7 @@ class ProfilLernvorliebenForm extends Component {
     this.baseState = this.state;
   }
 
-  /** Updates the Lernvorliebe */
+  /** Updates the Lernvorliebe
   updateLernvorliebe = () => {
     // clone the Person, in case the backend call fails
     let updatedLernvorliebe = Object.assign(new LernvorliebeBO(), this.props.lernvorliebe);
@@ -93,7 +93,7 @@ class ProfilLernvorliebenForm extends Component {
     });
   }
 
-  /** Handles value changes of the forms textfields and validates them */
+  /** Handles value changes of the forms textfields and validates them
   textFieldValueChange = (event) => {
     const value = event.target.value;
 
@@ -109,14 +109,14 @@ class ProfilLernvorliebenForm extends Component {
     });
   }
 
-  /** Handles the close / cancel button click event */
+  /** Handles the close / cancel button click event
   handleClose = () => {
     // Reset the state
     this.setState(this.baseState);
     this.props.onClose(null);
   }
 
-  /** Renders the component */
+  /** Renders the component
   render() {
     const { classes, lernvorliebe, show } = this.props;
     const { lerntyp, lerntypValidationFailed, lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited,
@@ -186,7 +186,7 @@ class ProfilLernvorliebenForm extends Component {
   }
 }
 
-/** Component specific styles */
+/** Component specific styles
 const styles = theme => ({
   root: {
     width: '100%',
@@ -199,9 +199,9 @@ const styles = theme => ({
   },
 });
 
-/** PropTypes */
+/** PropTypes
 ProfilLernvorliebenForm.propTypes = {
-  /** @ignore */
+  /** @ignore
   classes: PropTypes.object.isRequired,
   lernvorliebe: PropTypes.object,
   show: PropTypes.bool.isRequired,
@@ -209,3 +209,4 @@ ProfilLernvorliebenForm.propTypes = {
 }
 
 export default withStyles(styles)(ProfilLernvorliebenForm);
+*/}

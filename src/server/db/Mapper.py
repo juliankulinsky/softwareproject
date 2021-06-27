@@ -45,25 +45,25 @@ class Mapper (AbstractContextManager, ABC):
 
     @abstractmethod
     def find_all(self):
-        """Lies alle Tupel aus und gib sie als Objekte zurück."""
+        """Abstrakte Klasse welche alle Objekte aus der Datenbank als Tupel ausliest"""
         pass
 
     @abstractmethod
     def find_by_key(self, key):
-        """Lies den einen Tupel mit der gegebenen ID (vgl. Primärschlüssel) aus."""
+        """Abstrakte Klasse welche einen Tupel aus der Datenbank anhand der ID ausliest"""
         pass
 
     @abstractmethod
     def insert(self, object):
-        """Füge das folgende Objekt als Datensatz in die DB ein."""
+        """Fügt das gegebene Objekt in die DB ein."""
         pass
 
     @abstractmethod
     def update(self, object):
-        """Ein Objekt auf einen bereits in der DB enthaltenen Datensatz abbilden."""
+        """Das gegebene Objekt auf den entsprechende Datensatz in der Datenbank abbilden."""
         pass
 
     @abstractmethod
     def delete(self, object):
-        """Den Datensatz, der das gegebene Objekt in der DB repräsentiert löschen."""
+        """Den Datensatz, des gegebeneen Objektes in der Datenbank löschen."""
         pass

@@ -317,9 +317,12 @@ class ProfilForm extends Component {
     /** Legt die verschieden Beschriftungen der Slider fest */
     const marksLerntyp = [{value: 1, label: 'Motorisch',},{value: 2, label: 'Auditiv',},,{value: 3,
       label: 'Kommunikativ',}, {value: 4, label: 'Visuell',}]
-    const marksfrequenz = [{value: 1, label: 'Selten',}, {value: 5, label: 'häufig',}]
-    const marksExtro = [{value: 1, label: 'Introvertiert',}, {value: 5, label: 'Extrovertiert',}]
-    const marksRemote = [{value: 1, label: 'Präsenz',}, {value: 5, label: 'Remote',}]
+    const marksfrequenz = [{value: 1, label: 'Selten',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'häufig',}]
+    const marksExtro = [{value: 1, label: 'Introvertiert',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'Extrovertiert',}]
+    const marksRemote = [{value: 1, label: 'Präsenz',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'Remote',}]
 
     /** Legt die Properties fest */
     const { classes, person, profil, lernvorliebe, show } = this.props;
@@ -392,25 +395,25 @@ class ProfilForm extends Component {
                     </Typography>
                     <br/>
                     <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marksLerntyp} min={1} max={4} onChange={this.handleChangeLerntyp} />
+                            valueLabelDisplay="off" step={1} marks={marksLerntyp} min={1} max={4} onChange={this.handleChangeLerntyp} />
                     <Typography>
                       Frequenz:
                     </Typography>
                     <br/>
                     <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marksfrequenz} min={1} max={5} onChange={this.handleChangeFrequenz} />
+                            valueLabelDisplay="off" step={1} marks={marksfrequenz} min={1} max={5} onChange={this.handleChangeFrequenz} />
                     <Typography>
                       Extrovertiertheit:
                     </Typography>
                     <br/>
                     <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marksExtro} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
+                            valueLabelDisplay="off" step={1} marks={marksExtro} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
                     <Typography>
                       Remote:
                     </Typography>
                     <br/>
                     <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
-                            valueLabelDisplay="on" step={1} marks={marksRemote} min={1} max={5} onChange={this.handleChangeRemote} />
+                            valueLabelDisplay="off" step={1} marks={marksRemote} min={1} max={5} onChange={this.handleChangeRemote} />
                     <br/>
                     <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
                       onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
@@ -478,12 +481,12 @@ const styles = theme => ({
 /** PropTypes */
 ProfilForm.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   person: PropTypes.object,
   profil: PropTypes.object,
   lernvorliebe: PropTypes.object,
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  show: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 export default withStyles(styles)(ProfilForm);
