@@ -20,8 +20,7 @@ class AktuellesProfil extends Component {
         this.state = {
             profil: null,
             person: props.person,
-            error: null,
-            loadingInProgress: false
+            error: null
         }
     }
 
@@ -33,13 +32,11 @@ class AktuellesProfil extends Component {
         .then(profilBO => {
             this.setState({
                 profil: profilBO,
-                error: null,
-                loadingInProgress: false
+                error: null
             });
         }).catch(e => this.setState({
             profil: "No profil received.",
-            error: e,
-            loadingInProgress: false
+            error: e
         }));
 
         this.setState({
@@ -55,8 +52,8 @@ class AktuellesProfil extends Component {
 
   /** Rendern der Komponente AktuellesProfil */
     render() {
-        const {classes, selfperson} = this.props;
-        const {profil, person, error, loadingInProgress} = this.state;
+        const {selfperson} = this.props;
+        const {profil, person, error} = this.state;
         return (
             <div>
                 {
@@ -88,8 +85,7 @@ const styles = theme => ({
 
 /** PropTypes */
 AktuellesProfil.propTypes = {
-  /** @ignore */
-  classes: PropTypes.object
+    /** @ignore */
 }
 
 export default withRouter(withStyles(styles)(AktuellesProfil));
