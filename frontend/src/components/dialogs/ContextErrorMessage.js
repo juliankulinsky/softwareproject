@@ -11,7 +11,6 @@ import AutorenewIcon from '@material-ui/icons/Autorenew';
  *
  * @See See Material-UIs [Alert](https://material-ui.com/api/alert/)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class ContextErrorMessage extends Component {
   #standardText = 'This should not have happend. Soooo sorry...';

@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import { withStyles, LinearProgress } from '@material-ui/core';
 
 /**
- * Shows a loading progress, if the show prop is true.
+ * Zeigt einen Ladebalken an, wenn das Property show 'true' ist.
  *
  * @See See Materiel-UIs [Progress](https://material-ui.com/components/progress/)
  * @See See Materiel-UIs [LinearProgress](https://material-ui.com/api/linear-progress/)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class LoadingProgress extends Component {
 
-  /** Renders the component */
+  /** Rendern der Komponente LoadingProgress */
   render() {
     const { classes, show } = this.props;
 
@@ -26,7 +25,7 @@ class LoadingProgress extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponenten spezifische styles */
 const styles = theme => ({
   root: {
     width: '100%',
