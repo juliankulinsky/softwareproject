@@ -159,7 +159,10 @@ class GruppenTeilnahmeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for maxid in tuples:
-            gruppenteilnahme.set_id(maxid[0] + 1)
+            if maxid[0] is not None:
+                gruppenteilnahme.set_id(maxid[0]+1)
+            else:
+                gruppenteilnahme.set_id(1)
 
         command = (
             "INSERT INTO gruppen_teilnahmen (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) VALUES "

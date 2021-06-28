@@ -136,7 +136,10 @@ class ChatTeilnahmeMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            chat_teilnahme.set_id(maxid[0]+1)
+            if maxid[0] is not None:
+                chat_teilnahme.set_id(maxid[0]+1)
+            else:
+                chat_teilnahme.set_id(1)
 
         command = "INSERT INTO chat_teilnahmen (id, erstellungszeitpunkt, person_id, konversation_id) " \
                   "VALUES (%s,%s,%s,%s)"

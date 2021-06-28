@@ -149,7 +149,10 @@ class LerngruppeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for maxid in tuples:
-            lerngruppe.set_id(maxid[0] + 1)
+            if maxid[0] is not None:
+                lerngruppe.set_id(maxid[0]+1)
+            else:
+                lerngruppe.set_id(1)
 
         command = ("INSERT INTO lerngruppen (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
                    "VALUES (%s,%s,%s,%s,%s)")

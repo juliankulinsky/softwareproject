@@ -107,7 +107,10 @@ class ProfilMapper(Mapper):
         tuples = cursor.fetchall()
 
         for maxid in tuples:
-            profil.set_id(maxid[0] + 1)
+            if maxid[0] is not None:
+                profil.set_id(maxid[0]+1)
+            else:
+                profil.set_id(1)
 
         command = "INSERT INTO profile (id, erstellungszeitpunkt, lernvorlieben_id, beschreibung) VALUES (%s,%s,%s,%s)"
         data = (

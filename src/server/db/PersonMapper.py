@@ -201,7 +201,10 @@ class PersonMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            person.set_id(maxid[0]+1)
+            if maxid[0] is not None:
+                person.set_id(maxid[0]+1)
+            else:
+                person.set_id(1)
 
         command = "INSERT INTO personen (id, erstellungszeitpunkt, name, email, google_user_id, `alter`, wohnort, " \
                   "studiengang, semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"

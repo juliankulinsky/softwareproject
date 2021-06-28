@@ -107,7 +107,10 @@ class NachrichtMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            nachricht.set_id(maxid[0]+1)
+            if maxid[0] is not None:
+                nachricht.set_id(maxid[0]+1)
+            else:
+                nachricht.set_id(1)
 
         command = "INSERT INTO nachrichten (id, erstellungszeitpunkt, inhalt, absender_id, konversation_id) " \
                   "VALUES (%s,%s,%s,%s,%s)"
