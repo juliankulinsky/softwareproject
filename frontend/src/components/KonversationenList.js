@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
     Box,
     Container,
     Grid,
     Button,
     Card,
     Typography,
-    ButtonBase
-}
+    ButtonBase}
     from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
@@ -18,10 +16,15 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import KonversationListEntry from "./KonversationListEntry";
 import NachrichtenList from "./NachrichtenList";
 import "./components-theme.css";
-import {NachrichtBO} from "../api";
+
+/** Diese Component stellt die höchste Hierarchie-Stufe der Chat-Funktion von Studoo dar.
+ * Gerendert werden hier eingefasst auf der linken Seite eine Auflistung aller aktuell bestehenden Chats.
+ * Auf der rechten Seite befindeen sich, nach anklicken eines Chats, die entsprechenden Nachrichten der Konversation.
+ * Es kann zwischen Konversationen gewechselt werden, Nachrichten geschrieben und empfangen werden.
+ * Zudem ist die Erstellung von Gruppen aus Einzelchats heraus möglich. */
+
 
 class KonversationenList extends Component {
-
     constructor(props) {
         super(props);
 
@@ -94,7 +97,7 @@ class KonversationenList extends Component {
         const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
 
         return (
-            <Box className={classes.root}>
+            <Box className="root">
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                     {
@@ -112,7 +115,7 @@ class KonversationenList extends Component {
                     <Grid item xs>
                         {
                             aktuellekonversation ?
-                                <Card className={classes.c}>
+                                <Card className="chatCard">
                                     {/*KonversationsID: {konversation.getID()}*/}
 
                                     <NachrichtenList
@@ -134,21 +137,10 @@ class KonversationenList extends Component {
     }
 }
 
-const styles = theme => ({
-  root: {
-      width: '100%',
-      flexGrow: 1
-  },
-
-    c: {
-      padding: '20px 10px 20px 10px'
-  },
-});
-
 /** PropTypes */
 KonversationenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(KonversationenList));
+export default withRouter(KonversationenList);

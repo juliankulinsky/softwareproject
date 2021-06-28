@@ -11,7 +11,6 @@ import {
     Avatar}
     from '@material-ui/core';
 import StudooAPI from '../api/StudooAPI'
-import {NachrichtBO} from "../api";
 import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
 import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
@@ -132,8 +131,7 @@ class KonversationListEntry extends Component {
 
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed,
-            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
+        const { konversation, lerngruppe, chatpartner, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
 
         return (
             <Container>
@@ -162,11 +160,20 @@ class KonversationListEntry extends Component {
                                                                 chatpartner.getName()
                                                             }
                                                         </Button>  <br/>
-                                                        <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
+                                                        <Button disabled={deleteButtonPressed}
+                                                                color={"primary"}
+                                                                variant={"contained"}
+                                                                onClick={this.openErstelleLerngruppeDialog}>
                                                             Gruppe erstellen
                                                         </Button>
-                                                        <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog} person={this.props.person} chatpartner={chatpartner} onClose={this.erstelleLerngruppeDialogClosed}/>
-                                                        <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
+                                                        <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog}
+                                                                                  person={this.props.person}
+                                                                                  chatpartner={chatpartner}
+                                                                                  onClose={this.erstelleLerngruppeDialogClosed}/>
+                                                        <Button disabled={deleteButtonPressed}
+                                                                color={"secondary"}
+                                                                variant={"contained"}
+                                                                onClick={this.deleteChatTeilnahme}>
                                                             Chat löschen
                                                         </Button>
                                                     </Typography>

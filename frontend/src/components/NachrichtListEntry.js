@@ -5,8 +5,11 @@ import { withStyles,
     Container,
     Button,
     Grid } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {StudooAPI} from "../api";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
+import "./components-theme.css";
 
 
 class NachrichtListEntry extends Component {
@@ -51,38 +54,38 @@ class NachrichtListEntry extends Component {
     }
 
     EigeneNachricht = () => {
-        return <Typography className={this.props.classes.right}>
-                    <br/>
+        return <div className="nachrichtRight">
+                    <div className="chatBubbleRight">
+                        {
+                            this.state.nachricht.getInhalt()
+                        }
 
-                    {
-                        this.state.nachricht.getInhalt()
-                    }
-
-                    <div>
-                        &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()} &nbsp;
-                        von dir
+                        <div className="nachrichtAbsender">
+                            von dir
+                        </div>
                     </div>
 
-                    <Button disabled={this.state.buttonPressed} color="secondary" onClick={this.deleteNachricht} variant={"contained"} >
-                        Löschen
-                    </Button>
-               </Typography>
+                    <IconButton disabled={this.state.buttonPressed}
+                                aria-label={"delete"}
+                                onClick={this.deleteNachricht}
+                                variant={"contained"} >
+                        <DeleteIcon />
+                    </IconButton>
+               </div>
     }
 
     FremdeNachricht = () => {
-        return <Typography className={this.props.classes.left}>
-                    <br/>
+        return <div className="nachrichtLeft">
+            <div className="chatBubbleLeft">
+                {
+                    this.state.nachricht.getInhalt()
+                }
 
-                    {
-                        this.state.nachricht.getInhalt()
-                    }
-
-                    <div>
-                        &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()}&nbsp;
-                        von {this.state.absenderPerson.getName()}
-                    </div>
-
-               </Typography>
+                <div className="nachrichtAbsender">
+                    von {this.state.absenderPerson.getName()}
+                </div>
+            </div>
+        </div>
     }
 
     Anzeige = () => {
@@ -103,8 +106,8 @@ class NachrichtListEntry extends Component {
         const { nachricht, absenderPerson, currentPerson, error, loadingInProgress } = this.state;
 
         return (
-            <Container>
-                <Typography className={classes.root}>
+            <Container className="root">
+                <Typography>
                     {
                         absenderPerson ?
                         this.Anzeige()

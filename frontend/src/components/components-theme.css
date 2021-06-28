@@ -1,3 +1,39 @@
+root {
+    width: 100%
+}
+
+.chatCard {
+    padding: 20px 10px 20px 10px;
+}
+
+.nachrichtRight{
+    text-align: right;
+    padding: 20px;
+}
+.chatBubbleRight{
+    background: aqua;
+    border-radius: 15px;
+    float: right;
+    width: fit-content;
+    padding: 10px;
+}
+
+.nachrichtLeft{
+    text-align: left;
+    padding: 20px;
+}
+.chatBubbleLeft{
+    background: greenyellow;
+    border-radius: 15px;
+    width: fit-content;
+    padding: 10px;
+}
+
+.nachrichtAbsender{
+    font-size: small;
+    color: lightgrey;
+}
+
 .partnercard {
     display: flex;
 }
