@@ -7,7 +7,10 @@ class ProfilMapper(Mapper):
         super().__init__()
 
     def find_all(self):
+        """Auslesen aller Profil-Objekte
 
+        :return: Sammlung mit Profil-Objekten
+        """
         result = []
         cursor = self._cnx.cursor()
         cursor.execute("SELECT * from profile")
@@ -27,11 +30,10 @@ class ProfilMapper(Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """Suchen eines Profils mit vorgegebener ID. Da diese eindeutig ist,
-        wird genau ein Objekt zurückgegeben.
+        """Auslesen eines Profils mit gegebener Profil ID
 
-        :param key Primärschlüsselattribut (->DB)
-        :return Profil-Objekt, das dem übergebenen Schlüssel entspricht, None bei
+        :param key: Profil ID, Primärschlüsselattribut
+        :return Ein einzelnes Profil-Objekt mit gegebender Profil ID, None bei
             nicht vorhandenem DB-Tupel.
         """
 
@@ -60,11 +62,10 @@ class ProfilMapper(Mapper):
         return result
 
     def find_by_lernvorlieben_id(self, lernvorlieben_id: int):
-        """Suchen eines Profils mit vorgegebener ID. Da diese eindeutig ist,
-        wird genau ein Objekt zurückgegeben.
+        """Auslesen eines Profils mit gegebener Lernvorliebe ID
 
-        :param key Primärschlüsselattribut (->DB)
-        :return Profil-Objekt, das dem übergebenen Schlüssel entspricht, None bei
+        :param lernvorlieben_id: Lernvorlieben ID, Primärschlüsselattribut
+        :return Ein einzelnes Profil-Objekt mit gegebender Lernvorlieben ID, None bei
             nicht vorhandenem DB-Tupel.
         """
 
@@ -96,8 +97,10 @@ class ProfilMapper(Mapper):
     def insert(self, profil: Profil):
         """Einfügen eines Profil-Objekts in die Datenbank.
 
-        :param profil das zu speichernde Objekt
-        :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
+        Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
+
+        :param profil: Das zu speichernde Profil-Objekt
+        :return Das bereits übergebene Profil-Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM profile")
@@ -121,9 +124,9 @@ class ProfilMapper(Mapper):
         return profil
 
     def update(self, profil: Profil):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
+        """Aktualisieren eines Profil-Objekts in der Datenbank anhand seiner ID
 
-        :param profil das Objekt, das in die DB geschrieben werden soll
+        :param profil: Das Profil-Objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -139,9 +142,9 @@ class ProfilMapper(Mapper):
         cursor.close()
 
     def delete(self, profil: Profil):
-        """Löschen der Daten eines User-Objekts aus der Datenbank.
+        """Löschen der Daten eines Profil-Objekts aus der Datenbank.
 
-        :param profil das aus der DB zu löschende "Objekt"
+        :param profil: Das aus der Datenbank zu löschende Profil-Objekt
         """
         cursor = self._cnx.cursor()
 

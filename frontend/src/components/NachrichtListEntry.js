@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import { withStyles,
+    Typography,
+    Container,
+    Button,
+    Grid } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-//import AccountList from './AccountList';
 
 
 class NachrichtListEntry extends Component {
@@ -55,14 +54,17 @@ class NachrichtListEntry extends Component {
 
     EigeneNachricht = () => {
         return <Typography className={this.props.classes.right}>
-                    Nachricht #{this.state.nachricht.getID()}:&nbsp;
+                    <br/>
+
                     {
                         this.state.nachricht.getInhalt()
                     }
+
                     <div>
                         &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()} &nbsp;
                         von dir
                     </div>
+
                     <Button disabled={this.state.buttonPressed} color="secondary" onClick={this.deleteNachricht} variant={"contained"} >
                         Löschen
                     </Button>
@@ -71,14 +73,17 @@ class NachrichtListEntry extends Component {
 
     FremdeNachricht = () => {
         return <Typography className={this.props.classes.left}>
-                    Nachricht #{this.state.nachricht.getID()}:&nbsp;
+                    <br/>
+
                     {
                         this.state.nachricht.getInhalt()
                     }
+
                     <div>
                         &nbsp;&nbsp;&nbsp;AbsenderID: {this.state.nachricht.getAbsenderID()}&nbsp;
                         von {this.state.absenderPerson.getName()}
                     </div>
+
                </Typography>
     }
 
@@ -104,7 +109,7 @@ class NachrichtListEntry extends Component {
         const { nachricht, absenderPerson, currentPerson, error, loadingInProgress } = this.state;
 
         return (
-            <div>
+            <Container>
                 <Typography className={classes.root}>
                     {
                         absenderPerson ?
@@ -112,28 +117,32 @@ class NachrichtListEntry extends Component {
                             : null
                     }
                 </Typography>
-                <LoadingProgress show={loadingInProgress} />
+
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getAbsenderPerson}
                 />
-            </div>
+            </Container>
         )
     }
-
 }
 
 /** Component specific styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+      width: '100%',
+      flexGrow: 1
   },
+
     right: {
       textAlign: "right"
     },
+
     left: {
       textAlign: "left"
     }
+
+
 });
 
 /** PropTypes */

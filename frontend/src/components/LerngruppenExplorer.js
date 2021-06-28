@@ -16,6 +16,13 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import "./components-theme.css";
 
+/**
+ * Rendert den am besten zur aktuellen Person passenden GruppenVorschlagBO mit Anzeigen von Informationen über die
+ * vorgeschlagene Gruppe. Zusätzlich besteht die Möglichkeit, diesen Vorschlag über zwei Button entweder anzunehmen,
+ * wodurch der GruppenVorschlagBO aktualisiert wird. In beiden Fällen wird die EntscheidungPerson auf
+ * true gesetzt.
+ * Bei Annehmen werden die Matchpoints um 1 erhöht und bei Ablehnen werden die Matchpoints nicht verändert
+ */
 class LerngruppenExplorer extends Component {
 
     constructor(props) {
@@ -36,6 +43,7 @@ class LerngruppenExplorer extends Component {
         this.baseState = this.state;
     }
 
+    /** Lädt das LerngruppeBO des GruppenVorschlags aus dem Backend */
     getLerngruppe = () => {
         StudooAPI.getAPI().getLerngruppe(this.state.gruppenvorschlag.getGruppenID())
             .then(lerngruppe => {
@@ -45,6 +53,10 @@ class LerngruppenExplorer extends Component {
             })
     }
 
+    /**
+     * Auslesen des GruppenVorschlagBO mit der höchsten Ähnlichkeit, an der die aktuelle Person teilnimmt, bei dem
+     * die aktuelle Person noch keine Entscheidung getroffen hat.
+     */
     getBestGruppenvorschlag = () => {
         StudooAPI.getAPI().getGruppenVorschlagForPersonID(this.props.person.getID())
             .then(gruppenvorschlagBO => {
@@ -72,6 +84,7 @@ class LerngruppenExplorer extends Component {
         });
     }
 
+     /** Wird durch grünen Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -81,6 +94,7 @@ class LerngruppenExplorer extends Component {
         });
     }
 
+     /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -90,6 +104,11 @@ class LerngruppenExplorer extends Component {
         });
     }
 
+    /**
+     * Updaten des GruppenVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
+     * oder so bleiben. Die Entscheidung der Person wird auf true gesetzt, was bedeutet, dass eine Entscheidung
+     * getroffen wurde.
+     */
     updateGruppenvorschlag = () => {
         let updatedGruppenVorschlag = Object.assign(new GruppenVorschlagBO(), this.state.gruppenvorschlag);
         updatedGruppenVorschlag.setEntscheidungPerson(true);
@@ -114,11 +133,15 @@ class LerngruppenExplorer extends Component {
         })
     }
 
+    /**
+     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
+     */
     componentDidMount() {
         this.getBestGruppenvorschlag()
     }
 
-
+    /** Rendert die Komponente */
     render() {
         const {classes} = this.props;
         const {gruppenvorschlag, lerngruppe, error, loadingInProgress} = this.state;
@@ -228,9 +251,7 @@ class LerngruppenExplorer extends Component {
     }
 }
 
-
-
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',

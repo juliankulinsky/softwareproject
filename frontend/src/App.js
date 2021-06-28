@@ -5,23 +5,17 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Registrieren from './components/pages/Registrieren'
 import SignIn from './components/pages/SignIn';
-import LoadingProgress from './components/dialogs/LoadingProgress';
-import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
-import AllProfile from './components/AllProfile';
-import ProfilEntry from "./components/ProfilEntry";
-import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
 import {StudooAPI} from "./api";
 import PartnerExplorer from "./components/PartnerExplorer";
 import ProfilVorschau from "./components/ProfilVorschau";
-import AktuellesProfil from "./components/AktuellesProfil";
-import ProfilForm from "./components/dialogs/ProfilForm";
 import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
+
 /**
  * The main studoo app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
@@ -80,10 +74,10 @@ class App extends React.Component {
 				// user information.
 				document.cookie = `token=${token};path=/`;
 				/**
-				console.log("-------------")
-				console.log("Das ist der Token: (aus handleAuthState in App.js")
-				console.log(token)
-				console.log("-------------")
+				 console.log("-------------")
+				 console.log("Das ist der Token: (aus handleAuthState in App.js")
+				 console.log(token)
+				 console.log("-------------")
 				 */
 
 				// Set the user not before the token arrived
@@ -165,13 +159,11 @@ class App extends React.Component {
 														<LerngruppenList person={currentPersonBO}/>
 													</Route>
 													<Route path='/profil'>
-														<ProfilVorschau person={currentPersonBO} user={currentUser} selfperson={true}/>
-													</Route>
-													<Route path='/lernvorlieben'>
-														<LernvorliebenList/>
+														<ProfilVorschau person={currentPersonBO} user={currentUser}
+																		selfperson={true}/>
 													</Route>
 													<Route path='/nachrichten'>
-														<NachrichtenList/>
+														<NachrichtenList person={currentPersonBO}/>
 													</Route>
 													<Route path='/konversationen'>
 														<KonversationenList person={currentPersonBO}/>
@@ -184,6 +176,8 @@ class App extends React.Component {
 													</Route>
 													<Route path='/anfragen'>
 														<EingehendeAnfragenList person={currentPersonBO}/>
+													</Route>
+													<Route path='/anfragenausgehend'>
 														<AusgehendeAnfragenList person={currentPersonBO}/>
 													</Route>
 												</>
@@ -202,5 +196,4 @@ class App extends React.Component {
 		);
 	}
 }
-
 export default App;

@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Button, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
+import {
+  withStyles,
+  Button,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextField,
+  Slider,
+  Typography,
+  Grid
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import {StudooAPI, PersonBO, LernvorliebeBO, ProfilBO} from '../../api';
 import ContextErrorMessage from './ContextErrorMessage';
@@ -15,7 +28,7 @@ class ProfilForm extends Component {
     super(props);
 
     /**
-     * Init empty variable and set Lernvorliebe values of the given Person
+     * Initialisieren leerer Variablen und setzen der Werte gemäß der gegeben Person
      * */
     let vn = '', em = '', gid= '', alt = 0, wo = '', sg = '', sm = 0, pID = 0;
     if (props.person) {
@@ -29,11 +42,17 @@ class ProfilForm extends Component {
       pID = props.person.getProfilId();
     }
 
+    /**
+     * Initialisieren einer leeren Variable und setzen den Wert gemäß der dem gegeben Profil
+     * */
     let be = '';
     if (props.profil) {
       be = props.profil.getBeschreibung();
     }
 
+    /**
+     * Initialisieren leerer Variablen und setzen der Werte gemäß der gegeben Lernvorlieben
+     * */
     let lt = 0, fq = 0, ex = 0, rp = 0, vk = '', li = '';
     if (props.lernvorliebe) {
       lt = props.lernvorliebe.get_lerntyp();
@@ -43,7 +62,10 @@ class ProfilForm extends Component {
       vk = props.lernvorliebe.get_vorkenntnisse();
       li = props.lernvorliebe.get_lerninteressen();
     }
-    // Init the state
+
+    /** Initialisieren des states
+     *
+     */
     this.state = {
       name: vn,
       nameValidationFailed: false,
@@ -93,21 +115,23 @@ class ProfilForm extends Component {
       addingInProgress: false,
       updatingInProgress: false,
       addingError: null,
-      updatingError: null
+      updatingError: null,
+      valuetext: 2,
+      edited: false
     };
-    // save this state for canceling
+
+    /** Speichern des States im Falle eines Abbruchs */
     this.baseState = this.state;
   }
 
+  /** Aufrufen aller Update funktionen der drei Business Objekte*/
   updateProfil = () => {
     this.updatePerson()
     this.updateProfilBeschreibung()
     this.updateLernvorliebe()
-
-    console.log("Basestate", this.baseState)
   }
 
-  /** Updates the person */
+  /** Updated die Person */
   updatePerson = () => {
     // clone the original person, in case the backend call fails
     let updatedPerson = Object.assign(new PersonBO(), this.props.person);
@@ -149,7 +173,7 @@ class ProfilForm extends Component {
   }
 
 
-  /** Updates the Profil */
+  /** Updated die Profilbeschreibung */
   updateProfilBeschreibung = () => {
     // clone the Person, in case the backend call fails
     let updatedProfil = Object.assign(new ProfilBO(), this.props.profil);
@@ -177,7 +201,7 @@ class ProfilForm extends Component {
   }
 
 
-  /** Updates the Lernvorliebe */
+  /** Updated die Lernvorlieben */
   updateLernvorliebe = () => {
     // clone the Person, in case the backend call fails
     let updatedLernvorliebe = Object.assign(new LernvorliebeBO(), this.props.lernvorliebe);
@@ -237,20 +261,87 @@ class ProfilForm extends Component {
     this.props.onClose(null);
     this.props.onCloseP(null);
     this.props.onCloseL(null);
+    if(this.state.edited == true){
+      this.setState({loadingInProgress: true})
+    }
+
+
   }
 
-  /** Renders the component */
+   valuetext = (value) =>{/*
+    return `${value}°C`;
+  }
+
+  handleChange = (event, value) => {
+    this.setState({
+            lerntyp: value
+          }
+      );*/
+  }
+
+  /** Verarbeitet die Wertänderung des Sliders Lerntyp */
+  handleChangeLerntyp = (event, value) => {
+      this.setState({
+            lerntyp: value,
+            edited: true
+          }
+      );
+
+  }
+
+  /** Verarbeitet die Wertänderung des Sliders Frequenz */
+  handleChangeFrequenz = (event, value) => {
+      this.setState({
+            frequenz: value,
+            edited: true
+          }
+      );
+  }
+
+  /** Verarbeitet die Wertänderung des Sliders Extrovertiertheit */
+  handleChangeExtrovertiertheit = (event, value) => {
+    this.setState({
+          extrovertiertheit: value,
+            edited: true
+        }
+    );
+  }
+
+  /** Verarbeitet die Wertänderung des Sliders Remote/Präsenz */
+  handleChangeRemote = (event, value) => {
+    this.setState({
+          remote: value,
+            edited: true
+        }
+    );
+  }
+
+  /** Rendern des Dialogs ProfilForm */
   render() {
+
+    /** Legt die verschieden Beschriftungen der Slider fest */
+    const marksLerntyp = [{value: 1, label: 'Motorisch',},{value: 2, label: 'Auditiv',},,{value: 3,
+      label: 'Kommunikativ',}, {value: 4, label: 'Visuell',}]
+    const marksfrequenz = [{value: 1, label: 'Selten',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'häufig',}]
+    const marksExtro = [{value: 1, label: 'Introvertiert',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'Extrovertiert',}]
+    const marksRemote = [{value: 1, label: 'Präsenz',},{value: 2, label: '',},,{value: 3,
+      label: '',}, {value: 4, label: '',}, {value: 5, label: 'Remote',}]
+
+    /** Legt die Properties fest */
     const { classes, person, profil, lernvorliebe, show } = this.props;
+
+    /** Legt die states fest */
     const { name, nameValidationFailed, NameEdited, alter, alterValidationFailed, alterEdited, wohnort,
         wohnortValidationFailed, wohnortEdited, studiengang, studiengangValidationFailed, studiengangEdited,
         semester, semesterValidationFailed, semesterEdited, profilID, profilIDValidationFailed, profilIDEdited,
-        beschreibung, beschreibungValidationFailed, beschreibungEdited, lerntyp, lerntypValidationFailed,
+        beschreibung, beschreibungValidationFailed, beschreibungEdited, lerntyp, lerntypValue, lerntypValidationFailed,
       lerntypEdited, frequenz, frequenzValidationFailed, frequenzEdited, extrovertiertheit,
       extrovertiertheitValidationFailed, extrovertiertheitEdited, remote, remoteValidationFailed, remoteEdited,
       vorkenntnisse, vorkenntnisseValidationFailed, vorkenntnisseEdited, lerninteressen,
       lerninteressenValidationFailed, lerninteressenEdited,addingInProgress, addingError, updatingInProgress,
-      updatingError } = this.state;
+      updatingError, loadingInProgress } = this.state;
 
     let title = '';
     let header = '';
@@ -266,7 +357,7 @@ class ProfilForm extends Component {
 
     return (
       show ?
-        <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
+        <Dialog open={show} onClose={this.handleClose} maxWidth='md'>
           <DialogTitle id='form-dialog-title'>{title}
             <IconButton className={classes.closeButton} onClick={this.handleClose}>
               <CloseIcon />
@@ -277,42 +368,66 @@ class ProfilForm extends Component {
               {header}
             </DialogContentText>
             <form className={classes.root} noValidate autoComplete='off'>
-              <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
-                onChange={this.textFieldValueChange} error={nameValidationFailed}
-                helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
-                onChange={this.textFieldValueChange} error={alterValidationFailed}
-                helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
-                onChange={this.textFieldValueChange} error={wohnortValidationFailed}
-                helperText={wohnortValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
-                onChange={this.textFieldValueChange} error={studiengangValidationFailed}
-                helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
-                onChange={this.textFieldValueChange} error={semesterValidationFailed}
-                helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
-                onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
-                helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='lerntyp' label='Lerntyp:' value={lerntyp}
-                onChange={this.textFieldValueChange} error={lerntypValidationFailed}
-                helperText={lerntypValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='frequenz' label='Frequenz:' value={frequenz}
-                onChange={this.textFieldValueChange} error={frequenzValidationFailed}
-                helperText={frequenzValidationFailed ? 'The alter must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='extrovertiertheit' label='Extrovertiertheit:' value={extrovertiertheit}
-                onChange={this.textFieldValueChange} error={extrovertiertheitValidationFailed}
-                helperText={extrovertiertheitValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='remote' label='Remote/Präsenz:' value={remote}
-                onChange={this.textFieldValueChange} error={remoteValidationFailed}
-                helperText={remoteValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
-                onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
-                helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
-                onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
-                helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
+              <Grid container spacing={3}>
+                  <Grid xs={5}>
+                    <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
+                      onChange={this.textFieldValueChange} error={nameValidationFailed}
+                      helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
+                      onChange={this.textFieldValueChange} error={alterValidationFailed}
+                      helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
+                      onChange={this.textFieldValueChange} error={wohnortValidationFailed}
+                      helperText={wohnortValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
+                      onChange={this.textFieldValueChange} error={studiengangValidationFailed}
+                      helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
+                      onChange={this.textFieldValueChange} error={semesterValidationFailed}
+                      helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <Grid xs={12}>
+                      <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
+                        onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
+                        helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    </Grid>
+                  </Grid>
+                  <Grid xs={2}>
+
+                  </Grid>
+                  <Grid xs={5}>
+                    <Typography>
+                      Lerntyp:
+                    </Typography>
+                    <br/>
+                    <Slider defaultValue={lerntyp} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                            valueLabelDisplay="off" step={1} marks={marksLerntyp} min={1} max={4} onChange={this.handleChangeLerntyp} />
+                    <Typography>
+                      Frequenz:
+                    </Typography>
+                    <br/>
+                    <Slider defaultValue={frequenz} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                            valueLabelDisplay="off" step={1} marks={marksfrequenz} min={1} max={5} onChange={this.handleChangeFrequenz} />
+                    <Typography>
+                      Extrovertiertheit:
+                    </Typography>
+                    <br/>
+                    <Slider defaultValue={extrovertiertheit} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                            valueLabelDisplay="off" step={1} marks={marksExtro} min={1} max={5} onChange={this.handleChangeExtrovertiertheit} />
+                    <Typography>
+                      Remote:
+                    </Typography>
+                    <br/>
+                    <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
+                            valueLabelDisplay="off" step={1} marks={marksRemote} min={1} max={5} onChange={this.handleChangeRemote} />
+                    <br/>
+                    <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
+                      onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
+                      helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
+                      onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
+                      helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                  </Grid>
+              </Grid>
             </form>
             <LoadingProgress show={addingInProgress || updatingInProgress} />
             {
@@ -355,10 +470,10 @@ class ProfilForm extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',
@@ -371,12 +486,12 @@ const styles = theme => ({
 /** PropTypes */
 ProfilForm.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   person: PropTypes.object,
   profil: PropTypes.object,
   lernvorliebe: PropTypes.object,
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  show: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 export default withStyles(styles)(ProfilForm);

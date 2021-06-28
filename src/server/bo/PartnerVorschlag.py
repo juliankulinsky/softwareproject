@@ -11,15 +11,19 @@ class PartnerVorschlag(vo.Vorschlag):
         self._entscheidung_partner = False   # Ob sich der Partner entschieden hat
 
     def get_partner_id(self):
+        """Auslesen der Partner ID"""
         return self._partner_id
 
     def set_partner_id(self, partner_id: int):
+        """Setzen der Partner ID"""
         self._partner_id = partner_id
 
     def get_entscheidung_partner(self):
+        """Auslesen der Entscheidung des Lernpartners"""
         return self._entscheidung_partner
 
     def set_entscheidung_partner(self, wert: bool):
+        """Setzen der Entscheidung des Lernpartners"""
         self._entscheidung_partner = wert
 
     def __str__(self):

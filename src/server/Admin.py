@@ -1,7 +1,7 @@
 """
 Hier implementieren wir eine Administrationsklasse. Sie ist erforderlich, um Daten per HTTP-Request
 aus der Datenbank auslesen bzw. in die Datenbank inserieren zu können.
-Mithilfe dieser Klasse können wir also mit dem Frontend kommunizieren (Service Layer).
+Diese Klasse wird von den Methoden der main.py aufgerufen und stellt die Applikationslogik dar.
 """
 from datetime import datetime
 
@@ -37,7 +37,7 @@ class Admin(object):
         pass
 
     """
-        ChatTeilnahme - Spezifische Methoden
+    ChatTeilnahme - Spezifische Methoden
     """
     def create_chatteilnahme(self, person_id, konversation_id):
         """Eine Chatteilnahme erstellen"""
@@ -79,10 +79,10 @@ class Admin(object):
             mapper.delete(chat_teilnahme)
 
     """
-        GruppenTeilnahme - Spezifische Methoden
+    GruppenTeilnahme - Spezifische Methoden
     """
     def create_gruppen_teilnahme(self, person_id, gruppen_id, ist_admin):
-        """Gruppen_Teilnahme erstellen"""
+        """Eine GruppenTeilnahme erstellen"""
         gruppenteilnahme = GruppenTeilnahme()
         gruppenteilnahme.set_person_id(person_id)
         gruppenteilnahme.set_gruppen_id(gruppen_id)
@@ -133,7 +133,7 @@ class Admin(object):
             adm.berechne_gruppen_lernvorlieben(deleted_gruppen_teilnahme.get_gruppen_id())
 
     """
-        GruppenVorschlag - Spezifische Methoden
+    GruppenVorschlag - Spezifische Methoden
     """
     def create_gruppenvorschlag(self, person_id, gruppen_id, aehnlichkeit=0, matchpoints=0,
                                 entscheidung_person=False, entscheidung_gruppe=False):
@@ -208,12 +208,11 @@ class Admin(object):
             mapper.delete(gruppenvorschlag)
 
     """
-        Konversation - Spezifische Methoden
+    Konversation - Spezifische Methoden
     """
     def create_konversation(self, ist_gruppenchat):
         """
         Erstellen einer Konversation nach erfolgreichem Match.
-        :return: Konversation, an der n>1 Parteien teilnehmen können.
         """
         konversation = Konversation()
         konversation.set_ist_gruppenchat(ist_gruppenchat)
@@ -247,12 +246,12 @@ class Admin(object):
             mapper.delete(konversation)
 
     """
-        Lerngruppe - Spezifische Methoden
+    Lerngruppe - Spezifische Methoden
     """
     def create_lerngruppe(self, gruppenname, profil_id, konversation_id):
         """
-            Lerngruppe erstellen:
-            Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
+        Lerngruppe erstellen:
+        Diese Klasse wird bei der Erstellung einer Lerngruppe instanziiert.
         """
         lerngruppe = Lerngruppe()
         lerngruppe.set_gruppenname(gruppenname)
@@ -292,7 +291,7 @@ class Admin(object):
             mapper.delete(lerngruppe)
 
     """
-        Lernvorliebe - Spezifische Methoden
+    Lernvorliebe - Spezifische Methoden
     """
     def create_lernvorliebe(self, lerntyp=0, frequenz=0, extrovertiertheit=0, remote_praesenz=0, vorkenntnisse="", lerninteressen=""):
         """
@@ -330,7 +329,7 @@ class Admin(object):
             mapper.delete(lernvorliebe)
 
     """
-        Nachricht - Spezifische Methoden
+    Nachricht - Spezifische Methoden
     """
     def create_nachricht(self, inhalt, absender_id, konversation_id):
         """ Eine Nachricht erstellen """
@@ -368,7 +367,7 @@ class Admin(object):
             mapper.delete(nachricht)
 
     """
-        PartnerVorschlag - Spezifische Methoden
+    PartnerVorschlag - Spezifische Methoden
     """
     def create_partnervorschlag(self, person_id, partner_id, aehnlichkeit, matchpoints,
                                 entscheidung_person, entscheidung_partner):
@@ -428,7 +427,7 @@ class Admin(object):
             mapper.delete(partner_vorschlag)
 
     """
-        Person - Spezifische Methoden
+    Person - Spezifische Methoden
     """
     def create_person(self, name, email, google_user_id, alter=0, studiengang="", wohnort="", semester=0, profil_id=0):
         """ Eine Person erstellen """
@@ -481,7 +480,7 @@ class Admin(object):
             mapper.delete(person)
 
     """
-        Profil - Spezifische Methoden
+    Profil - Spezifische Methoden
     """
     def create_profil(self, lernvorlieben_id, beschreibung=""):
         """Ein Profil anlegen"""

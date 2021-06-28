@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
-    Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
-    Typography,
-    Card,
-    CardContent
+    withStyles
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import AktProfilEntry from "./AktProfilEntry";
-import PersonEntry from "./PersonEntry";
 import EineLernvorliebe from "./EineLernvorliebe";
 
 
@@ -32,26 +20,23 @@ class AktuellesProfil extends Component {
         this.state = {
             profil: null,
             person: props.person,
-            error: null,
-            loadingInProgress: false
+            error: null
         }
     }
 
     /**
-     * API call get the Profil of the current Person by the ProfilId stored in the PersonBO
+     * API Call eines Profil Objektes der angemeldeten Person anhand der Profil ID welche in PersonBO gespeichert ist
      * */
     getProfil = () => {
         StudooAPI.getAPI().getProfil(this.props.person.getProfilId())
         .then(profilBO => {
             this.setState({
                 profil: profilBO,
-                error: null,
-                loadingInProgress: false
+                error: null
             });
         }).catch(e => this.setState({
             profil: "No profil received.",
-            error: e,
-            loadingInProgress: false
+            error: e
         }));
 
         this.setState({
@@ -60,28 +45,20 @@ class AktuellesProfil extends Component {
         });
     }
 
-    /** Lifecycle Method which is called when the component is rendered on DOM */
+    /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
     componentDidMount() {
     this.getProfil();
     }
 
-
+  /** Rendern der Komponente AktuellesProfil */
     render() {
-        const {classes, selfperson} = this.props;
-        const {profil, person, error, loadingInProgress} = this.state;
+        const {selfperson} = this.props;
+        const {profil, person, error} = this.state;
         return (
-            <div className={classes.root} >
-                <Grid>
-                    <Grid item>
-                    </Grid>
-                </Grid>
-                {/*
-                    person ?
-                        <PersonEntry person={person}/>
-                    : null*/
-                }
+            <div>
                 {
                     profil ?
+                        /** Aufruf der Komponente EineLernvorliebe mit den Properties lvId, person, profil und selfperson */
                         <EineLernvorliebe lvId={profil.getLernvorliebeID()} person={person} profil={profil} selfperson={selfperson} />
                     : null
                 }
@@ -95,7 +72,7 @@ class AktuellesProfil extends Component {
 }
 
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
     width: '100%',
@@ -108,8 +85,7 @@ const styles = theme => ({
 
 /** PropTypes */
 AktuellesProfil.propTypes = {
-  /** @ignore */
-  classes: PropTypes.object.isRequired
+    /** @ignore */
 }
 
 export default withRouter(withStyles(styles)(AktuellesProfil));

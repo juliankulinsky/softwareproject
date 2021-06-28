@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
+import {
+    withStyles,
+    Typography,
+    Card,
+    CardContent
+} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
-import LoadingProgress from "./dialogs/LoadingProgress";
-import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-import TeilnehmerListEntry from "./TeilnehmerListEntry";
-//import AccountList from './AccountList';
+import "./components-theme.css";
 
 /**
  * Rendert eine eingehende Gruppenbeitrittsanfrage mit der Option, diese anzunehmen oder abzulehnen.
@@ -104,31 +103,30 @@ class EingehendeGruppenbeitrittsAnfragenListEntry extends Component {
             <>
                 {
                     (anfrage && lerngruppe) ?
-                        <Typography>
-                            -------------- <br/>
-                            Das ist eine eingehende Gruppenbeitrittsanfrage #{anfrage.getID()}<br/>
-                            Matchpoints des Vorschlags: {anfrage.getMatchpoints()} &nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
-                                    onClick={this.entscheidungTrue}>
-                                Annehmen
-                            </Button>
-                            <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
-                                    onClick={this.entscheidungFalse}>
-                                Ablehnen
-                            </Button>
-                            <br/>
-                            Gruppenname: {lerngruppe.getGruppenname()}
-                            <br/>--------------
-                        </Typography>
+                        <Card className="anfragencard">
+                            <CardContent>
+                                <Typography variant="h6">
+                                    {lerngruppe.getGruppenname()} lädt dich in ihre Gruppe ein!
+                                </Typography>
+                                <br/>
+                                <div className="buttonAlign">
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"primary"}
+                                            onClick={this.entscheidungTrue}>
+                                        Annehmen
+                                    </Button>&nbsp;&nbsp;
+                                    <Button disabled={buttonPressed} variant={"contained"} color={"secondary"}
+                                            onClick={this.entscheidungFalse}>
+                                        Ablehnen
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
                         :
                         null
                 }
             </>
-
-
         )
     }
-
 }
 
 /** Komponent-spezifische Styles */

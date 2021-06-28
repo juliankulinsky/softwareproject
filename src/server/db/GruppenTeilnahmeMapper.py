@@ -31,8 +31,9 @@ class GruppenTeilnahmeMapper(Mapper):
         return result
 
     def find_all_by_gruppen_id(self, gruppen_id):
-        """Auslesen aller GruppenTeilnahme-Objekte
+        """Auslesen aller GruppenTeilnahme-Objekte der zugehörigen Gruppen ID
 
+        :param gruppen_id: Gruppen ID
         :return: Sammlung mit GruppenTeilnahme-Objekten
         """
         result = []
@@ -55,8 +56,9 @@ class GruppenTeilnahmeMapper(Mapper):
         return result
 
     def find_all_by_person_id(self, person_id):
-        """Auslesen aller GruppenTeilnahme-Objekte
+        """Auslesen aller GruppenTeilnahme-Objekte mit zugehöriger Person ID
 
+        :param person_id: Person ID
         :return: Sammlung mit GruppenTeilnahme-Objekten
         """
         result = []
@@ -79,10 +81,11 @@ class GruppenTeilnahmeMapper(Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """Suchen einer GruppenTeilnahme mit vorgegebener GruppenTeilnahme-ID
+        """Auslesen eines GruppenTeilnahme-Objekts mit gegebener GruppenTeilnahme ID
 
-        :param: key Primärschlüsselattribut
-        :return: GruppenTeilnahme-Objekt, das dem übergebenen Schlüssel entspricht, None bei nicht vorhandenem DB-Tupel
+        :param: key: Primärschlüsselattribut
+        :return: Ein einzelnes GruppenTeilnahme-Objekt, das dem übergebenen Schlüssel entspricht,
+                 None bei nicht vorhandenem DB-Tupel
         """
         result = None
         cursor = self._cnx.cursor()
@@ -111,10 +114,17 @@ class GruppenTeilnahmeMapper(Mapper):
         return result
 
     def find_by_person_id_und_gruppen_id(self, person_id: int, gruppen_id: int):
+        """Auslesen eines GruppenTeilnahme-Objekts mit vorgegebener Person ID, sowie Gruppen ID
+
+        :param: person_id: Person ID
+        :param: gruppen_id: Gruppen ID
+        :return: Ein einzelnes GruppenTeilnahme-Objekt, welches zu einer Person und einer Gruppe gehört,
+                 None bei nicht vorhandenem DB-Tupel
+                """
         result = None
         cursor = self._cnx.cursor()
         command = (
-            "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(person_id,gruppen_id)
+            "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(person_id, gruppen_id)
         )
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -141,8 +151,8 @@ class GruppenTeilnahmeMapper(Mapper):
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
 
-        :param: gruppenteilnahme das zu speichernde Objekt
-        :return: das bereits übergebene Objekt, jedoch mit ggf, korrigierter ID.
+        :param: gruppenteilnahme: Das zu speichernde Objekt
+        :return: Das bereits übergebene Objekt, jedoch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM gruppen_teilnahmen")
@@ -171,9 +181,9 @@ class GruppenTeilnahmeMapper(Mapper):
         return gruppenteilnahme
 
     def update(self, gruppenteilnahme: GruppenTeilnahme):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
+        """Aktualisieren eines GruppenTeilnahme-Objekts in der Datenbank anhand seiner ID
 
-        :param gruppenteilnahme: das Objekt, das in die DB geschrieben werden soll
+        :param gruppenteilnahme: Das GruppenTeilnahme-Objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -195,7 +205,7 @@ class GruppenTeilnahmeMapper(Mapper):
     def delete(self, gruppenteilnahme: GruppenTeilnahme):
         """Löschen der Daten eines GruppenTeilnahme-Objekts aus der Datenbank.
 
-        :param gruppenteilnahme: das aus der Datenbank zu löschende Objekt
+        :param gruppenteilnahme: Das aus der Datenbank zu löschende Objekt
         """
         cursor = self._cnx.cursor()
 

@@ -28,19 +28,20 @@ class HeaderComplete extends Component {
                             </div>
 
                             <div className="icons">
-                                <Link to="/anfragen">
-                                    <BottomNavigationAction className="test" label={"Anfragen"} icon={<NotificationsNoneIcon className="iconcss"/>}/>
-                                </Link>
                                 <Link to="/explorer">
                                     <BottomNavigationAction className="test" label={"Explorer"} icon={<SearchIcon className="iconcss"/>}/>
-                                </Link>
-                                <Link to="/konversationen">
-                                    <BottomNavigationAction className="test" label={"Konversationen"} icon={<ChatIcon className="iconcss"/>}/>
                                 </Link>
                                 <Link to="/lerngruppen">
                                     <BottomNavigationAction className="test" label={"Lerngruppen"} icon={<GroupIcon className="iconcss"/>}/>
                                 </Link>
+                                <Link to="/konversationen">
+                                    <BottomNavigationAction className="test" label={"Konversationen"} icon={<ChatIcon className="iconcss"/>}/>
+                                </Link>
+                                <Link to="/anfragen">
+                                    <BottomNavigationAction className="test" label={"Anfragen"} icon={<NotificationsNoneIcon className="iconcss"/>}/>
+                                </Link>
                             </div>
+
                             <div className="profile">
                                 <ProfileDropDown user={user} />
                             </div>

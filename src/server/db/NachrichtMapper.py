@@ -38,9 +38,9 @@ class NachrichtMapper (Mapper):
         return result
 
     def find_by_key(self, key: int):
-        """Suchen einer Nachricht mit vorgegebener Nachrichten-ID
+        """Suchen einer Nachricht mit vorgegebener Nachrichten ID
 
-        :param: key Primärschlüsselattribut
+        :param: key: Nachricht ID, Primärschlüsselattribut
         :return: Nachricht-Objekt, das dem übergebenen Schlüssel entspricht, None bei nicht vorhandenem DB-Tupel
         """
         result = None
@@ -99,8 +99,8 @@ class NachrichtMapper (Mapper):
 
         Der Primärschlüssel wird dabei überprüft und ggf. berechtigt.
 
-        :param: nachricht das zu speichernde Objekt
-        :return: das bereits übergebene Objekt, jeodch mit ggf, korrigierter ID.
+        :param: nachricht: Das zu speichernde Nachricht-Objekt
+        :return: Das bereits übergebene Nachricht-Objekt, jeodch mit ggf, korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM nachrichten")
@@ -126,9 +126,9 @@ class NachrichtMapper (Mapper):
         return nachricht
 
     def update(self, nachricht: Nachricht):
-        """Aktualisieren eines Objekts in der Datenbank anhand seiner ID
+        """Aktualisieren eines Nachricht-Objekts in der Datenbank anhand seiner ID
 
-        :param nachricht: das Objekt, das in die DB geschrieben werden soll
+        :param nachricht: Das Nachricht-Objekt, das in die DB geschrieben werden soll
         """
         cursor = self._cnx.cursor()
 
@@ -148,7 +148,7 @@ class NachrichtMapper (Mapper):
     def delete(self, nachricht: Nachricht):
         """Löschen der Daten eines Nachricht-Objekts aus der Datenbank.
 
-        :param nachricht: das aus der Datenbank zu löschende Objekt
+        :param nachricht: Das aus der Datenbank zu löschende Nachricht-Objekt
         """
         cursor = self._cnx.cursor()
 

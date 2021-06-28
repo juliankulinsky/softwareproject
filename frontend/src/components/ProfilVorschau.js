@@ -6,12 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import PersonForm from './dialogs/PersonForm';
-import {PersonBO} from "../api";
-import LernvorliebenList from "./LernvorliebenList";
-import AllProfile from "./AllProfile";
 import AktuellesProfil from "./AktuellesProfil";
-import PersonEntry from "./PersonEntry";
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -41,6 +36,9 @@ class ProfilVorschau extends Component {
     };
   }
 
+  /**
+   * API Call eines Person Objekts aus der Datenbank anhand der Google User ID des aktuell angemeldeten Benutzer
+   * */
   getCurrentPerson = () => {
     StudooAPI.getAPI().getPersonByUID(this.props.person.getGoogleUserID())
         .then(personBO => {
@@ -56,6 +54,7 @@ class ProfilVorschau extends Component {
         }));
 	}
 
+
 	deletePerson = () => {
       this.setState({
           deleteButtonPressed: true,
@@ -63,38 +62,24 @@ class ProfilVorschau extends Component {
       StudooAPI.getAPI().deletePerson(this.props.person.getID())
     }
 
-  /** Lifecycle method, which is called when the component gets inserted into the browsers DOM*/
+  /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
   componentDidMount() {
     this.getCurrentPerson()
   }
 
-  /** Renders the component */
+  /** Rendern der Komponente ProfilVorschau */
   render() {
     const {classes, user, selfperson} = this.props;
     const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
 
     return (
-        <div className={classes.root}>
-            {
-                user ?
-                    <IconButton className={classes.avatarButton}>
-                        <Avatar src={user.photoURL}/>
-                    </IconButton>
-                    :null
-            }
+        <div>
             {
             person ?
+                /** Aufruf der Komponente AktuellesProfil mit den Properties person und selfperson */
                 <AktuellesProfil person={person} selfperson={selfperson}/>
                 : null
           }
-          {
-            selfperson ?
-                <Button disabled={deleteButtonPressed} variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
-                      Profil löschen
-                </Button>
-                : null
-          }
-
           <LoadingProgress show={loadingInProgress}/>
           <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
                                onReload={this.getCurrentPerson}/>
@@ -103,23 +88,28 @@ class ProfilVorschau extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponent-spezifische Styles */
 const styles = theme => ({
   root: {
-    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   personFilter: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
+  },
+  avatarButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   }
 });
 
 /** PropTypes */
 ProfilVorschau.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /** @ignore */
-  location: PropTypes.object.isRequired,
+  location: PropTypes.object,
 }
 
 export default withRouter(withStyles(styles)(ProfilVorschau));

@@ -6,16 +6,14 @@ import {Link} from "react-router-dom";
 
 
 /**
- * Shows a drop down list for the account infos and a possibility to log out. For closing the pop up menu if
- * the mouse is clicked outside the menu, the ClickAwayListener component is used.For logging out,
- * firebase.auth().signOut() method is used.
+ * Zeigt eine Drop Down Liste für den angemeldeten User an, welche zum Profil führt oder die
+ * Möglichkeit sich auszuloggen, dafür wird die Methode firebase.auth().signOut() genutzt.
  *
  * @see See Material-UIs [Popover](https://material-ui.com/components/popover/)
  * @see See Material-UIs [ClickAwayListener](https://material-ui.com/components/click-away-listener/)
  * @see See Googles [firebase authentication](https://firebase.google.com/docs/web/setup)
  * @see See Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class ProfileDropDown extends Component {
 
@@ -31,7 +29,7 @@ class ProfileDropDown extends Component {
     }
   }
 
-  /** Handles click events on the avatar button and toggels visibility */
+  /** Verarbeitet Click events auf den Avatar-Button und zeigt/versteckt den Dialog. */
   handleAvatarButtonClick = () => {
     this.setState({
       open: !this.state.open
@@ -39,7 +37,7 @@ class ProfileDropDown extends Component {
   }
 
   /**
-   * Handles click events from the ClickAwayListener.
+   * Verarbeitet Click Away Events, also für den Fall, wenn woanders hingeklickt wird.
    *
    * @see See Material-UIs [ClickAwayListener](https://material-ui.com/components/click-away-listener/)
    */
@@ -50,8 +48,8 @@ class ProfileDropDown extends Component {
   }
 
   /**
-	 * Handles the click event of the sign in button and uses the firebase.auth() component to sign in.
-	 *
+	 * Verarbeitet das Click Event des Anmelde Buttons und nutzt firebase.auth() für das einloggen.
+     *
 	 * @see See Google [firebase.auth](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
 	 * @see See Google [firebase.auth().signOut](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signout)
 	 */
@@ -59,7 +57,7 @@ class ProfileDropDown extends Component {
     firebase.auth().signOut();
   }
 
-  /** Renders the profile drop down if a loggin user is given as a prop */
+  /** Rendert das ProfileDropDown, wenn ein angemeldeter Benutzer als prop gegeben ist */
   render() {
     const { classes, user } = this.props;
     const { open } = this.state;
@@ -107,7 +105,7 @@ class ProfileDropDown extends Component {
   }
 }
 
-/** Component specific styles */
+/** Komponenten spezifische styles */
 const styles = theme => ({
 
   divider: {

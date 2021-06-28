@@ -22,62 +22,67 @@ class Person(bo.BusinessObject):
     """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
     def get_name(self):
-        """ Auslesen des Namens"""
+        """Auslesen des Namens"""
         return self._name
 
     def set_name(self, name: str):
+        """Setzen des Namens"""
         self._name = name
 
     def get_email(self):
-        """ Auslesen von email"""
+        """Auslesen der Email"""
         return self._email
 
     def set_email(self, email: str):
+        """Setzen der Email"""
         self._email = email
 
     def get_google_user_id(self):
-        """ Auslesen von vorname"""
+        """Auslesen der Google User ID"""
         return self._google_user_id
 
     def set_google_user_id(self, google_user_id: str):
+        """Setzen der Google User ID"""
         self._google_user_id = google_user_id
 
     def get_alter(self):
-        """ Auslesen von alter """
+        """Auslesen des Alters"""
         return self._alter
 
     def set_alter(self, alter: int):
-        """ Festlegen von alter """
+        """Setzen des Alters"""
         self._alter = alter
 
     def get_wohnort(self):
-        """ Auslesen von wohnort """
+        """Auslesen des Wohnorts"""
         return self._wohnort
 
     def set_wohnort(self, wohnort: str):
-        """ Festlegen von wohnort """
+        """Setzen des Wohnorts"""
         self._wohnort = wohnort
 
     def get_studiengang(self):
-        """ Auslesen von studiengang """
+        """Auslesen des Studiengangs"""
         return self._studiengang
 
     def set_studiengang(self, studiengang: str):
-        """ Festlegen von studiengang """
+        """Setzen des Studiengangs"""
         self._studiengang = studiengang
 
     def get_semester(self):
-        """ Auslesen von semester """
+        """Auslesen des Semesters"""
         return self._semester
 
     def set_semester(self, semester: int):
-        """ Festlegen von semester """
+        """Setzen des Semesters"""
         self._semester = semester
         
     def get_profil_id(self):
+        """Auslesen der Profil ID"""
         return self._profil_id
 
     def set_profil_id(self, profil_id: int):
+        """Setzen der Profil ID"""
         self._profil_id = profil_id
 
     @staticmethod
