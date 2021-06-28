@@ -147,6 +147,7 @@ class App extends React.Component {
 											currentPersonBO.getAlter() === 0 ?
 												<>
 													<Registrieren person={currentPersonBO} user={currentUser}/>
+													<Redirect to='/index.html'/>
 												</>
 												:
 												<>
@@ -188,7 +189,6 @@ class App extends React.Component {
 						</>
 						:
 						<>
-							<Redirect to='/index.html'/>
 							<SignIn onSignIn={this.handleSignIn}/>
 						</>
 				}
