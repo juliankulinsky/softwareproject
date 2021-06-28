@@ -37,11 +37,6 @@ class GruppenAnfragenList extends Component {
      */
     componentDidMount() {
         this.getAlleGruppenbeitrittsAnfragen();
-        this.interval = setInterval(() => this.getAlleGruppenbeitrittsAnfragen(), 3000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
