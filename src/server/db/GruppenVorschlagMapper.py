@@ -382,7 +382,10 @@ class GruppenVorschlagMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            gruppen_vorschlag.set_id(maxid[0]+1)
+            if maxid[0] is not None:
+                gruppen_vorschlag.set_id(maxid[0]+1)
+            else:
+                gruppen_vorschlag.set_id(1)
 
         command = "INSERT INTO gruppen_vorschlaege (id, erstellungszeitpunkt, person_id, gruppen_id, " \
                   "aehnlichkeit, matchpoints, entscheidung_person, entscheidung_gruppe) " \
