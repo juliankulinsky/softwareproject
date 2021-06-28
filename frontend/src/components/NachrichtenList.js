@@ -9,6 +9,8 @@ import {
     Grid,
     Typography}
     from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -172,20 +174,20 @@ class NachrichtenList extends Component {
         this.getLerngruppe();
         this.getChatpartner();
         this.getNachrichten();
-        // this.interval = setInterval(() => this.getNachrichten(), 3000);
+        this.interval = setInterval(() => this.getNachrichten(), 3000);
     }
 
-    /*componentWillUnmount() {
+    componentWillUnmount() {
         clearInterval(this.interval);
-    }*/
+    }
 
     /** Hier werden  */
     chatAufruf = () => {
         const nachrichten = this.state.nachrichten
 
         if (nachrichten.length===0) {
-            return <Typography>
-                In dieser Konversation gibt es noch keine Nachrichten! <br/>
+            return <Typography className="noConversations">
+                In dieser Konversation gibt es noch <b>keine</b> Nachrichten! <br/>
                 Sei der Erste!
             </Typography>
         }
@@ -256,31 +258,31 @@ class NachrichtenList extends Component {
                             chatpartner ?
                                 <>
                                     <Typography>
-                                        {
-                                            chatpartner.getName()
-                                        }
                                         <Button onClick={this.popUpButtonClicked}>
                                             {
                                                 chatpartner.getName()
                                             }
                                         </Button>  <br/>
+
                                         <Button disabled={deleteButtonPressed}
                                                 color={"primary"}
                                                 variant={"contained"}
                                                 onClick={this.openErstelleLerngruppeDialog}>
                                             Gruppe erstellen
                                         </Button>
+
                                         <ErstelleLerngruppeDialog
                                             show={showErstelleLerngruppeDialog}
                                             person={this.props.currentPerson}
                                             chatpartner={chatpartner}
                                             onClose={this.erstelleLerngruppeDialogClosed}/>
-                                        <Button disabled={deleteButtonPressed}
-                                                color={"secondary"}
-                                                variant={"contained"}
-                                                onClick={this.deleteChatTeilnahme}>
-                                                            Chat löschen
-                                        </Button>
+
+                                        <IconButton disabled={deleteButtonPressed}
+                                                    aria-label={"delete"}
+                                                    variant={"contained"}
+                                                    onClick={this.deleteChatTeilnahme}>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </Typography>
                                 </>
                                 : null

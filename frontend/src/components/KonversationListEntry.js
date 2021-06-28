@@ -11,8 +11,6 @@ import {
     Avatar}
     from '@material-ui/core';
 import StudooAPI from '../api/StudooAPI'
-import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
-import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
 
 class KonversationListEntry extends Component {
@@ -87,43 +85,6 @@ class KonversationListEntry extends Component {
         }
     }
 
-    deleteChatTeilnahme = () => {
-        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
-            .then(chatTeilnahme => {
-                this.setState({
-                    chatteilnahme: chatTeilnahme,
-                    deleteButtonPressed: true
-                })
-                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
-            })
-    }
-
-    openErstelleLerngruppeDialog = () => {
-        this.setState({
-            showErstelleLerngruppeDialog: true
-        })
-    }
-
-    erstelleLerngruppeDialogClosed = lerngruppe => {
-        this.setState({
-            showErstelleLerngruppeDialog: false
-        })
-    }
-
-    /** Handles the onClick event of the Popup person button */
-    popUpButtonClicked = (event) => {
-        event.stopPropagation();
-        this.setState({
-          showProfilPopUp: true
-        });
-    }
-
-    popUpClosed = (event) => {
-        this.setState({
-          showProfilPopUp: false
-        });
-    }
-
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
@@ -155,7 +116,8 @@ class KonversationListEntry extends Component {
                                             chatpartner ?
                                                 <>
                                                     <Typography>
-                                                        <Button onClick={this.popUpButtonClicked}>
+                                                        {chatpartner.getName()}
+                                                        {/*<Button onClick={this.popUpButtonClicked}>
                                                             {
                                                                 chatpartner.getName()
                                                             }
@@ -175,7 +137,7 @@ class KonversationListEntry extends Component {
                                                                 variant={"contained"}
                                                                 onClick={this.deleteChatTeilnahme}>
                                                             Chat löschen
-                                                        </Button>
+                                                        </Button>*/}
                                                     </Typography>
                                                 </>
                                                 : null
@@ -193,7 +155,7 @@ class KonversationListEntry extends Component {
                             />
                         </ListItem>
 
-                        <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
+                        {/*<PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />*/}
             </Container>
         )
     }

@@ -126,7 +126,7 @@ class KonversationenList extends Component {
                                 </Card>
 
                                 :
-                                <Typography>
+                                <Typography className="noConversations">
                                     Du hast noch <b>keine</b> Konversation ausgewählt.
                                 </Typography>
                         }

@@ -2,6 +2,10 @@ root {
     width: 100%
 }
 
+.noConversations{
+    padding: 20px;
+}
+
 .chatCard {
     padding: 20px 10px 20px 10px;
 }

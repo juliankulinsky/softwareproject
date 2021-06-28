@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles,
     Typography,
-    Container,
-    Button,
-    Grid } from '@material-ui/core';
+    Container} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {StudooAPI} from "../api";
