@@ -94,6 +94,7 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
      /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
@@ -104,6 +105,11 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
+        setTimeout(this.refreshPage,100)
+    }
+
+    refreshPage = () => {
+        window.location.reload()
     }
 
     /**
@@ -143,11 +149,6 @@ class LerngruppenExplorer extends Component {
      */
     componentDidMount() {
         this.getBestGruppenvorschlag();
-        this.interval = setInterval(() => this.getBestGruppenvorschlag(), 3000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
