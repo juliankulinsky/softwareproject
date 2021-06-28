@@ -56,7 +56,7 @@ class KonversationenList extends Component {
         }));
 
         this.setState({
-            loadingInProgress: true,
+            //loadingInProgress: true,
             error: null
         })
     }
@@ -72,6 +72,11 @@ class KonversationenList extends Component {
 
     componentDidMount() {
         this.getKonversationen();
+        this.interval = setInterval(() => this.getKonversationen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     Chats = () => {

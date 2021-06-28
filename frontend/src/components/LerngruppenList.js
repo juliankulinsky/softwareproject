@@ -24,7 +24,7 @@ class LerngruppenList extends Component {
     }
 
     /**
-     * Alle LerngruppeBOs einer der aktuellen Person aus dem Backend auslesen.
+     * Alle LerngruppeBOs der aktuellen Person aus dem Backend auslesen.
      */
     getLerngruppen = () => {
         StudooAPI.getAPI().getLerngruppenForPersonID(this.props.person.getID())
@@ -41,7 +41,6 @@ class LerngruppenList extends Component {
         }));
 
         this.setState({
-            loadingInProgress: true,
             error: null
         });
     }
@@ -52,6 +51,11 @@ class LerngruppenList extends Component {
      */
     componentDidMount() {
         this.getLerngruppen();
+        this.interval = setInterval(() => this.getLerngruppen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */

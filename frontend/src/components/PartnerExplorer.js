@@ -11,12 +11,13 @@ import {
 import { withRouter, NavLink } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {PartnerVorschlagBO} from "../api";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
 import ProfilVorschau from "./ProfilVorschau";
+import Delayed from "./Delay";
 
 /**
  * Rendert den am besten zur aktuellen Person passenden PartnerVorschlagBO mit Anzeigen von Informationen über die
@@ -41,9 +42,8 @@ class PartnerExplorer extends Component {
             loadingInProgress: false,
             updatingInProgress: false,
             updatingError: null,
-            buttonPressed: false
+            buttonPressed: false,
         }
-        this.baseState = this.state;
     }
 
     /**
@@ -54,10 +54,14 @@ class PartnerExplorer extends Component {
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
-                .then(anderePerson =>
+                .then(anderePerson => {
                     this.setState({
                         anderePerson: anderePerson
-                    }))
+                    })
+                    console.log("andere p", anderePerson)
+                })
+
+
         } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
                 .then(anderePerson =>
@@ -144,15 +148,16 @@ class PartnerExplorer extends Component {
                     updatingInProgress: false,
                     updatingError: null
                 });
-                this.baseState.entscheidung = this.state.entscheidung;
             }).catch(e =>
             this.setState({
                 updatingInProgress: false,
                 updatingError: e
             }));
         this.setState({
+            partnervorschlag: null,
             updatingInProgress: true,
-            updatingError: null
+            updatingError: null,
+            buttonPressed: false
         })
     }
 
@@ -165,7 +170,12 @@ class PartnerExplorer extends Component {
     }
 
     componentDidMount() {
-        this.getBestPartnervorschlag()
+        this.getBestPartnervorschlag();
+        this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
@@ -209,30 +219,29 @@ class PartnerExplorer extends Component {
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
-                                        <Typography variant="h3">
-                                            It should be a match! &#128580;
-                                        </Typography>
-                                        <Typography variant="h4">
-                                            Und hier sollte dein Partner stehen ...
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Irgendwas ist da nicht ganz richtig.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
-                                        </Typography>
                                         <Typography variant="h5">
-                                            Happy Waiting for Solution! &#128540;
+                                            Dein neuer Vorschlag wird berechnet ...
                                         </Typography>
+                                        <Delayed waitBeforeShow={7500}>
+                                            <Typography variant="h6">
+                                                Aktuell gibt es wohl keine passenden Lernpartner für dich.
+                                            </Typography>
+                                            <Typography variant="h6">
+                                                Empfehle die App deinen Kommilitonen weiter und freue dich auf deine
+                                                nächsten Matches!
+                                            </Typography>
+                                            <Typography variant="h5">
+                                                Stay tuned &#129299;
+                                            </Typography>
+                                        </Delayed>
                                     </div>
 
                                     <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
+                                        <CircularProgress/>
                                     </div>
+
                                 </CardContent>
                             </Card>
-
-
                         </div>
                 }
 
