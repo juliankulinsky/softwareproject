@@ -5,18 +5,12 @@ import {
     Box,
     Container,
     Grid,
-    ListItem,
     Button,
     Card,
-    TextField,
-    InputAdornment,
-    IconButton,
     Typography,
     ButtonBase
 }
     from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -147,7 +141,7 @@ const styles = theme => ({
   },
 
     c: {
-      padding: '5px'
+      padding: '20px 10px 20px 10px'
   },
 });
 

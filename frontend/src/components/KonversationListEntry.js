@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Box,
-    Container,
-    Grid,
     withStyles,
+    Container,
     Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    TextField,
     Button,
-    List,
     ListItem,
-    Divider,
     ListItemText,
     ListItemAvatar,
     Avatar}
     from '@material-ui/core';
-import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
 import {NachrichtBO} from "../api";
 import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";

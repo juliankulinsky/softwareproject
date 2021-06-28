@@ -6,18 +6,12 @@ import {
     Card,
     Button,
     TextField,
-    InputAdornment,
-    IconButton,
     Grid,
-    Typography,
-    CardContent
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
+    Typography}
+    from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
 import NachrichtListEntry from "./NachrichtListEntry";
 import {NachrichtBO} from "../api";
 
@@ -94,8 +88,8 @@ class NachrichtenList extends Component {
         let tempNachrichten = this.state.nachrichten
         tempNachrichten.push(newNachricht)
         this.setState({
-            nachrichten:tempNachrichten,
-            neueNachricht:"",
+            nachrichten: tempNachrichten,
+            neueNachricht: "",
             neueNachrichtValidationFailed: false,
             neueNachrichtEdited: false
         })
