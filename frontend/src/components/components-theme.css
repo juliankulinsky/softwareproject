@@ -2,13 +2,13 @@
     display: flex;
 }
 
-.partnervorschlag {
+.partnervorschlag,.partnervorschlagNotFound {
     display: flex;
 }
 
 /* Fullscreen */
 @media only screen and (min-width: 401px) {
-    .partnervorschlag {
+    .partnervorschlag, .partnervorschlagNotFound {
         flex-direction: row;
         align-items: center;
         justify-content: space-around;

@@ -126,9 +126,14 @@ class AusgehendeAnfragenList extends Component {
                                 }
                             </Box>
                             :
-                            <Typography>
-                                Du hast keine ausgehenden Gruppenbeitrittsanfragen.
-                            </Typography>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Gruppen
+                                </Typography>
+                                <Typography>
+                                    Keine Anfragen vorhanden.
+                                </Typography>
+                            </Box>
                     }
                 </Box>
                 </div>
