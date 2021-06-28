@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
-    Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
-    Typography,
-    ButtonGroup
+    withStyles
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -104,7 +95,7 @@ const styles = theme => ({
 /** PropTypes */
 EineLernvorliebe.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object
 }
 
 export default withRouter(withStyles(styles)(EineLernvorliebe));

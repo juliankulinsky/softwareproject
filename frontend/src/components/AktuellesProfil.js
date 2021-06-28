@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
-    Button,
-    TextField,
-    InputAdornment,
-    IconButton,
-    Grid,
-    Typography,
-    Card,
-    CardContent
+    withStyles
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import AktProfilEntry from "./AktProfilEntry";
-import PersonEntry from "./PersonEntry";
 import EineLernvorliebe from "./EineLernvorliebe";
 
 
@@ -32,8 +20,7 @@ class AktuellesProfil extends Component {
         this.state = {
             profil: null,
             person: props.person,
-            error: null,
-            loadingInProgress: false
+            error: null
         }
     }
 
@@ -45,13 +32,11 @@ class AktuellesProfil extends Component {
         .then(profilBO => {
             this.setState({
                 profil: profilBO,
-                error: null,
-                loadingInProgress: false
+                error: null
             });
         }).catch(e => this.setState({
             profil: "No profil received.",
-            error: e,
-            loadingInProgress: false
+            error: e
         }));
 
         this.setState({
@@ -67,8 +52,8 @@ class AktuellesProfil extends Component {
 
   /** Rendern der Komponente AktuellesProfil */
     render() {
-        const {classes, selfperson} = this.props;
-        const {profil, person, error, loadingInProgress} = this.state;
+        const {selfperson} = this.props;
+        const {profil, person, error} = this.state;
         return (
             <div>
                 {
@@ -100,8 +85,7 @@ const styles = theme => ({
 
 /** PropTypes */
 AktuellesProfil.propTypes = {
-  /** @ignore */
-  classes: PropTypes.object.isRequired
+    /** @ignore */
 }
 
 export default withRouter(withStyles(styles)(AktuellesProfil));

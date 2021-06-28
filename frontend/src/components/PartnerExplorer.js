@@ -110,6 +110,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
@@ -120,6 +121,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     /**
@@ -163,6 +165,10 @@ class PartnerExplorer extends Component {
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
+    refreshPage = () => {
+        window.location.reload()
+    }
+
     componentDidMount() {
         this.getBestPartnervorschlag();
         this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);

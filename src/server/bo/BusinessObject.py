@@ -5,7 +5,7 @@ from datetime import datetime
 class BusinessObject(ABC):
     """Gemeinsame Basisklasse aller in diesem Projekt relevanten Klassen.
 
-    Jedes BusinessObject hat eine Id, welche in der Datenbank als Primärschlüssel dient.
+    Jedes BusinessObject hat eine ID, welche in der Datenbank als Primärschlüssel dient.
     Zusätzlich hat jedes ein Erstellungszeitpunkt.
     """
     def __init__(self):
