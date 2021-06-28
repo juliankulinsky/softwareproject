@@ -5,13 +5,9 @@ import { withStyles,
     Container,
     Button,
     Grid } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PersonForm from './dialogs/PersonForm';
-import PersonDeleteDialog from './dialogs/PersonDeleteDialog';
 import {StudooAPI} from "../api";
 import LoadingProgress from "./dialogs/LoadingProgress";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
-//import AccountList from './AccountList';
 
 
 class NachrichtListEntry extends Component {

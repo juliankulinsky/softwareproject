@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Slider, Card, CardContent, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { withStyles, Typography, Slider, Card, CardContent, Grid } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import ProfilForm from "./dialogs/ProfilForm";
 import StudooAPI from "../api/StudooAPI";
 import LoadingProgress from "./dialogs/LoadingProgress";
@@ -38,8 +37,7 @@ class PersonEntry extends Component {
   editProfilButtonClicked = (event) => {
     event.stopPropagation();
     this.setState({
-      showProfilForm: true,
-      loadingInProgress: true
+      showProfilForm: true
     });
   }
 
@@ -53,7 +51,8 @@ class PersonEntry extends Component {
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }
@@ -63,11 +62,13 @@ class PersonEntry extends Component {
     if (profil) {
       this.setState({
         profil: profil,
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: true
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }
@@ -88,7 +89,8 @@ class PersonEntry extends Component {
       });
     } else {
       this.setState({
-        showProfilForm: false
+        showProfilForm: false,
+        loadingInProgress: false
       });
     }
   }
@@ -112,7 +114,7 @@ class PersonEntry extends Component {
     return (
            <Card className={classes.root}>
             <CardContent justify-content="" >
-              <Grid container spacing={3}>
+              <Grid container>
                   <Grid item xs={6}>
                     {
                       person ?

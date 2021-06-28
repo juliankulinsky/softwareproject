@@ -5,20 +5,13 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Registrieren from './components/pages/Registrieren'
 import SignIn from './components/pages/SignIn';
-import LoadingProgress from './components/dialogs/LoadingProgress';
-import ContextErrorMessage from './components/dialogs/ContextErrorMessage';
 import firebaseConfig from './firebaseconfig';
-import AllProfile from './components/AllProfile';
-import ProfilEntry from "./components/ProfilEntry";
-import LernvorliebenList from "./components/LernvorliebenList";
 import KonversationenList from "./components/KonversationenList";
 import NachrichtenList from "./components/NachrichtenList";
 import HeaderComplete from "./components/header/HeaderComplete";
 import {StudooAPI} from "./api";
 import PartnerExplorer from "./components/PartnerExplorer";
 import ProfilVorschau from "./components/ProfilVorschau";
-import AktuellesProfil from "./components/AktuellesProfil";
-import ProfilForm from "./components/dialogs/ProfilForm";
 import LerngruppenExplorer from "./components/LerngruppenExplorer";
 import EingehendeAnfragenList from "./components/EingehendeAnfragenList";
 import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
@@ -167,9 +160,6 @@ class App extends React.Component {
 													<Route path='/profil'>
 														<ProfilVorschau person={currentPersonBO} user={currentUser}
 																		selfperson={true}/>
-													</Route>
-													<Route path='/lernvorlieben'>
-														<LernvorliebenList/>
 													</Route>
 													<Route path='/nachrichten'>
 														<NachrichtenList person={currentPersonBO}/>
