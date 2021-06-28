@@ -60,13 +60,8 @@ class EingehendeAnfragenList extends Component {
      */
     componentDidMount() {
         this.getAnfragen();
-        this.interval = setInterval(() => this.getAnfragen(), 3000);
     }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
+    
     /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
