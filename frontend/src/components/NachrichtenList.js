@@ -20,6 +20,8 @@ import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
 import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
 
+/** !!! Beschreibung für Component noch einfügen !!! */
+
 class NachrichtenList extends Component {
     constructor(props) {
         super(props);
@@ -40,6 +42,7 @@ class NachrichtenList extends Component {
         }
     }
 
+    /** Lädt das NachrichtenBO einer bestimmten KonversationID über die API aus dem Backend. */
     getNachrichten = () => {
         StudooAPI.getAPI().getNachrichtenByKonversationID(this.props.konversation.getID())
         .then(nachrichtenBOs => {
@@ -61,6 +64,7 @@ class NachrichtenList extends Component {
         });
     }
 
+    /** Lädt das LerngruppenBO einer bestimmten KonversationID über die API aus dem Backend. */
     getLerngruppe = () => {
         if (this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getLerngruppeOfKonversationID(this.state.konversation.getID())
@@ -83,6 +87,7 @@ class NachrichtenList extends Component {
         }
     }
 
+    /** Lädt das ChatpartnerBO einer bestimmten KonversationID über die API aus dem Backend. */
     getChatpartner = () => {
         if (!this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())
@@ -110,7 +115,7 @@ class NachrichtenList extends Component {
         }
     }
 
-    /** Handles the onClick event of the Popup person button */
+    /** Methode, welche Pop-Up für ein Profil öffnet als Reaktion eines onClick events. */
     popUpButtonClicked = (event) => {
         event.stopPropagation();
         this.setState({
@@ -169,7 +174,8 @@ class NachrichtenList extends Component {
         })
     }
 
-    /** Die Nachrichten werden hier durch die setInterval Funktion alle 3 Sekunden neu von der Datenbank geladen.*/
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt.
+     * Die Nachrichten werden hier durch die setInterval Funktion alle 3 Sekunden neu von der Datenbank geladen. */
     componentDidMount() {
         this.getLerngruppe();
         this.getChatpartner();
@@ -181,7 +187,8 @@ class NachrichtenList extends Component {
         clearInterval(this.interval);
     }
 
-    /** Hier werden  */
+    /** In dieser Methode werden die einzelnen Nachrichten einer Konversation
+     * aus der unterliegenden Komponente NachrichtenListEntry geholt. */
     chatAufruf = () => {
         const nachrichten = this.state.nachrichten
 
@@ -238,6 +245,7 @@ class NachrichtenList extends Component {
             })
     }
 
+    /** Rendert die Component. */
     render() {
         const {classes} = this.props;
         const {nachrichten=[], error, neueNachricht, neueNachrichtValidationFailed, neueNachrichtEdited,
@@ -323,7 +331,7 @@ class NachrichtenList extends Component {
 }
 
 
-/** Component specific styles */
+/** Component-spezifische Styles */
 const styles = theme => ({
   root: {
       width: '100%',

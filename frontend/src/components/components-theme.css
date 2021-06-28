@@ -2,6 +2,7 @@ root {
     width: 100%
 }
 
+/* Chat */
 .noConversations{
     padding: 20px;
 }
@@ -15,7 +16,7 @@ root {
     padding: 20px;
 }
 .chatBubbleRight{
-    background: aqua;
+    background: #fcfcfc;
     border-radius: 15px;
     float: right;
     width: fit-content;
@@ -27,7 +28,7 @@ root {
     padding: 20px;
 }
 .chatBubbleLeft{
-    background: greenyellow;
+    background: #fcfcfc;
     border-radius: 15px;
     width: fit-content;
     padding: 10px;
@@ -37,6 +38,8 @@ root {
     font-size: small;
     color: lightgrey;
 }
+
+/* Partnervorschläge */
 
 .partnercard {
     display: flex;

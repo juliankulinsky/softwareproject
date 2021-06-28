@@ -13,6 +13,8 @@ import {
 import StudooAPI from '../api/StudooAPI'
 import "./components-theme.css";
 
+/** !!! Beschreibung für Component noch einfügen !!! */
+
 class KonversationListEntry extends Component {
     constructor(props) {
         super(props);
@@ -36,6 +38,7 @@ class KonversationListEntry extends Component {
         this.baseState = this.state
     }
 
+    /** Lädt das LerngruppenBO einer bestimmten KonversationID über die API aus dem Backend. */
     getLerngruppe = () => {
         if (this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getLerngruppeOfKonversationID(this.state.konversation.getID())
@@ -58,6 +61,7 @@ class KonversationListEntry extends Component {
         }
     }
 
+    /** Lädt das ChatpartnerBO einer bestimmten KonversationID über die API aus dem Backend. */
     getChatpartner = () => {
         if (!this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())
@@ -85,11 +89,13 @@ class KonversationListEntry extends Component {
         }
     }
 
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
     }
 
+    /** Rendert die Component. */
     render() {
         const { classes } = this.props;
         const { konversation, lerngruppe, chatpartner, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
@@ -117,27 +123,6 @@ class KonversationListEntry extends Component {
                                                 <>
                                                     <Typography>
                                                         {chatpartner.getName()}
-                                                        {/*<Button onClick={this.popUpButtonClicked}>
-                                                            {
-                                                                chatpartner.getName()
-                                                            }
-                                                        </Button>  <br/>
-                                                        <Button disabled={deleteButtonPressed}
-                                                                color={"primary"}
-                                                                variant={"contained"}
-                                                                onClick={this.openErstelleLerngruppeDialog}>
-                                                            Gruppe erstellen
-                                                        </Button>
-                                                        <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog}
-                                                                                  person={this.props.person}
-                                                                                  chatpartner={chatpartner}
-                                                                                  onClose={this.erstelleLerngruppeDialogClosed}/>
-                                                        <Button disabled={deleteButtonPressed}
-                                                                color={"secondary"}
-                                                                variant={"contained"}
-                                                                onClick={this.deleteChatTeilnahme}>
-                                                            Chat löschen
-                                                        </Button>*/}
                                                     </Typography>
                                                 </>
                                                 : null
@@ -154,13 +139,12 @@ class KonversationListEntry extends Component {
                                 }
                             />
                         </ListItem>
-
-                        {/*<PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />*/}
             </Container>
         )
     }
 }
 
+/** Component-spezifische Styles */
 const styles = theme => ({
     root: {
         width: '100%',
@@ -168,6 +152,7 @@ const styles = theme => ({
     }
 });
 
+/** PropTypes */
 KonversationListEntry.propTypes = {
     konversation: PropTypes.object.isRequired,
 }

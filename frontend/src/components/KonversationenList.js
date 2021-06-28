@@ -18,11 +18,11 @@ import NachrichtenList from "./NachrichtenList";
 import "./components-theme.css";
 
 /** Diese Component stellt die höchste Hierarchie-Stufe der Chat-Funktion von Studoo dar.
- * Gerendert werden hier eingefasst auf der linken Seite eine Auflistung aller aktuell bestehenden Chats.
- * Auf der rechten Seite befindeen sich, nach anklicken eines Chats, die entsprechenden Nachrichten der Konversation.
+ * Gerendert werden hier, eingefasst auf der linken Seite, eine Auflistung aller aktuell existierenden Chats.
+ * Auf der rechten Seite befinden sich, nach anklicken einer Lerngruppe/Lernpartner,
+ * die entsprechenden Nachrichten der Konversation.
  * Es kann zwischen Konversationen gewechselt werden, Nachrichten geschrieben und empfangen werden.
- * Zudem ist die Erstellung von Gruppen aus Einzelchats heraus möglich. */
-
+ * Zudem ist die Erstellung von Gruppen aus Einzelchats mit Lernpartnern heraus möglich. */
 
 class KonversationenList extends Component {
     constructor(props) {
@@ -38,6 +38,7 @@ class KonversationenList extends Component {
         };
     }
 
+    /** Lädt das KonversationBO einer bestimmten PersonID über die API aus dem Backend. */
     getKonversationen = () => {
         StudooAPI.getAPI().getKonversationenForPersonID(this.props.person.getID())
             .then(konversationenBOs => {
@@ -67,6 +68,7 @@ class KonversationenList extends Component {
         })
     }
 
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getKonversationen();
     }
@@ -92,6 +94,7 @@ class KonversationenList extends Component {
             </Card>)
     }
 
+    /** Rendert die Component. */
     render() {
         const {classes, person} = this.props;
         const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;

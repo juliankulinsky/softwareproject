@@ -61,7 +61,7 @@ class AusgehendeGruppenbeitrittsAnfragenListEntry extends Component {
     }
 
     /**
-     * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
+     * Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {

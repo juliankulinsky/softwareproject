@@ -9,6 +9,7 @@ import {StudooAPI} from "../api";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import "./components-theme.css";
 
+/** !!! Beschreibung für Component noch einfügen !!! */
 
 class NachrichtListEntry extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class NachrichtListEntry extends Component {
         }
     }
 
+    /** Lädt das PersonBO einer bestimmten AbsenderID über die API aus dem Backend.*/
     getAbsenderPerson = () => {
         StudooAPI.getAPI().getPerson(this.props.nachricht.getAbsenderID())
             .then(absenderPerson => {
@@ -44,6 +46,7 @@ class NachrichtListEntry extends Component {
         });
     }
 
+    /** */
     deleteNachricht = () => {
         this.setState({
             buttonPressed: true,
@@ -51,6 +54,7 @@ class NachrichtListEntry extends Component {
         StudooAPI.getAPI().deleteNachricht(this.state.nachricht.getID())
     }
 
+    /** */
     EigeneNachricht = () => {
         return <div className="nachrichtRight">
                     <div className="chatBubbleRight">
@@ -72,6 +76,7 @@ class NachrichtListEntry extends Component {
                </div>
     }
 
+    /** */
     FremdeNachricht = () => {
         return <div className="nachrichtLeft">
             <div className="chatBubbleLeft">
@@ -86,6 +91,7 @@ class NachrichtListEntry extends Component {
         </div>
     }
 
+    /** Zeigt  einzelne Nachrichten an. */
     Anzeige = () => {
         if (this.state.currentPerson.getID()===this.state.absenderPerson.getID()){
             return this.EigeneNachricht()
@@ -95,10 +101,12 @@ class NachrichtListEntry extends Component {
         }
     }
 
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getAbsenderPerson()
     }
 
+    /** Rendert die Component. */
     render() {
         const { classes } = this.props;
         const { nachricht, absenderPerson, currentPerson, error, loadingInProgress } = this.state;
@@ -122,7 +130,7 @@ class NachrichtListEntry extends Component {
     }
 }
 
-/** Component specific styles */
+/** Component-spezifische Styles */
 const styles = theme => ({
   root: {
       width: '100%',
