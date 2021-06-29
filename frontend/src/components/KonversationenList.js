@@ -83,13 +83,11 @@ class KonversationenList extends Component {
             <Card>
                 <ButtonBase
                     onClick={() => this.setAktuelleKonversation(konversation)}>
-
                     <KonversationListEntry
                         key={konversation.getID()}
                         konversation={konversation}
                         person={this.props.person}
                     />
-
                 </ButtonBase>
             </Card>)
     }
@@ -106,15 +104,12 @@ class KonversationenList extends Component {
                     {
                         this.Chats()
                     }
-
                     <LoadingProgress show={loadingInProgress}/>
-
                     <ContextErrorMessage
                         error={error} contextErrorMsg={`Nicht geklappt`}
                         onReload={this.getKonversationen}
                     />
                     </Grid>
-
                     <Grid item xs>
                         {
                             aktuellekonversation ?
@@ -127,7 +122,6 @@ class KonversationenList extends Component {
                                         currentPerson={person}
                                     />
                                 </Card>
-
                                 :
                                 <Typography className="noConversations">
                                     Du hast noch <b>keine</b> Konversation ausgewählt.

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
     Container,
     Typography,
     Button,
@@ -13,7 +12,8 @@ import {
 import StudooAPI from '../api/StudooAPI'
 import "./components-theme.css";
 
-/** !!! Beschreibung für Component noch einfügen !!! */
+/** Diese Component stellt einen Listeneintrag der Auflistung der aktuell existierenden Chats dar.
+ * Diese Component wird in KonversationenList entsprechend der Anzahl an existierenden Chats aufgerufen. */
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -98,63 +98,52 @@ class KonversationListEntry extends Component {
     /** Rendert die Component. */
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
+        const { konversation, lerngruppe, chatpartner } = this.state;
 
         return (
             <Container>
-                        <ListItem alignItems="flex-start">
-
-                            <ListItemAvatar>
-                                <Avatar alt="Wir brauchen noch Bilder" src="/components/chat/avatardummy.png"/>
-                            </ListItemAvatar>
-
-                            <ListItemText
-                                primary = {
-                                    <>
-                                        {
-                                            lerngruppe ?
-                                                <Typography>
-                                                    {lerngruppe.getGruppenname()}
-                                                </Typography>
-                                                : null
-                                        }
-                                        {
-                                            chatpartner ?
-                                                <>
-                                                    <Typography>
-                                                        {chatpartner.getName()}
-                                                    </Typography>
-                                                </>
-                                                : null
-                                        }
-                                    </>
-                                }
-
-                                secondary = {
-                                    <React.Fragment>
+                <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar alt="Wir brauchen noch Bilder" src="/components/chat/dummy_avatar.png"/>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary = {
+                            <>
+                                {
+                                    lerngruppe ?
                                         <Typography>
-                                            Klicke hier, um den Chat aufzurufen
+                                            {lerngruppe.getGruppenname()}
                                         </Typography>
-                                    </React.Fragment>
+                                        : null
                                 }
-                            />
-                        </ListItem>
+                                {
+                                    chatpartner ?
+                                        <>
+                                            <Typography>
+                                                {chatpartner.getName()}
+                                            </Typography>
+                                        </>
+                                        : null
+                                }
+                                </>
+                        }
+                        secondary = {
+                            <React.Fragment>
+                                <Typography>
+                                    Klicke hier, um den Chat aufzurufen
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>
             </Container>
         )
     }
 }
-
-/** Component-spezifische Styles */
-const styles = theme => ({
-    root: {
-        width: '100%',
-        flexGrow: 1
-    }
-});
 
 /** PropTypes */
 KonversationListEntry.propTypes = {
     konversation: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(KonversationListEntry);
+export default KonversationListEntry;

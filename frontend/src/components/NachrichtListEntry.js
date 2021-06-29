@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles,
+import {
     Typography,
-    Container} from '@material-ui/core';
+    Container }
+    from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {StudooAPI} from "../api";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import "./components-theme.css";
 
-/** !!! Beschreibung für Component noch einfügen !!! */
+/** Diese Component stellt einen Listeneintrag der Auflistung der aktuell existierenden Nachrichten dar.
+ * Diese Component wird in NachrichtenList entsprechend der Anzahl an existierenden Nachrichten aufgerufen. */
 
 class NachrichtListEntry extends Component {
     constructor(props) {
@@ -46,7 +48,7 @@ class NachrichtListEntry extends Component {
         });
     }
 
-    /** */
+    /** Löscht über die API eine im Backend gespeicherte Nachricht. */
     deleteNachricht = () => {
         this.setState({
             buttonPressed: true,
@@ -54,7 +56,8 @@ class NachrichtListEntry extends Component {
         StudooAPI.getAPI().deleteNachricht(this.state.nachricht.getID())
     }
 
-    /** */
+    /** Gibt die vom User geschriebenen Nachrichten einer Konversation inklusive eines Löschen-Buttons
+     * für die Render Methode aus. */
     EigeneNachricht = () => {
         return <div className="nachrichtRight">
                     <div className="chatBubbleRight">
@@ -76,7 +79,7 @@ class NachrichtListEntry extends Component {
                </div>
     }
 
-    /** */
+    /** Gibt die von den Lerngruppen-Partner und Lernpartnern geschriebenen Nachrichten aus. */
     FremdeNachricht = () => {
         return <div className="nachrichtLeft">
             <div className="chatBubbleLeft">
@@ -130,24 +133,6 @@ class NachrichtListEntry extends Component {
     }
 }
 
-/** Component-spezifische Styles */
-const styles = theme => ({
-  root: {
-      width: '100%',
-      flexGrow: 1
-  },
-
-    right: {
-      textAlign: "right"
-    },
-
-    left: {
-      textAlign: "left"
-    }
-
-
-});
-
 /** PropTypes */
 NachrichtListEntry.propTypes = {
   /** @ignore */
@@ -157,4 +142,4 @@ NachrichtListEntry.propTypes = {
 
 }
 
-export default withStyles(styles)(NachrichtListEntry);
+export default NachrichtListEntry;

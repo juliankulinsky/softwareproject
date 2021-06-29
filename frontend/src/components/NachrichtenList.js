@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
     Container,
     Card,
     Button,
     TextField,
-    Grid,
-    Typography}
+    Typography }
     from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,7 +18,14 @@ import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
 import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
 
-/** !!! Beschreibung für Component noch einfügen !!! */
+/** Diese Component bietet die Basis für das Anzeigen der individuellen Konversationen mit den einzelnen Lerngruppen
+ * oder Lernpartnern. Angezeigt werden die einzelnen Nachrichten durch die hier eingebundene Component
+ * NachrichtListEntry.
+ * Zudem wird innerhalb dieser Component ein Chat-Header angezeigt, der dem User auf den ersten Blick klar macht,
+ * in welchem Chat er sich aktuell befindet. In Einzelchats gibt es zudem die Möglichkeit, sich das Profil des
+ * entsprechenden Lernpartners anzeigen zu lassen - und durch ein Pop-Up Fenster eine Lerngruppe
+ * mit diesem Lernpartner zu gründen.
+ * Darüber hinaus wird innerhalb dieser Component auch das Textfeld zum absenden von Nachrichten realisiert. */
 
 class NachrichtenList extends Component {
     constructor(props) {
@@ -252,8 +257,8 @@ class NachrichtenList extends Component {
             lerngruppe, chatpartner, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp} = this.state;
 
         return (
-            <Container className={classes.root}>
-                <Card className={classes.chatHeader}>
+            <Container className="root">
+                <Card className="chatHeader">
                     <>
                         {
                             lerngruppe ?
@@ -271,20 +276,17 @@ class NachrichtenList extends Component {
                                                 chatpartner.getName()
                                             }
                                         </Button>  <br/>
-
                                         <Button disabled={deleteButtonPressed}
                                                 color={"primary"}
                                                 variant={"contained"}
                                                 onClick={this.openErstelleLerngruppeDialog}>
                                             Gruppe erstellen
                                         </Button>
-
                                         <ErstelleLerngruppeDialog
                                             show={showErstelleLerngruppeDialog}
                                             person={this.props.currentPerson}
                                             chatpartner={chatpartner}
                                             onClose={this.erstelleLerngruppeDialogClosed}/>
-
                                         <IconButton disabled={deleteButtonPressed}
                                                     aria-label={"delete"}
                                                     variant={"contained"}
@@ -297,16 +299,13 @@ class NachrichtenList extends Component {
                         }
                     </>
                 </Card>
-
                 {
                     this.chatAufruf()
                 }
-
                 <ContextErrorMessage
                     error={error} contextErrorMsg={`Nicht geklappt`}
                     onReload={this.getNachrichten}
                 />
-
                 <TextField type='text'
                            id='neueNachricht'
                            value={neueNachricht}
@@ -314,14 +313,12 @@ class NachrichtenList extends Component {
                            error={neueNachrichtValidationFailed}>
                     Test
                 </TextField> &nbsp;&nbsp;
-
                 <Button color="primary"
                         variant='contained'
                         disabled={ !(neueNachrichtEdited && !neueNachrichtValidationFailed) }
                         onClick={this.addNachricht}>
                     Senden
                 </Button>
-
                 <PopUpProfil show={showProfilPopUp}
                              person={chatpartner}
                              onClose={this.popUpClosed} />
@@ -330,22 +327,10 @@ class NachrichtenList extends Component {
     }
 }
 
-
-/** Component-spezifische Styles */
-const styles = theme => ({
-  root: {
-      width: '100%',
-      flexGrow: 1
-  },
-    chatHeader: {
-      padding: '10px 20px 10px 20px'
-    }
-});
-
 /** PropTypes */
 NachrichtenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(NachrichtenList));
+export default withRouter(NachrichtenList);
