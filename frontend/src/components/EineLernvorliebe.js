@@ -18,6 +18,7 @@ class EineLernvorliebe extends Component {
 
         this.state = {
             lernvorliebe: null,
+            lerngruppe: props.lerngruppe,
             person: props.person,
             error: null,
             loadingInProgress: false
@@ -56,7 +57,7 @@ class EineLernvorliebe extends Component {
     /** Rendern der Komponente EineLernvorliebe */
     render() {
         const {selfperson, profil} = this.props;
-        const {lernvorliebe, person, error, loadingInProgress} = this.state;
+        const {lernvorliebe, lerngruppe, person, error, loadingInProgress} = this.state;
 
         return (
             <div>
@@ -70,6 +71,15 @@ class EineLernvorliebe extends Component {
                             : null
                         :null
                     :null
+                }
+                {
+                    lerngruppe ?
+                        profil ?
+                            lernvorliebe ?
+                                <PersonEntry profil={profil} lerngruppe={lerngruppe} lernvorliebe={lernvorliebe} selfperson={selfperson} />
+                            : null
+                        : null
+                    : null
                 }
                 <LoadingProgress show={loadingInProgress}/>
                 <ContextErrorMessage
