@@ -7,6 +7,7 @@ class Konversation(bo.BusinessObject):
     Baut auf BusinessObject auf und hat zusätzlich Teilnehmer und Nachrichten als Listen
     als Attribute. Dafür gibt es jeweils Getter und Add-Methoden
     """
+
     def __init__(self):
         super().__init__()
         self._ist_gruppenchat = False

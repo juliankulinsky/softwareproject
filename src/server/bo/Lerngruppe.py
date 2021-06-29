@@ -6,11 +6,14 @@ class Lerngruppe(bo.BusinessObject):
 
     Baut auf BusinessObject auf und hat zusätzlich
     """
+
     def __init__(self):
         super().__init__()
-        self._gruppenname = ""          # Name der Lerngruppe als String
-        self._profil_id = 0             # Fremdschlüsselbeziehung zum zur Gruppe gehörenden Profil
-        self._konversation_id = 0       # Fremdschlüsselbeziehung zur zur Gruppe gehörenden Konversation
+        self._gruppenname = ""  # Name der Lerngruppe als String
+        self._profil_id = 0  # Fremdschlüsselbeziehung zum zur Gruppe gehörenden Profil
+        self._konversation_id = (
+            0  # Fremdschlüsselbeziehung zur zur Gruppe gehörenden Konversation
+        )
 
     def get_gruppenname(self):
         """Auslesen des Gruppennamens"""

@@ -21,12 +21,13 @@ class LerngruppeMapper(Mapper):
         cursor.execute("SELECT * from lerngruppen")  # SQL Statement
         tuples = cursor.fetchall()
 
-        for (id,
-             erstellungszeitpunkt,
-             gruppenname,
-             profil_id,
-             konversation_id
-             ) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            gruppenname,
+            profil_id,
+            konversation_id,
+        ) in tuples:
             lerngruppe = Lerngruppe()
             lerngruppe.set_id(id)
             lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -49,13 +50,17 @@ class LerngruppeMapper(Mapper):
 
         result = None
         cursor = self._cnx.cursor()
-        command = ("SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
-                   "lerngruppen WHERE id={}".format(key))
+        command = (
+            "SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
+            "lerngruppen WHERE id={}".format(key)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, gruppename, profil_id, konversation_id) = tuples[0]
+            (id, erstellungszeitpunkt, gruppename, profil_id, konversation_id) = tuples[
+                0
+            ]
             lerngruppe = Lerngruppe()
             lerngruppe.set_id(id)
             lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -80,18 +85,21 @@ class LerngruppeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.gruppenname, L.profil_id, L.konversation_id "
-                       "FROM lerngruppen AS L LEFT OUTER JOIN gruppen_teilnahmen AS R "
-                       "ON R.gruppen_id=L.id "
-                       "WHERE R.person_id={}".format(person_key))
+        cursor.execute(
+            "SELECT L.id, L.erstellungszeitpunkt, L.gruppenname, L.profil_id, L.konversation_id "
+            "FROM lerngruppen AS L LEFT OUTER JOIN gruppen_teilnahmen AS R "
+            "ON R.gruppen_id=L.id "
+            "WHERE R.person_id={}".format(person_key)
+        )
         tuples = cursor.fetchall()
 
-        for (id,
-             erstellungszeitpunkt,
-             gruppenname,
-             profil_id,
-             konversation_id
-             ) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            gruppenname,
+            profil_id,
+            konversation_id,
+        ) in tuples:
             lerngruppe = Lerngruppe()
             lerngruppe.set_id(id)
             lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -113,16 +121,19 @@ class LerngruppeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
-                       "lerngruppen WHERE konversation_id={}".format(konversation_key))
+        cursor.execute(
+            "SELECT id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id FROM "
+            "lerngruppen WHERE konversation_id={}".format(konversation_key)
+        )
         tuples = cursor.fetchall()
 
-        for (id,
-             erstellungszeitpunkt,
-             gruppenname,
-             profil_id,
-             konversation_id
-             ) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            gruppenname,
+            profil_id,
+            konversation_id,
+        ) in tuples:
             lerngruppe = Lerngruppe()
             lerngruppe.set_id(id)
             lerngruppe.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -150,18 +161,20 @@ class LerngruppeMapper(Mapper):
 
         for maxid in tuples:
             if maxid[0] is not None:
-                lerngruppe.set_id(maxid[0]+1)
+                lerngruppe.set_id(maxid[0] + 1)
             else:
                 lerngruppe.set_id(1)
 
-        command = ("INSERT INTO lerngruppen (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
-                   "VALUES (%s,%s,%s,%s,%s)")
+        command = (
+            "INSERT INTO lerngruppen (id, erstellungszeitpunkt, gruppenname, profil_id, konversation_id) "
+            "VALUES (%s,%s,%s,%s,%s)"
+        )
         data = (
             lerngruppe.get_id(),
             lerngruppe.get_erstellungszeitpunkt(),
             lerngruppe.get_gruppenname(),
             lerngruppe.get_profil_id(),
-            lerngruppe.get_konversation_id()
+            lerngruppe.get_konversation_id(),
         )
         cursor.execute(command, data)
 
@@ -178,14 +191,12 @@ class LerngruppeMapper(Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = (
-            "UPDATE lerngruppen SET gruppenname=%s, profil_id=%s, konversation_id=%s WHERE id=%s "
-        )
+        command = "UPDATE lerngruppen SET gruppenname=%s, profil_id=%s, konversation_id=%s WHERE id=%s "
         data = (
             lerngruppe.get_gruppenname(),
             lerngruppe.get_profil_id(),
             lerngruppe.get_konversation_id(),
-            lerngruppe.get_id()
+            lerngruppe.get_id(),
         )
         cursor.execute(command, data)
 

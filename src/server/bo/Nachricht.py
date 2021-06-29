@@ -7,11 +7,16 @@ class Nachricht(bo.BusinessObject):
     Baut auf BusinessObject auf und hat zusätzlich den Nachrichteninhalt, eine Absender_ID
     und eine Konversation_ID, an welche die Nachricht gerichtet ist.
     """
+
     def __init__(self):
         super().__init__()
-        self._inhalt = ""           # Inhalt der Nachricht
-        self._absender_id = 0       # Fremdschlüsselbeziehung zur Absender-Person der Nachricht
-        self._konversation_id = 0   # Fremdschlüsselbeziehung zur Konversation, an die die Nachricht geht
+        self._inhalt = ""  # Inhalt der Nachricht
+        self._absender_id = (
+            0  # Fremdschlüsselbeziehung zur Absender-Person der Nachricht
+        )
+        self._konversation_id = (
+            0  # Fremdschlüsselbeziehung zur Konversation, an die die Nachricht geht
+        )
 
     """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
@@ -46,8 +51,11 @@ class Nachricht(bo.BusinessObject):
 
         Bestehend aus ID, Zeitpunkt, Absender_ID, Konversation_ID und Inhalt"""
         return "Nachricht {}: Von {}, An {}, Inhalt: {}, Zeitpunkt: {}".format(
-            self.get_id(), self.get_absender_id(), self.get_konversation_id(), self.get_inhalt(),
-            self.get_erstellungszeitpunkt()
+            self.get_id(),
+            self.get_absender_id(),
+            self.get_konversation_id(),
+            self.get_inhalt(),
+            self.get_erstellungszeitpunkt(),
         )
 
     @staticmethod
