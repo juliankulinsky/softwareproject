@@ -38,7 +38,7 @@ class KonversationListEntry extends Component {
         this.baseState = this.state
     }
 
-    /** Lädt das LerngruppenBO einer bestimmten KonversationID über die API aus dem Backend. */
+    /** Lädt das LerngruppenBO mit einer bestimmten KonversationID über die API aus dem Backend. */
     getLerngruppe = () => {
         if (this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getLerngruppeOfKonversationID(this.state.konversation.getID())
@@ -61,7 +61,7 @@ class KonversationListEntry extends Component {
         }
     }
 
-    /** Lädt das ChatpartnerBO einer bestimmten KonversationID über die API aus dem Backend. */
+    /** Lädt das PersonBO des Chatpartners mit einer bestimmten KonversationID über die API aus dem Backend. */
     getChatpartner = () => {
         if (!this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())

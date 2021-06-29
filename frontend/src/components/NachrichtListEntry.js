@@ -27,7 +27,7 @@ class NachrichtListEntry extends Component {
         }
     }
 
-    /** Lädt das PersonBO einer bestimmten AbsenderID über die API aus dem Backend.*/
+    /** Lädt das PersonBO des Absenders eines bestimmten NachrichtBOs über die API aus dem Backend.*/
     getAbsenderPerson = () => {
         StudooAPI.getAPI().getPerson(this.props.nachricht.getAbsenderID())
             .then(absenderPerson => {

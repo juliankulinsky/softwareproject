@@ -47,7 +47,7 @@ class NachrichtenList extends Component {
         }
     }
 
-    /** Lädt das NachrichtenBO einer bestimmten KonversationID über die API aus dem Backend. */
+    /** Lädt alle NachrichtBOs mit einer bestimmten KonversationID über die API aus dem Backend. */
     getNachrichten = () => {
         StudooAPI.getAPI().getNachrichtenByKonversationID(this.props.konversation.getID())
         .then(nachrichtenBOs => {
@@ -69,7 +69,7 @@ class NachrichtenList extends Component {
         });
     }
 
-    /** Lädt das LerngruppenBO einer bestimmten KonversationID über die API aus dem Backend. */
+    /** Lädt das LerngruppenBO mit einer bestimmten KonversationID über die API aus dem Backend. */
     getLerngruppe = () => {
         if (this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getLerngruppeOfKonversationID(this.state.konversation.getID())
@@ -92,7 +92,7 @@ class NachrichtenList extends Component {
         }
     }
 
-    /** Lädt das ChatpartnerBO einer bestimmten KonversationID über die API aus dem Backend. */
+    /** Lädt das PersonBO des Chatpartners mit einer bestimmten KonversationID über die API aus dem Backend. */
     getChatpartner = () => {
         if (!this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())

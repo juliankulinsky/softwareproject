@@ -38,7 +38,7 @@ class KonversationenList extends Component {
         };
     }
 
-    /** Lädt das KonversationBO einer bestimmten PersonID über die API aus dem Backend. */
+    /** Lädt alle KonversationBOs einer bestimmten PersonID über die API aus dem Backend. */
     getKonversationen = () => {
         StudooAPI.getAPI().getKonversationenForPersonID(this.props.person.getID())
             .then(konversationenBOs => {
@@ -59,6 +59,7 @@ class KonversationenList extends Component {
         })
     }
 
+    /** Setzt nach Klick auf eine jeweilige Konversation die aktuelle Konversation in den State. */
     setAktuelleKonversation = (konversation) => {
         this.setState({
             aktuellekonversation: null
@@ -73,6 +74,7 @@ class KonversationenList extends Component {
         this.getKonversationen();
     }
 
+    /** Methode, welche die links gelegene Auflistung der aktiven Konversationen ausgibt. */
     Chats = () => {
         const konversationen = this.state.konversationen
 
