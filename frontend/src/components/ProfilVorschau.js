@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography, Avatar} from '@material-ui/core';
-
+import {withStyles} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -9,18 +8,14 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import AktuellesProfil from "./AktuellesProfil";
 
 /**
- * Controlls a list of CustomerListEntrys to create a accordion for each customer.
+ * Rendert die Profilvorschau eines gematcheten Person
+ * zur Förderung der Entscheidungsfindung der Person, die den Vorschlag erhält.
  *
- * @see See [CustomerListEntry](#customerlistentry)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class ProfilVorschau extends Component {
 
   constructor(props) {
     super(props);
-
-    // console.log(props);
     let expandedID = null;
 
     if (this.props.location.expandPerson) {

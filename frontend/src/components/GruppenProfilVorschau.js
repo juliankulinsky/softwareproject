@@ -7,20 +7,23 @@ import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import AktuellesLerngruppenProfil from "./AktuellesLerngruppenProfil";
 
+/**
+ * Rendert die Profilvorschau einer gematcheten Gruppe
+ * zur Förderung der Entscheidungsfindung der Person, die den Vorschlag erhält.
+ *
+ */
 
 class GruppenProfilVorschau extends Component {
 
   constructor(props) {
     super(props);
-
-    // console.log(props);
     let expandedID = null;
 
     if (this.props.location.expandPerson) {
       expandedID = this.props.location.expandPerson.getID();
     }
 
-    // Init an empty state
+    // Initialisieren eines leeren States
     this.state = {
       lerngruppe: props.lerngruppe,
       deleteButtonPressed: false,
@@ -30,7 +33,7 @@ class GruppenProfilVorschau extends Component {
   }
 
   /**
-   * API Call eines Person Objekts aus der Datenbank anhand der Google User ID des aktuell angemeldeten Benutzer
+   * API Call eines Lerngruppen-Objekts aus der Datenbank anhand der ID der aus den props übergebenen Lerngruppe.
    * */
   getCurrentLerngruppe = () => {
     StudooAPI.getAPI().getLerngruppe(this.props.lerngruppe.getID())
@@ -47,7 +50,7 @@ class GruppenProfilVorschau extends Component {
         }));
 	}
 
-
+  /**  Methode, die die Lerngruppe löscht */
 	deleteLerngruppe = () => {
       this.setState({
           deleteButtonPressed: true,

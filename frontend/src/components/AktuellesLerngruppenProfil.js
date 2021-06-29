@@ -10,7 +10,7 @@ import EineLernvorliebe from "./EineLernvorliebe";
 
 
 /**
- * Gets the currently logged in Person and displays information of PersonBO and LernvorliebenBO
+ * Rendert das Profil (inkl. Lernvorlieben) der zugeordneten Lerngruppe.
  * */
 class AktuellesLerngruppenProfil extends Component {
 
