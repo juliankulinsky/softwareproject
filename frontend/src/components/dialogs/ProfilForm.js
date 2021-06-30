@@ -245,6 +245,8 @@ class ProfilForm extends Component {
     let error = false;
     if (value.trim().length === 0) {
       error = true;
+    }else if (value <= 0) {
+      error = true;
     }
 
     this.setState({
@@ -370,25 +372,25 @@ class ProfilForm extends Component {
             <form className={classes.root} noValidate autoComplete='off'>
               <Grid container spacing={3}>
                   <Grid xs={5}>
-                    <TextField type='text' required fullWidth margin='normal' id='name' label='Name:' value={name}
+                    <TextField type='text' InputProps={{readOnly: true}} fullWidth margin='normal' id='name' label='Name:' value={name}
                       onChange={this.textFieldValueChange} error={nameValidationFailed}
-                      helperText={nameValidationFailed ? 'The last name must contain at least one character' : ' '} />
-                    <TextField type='number' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
+                      helperText={nameValidationFailed ? 'Dein Name muss mindestens einen Buchstaben haben' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='alter' label='Alter:' value={alter}
                       onChange={this.textFieldValueChange} error={alterValidationFailed}
-                      helperText={alterValidationFailed ? 'The alter must contain at least one character' : ' '} />
+                      helperText={alterValidationFailed ? 'Dein Alter muss mindestens eine Ziffer sein und eine realistische eingabe' : ' '} />
                     <TextField type='text' required fullWidth margin='normal' id='wohnort' label='Wohnort:' value={wohnort}
                       onChange={this.textFieldValueChange} error={wohnortValidationFailed}
-                      helperText={wohnortValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                      helperText={wohnortValidationFailed ? 'Dein Wohnort muss mindestens einen Buchstaben haben' : ' '} />
                     <TextField type='text' required fullWidth margin='normal' id='studiengang' label='Studiengang:' value={studiengang}
                       onChange={this.textFieldValueChange} error={studiengangValidationFailed}
-                      helperText={studiengangValidationFailed ? 'The last name must contain at least one character' : ' '} />
-                    <TextField type='number' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
+                      helperText={studiengangValidationFailed ? 'Dein Studiengang muss mindestens einen Buchstaben haben' : ' '} />
+                    <TextField type='text' required fullWidth margin='normal' id='semester' label='Semester:' value={semester}
                       onChange={this.textFieldValueChange} error={semesterValidationFailed}
-                      helperText={semesterValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                      helperText={semesterValidationFailed ? 'Dein Semester muss mindestens eine Ziffer sein und eine realistische eingabe' : ' '} />
                     <Grid xs={12}>
                       <TextField type='text' required fullWidth margin='normal' id='beschreibung' label='Beschreibung:' value={beschreibung}
                         onChange={this.textFieldValueChange} error={beschreibungValidationFailed}
-                        helperText={beschreibungValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                        helperText={beschreibungValidationFailed ? 'Deine Beschreibung muss mindestens einen Buchstaben haben' : ' '} />
                     </Grid>
                   </Grid>
                   <Grid xs={2}>
@@ -420,12 +422,12 @@ class ProfilForm extends Component {
                     <Slider defaultValue={remote} getAriaValueText={this.valuetext} aria-labelledby="discrete-slider"
                             valueLabelDisplay="off" step={1} marks={marksRemote} min={1} max={5} onChange={this.handleChangeRemote} />
                     <br/>
-                    <TextField type='text' required fullWidth margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
+                    <TextField type='text' required fullWidth placeholder={"Python, React"} margin='normal' id='vorkenntnisse' label='Vorkenntnisse:' value={vorkenntnisse}
                       onChange={this.textFieldValueChange} error={vorkenntnisseValidationFailed}
-                      helperText={vorkenntnisseValidationFailed ? 'The last name must contain at least one character' : ' '} />
-                    <TextField type='text' required fullWidth margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
+                      helperText={vorkenntnisseValidationFailed ? 'Deine Vorkenntnisse müssen mindestens einen Buchstaben haben' : ' '} />
+                    <TextField type='text' required fullWidth placeholder={"Java, Design, Apps"} margin='normal' id='lerninteressen' label='Lerninteressen:' value={lerninteressen}
                       onChange={this.textFieldValueChange} error={lerninteressenValidationFailed}
-                      helperText={lerninteressenValidationFailed ? 'The last name must contain at least one character' : ' '} />
+                      helperText={lerninteressenValidationFailed ? 'Deine Lerninteressen müssen mindestens einen Buchstaben haben' : ' '} />
                   </Grid>
               </Grid>
             </form>
@@ -458,7 +460,8 @@ class ProfilForm extends Component {
               person ?
                 <Button disabled={ nameValidationFailed || alterValidationFailed ||
                 wohnortValidationFailed || studiengangValidationFailed || semesterValidationFailed ||
-                profilIDValidationFailed} variant='contained' onClick={this.updateProfil} color='primary'>
+                profilIDValidationFailed || beschreibungValidationFailed || vorkenntnisseValidationFailed ||
+                lerninteressenValidationFailed} variant='contained' onClick={this.updateProfil} color='primary'>
                   Update
               </Button>
                 : null

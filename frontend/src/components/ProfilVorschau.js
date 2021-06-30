@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles, Button, TextField, InputAdornment, IconButton, Grid, Typography, Avatar} from '@material-ui/core';
+import {withStyles} from '@material-ui/core';
 
 import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
@@ -9,23 +9,14 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import AktuellesProfil from "./AktuellesProfil";
 
 /**
- * Controlls a list of CustomerListEntrys to create a accordion for each customer.
+ * Hier wird die Vorschau des Profils initional angestoßen, diese Komponente ruft über die gegebene Person
+ * alle zugehörigen Informationen dazu auf.
  *
- * @see See [CustomerListEntry](#customerlistentry)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class ProfilVorschau extends Component {
 
   constructor(props) {
     super(props);
-
-    // console.log(props);
-    let expandedID = null;
-
-    if (this.props.location.expandPerson) {
-      expandedID = this.props.location.expandPerson.getID();
-    }
 
     // Init an empty state
     this.state = {
@@ -69,8 +60,8 @@ class ProfilVorschau extends Component {
 
   /** Rendern der Komponente ProfilVorschau */
   render() {
-    const {classes, user, selfperson} = this.props;
-    const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
+    const { selfperson} = this.props;
+    const { person, loadingInProgress, error } = this.state;
 
     return (
         <div>
@@ -107,9 +98,7 @@ const styles = theme => ({
 /** PropTypes */
 ProfilVorschau.propTypes = {
   /** @ignore */
-  classes: PropTypes.object,
-  /** @ignore */
-  location: PropTypes.object,
+  classes: PropTypes.object
 }
 
 export default withRouter(withStyles(styles)(ProfilVorschau));

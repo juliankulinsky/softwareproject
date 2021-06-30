@@ -11,25 +11,21 @@ class Mapper (AbstractContextManager, ABC):
         self._cnx = None
 
     def __enter__(self):
-        """Was soll geschehen, wenn wir beginnen, mit dem Mapper zu arbeiten?"""
-
-        """Wir testen, ob der Code im Kontext der lokalen Entwicklungsumgebung oder in der Cloud ausgeführt wird.
-        Dies ist erforderlich, da die Modalitäten für den Verbindungsaufbau mit der Datenbank kontextabhängig sind."""
+        """Hier wird abgefragt, ob der Code in der lokalen Entwicklungsumgebung oder in der Cloud ausgeführt wird.
+        Je nachdem wo der Code ausgeführt wird sind verschiedene Parameter zu anhand des Kontexts zu setzen."""
 
         if os.getenv('GAE_ENV', '').startswith('standard'):
-            """Landen wir in diesem Zweig, so haben wir festgestellt, dass der Code in der Cloud abläuft.
-            Die App befindet sich somit im **Production Mode** und zwar im *Standard Environment*.
-            Hierbei handelt es sich also um die Verbindung zwischen Google App Engine und Cloud SQL."""
+            """
+            Hier wird der Connector darauf festgelegt in der Google Cloud zu laufen (Post-Deployment).
+            Die Verbindung wird zwischen der Google App Engine und der Cloud SQL hergestellt."""
 
             self._cnx = connector.connect(user='demo', password='demo',
                                           unix_socket='/cloudsql/...',  # zu verändern
                                           database='studoo')
         else:
-            """Wenn wir hier ankommen, dann handelt sich offenbar um die Ausführung des Codes in einer lokalen Umgebung,
-            also auf einem Local Development Server. Hierbei stellen wir eine einfache Verbindung zu einer lokal
-            installierten mySQL-Datenbank her."""
-
-            """Hier ggf. eigenes Passwort eingeben."""
+            """
+            Hier wird der Connector darauf festgelegt in einer lokalen Umgebung zu laufen (Pre-Deployment).
+            Die Verbindung zu einer lokal installierten mySQL-Datenbank hergestellt."""
 
             self._cnx = connector.connect(user='root', password='root',
                                   host='127.0.0.1',
@@ -38,10 +34,11 @@ class Mapper (AbstractContextManager, ABC):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Was soll geschehen, wenn wir (evtl. vorübergehend) aufhören, mit dem Mapper zu arbeiten?"""
+        """Hier wird die Verbindung geschlossen sobald der Mapper mit dessen Aktion fertig ist."""
         self._cnx.close()
 
-    """Formuliere nachfolgend sämtliche Auflagen, die instanzierbare Mapper-Subklassen mind. erfüllen müssen."""
+    """Hier sind die abstrakten Methoden der Mapper Klasse zu finden, Das sind all die Funktionen die die Subklassen 
+       mindestens erfüllten."""
 
     @abstractmethod
     def find_all(self):
@@ -55,7 +52,7 @@ class Mapper (AbstractContextManager, ABC):
 
     @abstractmethod
     def insert(self, object):
-        """Fügt das gegebene Objekt in die DB ein."""
+        """Fügt das gegebene Objekt in die Datenbank ein."""
         pass
 
     @abstractmethod
