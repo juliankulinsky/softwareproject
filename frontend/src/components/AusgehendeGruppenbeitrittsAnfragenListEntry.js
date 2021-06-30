@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Card, CardContent  } from '@material-ui/core';
-import { Button,  } from '@material-ui/core';
-import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
+import { withStyles, Typography, Card, CardContent, Button} from '@material-ui/core';
+import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css";
 
 /**

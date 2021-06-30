@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid, Box } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { withStyles, Typography, Box, Button } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import AusgehendeKonversationsAnfragenListEntry from "./AusgehendeKonversationsAnfragenListEntry";
 import AusgehendeGruppenbeitrittsAnfragenListEntry from "./AusgehendeGruppenbeitrittsAnfragenListEntry";

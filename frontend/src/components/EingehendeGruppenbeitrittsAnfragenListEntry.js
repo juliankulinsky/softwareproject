@@ -4,10 +4,10 @@ import {
     withStyles,
     Typography,
     Card,
-    CardContent
+    CardContent,
+    Button
 } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import {GruppenVorschlagBO, PartnerVorschlagBO, StudooAPI} from "../api";
+import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css";
 
 /**

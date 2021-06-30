@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { withStyles, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import PopUpProfil from "./dialogs/PopUpProfil";
 

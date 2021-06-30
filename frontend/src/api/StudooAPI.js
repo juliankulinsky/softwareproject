@@ -8,7 +8,6 @@ import NachrichtBO from "./NachrichtBO";
 import PartnerVorschlagBO from "./PartnerVorschlagBO";
 import PersonBO from "./PersonBO";
 import ProfilBO from "./ProfilBO";
-import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 
 /**
  * Diese Klasse abstrahiert das REST-Interface vom Python-Backend mit zugänglichen Methoden.
