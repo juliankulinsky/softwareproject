@@ -11,7 +11,7 @@ import {
 import {NavLink, withRouter} from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import {GruppenVorschlagBO, LerngruppeBO} from "../api";
+import { GruppenVorschlagBO } from "../api";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import "./components-theme.css";

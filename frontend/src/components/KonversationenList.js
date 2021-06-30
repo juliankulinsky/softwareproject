@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Box,
-    Container,
     Grid,
-    Button,
     Card,
     Typography,
     ButtonBase}

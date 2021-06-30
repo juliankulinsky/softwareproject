@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Redirect, withRouter} from 'react-router-dom';
-import {Container, ThemeProvider, CssBaseline, Typography, IconButton, Avatar, Button, withStyles} from '@material-ui/core';
-import firebase from 'firebase/app';
-import AktuellesProfil from "../AktuellesProfil";
+import { withRouter } from 'react-router-dom';
+import { Button, withStyles} from '@material-ui/core';
 import ProfilVorschau from "../ProfilVorschau";
 import 'firebase/auth';
 import LoadingProgress from "../dialogs/LoadingProgress";

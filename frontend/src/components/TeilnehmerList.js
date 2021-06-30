@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
+import { withStyles, Typography } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import {StudooAPI} from "../api";
 import TeilnehmerListEntry from "./TeilnehmerListEntry";

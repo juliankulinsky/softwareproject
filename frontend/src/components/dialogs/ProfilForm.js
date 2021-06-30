@@ -20,7 +20,7 @@ import ContextErrorMessage from './ContextErrorMessage';
 import LoadingProgress from './LoadingProgress';
 
 /**
- * Shows a Form for the currently logged in Person which allows to edit the Alter, Wohnort, Studiengang and Semester
+ * Zeigt ein Formular der aktuell angemeldeten Person an, um das Profil zu bearbeiten
  */
 class ProfilForm extends Component {
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Box, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { withStyles, Typography, Button} from '@material-ui/core';
 import {GruppenVorschlagBO, StudooAPI} from "../api";
 import "./components-theme.css"
 import PopUpProfil from "./dialogs/PopUpProfil";

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
     Container,
     Typography,
-    Button,
     ListItem,
     ListItemText,
     ListItemAvatar,

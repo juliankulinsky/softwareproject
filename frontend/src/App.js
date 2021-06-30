@@ -20,12 +20,8 @@ import AusgehendeAnfragenList from "./components/AusgehendeAnfragenList";
  * The main studoo app. It uses Googles firebase to log into the bank end. For routing the
  * user to the respective pages, react-router-dom ist used.
  *
- * @see See Google [firebase.auth()](https://firebase.google.com/docs/reference/js/firebase.auth.Auth)
- * @see See Google [firebase.auth().signInWithRedirect](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithredirect)
- * @see [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start)
- *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
+
 class App extends React.Component {
 
 	/** Constructor of the app, which initializes firebase  */
@@ -73,12 +69,6 @@ class App extends React.Component {
 				// token (which is verified server-side) in a cookie; do not add other
 				// user information.
 				document.cookie = `token=${token};path=/`;
-				/**
-				 console.log("-------------")
-				 console.log("Das ist der Token: (aus handleAuthState in App.js")
-				 console.log(token)
-				 console.log("-------------")
-				 */
 
 				// Set the user not before the token arrived
 				this.setState({
