@@ -10,7 +10,7 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import PersonEntry from "./PersonEntry";
 
 
-/** Displays a single Lernvorliebe of the current Person on the 'Your Profile' Tab */
+/** Liest ein einzelnes Lernvorliebe-Objekt aus der Datenbank der aktuellen Person anhand des Profils aus */
 class EineLernvorliebe extends Component {
 
     constructor(props) {

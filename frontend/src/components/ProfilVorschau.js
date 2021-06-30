@@ -8,19 +8,13 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import AktuellesProfil from "./AktuellesProfil";
 
 /**
- * Rendert die Profilvorschau eines gematcheten Person
- * zur Förderung der Entscheidungsfindung der Person, die den Vorschlag erhält.
- *
+ * Hier wird die Vorschau des Profils initional angestoßen, diese Komponente ruft über die gegebene Person
+ * alle zugehörigen Informationen dazu auf.
  */
 class ProfilVorschau extends Component {
 
   constructor(props) {
     super(props);
-    let expandedID = null;
-
-    if (this.props.location.expandPerson) {
-      expandedID = this.props.location.expandPerson.getID();
-    }
 
     // Init an empty state
     this.state = {
@@ -64,8 +58,8 @@ class ProfilVorschau extends Component {
 
   /** Rendern der Komponente ProfilVorschau */
   render() {
-    const {classes, user, selfperson} = this.props;
-    const { person, deleteButtonPressed, loadingInProgress, error } = this.state;
+    const { selfperson} = this.props;
+    const { person, loadingInProgress, error } = this.state;
 
     return (
         <div>
@@ -102,9 +96,7 @@ const styles = theme => ({
 /** PropTypes */
 ProfilVorschau.propTypes = {
   /** @ignore */
-  classes: PropTypes.object,
-  /** @ignore */
-  location: PropTypes.object,
+  classes: PropTypes.object
 }
 
 export default withRouter(withStyles(styles)(ProfilVorschau));
