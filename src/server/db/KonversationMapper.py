@@ -17,7 +17,7 @@ class KonversationMapper(Mapper):
         super().__init__()
 
     def find_all(self):
-        """ Auslesen aller Konversations-Objekte
+        """Auslesen aller Konversations-Objekte
 
         :return: Sammlung aller Konversations-Objekte
         """
@@ -88,10 +88,12 @@ class KonversationMapper(Mapper):
         result = []
         cursor = self._cnx.cursor()
         # Hier wird nun das SQL-Statement ausgeführt, um Konversations-Objekte aus der Datenbank zu extrahieren.
-        cursor.execute("SELECT L.id, L.erstellungszeitpunkt, L.ist_gruppenchat "
-                       "FROM konversationen AS L LEFT OUTER JOIN chat_teilnahmen AS R "
-                       "ON R.konversation_id=L.id "
-                       "WHERE R.person_id={}".format(person_key))
+        cursor.execute(
+            "SELECT L.id, L.erstellungszeitpunkt, L.ist_gruppenchat "
+            "FROM konversationen AS L LEFT OUTER JOIN chat_teilnahmen AS R "
+            "ON R.konversation_id=L.id "
+            "WHERE R.person_id={}".format(person_key)
+        )
         tuples = cursor.fetchall()
 
         # Im nächsten Schritt wird über die extrahierten Objekte iteriert und eine Konversationsinstanz erstellt
@@ -126,7 +128,7 @@ class KonversationMapper(Mapper):
         for maxid in tuples:
             # Wir erhöhen die ID um 1, damit die neue Objekt-ID nahtlos adaptiert und inkrementiert wird
             if maxid[0] is not None:
-                konversation.set_id(maxid[0]+1)
+                konversation.set_id(maxid[0] + 1)
             else:
                 konversation.set_id(1)
 
@@ -150,13 +152,8 @@ class KonversationMapper(Mapper):
         :param konversation: Konversations-objekt, das in der Datenbank übergeschrieben werden soll
         """
         cursor = self._cnx.cursor()
-        command = (
-            "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
-        )
-        data = (
-            konversation.get_ist_gruppenchat(),
-            konversation.get_id()
-        )
+        command = "UPDATE konversationen SET ist_gruppenchat=%s WHERE id=%s"
+        data = (konversation.get_ist_gruppenchat(), konversation.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

@@ -38,7 +38,9 @@ class GruppenTeilnahmeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from gruppen_teilnahmen WHERE gruppen_id={}".format(gruppen_id))
+        cursor.execute(
+            "SELECT * from gruppen_teilnahmen WHERE gruppen_id={}".format(gruppen_id)
+        )
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) in tuples:
@@ -63,7 +65,9 @@ class GruppenTeilnahmeMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from gruppen_teilnahmen WHERE person_id={}".format(person_id))
+        cursor.execute(
+            "SELECT * from gruppen_teilnahmen WHERE person_id={}".format(person_id)
+        )
         tuples = cursor.fetchall()
 
         for (id, erstellungszeitpunkt, person_id, gruppen_id, ist_admin) in tuples:
@@ -120,11 +124,11 @@ class GruppenTeilnahmeMapper(Mapper):
         :param: gruppen_id: Gruppen ID
         :return: Ein einzelnes GruppenTeilnahme-Objekt, welches zu einer Person und einer Gruppe gehört,
                  None bei nicht vorhandenem DB-Tupel
-                """
+        """
         result = None
         cursor = self._cnx.cursor()
-        command = (
-            "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(person_id, gruppen_id)
+        command = "SELECT * FROM gruppen_teilnahmen WHERE person_id={} AND gruppen_id={}".format(
+            person_id, gruppen_id
         )
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -160,7 +164,7 @@ class GruppenTeilnahmeMapper(Mapper):
 
         for maxid in tuples:
             if maxid[0] is not None:
-                gruppenteilnahme.set_id(maxid[0]+1)
+                gruppenteilnahme.set_id(maxid[0] + 1)
             else:
                 gruppenteilnahme.set_id(1)
 
@@ -198,7 +202,7 @@ class GruppenTeilnahmeMapper(Mapper):
             gruppenteilnahme.get_person_id(),
             gruppenteilnahme.get_gruppen_id(),
             gruppenteilnahme.get_ist_admin(),
-            gruppenteilnahme.get_id()
+            gruppenteilnahme.get_id(),
         )
         cursor.execute(command, data)
 

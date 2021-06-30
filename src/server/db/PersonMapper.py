@@ -2,7 +2,7 @@ from server.bo.Person import Person
 from server.db.Mapper import Mapper
 
 
-class PersonMapper (Mapper):
+class PersonMapper(Mapper):
     """Mapper-Klasse, die Person-Objekte auf eine relationale
     Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
     gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
@@ -23,7 +23,18 @@ class PersonMapper (Mapper):
         cursor.execute("SELECT * from personen")
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            name,
+            email,
+            google_user_id,
+            alter,
+            wohnort,
+            studiengang,
+            semester,
+            profil_id,
+        ) in tuples:
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -50,13 +61,26 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
-                  "profil_id FROM personen WHERE id={}".format(key)
+        command = (
+            "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, "
+            "profil_id FROM personen WHERE id={}".format(key)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                name,
+                email,
+                google_user_id,
+                alter,
+                wohnort,
+                studiengang,
+                semester,
+                profil_id,
+            ) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -87,14 +111,26 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
-                  "profil_id FROM personen WHERE google_user_id='{}'".format(key)
+        command = (
+            "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, "
+            "profil_id FROM personen WHERE google_user_id='{}'".format(key)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = \
-            tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                name,
+                email,
+                google_user_id,
+                alter,
+                wohnort,
+                studiengang,
+                semester,
+                profil_id,
+            ) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -125,14 +161,26 @@ class PersonMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT L.* FROM personen AS L " \
-                  "LEFT OUTER JOIN chat_teilnahmen AS R ON R.person_id=L.id " \
-                  "WHERE R.konversation_id={}".format(konversation_id)
+        command = (
+            "SELECT L.* FROM personen AS L "
+            "LEFT OUTER JOIN chat_teilnahmen AS R ON R.person_id=L.id "
+            "WHERE R.konversation_id={}".format(konversation_id)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester,
-             profil_id) in tuples:
+        for (
+            id,
+            erstellungszeitpunkt,
+            name,
+            email,
+            google_user_id,
+            alter,
+            wohnort,
+            studiengang,
+            semester,
+            profil_id,
+        ) in tuples:
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -158,14 +206,26 @@ class PersonMapper (Mapper):
         """
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, " \
-                  "profil_id FROM personen WHERE profil_id={}".format(profil_id)
+        command = (
+            "SELECT id, erstellungszeitpunkt, `name`, email, google_user_id, `alter`, wohnort, studiengang, semester, "
+            "profil_id FROM personen WHERE profil_id={}".format(profil_id)
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, erstellungszeitpunkt, name, email, google_user_id, alter, wohnort, studiengang, semester, profil_id) = \
-            tuples[0]
+            (
+                id,
+                erstellungszeitpunkt,
+                name,
+                email,
+                google_user_id,
+                alter,
+                wohnort,
+                studiengang,
+                semester,
+                profil_id,
+            ) = tuples[0]
             person = Person()
             person.set_id(id)
             person.set_erstellungszeitpunkt(erstellungszeitpunkt)
@@ -200,14 +260,16 @@ class PersonMapper (Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM personen")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
-                person.set_id(maxid[0]+1)
+                person.set_id(maxid[0] + 1)
             else:
                 person.set_id(1)
 
-        command = "INSERT INTO personen (id, erstellungszeitpunkt, name, email, google_user_id, `alter`, wohnort, " \
-                  "studiengang, semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        command = (
+            "INSERT INTO personen (id, erstellungszeitpunkt, name, email, google_user_id, `alter`, wohnort, "
+            "studiengang, semester, profil_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        )
         data = (
             person.get_id(),
             person.get_erstellungszeitpunkt(),
@@ -218,7 +280,7 @@ class PersonMapper (Mapper):
             person.get_wohnort(),
             person.get_studiengang(),
             person.get_semester(),
-            person.get_profil_id()
+            person.get_profil_id(),
         )
         cursor.execute(command, data)
 
@@ -234,8 +296,10 @@ class PersonMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "UPDATE personen SET `name`=%s, email=%s, google_user_id=%s, `alter`=%s, wohnort=%s, studiengang=%s, " \
-                  "semester=%s, profil_id=%s WHERE id=%s"
+        command = (
+            "UPDATE personen SET `name`=%s, email=%s, google_user_id=%s, `alter`=%s, wohnort=%s, studiengang=%s, "
+            "semester=%s, profil_id=%s WHERE id=%s"
+        )
         data = (
             person.get_name(),
             person.get_email(),
@@ -245,7 +309,7 @@ class PersonMapper (Mapper):
             person.get_studiengang(),
             person.get_semester(),
             person.get_profil_id(),
-            person.get_id()
+            person.get_id(),
         )
 
         cursor.execute(command, data)
@@ -269,7 +333,7 @@ class PersonMapper (Mapper):
 
 """Testbereich, ob die Klasse funktioniert"""
 
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     with PersonMapper() as mapper:
 
         neu = Person()
@@ -286,16 +350,35 @@ if (__name__ == "__main__"):
         print("Find all")
         result = mapper.find_all()
         for p in result:
-            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_name(), p.get_email(), p.get_google_user_id,
-                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
-
+            print(
+                p.get_id(),
+                p.get_erstellungszeitpunkt(),
+                p.get_name(),
+                p.get_email(),
+                p.get_google_user_id,
+                p.get_alter(),
+                p.get_wohnort(),
+                p.get_studiengang(),
+                p.get_semester(),
+                p.get_profil_id(),
+            )
 
         print("Delete")
         mapper.delete(neu)
         result = mapper.find_all()
         for p in result:
-            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_name(), p.get_email(), p.get_google_user_id,
-                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
+            print(
+                p.get_id(),
+                p.get_erstellungszeitpunkt(),
+                p.get_name(),
+                p.get_email(),
+                p.get_google_user_id,
+                p.get_alter(),
+                p.get_wohnort(),
+                p.get_studiengang(),
+                p.get_semester(),
+                p.get_profil_id(),
+            )
 
         auswahl = mapper.find_by_key(3)
         auswahl.set_name("NeuMusler")
@@ -303,5 +386,15 @@ if (__name__ == "__main__"):
 
         result = mapper.find_all()
         for p in result:
-            print(p.get_id(), p.get_erstellungszeitpunkt(), p.get_name(), p.get_email(), p.get_google_user_id,
-                  p.get_alter(), p.get_wohnort(), p.get_studiengang(), p.get_semester(), p.get_profil_id())
+            print(
+                p.get_id(),
+                p.get_erstellungszeitpunkt(),
+                p.get_name(),
+                p.get_email(),
+                p.get_google_user_id,
+                p.get_alter(),
+                p.get_wohnort(),
+                p.get_studiengang(),
+                p.get_semester(),
+                p.get_profil_id(),
+            )
