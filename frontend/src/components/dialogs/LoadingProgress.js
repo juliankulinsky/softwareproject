@@ -5,8 +5,8 @@ import { withStyles, LinearProgress } from '@material-ui/core';
 /**
  * Zeigt einen Ladebalken an, wenn das Property show 'true' ist.
  *
- * @See See Materiel-UIs [Progress](https://material-ui.com/components/progress/)
- * @See See Materiel-UIs [LinearProgress](https://material-ui.com/api/linear-progress/)
+ * @See Materiel-UIs [Progress](https://material-ui.com/components/progress/)
+ * @See Materiel-UIs [LinearProgress](https://material-ui.com/api/linear-progress/)
  *
  */
 class LoadingProgress extends Component {

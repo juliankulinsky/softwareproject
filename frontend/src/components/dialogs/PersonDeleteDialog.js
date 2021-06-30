@@ -13,7 +13,6 @@ import LoadingProgress from './LoadingProgress';
  *
  * @see See Material-UIs [Dialog](https://material-ui.com/components/dialogs)
  *
- * @author [Christoph Kunz](https://github.com/christophkunz)
  */
 class PersonDeleteDialog extends Component {
 
