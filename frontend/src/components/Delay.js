@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+/**
+ * Verzögerungs-Komponente, die bei der Explore-Seite eine Verzögerung einbaut, bevor keine Ergebnisse angezeigt werden.
+ * Erst nach Ablauf der angegebenen ms werden die enthaltenen Komponenten angezeigt.
+ */
 class Delayed extends React.Component {
 
     constructor(props) {

@@ -9,7 +9,7 @@ import AutorenewIcon from '@material-ui/icons/Autorenew';
  * Shows an in-line error message in a given component context,
  * if the error obejct is not null
  *
- * @See See Material-UIs [Alert](https://material-ui.com/api/alert/)
+ * See Material-UIs [Alert](https://material-ui.com/api/alert/)
  *
  */
 class ContextErrorMessage extends Component {
