@@ -17,7 +17,7 @@ class Person(bo.BusinessObject):
         self._wohnort = ""
         self._studiengang = ""
         self._semester = 0
-        self._profil_id = 0      # Fremdschlüsselbeziehung zum Profil der Person
+        self._profil_id = 0  # Fremdschlüsselbeziehung zum Profil der Person
 
     """Im Folgenden sind alle Getter- & Setter-Methoden sämtlicher Attribute"""
 
@@ -76,7 +76,7 @@ class Person(bo.BusinessObject):
     def set_semester(self, semester: int):
         """Setzen des Semesters"""
         self._semester = semester
-        
+
     def get_profil_id(self):
         """Auslesen der Profil ID"""
         return self._profil_id

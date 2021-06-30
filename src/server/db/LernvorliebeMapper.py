@@ -101,7 +101,7 @@ class LernvorliebeMapper(Mapper):
 
         for maxid in tuples:
             if maxid[0] is not None:
-                lernvorliebe.set_id(maxid[0]+1)
+                lernvorliebe.set_id(maxid[0] + 1)
             else:
                 lernvorliebe.set_id(1)
 
@@ -144,7 +144,7 @@ class LernvorliebeMapper(Mapper):
             lernvorliebe.get_remote_praesenz(),
             lernvorliebe.get_vorkenntnisse(),
             lernvorliebe.get_lerninteressen(),
-            lernvorliebe.get_id()
+            lernvorliebe.get_id(),
         )
         cursor.execute(command, data)
 

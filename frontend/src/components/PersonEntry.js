@@ -18,6 +18,7 @@ class PersonEntry extends Component {
     // Init the state
     this.state = {
       person: props.person,
+      lerngruppe: props.lerngruppe,
       lernvorliebe: props.lernvorliebe,
       profil: props.profil,
       showProfilForm: false,
@@ -109,7 +110,7 @@ class PersonEntry extends Component {
 
     const {classes, selfperson, show} = this.props;
     // Use the states customer
-    const {person, profil, lernvorliebe, showProfilForm, loadingInProgress} = this.state;
+    const {person, profil, lernvorliebe, lerngruppe, showProfilForm, loadingInProgress} = this.state;
 
     return (
            <Card className={classes.root}>
@@ -123,6 +124,13 @@ class PersonEntry extends Component {
                               person.getName()
                             }
                           </Typography>:null
+                    }
+                    {
+                      lerngruppe ?
+                          <Typography className={classes.setFontSize}>
+                            {lerngruppe.getGruppenname()}
+                          </Typography>
+                          : null
                     }
                       <Grid item xs={12} className={classes.pers}>
                       {

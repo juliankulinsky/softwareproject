@@ -17,6 +17,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import "./components-theme.css";
 import Delayed from "./Delay";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import GruppenProfilVorschau from "./GruppenProfilVorschau";
 
 /**
  * Rendert den am besten zur aktuellen Person passenden GruppenVorschlagBO mit Anzeigen von Informationen über die
@@ -86,7 +87,7 @@ class LerngruppenExplorer extends Component {
         });
     }
 
-     /** Wird durch grünen Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
+    /** Wird durch grünen Button aufgerufen, setzt die Entscheidung auf true und ruft die Update-Funktion auf */
     entscheidungTrue = () => {
         this.setState({
             entscheidung: true,
@@ -94,10 +95,10 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
-        setTimeout(this.refreshPage,100)
+        setTimeout(this.refreshPage, 100)
     }
 
-     /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
+    /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
     entscheidungFalse = () => {
         this.setState({
             entscheidung: false,
@@ -105,7 +106,7 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
-        setTimeout(this.refreshPage,100)
+        setTimeout(this.refreshPage, 100)
     }
 
     refreshPage = () => {
@@ -174,41 +175,16 @@ class LerngruppenExplorer extends Component {
                     (gruppenvorschlag && lerngruppe) ?
                         <div className="partnervorschlag">
                             <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                 onClick={this.entscheidungFalse} className="buttonFalse">
                                 <CancelIcon fontSize="large"/>
                             </Fab>
 
-                            <Card>
-                                <CardContent className="partnercard">
-                                    <div>
-                                        <Typography variant="h3">
-                                            It's a match! &#127881;
-                                        </Typography>
-                                        <Typography variant="h4">
-                                            {lerngruppe.getGruppenname()}
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Euer Match basiert auf einer Ähnlichkeit von {gruppenvorschlag.getAehnlichkeit()}%!
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Du kannst nun eine Konversation mit {lerngruppe.getGruppenname()} anfangen.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
-                                        </Typography>
-                                        <Typography variant="h5">
-                                            Happy Learning! &#128640;
-                                        </Typography>
-                                    </div>
-
-                                    <div>
-                                        <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <div className="partnercard">
+                                <GruppenProfilVorschau lerngruppe={lerngruppe}/>
+                            </div>
 
                             <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                 onClick={this.entscheidungTrue} size="large" className="buttonTrue">
                                 <CheckCircleIcon fontSize="large"/>
                             </Fab>
                         </div>

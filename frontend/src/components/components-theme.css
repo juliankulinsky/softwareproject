@@ -1,3 +1,49 @@
+root {
+    width: 100%
+}
+
+/* Chat */
+.noConversations{
+    padding: 20px;
+}
+
+.chatCard {
+    padding: 20px 10px 20px 10px;
+}
+
+.nachrichtRight{
+    text-align: right;
+    padding: 20px;
+}
+.chatBubbleRight{
+    background: #f1f1f1;
+    border-radius: 15px;
+    float: right;
+    width: fit-content;
+    padding: 10px;
+}
+
+.nachrichtLeft{
+    text-align: left;
+    padding: 20px;
+}
+.chatBubbleLeft{
+    background: #fcfcfc;
+    border-radius: 15px;
+    width: fit-content;
+    padding: 10px;
+}
+
+.nachrichtAbsender{
+    font-size: small;
+    color: lightgrey;
+}
+
+.chatHeader {
+    padding: 10px 20px 10px 20px;
+}
+
+/* Partnervorschläge */
 .partnercard {
     display: flex;
 }

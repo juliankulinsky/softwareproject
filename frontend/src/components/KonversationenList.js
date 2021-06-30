@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    withStyles,
     Box,
     Container,
     Grid,
-    ListItem,
     Button,
     Card,
-    TextField,
-    InputAdornment,
-    IconButton,
     Typography,
-    ButtonBase
-}
+    ButtonBase}
     from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear'
 import { withRouter } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
@@ -24,10 +16,15 @@ import LoadingProgress from './dialogs/LoadingProgress';
 import KonversationListEntry from "./KonversationListEntry";
 import NachrichtenList from "./NachrichtenList";
 import "./components-theme.css";
-import {NachrichtBO} from "../api";
+
+/** Diese Component stellt die höchste Hierarchie-Stufe der Chat-Funktion von Studoo dar.
+ * Gerendert werden hier, eingefasst auf der linken Seite, eine Auflistung aller aktuell existierenden Chats.
+ * Auf der rechten Seite befinden sich, nach anklicken einer Lerngruppe/Lernpartner,
+ * die entsprechenden Nachrichten der Konversation.
+ * Es kann zwischen Konversationen gewechselt werden, Nachrichten geschrieben und empfangen werden.
+ * Zudem ist die Erstellung von Gruppen aus Einzelchats mit Lernpartnern heraus möglich. */
 
 class KonversationenList extends Component {
-
     constructor(props) {
         super(props);
 
@@ -41,6 +38,7 @@ class KonversationenList extends Component {
         };
     }
 
+    /** Lädt alle KonversationBOs einer bestimmten PersonID über die API aus dem Backend. */
     getKonversationen = () => {
         StudooAPI.getAPI().getKonversationenForPersonID(this.props.person.getID())
             .then(konversationenBOs => {
@@ -61,6 +59,7 @@ class KonversationenList extends Component {
         })
     }
 
+    /** Setzt nach Klick auf eine jeweilige Konversation die aktuelle Konversation in den State. */
     setAktuelleKonversation = (konversation) => {
         this.setState({
             aktuellekonversation: null
@@ -70,6 +69,7 @@ class KonversationenList extends Component {
         })
     }
 
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getKonversationen();
         this.interval = setInterval(() => this.getKonversationen(), 3000);
@@ -79,6 +79,7 @@ class KonversationenList extends Component {
         clearInterval(this.interval);
     }
 
+    /** Methode, welche die links gelegene Auflistung der aktiven Konversationen ausgibt. */
     Chats = () => {
         const konversationen = this.state.konversationen
 
@@ -89,41 +90,37 @@ class KonversationenList extends Component {
             <Card>
                 <ButtonBase
                     onClick={() => this.setAktuelleKonversation(konversation)}>
-
                     <KonversationListEntry
                         key={konversation.getID()}
                         konversation={konversation}
                         person={this.props.person}
                     />
-
                 </ButtonBase>
             </Card>)
     }
 
+    /** Rendert die Component. */
     render() {
         const {classes, person} = this.props;
         const {konversationen, aktuellekonversation, error, loadingInProgress} = this.state;
 
         return (
-            <Box className={classes.root}>
+            <Box className="root">
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                     {
                         this.Chats()
                     }
-
                     <LoadingProgress show={loadingInProgress}/>
-
                     <ContextErrorMessage
                         error={error} contextErrorMsg={`Nicht geklappt`}
                         onReload={this.getKonversationen}
                     />
                     </Grid>
-
                     <Grid item xs>
                         {
                             aktuellekonversation ?
-                                <Card className={classes.c}>
+                                <Card className="chatCard">
                                     {/*KonversationsID: {konversation.getID()}*/}
 
                                     <NachrichtenList
@@ -132,9 +129,8 @@ class KonversationenList extends Component {
                                         currentPerson={person}
                                     />
                                 </Card>
-
                                 :
-                                <Typography>
+                                <Typography className="noConversations">
                                     Du hast noch <b>keine</b> Konversation ausgewählt.
                                 </Typography>
                         }
@@ -145,21 +141,10 @@ class KonversationenList extends Component {
     }
 }
 
-const styles = theme => ({
-  root: {
-      width: '100%',
-      flexGrow: 1
-  },
-
-    c: {
-      padding: '5px'
-  },
-});
-
 /** PropTypes */
 KonversationenList.propTypes = {
   /** @ignore */
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(KonversationenList));
+export default withRouter(KonversationenList);

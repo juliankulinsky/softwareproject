@@ -5,20 +5,27 @@ import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import AktuellesProfil from "./AktuellesProfil";
+import AktuellesLerngruppenProfil from "./AktuellesLerngruppenProfil";
 
 /**
- * Hier wird die Vorschau des Profils initional angestoßen, diese Komponente ruft über die gegebene Person
- * alle zugehörigen Informationen dazu auf.
+ * Rendert die Profilvorschau einer gematcheten Gruppe
+ * zur Förderung der Entscheidungsfindung der Person, die den Vorschlag erhält.
+ *
  */
-class ProfilVorschau extends Component {
+
+class GruppenProfilVorschau extends Component {
 
   constructor(props) {
     super(props);
+    let expandedID = null;
 
-    // Init an empty state
+    if (this.props.location.expandPerson) {
+      expandedID = this.props.location.expandPerson.getID();
+    }
+
+    // Initialisieren eines leeren States
     this.state = {
-      person: null,
+      lerngruppe: props.lerngruppe,
       deleteButtonPressed: false,
       error: null,
       loadingInProgress: false
@@ -26,52 +33,52 @@ class ProfilVorschau extends Component {
   }
 
   /**
-   * API Call eines Person Objekts aus der Datenbank anhand der Google User ID des aktuell angemeldeten Benutzer
+   * API Call eines Lerngruppen-Objekts aus der Datenbank anhand der ID der aus den props übergebenen Lerngruppe.
    * */
-  getCurrentPerson = () => {
-    StudooAPI.getAPI().getPersonByUID(this.props.person.getGoogleUserID())
-        .then(personBO => {
+  getCurrentLerngruppe = () => {
+    StudooAPI.getAPI().getLerngruppe(this.props.lerngruppe.getID())
+        .then(lerngruppeBO => {
             this.setState({
-                person: personBO,
+                lerngruppe: lerngruppeBO,
                 error: null,
                 loadingInProgress: false
             });
         }).catch(e => this.setState({
-            profil: "No profil received.",
+            lerngruppe: "No group received.",
             error: e,
             loadingInProgress: false
         }));
 	}
 
-
-	deletePerson = () => {
+  /**  Methode, die die Lerngruppe löscht */
+	deleteLerngruppe = () => {
       this.setState({
           deleteButtonPressed: true,
       })
-      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+      StudooAPI.getAPI().deleteLerngruppe(this.props.lerngruppe.getID())
     }
 
   /** Lifecycle Methode, welche aufgerufen wird wenn die Komponente in den DOM des Browsers eingefügt wird */
   componentDidMount() {
-    this.getCurrentPerson()
+    this.getCurrentLerngruppe()
   }
 
   /** Rendern der Komponente ProfilVorschau */
   render() {
-    const { selfperson} = this.props;
-    const { person, loadingInProgress, error } = this.state;
+    const {selfperson} = this.props;
+    const { deleteButtonPressed, lerngruppe, loadingInProgress, error } = this.state;
 
     return (
         <div>
             {
-            person ?
+            lerngruppe ?
                 /** Aufruf der Komponente AktuellesProfil mit den Properties person und selfperson */
-                <AktuellesProfil person={person} selfperson={selfperson}/>
+                <AktuellesLerngruppenProfil lerngruppe={lerngruppe} selfperson={selfperson}/>
                 : null
           }
           <LoadingProgress show={loadingInProgress}/>
-          <ContextErrorMessage error={error} contextErrorMsg={`The list of personen could not be loaded.`}
-                               onReload={this.getCurrentPerson}/>
+          <ContextErrorMessage error={error} contextErrorMsg={`The list of groups could not be loaded.`}
+                               onReload={this.getCurrentLerngruppe}/>
         </div>
     );
   }
@@ -94,9 +101,11 @@ const styles = theme => ({
 });
 
 /** PropTypes */
-ProfilVorschau.propTypes = {
+GruppenProfilVorschau.propTypes = {
   /** @ignore */
-  classes: PropTypes.object
+  classes: PropTypes.object,
+  /** @ignore */
+  location: PropTypes.object,
 }
 
-export default withRouter(withStyles(styles)(ProfilVorschau));
+export default withRouter(withStyles(styles)(GruppenProfilVorschau));

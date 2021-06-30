@@ -4,7 +4,7 @@ from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
 
 
-class Mapper (AbstractContextManager, ABC):
+class Mapper(AbstractContextManager, ABC):
     """Abstrakte Basisklasse aller Mapper-Klassen"""
 
     def __init__(self):
@@ -18,18 +18,21 @@ class Mapper (AbstractContextManager, ABC):
             """
             Hier wird der Connector darauf festgelegt in der Google Cloud zu laufen (Post-Deployment).
             Die Verbindung wird zwischen der Google App Engine und der Cloud SQL hergestellt."""
-
-            self._cnx = connector.connect(user='demo', password='demo',
-                                          unix_socket='/cloudsql/...',  # zu verändern
-                                          database='studoo')
+ 
+            self._cnx = connector.connect(
+                user="demo",
+                password="demo",
+                unix_socket="/cloudsql/...",  # zu verändern
+                database="studoo",
+            )
         else:
             """
             Hier wird der Connector darauf festgelegt in einer lokalen Umgebung zu laufen (Pre-Deployment).
             Die Verbindung zu einer lokal installierten mySQL-Datenbank hergestellt."""
 
-            self._cnx = connector.connect(user='root', password='root',
-                                  host='127.0.0.1',
-                                  database='studoo')
+            self._cnx = connector.connect(
+                user="root", password="root", host="127.0.0.1", database="studoo"
+            )
 
         return self
 

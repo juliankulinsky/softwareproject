@@ -8,12 +8,17 @@ class Vorschlag(bo.BusinessObject, ABC):
     jeweils Getter- und Setter-Methoden implementiert worden.
     Sie erbt von der Klasse BusinessObject die Attribute id und erstellungszeitpunkt.
     """
+
     def __init__(self):
         super().__init__()
-        self._person_id = 0                # Fremdschlüsselbeziehung zur Person für die Vorschläge gesucht werden
-        self._aehnlichkeit = 0             # durch Algorithmus ermittelte Ähnlichkeit
-        self._matchpoints = 0              # Matchpoints -> 0=keine Entscheidung, 1=eine Partei entschied sich dafür, 2= beidseitige positive Entscheidung
-        self._entscheidung_person = False   # Ob die Person eine Entscheidung getroffen hat
+        self._person_id = (
+            0  # Fremdschlüsselbeziehung zur Person für die Vorschläge gesucht werden
+        )
+        self._aehnlichkeit = 0  # durch Algorithmus ermittelte Ähnlichkeit
+        self._matchpoints = 0  # Matchpoints -> 0=keine Entscheidung, 1=eine Partei entschied sich dafür, 2= beidseitige positive Entscheidung
+        self._entscheidung_person = (
+            False  # Ob die Person eine Entscheidung getroffen hat
+        )
 
     def get_person_id(self):
         """Auslesen der Person ID"""
