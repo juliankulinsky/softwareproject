@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Typography,
-    Container }
+    Container,
+    IconButton }
     from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {StudooAPI} from "../api";
 import ContextErrorMessage from "./dialogs/ContextErrorMessage";
 import "./components-theme.css";
+
 
 /** Diese Component stellt einen Listeneintrag der Auflistung der aktuell existierenden Nachrichten dar.
  * Diese Component wird in NachrichtenList entsprechend der Anzahl an existierenden Nachrichten aufgerufen. */

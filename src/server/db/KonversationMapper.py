@@ -125,7 +125,10 @@ class KonversationMapper(Mapper):
 
         for maxid in tuples:
             # Wir erhöhen die ID um 1, damit die neue Objekt-ID nahtlos adaptiert und inkrementiert wird
-            konversation.set_id(maxid[0] + 1)
+            if maxid[0] is not None:
+                konversation.set_id(maxid[0]+1)
+            else:
+                konversation.set_id(1)
 
         command = "INSERT INTO konversationen (id, erstellungszeitpunkt, ist_gruppenchat) VALUES (%s,%s,%s)"
         data = (

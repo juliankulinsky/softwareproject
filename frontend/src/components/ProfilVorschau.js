@@ -6,12 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { StudooAPI } from '../api';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
-import PersonForm from './dialogs/PersonForm';
-import {PersonBO} from "../api";
-import LernvorliebenList from "./LernvorliebenList";
-import AllProfile from "./AllProfile";
 import AktuellesProfil from "./AktuellesProfil";
-import PersonEntry from "./PersonEntry";
 
 /**
  * Controlls a list of CustomerListEntrys to create a accordion for each customer.
@@ -112,9 +107,9 @@ const styles = theme => ({
 /** PropTypes */
 ProfilVorschau.propTypes = {
   /** @ignore */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /** @ignore */
-  location: PropTypes.object.isRequired,
+  location: PropTypes.object,
 }
 
 export default withRouter(withStyles(styles)(ProfilVorschau));

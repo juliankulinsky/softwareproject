@@ -49,15 +49,19 @@ class EingehendeAnfragenList extends Component {
             })
     }
 
+    getAnfragen = () => {
+        this.getEingehendeKonversationsAnfragen()
+        this.getEingehendeGruppenbeitrittsAnfragen()
+    }
+
     /**
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
     componentDidMount() {
-        this.getEingehendeKonversationsAnfragen();
-        this.getEingehendeGruppenbeitrittsAnfragen()
+        this.getAnfragen();
     }
-
+    
     /** Rendert die Komponente */
     render() {
         const { classes } = this.props;
@@ -125,9 +129,14 @@ class EingehendeAnfragenList extends Component {
                                 }
                             </Box>
                             :
-                            <Typography>
-                                Du hast keine eingehenden Gruppenbeitrittsanfragen.
-                            </Typography>
+                            <Box>
+                                <Typography variant="h6" align="center">
+                                    Gruppen
+                                </Typography>
+                                <Typography>
+                                Keine Anfragen vorhanden.
+                                </Typography>
+                            </Box>
                     }
                 </Box>
                 </div>

@@ -100,7 +100,10 @@ class LernvorliebeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for maxid in tuples:
-            lernvorliebe.set_id(maxid[0] + 1)
+            if maxid[0] is not None:
+                lernvorliebe.set_id(maxid[0]+1)
+            else:
+                lernvorliebe.set_id(1)
 
         command = (
             "INSERT INTO lernvorlieben (id, erstellungszeitpunkt, lerntyp, frequenz, extrovertiertheit, "

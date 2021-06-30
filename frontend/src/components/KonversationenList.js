@@ -54,7 +54,7 @@ class KonversationenList extends Component {
         }));
 
         this.setState({
-            loadingInProgress: true,
+            //loadingInProgress: true,
             error: null
         })
     }
@@ -72,6 +72,11 @@ class KonversationenList extends Component {
     /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getKonversationen();
+        this.interval = setInterval(() => this.getKonversationen(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Methode, welche die links gelegene Auflistung der aktiven Konversationen ausgibt. */

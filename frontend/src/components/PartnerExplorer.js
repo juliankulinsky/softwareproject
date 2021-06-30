@@ -11,12 +11,13 @@ import {
 import { withRouter, NavLink } from 'react-router-dom';
 import StudooAPI from '../api/StudooAPI'
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
-import LoadingProgress from './dialogs/LoadingProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {PartnerVorschlagBO} from "../api";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from '@material-ui/icons/Cancel';
 import "./components-theme.css"
 import ProfilVorschau from "./ProfilVorschau";
+import Delayed from "./Delay";
 
 /**
  * Rendert den am besten zur aktuellen Person passenden PartnerVorschlagBO mit Anzeigen von Informationen über die
@@ -41,9 +42,8 @@ class PartnerExplorer extends Component {
             loadingInProgress: false,
             updatingInProgress: false,
             updatingError: null,
-            buttonPressed: false
+            buttonPressed: false,
         }
-        this.baseState = this.state;
     }
 
     /**
@@ -54,10 +54,14 @@ class PartnerExplorer extends Component {
     getAnderePerson = () => {
         if (this.props.person.getID() === this.state.partnervorschlag.getPersonID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPartnerID())
-                .then(anderePerson =>
+                .then(anderePerson => {
                     this.setState({
                         anderePerson: anderePerson
-                    }))
+                    })
+                    console.log("andere p", anderePerson)
+                })
+
+
         } else if (this.props.person.getID() === this.state.partnervorschlag.getPartnerID()) {
             StudooAPI.getAPI().getPerson(this.state.partnervorschlag.getPersonID())
                 .then(anderePerson =>
@@ -106,6 +110,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
@@ -116,6 +121,7 @@ class PartnerExplorer extends Component {
         }, function () {
             this.updatePartnervorschlag()
         });
+        setTimeout(this.refreshPage,100)
     }
 
     /**
@@ -142,15 +148,16 @@ class PartnerExplorer extends Component {
                     updatingInProgress: false,
                     updatingError: null
                 });
-                this.baseState.entscheidung = this.state.entscheidung;
             }).catch(e =>
             this.setState({
                 updatingInProgress: false,
                 updatingError: e
             }));
         this.setState({
+            partnervorschlag: null,
             updatingInProgress: true,
-            updatingError: null
+            updatingError: null,
+            buttonPressed: false
         })
     }
 
@@ -158,8 +165,17 @@ class PartnerExplorer extends Component {
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
+    refreshPage = () => {
+        window.location.reload()
+    }
+
     componentDidMount() {
-        this.getBestPartnervorschlag()
+        this.getBestPartnervorschlag();
+        this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */
@@ -185,86 +201,47 @@ class PartnerExplorer extends Component {
                     (partnervorschlag && anderePerson) ?
                         <div className="partnervorschlag">
                             <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
+                                 onClick={this.entscheidungFalse} className="buttonFalse">
                                 <CancelIcon fontSize="large"/>
                             </Fab>
 
                             <div className="partnercard">
-                                <Typography variant="h4">
-                                          {/*  Dein Vorschlag!
-
-                            <Card>
-                                <CardContent className="partnercard">*/}
-
-                                        <ProfilVorschau person={anderePerson} selfperson={false}/>
-                                            {/*anderePerson.getName()}, {anderePerson.getAlter()
-
-                                        <Typography variant="subtitle1">
-                                            Euer Match basiert auf einer Ähnlichkeit von {partnervorschlag.getAehnlichkeit()}%!
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Du kannst nun eine Konversation mit {anderePerson.getName()} anfangen.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entscheide dich, indem du das Match annimmst oder ablehnst.
-                                        </Typography>
-                                        <Typography variant="h5">
-                                            Happy Learning! &#128640;
-                                        </Typography>*/}
-                                    </Typography>
-                                    </div>
-                                         {/*
-                                        <div>
-                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                        </div>
-                                    */}
-                            {/*</CardContent>
-                            </Card>*/}
+                                <ProfilVorschau person={anderePerson} selfperson={false}/>
+                            </div>
 
                             <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
+                                 onClick={this.entscheidungTrue} size="large" className="buttonTrue">
                                 <CheckCircleIcon fontSize="large"/>
                             </Fab>
                         </div>
                         :
-                        <div className="partnervorschlag">
-                            <Fab disabled={this.state.buttonPressed} size="large"
-                                    onClick={this.entscheidungFalse} className="buttonFalse">
-                                <CancelIcon fontSize="large"/>
-                            </Fab>
-
+                        <div className="partnervorschlagNotFound">
                             <Card>
                                 <CardContent className="partnercard">
                                     <div>
-                                        <Typography variant="h3">
-                                            It should be a match! &#128580;
-                                        </Typography>
-                                        <Typography variant="h4">
-                                            Und hier sollte dein Partner stehen ...
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Irgendwas ist da nicht ganz richtig.
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            Entweder du lädst die Seite neu oder kontaktierst unseren Support.
-                                        </Typography>
                                         <Typography variant="h5">
-                                            Happy Waiting for Solution! &#128540;
+                                            Dein neuer Vorschlag wird berechnet ...
                                         </Typography>
+                                        <Delayed waitBeforeShow={7500}>
+                                            <Typography variant="h6">
+                                                Aktuell gibt es wohl keine passenden Lernpartner für dich.
+                                            </Typography>
+                                            <Typography variant="h6">
+                                                Empfehle die App deinen Kommilitonen weiter und freue dich auf deine
+                                                nächsten Matches!
+                                            </Typography>
+                                            <Typography variant="h5">
+                                                Stay tuned &#129299;
+                                            </Typography>
+                                        </Delayed>
                                     </div>
 
-                                    {/*
-                                        <div>
-                                            <img src={process.env.PUBLIC_URL + '/logo192.png'}/>
-                                        </div>
-                                    */}
+                                    <div>
+                                        <CircularProgress/>
+                                    </div>
+
                                 </CardContent>
                             </Card>
-
-                            <Fab disabled={this.state.buttonPressed}
-                                    onClick={this.entscheidungTrue} size="large" className="buttonTrue">
-                                <CheckCircleIcon fontSize="large"/>
-                            </Fab>
                         </div>
                 }
 
