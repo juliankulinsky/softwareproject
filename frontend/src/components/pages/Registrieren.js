@@ -32,12 +32,15 @@ class Registrieren extends Component {
         const {person, loadingInProgress, error} = this.state;
 
         return (
-            <div className={classes.root}>
+            <div>
                 {
                     person ?
                         <>
                             <ProfilVorschau person={person} user={user} selfperson={true}/>
-                            <Button id="myButton" variant={"contained"} onClick={this.goToAppjs}>Registrieren</Button>
+                            <div className={classes.regButton}>
+                                <Button id="myButton" variant={"contained"}
+                                        onClick={this.goToAppjs}>Registrieren</Button>
+                            </div>
                         </>
                         :
                         null
@@ -53,6 +56,14 @@ class Registrieren extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
+  },
+  regButton: {
+    marginTop: '1%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+
   }
 });
 
