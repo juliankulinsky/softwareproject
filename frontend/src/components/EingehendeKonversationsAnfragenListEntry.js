@@ -142,12 +142,12 @@ class EingehendeKonversationsAnfragenListEntry extends Component {
                                 </Typography>
 
                                 <Typography>
-                                    Sehe dir {anderePerson.getName()}'s Profil an:&nbsp;
-                                    <Button onClick={this.popUpButtonClicked} color="primary" variant="outlined" size="small">
+                                    Sehe dir <Button onClick={this.popUpButtonClicked}>
                                         {
                                             anderePerson.getName()
-                                        }
-                                    </Button>
+                                        }'s
+                                    </Button> Profil an:&nbsp;
+
                                 </Typography>
 
                                 <br/>

@@ -270,7 +270,8 @@ const styles = theme => ({
     minWidth: 410,
     maxWidth: 750,
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    marginTop: '2%'
   },
   setFontSize: {
     fontSize: 30

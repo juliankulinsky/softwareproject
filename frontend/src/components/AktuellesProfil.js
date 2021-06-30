@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
     withStyles
 } from '@material-ui/core';
@@ -10,7 +9,8 @@ import EineLernvorliebe from "./EineLernvorliebe";
 
 
 /**
- * Gets the currently logged in Person and displays information of PersonBO and LernvorliebenBO
+ * Hier wird das Profil der Aktuellen Person ausgelesen und an eine Komponente weitergegeben um weitere Informationen
+ * zu erlangen.
  * */
 class AktuellesProfil extends Component {
 
