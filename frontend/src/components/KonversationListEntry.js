@@ -1,29 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Box,
     Container,
-    Grid,
-    withStyles,
     Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    TextField,
     Button,
-    List,
     ListItem,
-    Divider,
     ListItemText,
     ListItemAvatar,
     Avatar}
     from '@material-ui/core';
-import NachrichtenList from "./NachrichtenList";
 import StudooAPI from '../api/StudooAPI'
-import {NachrichtBO} from "../api";
-import ErstelleLerngruppeDialog from "./dialogs/ErstelleLerngruppeDialog";
-import PopUpProfil from "./dialogs/PopUpProfil";
 import "./components-theme.css";
+
+/** Diese Component stellt einen Listeneintrag der Auflistung der aktuell existierenden Chats dar.
+ * Diese Component wird in KonversationenList entsprechend der Anzahl an existierenden Chats aufgerufen. */
 
 class KonversationListEntry extends Component {
     constructor(props) {
@@ -48,6 +38,7 @@ class KonversationListEntry extends Component {
         this.baseState = this.state
     }
 
+    /** Lädt das LerngruppenBO mit einer bestimmten KonversationID über die API aus dem Backend. */
     getLerngruppe = () => {
         if (this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getLerngruppeOfKonversationID(this.state.konversation.getID())
@@ -70,6 +61,7 @@ class KonversationListEntry extends Component {
         }
     }
 
+    /** Lädt das PersonBO des Chatpartners mit einer bestimmten KonversationID über die API aus dem Backend. */
     getChatpartner = () => {
         if (!this.state.konversation.ist_gruppenchat){
             StudooAPI.getAPI().getPersonenByKonversationID(this.state.konversation.getID())
@@ -97,119 +89,61 @@ class KonversationListEntry extends Component {
         }
     }
 
-    deleteChatTeilnahme = () => {
-        StudooAPI.getAPI().getChatTeilnahmeByPersonIDundKonversationID(this.props.person.getID(),this.props.konversation.getID())
-            .then(chatTeilnahme => {
-                this.setState({
-                    chatteilnahme: chatTeilnahme,
-                    deleteButtonPressed: true
-                })
-                StudooAPI.getAPI().deleteChatTeilnahme(chatTeilnahme.getID())
-            })
-    }
-
-    openErstelleLerngruppeDialog = () => {
-        this.setState({
-            showErstelleLerngruppeDialog: true
-        })
-    }
-
-    erstelleLerngruppeDialogClosed = lerngruppe => {
-        this.setState({
-            showErstelleLerngruppeDialog: false
-        })
-    }
-
-    /** Handles the onClick event of the Popup person button */
-    popUpButtonClicked = (event) => {
-        event.stopPropagation();
-        this.setState({
-          showProfilPopUp: true
-        });
-    }
-
-    popUpClosed = (event) => {
-        this.setState({
-          showProfilPopUp: false
-        });
-    }
-
+    /** Die Lifecycle Methode, welche bei Aufruf für die Einfügung der Component in den DOM sorgt. */
     componentDidMount() {
         this.getLerngruppe()
         this.getChatpartner()
     }
 
+    /** Rendert die Component. */
     render() {
         const { classes } = this.props;
-        const { konversation, lerngruppe, chatpartner, chatteilnahme, neueNachricht, neueNachrichtValidationFailed,
-            neueNachrichtEdited, deleteButtonPressed, showErstelleLerngruppeDialog, showProfilPopUp } = this.state;
+        const { konversation, lerngruppe, chatpartner } = this.state;
 
         return (
             <Container>
-                        <ListItem alignItems="flex-start">
-
-                            <ListItemAvatar>
-                                <Avatar alt="Wir brauchen noch Bilder" src="/components/chat/avatardummy.png"/>
-                            </ListItemAvatar>
-
-                            <ListItemText
-                                primary = {
-                                    <>
-                                        {
-                                            lerngruppe ?
-                                                <Typography>
-                                                    {lerngruppe.getGruppenname()}
-                                                </Typography>
-                                                : null
-                                        }
-                                        {
-                                            chatpartner ?
-                                                <>
-                                                    <Typography>
-                                                        <Button onClick={this.popUpButtonClicked}>
-                                                            {
-                                                                chatpartner.getName()
-                                                            }
-                                                        </Button>  <br/>
-                                                        <Button disabled={deleteButtonPressed} color={"primary"} variant={"contained"} onClick={this.openErstelleLerngruppeDialog} >
-                                                            Gruppe erstellen
-                                                        </Button>
-                                                        <ErstelleLerngruppeDialog show={showErstelleLerngruppeDialog} person={this.props.person} chatpartner={chatpartner} onClose={this.erstelleLerngruppeDialogClosed}/>
-                                                        <Button disabled={deleteButtonPressed} color={"secondary"} variant={"contained"} onClick={this.deleteChatTeilnahme}>
-                                                            Chat löschen
-                                                        </Button>
-                                                    </Typography>
-                                                </>
-                                                : null
-                                        }
-                                    </>
-                                }
-
-                                secondary = {
-                                    <React.Fragment>
+                <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar alt="Wir brauchen noch Bilder" src="/components/chat/dummy_avatar.png"/>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary = {
+                            <>
+                                {
+                                    lerngruppe ?
                                         <Typography>
-                                            Klicke hier, um den Chat aufzurufen
+                                            {lerngruppe.getGruppenname()}
                                         </Typography>
-                                    </React.Fragment>
+                                        : null
                                 }
-                            />
-                        </ListItem>
-
-                        <PopUpProfil show={showProfilPopUp} person={chatpartner}  onClose={this.popUpClosed} />
+                                {
+                                    chatpartner ?
+                                        <>
+                                            <Typography>
+                                                {chatpartner.getName()}
+                                            </Typography>
+                                        </>
+                                        : null
+                                }
+                                </>
+                        }
+                        secondary = {
+                            <React.Fragment>
+                                <Typography>
+                                    Klicke hier, um den Chat aufzurufen
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>
             </Container>
         )
     }
 }
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-        flexGrow: 1
-    }
-});
-
+/** PropTypes */
 KonversationListEntry.propTypes = {
     konversation: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(KonversationListEntry);
+export default KonversationListEntry;
