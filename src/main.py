@@ -43,7 +43,7 @@ Anschließend instanziieren wir ein API-Objekt und übergeben unsere app als Arg
 """
 
 # Grundlegende App-Konfigurationen
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./static/build', static_url_path='/')
 
 """
 Alle Ressourcen mit dem Präfix /studoo für Cross-Origin Resource Sharing (CORS) freigeben.
@@ -62,6 +62,11 @@ api = Api(app)
 Namespaces erlauben die Strukturierung von APIs. In diesem Fall fasst dieser Namespace alle
 relevanten Operationen unter dem Präfix /studoo zusammen. """
 studoo = api.namespace("studoo", description="Lernapp SWP")
+
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 """
 Nun folgt die Überführung der Strukturen des BusinessObjects in das api-Model.
@@ -1412,4 +1417,4 @@ Den Parameter 'debug' setzen wir auf True, um in der Development-Umgebung debugg
 Warnung: In der Produktions-Umgebung muss debug auf False gesetzt werden.
 """
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=False)
