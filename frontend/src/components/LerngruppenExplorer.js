@@ -95,7 +95,7 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
-        setTimeout(this.refreshPage, 100)
+        //setTimeout(this.refreshPage, 100)
     }
 
     /** Wird durch "Ablehnen"-Button aufgerufen, setzt die Entscheidung auf false und ruft die Update-Funktion auf */
@@ -106,7 +106,7 @@ class LerngruppenExplorer extends Component {
         }, function () {
             this.updateGruppenvorschlag()
         });
-        setTimeout(this.refreshPage, 100)
+        //setTimeout(this.refreshPage, 100)
     }
 
     refreshPage = () => {

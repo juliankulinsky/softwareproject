@@ -21,7 +21,7 @@ class Registrieren extends Component {
     }
 
     goToAppjs = () => {
-        window.location.href = 'http://localhost:3000'
+        window.location.href = process.env.PUBLIC_URL
     }
 
 

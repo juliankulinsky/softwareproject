@@ -51,6 +51,12 @@ Diese Zeile setzt die Installation des Package flask-cors voraus.
 """
 CORS(app, resources=r"/studoo/*")
 
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+
 """
 In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt, 
 auf deren Basis Clients und Server Daten austauschen. Grundlage hierfür ist das Package flask-restx.
@@ -64,9 +70,7 @@ relevanten Operationen unter dem Präfix /studoo zusammen. """
 studoo = api.namespace("studoo", description="Lernapp SWP")
 
 
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
+
 
 """
 Nun folgt die Überführung der Strukturen des BusinessObjects in das api-Model.
