@@ -150,6 +150,11 @@ class LerngruppenExplorer extends Component {
      */
     componentDidMount() {
         this.getBestGruppenvorschlag();
+        this.interval = setInterval(() => this.getBestGruppenvorschlag(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     /** Rendert die Komponente */

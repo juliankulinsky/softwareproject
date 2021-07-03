@@ -265,38 +265,47 @@ class NachrichtenList extends Component {
                                 <Typography>
                                     {lerngruppe.getGruppenname()}
                                 </Typography>
-                                : null
-                        }
-                        {
-                            chatpartner ?
+                                :
                                 <>
-                                    <Typography>
-                                        <Button onClick={this.popUpButtonClicked}>
-                                            {
-                                                chatpartner.getName()
-                                            }
-                                        </Button>  <br/>
-                                        <Button disabled={deleteButtonPressed}
-                                                color={"primary"}
-                                                variant={"contained"}
-                                                onClick={this.openErstelleLerngruppeDialog}>
-                                            Gruppe erstellen
-                                        </Button>
-                                        <ErstelleLerngruppeDialog
-                                            show={showErstelleLerngruppeDialog}
-                                            person={this.props.currentPerson}
-                                            chatpartner={chatpartner}
-                                            onClose={this.erstelleLerngruppeDialogClosed}/>
-                                        <IconButton disabled={deleteButtonPressed}
-                                                    aria-label={"delete"}
-                                                    variant={"contained"}
-                                                    onClick={this.deleteChatTeilnahme}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Typography>
+                                    {
+                                        chatpartner ?
+                                            <>
+                                                <Typography>
+                                                    <Button onClick={this.popUpButtonClicked}>
+                                                        {
+                                                            chatpartner.getName()
+                                                        }
+                                                    </Button>  <br/>
+                                                    <Button disabled={deleteButtonPressed}
+                                                            color={"primary"}
+                                                            variant={"contained"}
+                                                            onClick={this.openErstelleLerngruppeDialog}>
+                                                        Gruppe erstellen
+                                                    </Button>
+                                                    <ErstelleLerngruppeDialog
+                                                        show={showErstelleLerngruppeDialog}
+                                                        person={this.props.currentPerson}
+                                                        chatpartner={chatpartner}
+                                                        onClose={this.erstelleLerngruppeDialogClosed}/>
+                                                    <IconButton disabled={deleteButtonPressed}
+                                                                aria-label={"delete"}
+                                                                variant={"contained"}
+                                                                onClick={this.deleteChatTeilnahme}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Typography>
+                                            </>
+                                            :
+                                            <IconButton disabled={deleteButtonPressed}
+                                                                aria-label={"delete"}
+                                                                variant={"contained"}
+                                                                onClick={this.deleteChatTeilnahme}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                    }
                                 </>
-                                : null
                         }
+
                     </>
                 </Card>
                 {
