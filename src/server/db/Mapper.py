@@ -22,7 +22,7 @@ class Mapper(AbstractContextManager, ABC):
             self._cnx = connector.connect(
                 user="root",
                 password="root",
-                unix_socket="/cloudsql/studooswp-318712:europe-west3:studoo",
+                unix_socket="/cloudsql/studoo-050721:europe-west3:studoo-db",
                 database="studoo",
             )
         else:
