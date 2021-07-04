@@ -170,12 +170,12 @@ class PartnerExplorer extends Component {
      */
     componentDidMount() {
         this.getBestPartnervorschlag();
-        this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
+        //this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+    //componentWillUnmount() {
+    //    clearInterval(this.interval);
+    //}
 
     /** Rendert die Komponente */
     render() {
@@ -223,7 +223,7 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                         <Delayed waitBeforeShow={7500}>
                                             <Typography variant="h6">
-                                                Aktuell gibt es wohl keine passenden Lernpartner für dich.
+                                                Erkunde Studoo und schau später wieder für neue Vorschläge vorbei!
                                             </Typography>
                                             <Typography variant="h6">
                                                 Empfehle die App deinen Kommilitonen weiter und freue dich auf deine
