@@ -1,1 +1,1 @@
-Jetzt muss der static-Ordner da sein.
+Der Inhalt des static-Ordners (kompiliertes frontend-Verzeichnis) wird nicht in das Repo geladen.
