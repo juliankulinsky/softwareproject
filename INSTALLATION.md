@@ -15,18 +15,7 @@ Vor dem Start des Entwicklungsservers müssen die Dependencies installiert werde
 ### Wie wird der Development-Server gestartet?
 React bringt einen eignen Development-Server mit, mit welchem zur Echtzeit der React-Code in JavaScript übersetzt wird. Dies erfolgt im Hintergrund auf Basis von [Babel](https://babeljs.io), einem JavaScript Compiler.
 
-Der Dev-Server wird in einem Terminal mit dem Kommando `npm start` gestartet. Nach erfolgreichem Start ist die React-App unter http://localhost:3000 verfügbar.
-
-### Deployment auf den flask-Server
-Soll die React-App für ein Deployment unter flask bereit gemacht werden, wird im Terminal mit dem Kommando `npm run build` die App produktionsreif und performanzoptimiert in dem Vereichnis `/frontend/build` zur Verfügung gestellt. 
-
-Die React-App ist für ein Deployment im flask Verzeichnis `/static/reactclient` konfiguriert (in der Datei `package.json` im Key `homepage`). Daher muss der Inhalt des Ordner `/frontend/build/` in `/src/static/reactclient` manuell kopiert werden.
-
-Zur Beachtung: Die Verzeichnisse 
-- `/frontend/build/` und 
-- `/static/reactclient`
-
-sind in der Datei `.gitignore` enthalten, so dass keine Kompilate im Repository abgelegt werden.
+Der Dev-Server wird in einem Terminal mit dem Kommando `npm start` im Verzeichnis `/frontend` gestartet. Nach erfolgreichem Start ist die React-App unter http://localhost:3000 verfügbar.
 
 ### Firebase Authentication
 Um sicherzugehen, dass die Firebase Authentication ordnungsgemäß funktioniert, macht es Sinn zu schauen, ob die Daten in der Datei `firebaseconfig.js`
@@ -53,13 +42,11 @@ So werden alle nötigen Packages, auch für Firebase Authentication, installiert
 ### Wie wird der Server gestartet?
 Nach richtig installiertem Environment reicht es, die Datei ```main.py``` auszuführen. Der Start des 
 Development Server kann in der PyCharm Console beobachtet werden. Anschließend kann man
-auf die Dienste zugreifen.
+auf die Dienste zugreifen. Das Frontend muss, wie oben beschrieben zur Entwicklungszeit zusätzlich gestartet werden.
 
 ### Benutzen auf lokaler SQL-Datenbank
 Damit der mysql-connecter-python mit der Datenbank kommunizieren kann, muss in der ```Mapper.py``` im Verzeichnis `/src/server/db`
 in Zeile 34 bei user und password die zur eigenen lokalen Datenbank passenden Daten eingesetzt werden
-
-# NOCH IN BEARBEITUNG:
 
 ## Deployment auf Google Cloud Platform (GCP)
 ### Vorwort
@@ -85,7 +72,7 @@ Das Python-Projekt muss auch in die Lage versetzt werden, auf die Google App Eng
 zu werden. Auch hierzu gibt es allgemeine Informationen in der begleitenden Vorlesung.
 
 Zusammenfassend sind die Dateien ```app.yaml```, ```requirements.txt``` sowie ```.gcloudignore```
-erforderlich, um die App auf GCP zu deployen. Diese Dateien müssen Sie selbst erstellen. 
+erforderlich, um die App auf GCP zu deployen.
 
 Mit ```.gcloudignore``` geben Sie an, welche Dateien beim Deployment *nicht* in die Cloud 
 transportiert werden müssen. Dies wird hauptsächlich bei Dateien und Verzeichnissen der Fall sein,
@@ -96,10 +83,6 @@ unserem eigenen Code benötigen, um unsere App starten zu können. In unserem Fa
 Flask, Flask-RestX, Clask-Cors. Wir geben also über diese Datei nur an, welche Packages in welcher
 Version benötigt werden und laden jene Packages nicht selbst hoch. ```gcloud``` stößt dann in der Cloud 
 die Beschaffung jener Packages auf Grundlage unserer Datei ```requirements.txt``` an.
-
-Mit ```app.yaml``` können Sie zahlreiche Eigenschaften der App konfigurieren. Bitte lesen Sie
-dies in der Google-Dokumentation nach, da dies den Rahmen sprengen würde. YAML steht für *YAML Ain't
-Markup Language*, also eine rekursive Definition des Namens wie etwas bei PHP auch.
 
 Es bietet sich an, das Hauptprogramm der App (also, womit die App startet) in einer Datei bzw. 
 einem Module namens ```main.py``` unterzubringen. Da dies eine Konvention von Google App Engine 
