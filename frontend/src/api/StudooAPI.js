@@ -125,9 +125,10 @@ export default class StudooAPI {
     }
 
     /**
-     *  Returns a Promise which resolves to a json object.
-     *  The Promise returned from fetch() won’t reject on HTTP error status even if the response is an HTTP 404 or 500.
-     *  fetchAdvanced throws an Error also an server status errors
+     *  Gibt ein Promise zurück, das in ein json-Objekt aufgelöst wird.
+     *  Das von fetch() zurückgegebene Promise wird bei einem HTTP-Fehlerstatus nicht zurückgewiesen,
+     *  auch wenn die Antwort ein HTTP-404 oder -500 ist.
+     *  fetchAdvanced wirft einen Fehler auch bei einem Serverstatusfehler.
      */
     #fetchAdvanced = (url, init) => fetch(url, init)
         .then(res => {
@@ -137,10 +138,10 @@ export default class StudooAPI {
             return res.json();
         })
 
+    // Personen-bezogenene Methoden
 
-    // Person-bezogene Methoden
     /**
-     *
+     * API Call, um alle Personen auszulesen und als Promise zurück zu geben.
      */
     getPersonen() {
         return fetch(this.#getPersonenURL())
@@ -155,8 +156,9 @@ export default class StudooAPI {
             })
     }
 
-    /**
-    *   @param {PersonBO} personBO - Object von PersonBO
+    /*
+    *   API Call, um eine Person ins System hinzuzufügen und als Promise zurückzugeben.
+    *   @param {PersonBO} personBO - Übergebenes PersonenBO-Objekt
     */
     addPerson(personBO) {
         return this.#fetchAdvanced(this.#addPersonURL(), {
@@ -167,43 +169,50 @@ export default class StudooAPI {
           },
           body: JSON.stringify(personBO)
         }).then((responseJSON) => {
-          // We always get an array of CustomerBOs.fromJSON, but only need one object
           let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-          // console.info(accountBOs);
           return new Promise(function (resolve) {
             resolve(responsePersonBO);
           })
         })
       }
+
+
     /**
+     * API Call, um eine bestimmte Person anhand der ID auszulesen und als Promise zurückzugeben.
     *   @param {Number} personenID - ID von PersonBO
     */
     getPerson(personenID) {
     return this.#fetchAdvanced(this.#getPersonURL(personenID)).then((responseJSON) => {
-      // We always get an array of CustomerBOs.fromJSON, but only need one object
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-      // console.info(responseCustomerBO);
       return new Promise(function (resolve) {
         resolve(responsePersonBO);
       })
     })
     }
 
+    /**
+    * API Call, um eine bestimmte Person anhand der UID auszulesen und als Promise zurückzugeben.
+    *   @param {Number} personenUID - ID von PersonBO
+    */
     getPersonByUID(personenUID) {
     return this.#fetchAdvanced(this.#getPersonByUIDURL(personenUID)).then((responseJSON) => {
-      // We always get an array of CustomerBOs.fromJSON, but only need one object
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-      // console.info(responseCustomerBO);
       return new Promise(function (resolve) {
         resolve(responsePersonBO);
       })
     })
     }
 
+    /**
+    * API Call, um eine bestimmte Person anhand der zugehörigen KonversationsID auszulesen und als Promise zurückzugeben.
+    *   @param {Number} konversation_id - ID der zugehörigen Konversation
+    */
     getPersonenByKonversationID(konversation_id) {
         return this.#fetchAdvanced(this.#getPersonenByKonversationURL(konversation_id))
             .then((responseJSON) => {
+                // responsePersonBO ruft die statische Methode fromJSON auf
                 let responsePersonenBOs = PersonBO.fromJSON(responseJSON);
+                // Wir geben das darin enthaltene Objekt in einer Promise zurück.
                 return new Promise(function (resolve) {
                     resolve(responsePersonenBOs)
                 })
@@ -211,6 +220,7 @@ export default class StudooAPI {
     }
 
     /**
+     * API Call, um eine bestimmte Person zu aktualisieren und als Promise zurückzugeben.
     *   @param {PersonBO} personBO - Object von PersonBO
     */
     updatePerson(personBO) {
@@ -222,9 +232,9 @@ export default class StudooAPI {
           },
           body: JSON.stringify(personBO)
         }).then((responseJSON) => {
-          // We always get an array of CustomerBOs.fromJSON
+          // responsePersonBO ruft die statische Methode fromJSON auf
           let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-          // console.info(accountBOs);
+          // Wir geben das darin enthaltene Objekt in einer Promise zurück.
           return new Promise(function (resolve) {
             resolve(responsePersonBO);
           })
@@ -232,15 +242,14 @@ export default class StudooAPI {
     }
 
     /**
+     * API Call, um eine bestimmte Person aus dem System zu löschen und als Promise zurückzugeben.
     *   @param {Number} personID -
     */
     deletePerson(personID) {
     return this.#fetchAdvanced(this.#deletePersonURL(personID), {
       method: 'DELETE'
     }).then((responseJSON) => {
-      // We always get an array of CustomerBOs.fromJSON
       let responsePersonBO = PersonBO.fromJSON(responseJSON)[0];
-      // console.info(accountBOs);
       return new Promise(function (resolve) {
         resolve(responsePersonBO);
       })
@@ -249,8 +258,7 @@ export default class StudooAPI {
 
     // Profil-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of ProfilBOs
-     *
+     * API Call, um alle Profile auszulesen und als Promise zurück zu geben.
      * @public
      */
    getProfile() {
@@ -267,8 +275,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to a ProfilBO
-     *
+     * API-Call, um ein bestimmtes Profil anhand der ID auszulesen
      * @public
      * @param {Number} profilID to be retrieved
      */
@@ -282,10 +289,9 @@ export default class StudooAPI {
     }
 
     /**
-     * Adds a profile and returns a Promise, which resolves to a new ProfilBO object with the
-     * lernvorliebenID of the parameter profilBO object.
+     * API Call, um eine Profil ins System hinzuzufügen und als Promise zurückzugeben.
      *
-     * @param {ProfilBO} profilBO to be added. The ID of the new profile is set by the backend
+     * @param {ProfilBO} profilBO - Profil, das hinzugefügt werden soll
      * @public
      */
     addProfil(profilBO) {
@@ -298,6 +304,7 @@ export default class StudooAPI {
             body: JSON.stringify(profilBO)
         }).then((responseJSON) => {
             let responseProfilBO = ProfilBO.fromJSON(responseJSON)[0];
+            // Wir geben das darin enthaltene Objekt in einer Promise zurück.
             return new Promise(function (resolve) {
                 resolve(responseProfilBO);
             })
@@ -305,7 +312,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Updates a profile and returns a Promise, which resolves to a ProfilBO.
+     * API-Call, um ein Profil zu aktualisieren und in einer Promise zurückzugeben
      *
      * @param {ProfilBO} profilBO to be updated.
      * @public
@@ -327,7 +334,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of ProfilBOs
+     * API-Call, um ein Profil aus dem System zu löschen und in einer Promise zurückzugeben.
      *
      * @param {Number} profilID to be deleted.
      * @public
@@ -345,8 +352,7 @@ export default class StudooAPI {
 
     // Lernvorliebe-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of LernvorliebeBOs
-     *
+     * API Call, um alle Lernvorlieben auszulesen und als Promise zurück zu geben.
      * @public
      */
     getLernvorlieben() {
@@ -360,7 +366,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to a LernvorliebeBO
+     * API-Call, die eine bestimmte Lernvorliebe ausliest und in einer Promise zurückgibt.
      *
      * @public
      * @param {Number} lernvorliebeID to be retrieved
@@ -375,11 +381,9 @@ export default class StudooAPI {
     }
 
     /**
-     * Adds a lernvorliebe and returns a Promise, which resolves to a new LernvorliebeBO object with the
-     * lerntyp, frequenz, extrovertiertheit, remote_praesenz, vorkenntnisse and lerninteressen
-     * of the parameter profilBO object.
+     * API Call, um ein Lernvorlieben-Objekt ins System hinzuzufügen und als Promise zurückzugeben.
      *
-     * @param {LernvorliebeBO} lernvorliebeBO to be added. The ID of the new lernvorliebe is set by the backend
+     * @param {LernvorliebeBO} lernvorliebeBO - das zu hinzufügende Lernvorlieben-Objekt
      * @public
      */
     addLernvorliebe(lernvorliebeBO) {
@@ -399,7 +403,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Updates a lernvorliebe and returns a Promise, which resolves to a LernvorliebeBO.
+     * API-Call, um ein Lernvorlieben zu aktualisieren und in einer Promise zurückzugeben
      *
      * @param {LernvorliebeBO} lernvorliebeBO to be updated.
      * @public
@@ -421,8 +425,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of LernvorliebeBOs
-     *
+     * API-Call, um ein Lernvorlieben-Objekt aus dem System zu löschen und in einer Promise zurückzugeben.
      * @param {Number} lernvorliebeID to be deleted.
      * @public
      */
@@ -439,10 +442,9 @@ export default class StudooAPI {
 
     // Lerngruppe-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of LerngruppeBO.
-     *
+     * API Call, um alle Lerngruppen auszulesen und als Promise zurück zu geben.
      * @public
-     * */
+     */
     getLerngruppen() {
         return this.#fetchAdvanced(this.#getLerngruppenURL())
           .then((responseJSON) => {
@@ -464,7 +466,9 @@ export default class StudooAPI {
           })
     }
 
-    /** Die zu einer Konversation gehörende Lerngruppe ausgeben NUR wenn Konversation gruppenchat ist*/
+    /*
+    * Die zu einer Konversation gehörende Lerngruppe ausgeben NUR wenn Konversation gruppenchat ist.
+    */
     getLerngruppeOfKonversationID(konversationID) {
         return this.#fetchAdvanced(this.#getLerngruppeOfKonversationIDURL(konversationID))
           .then((responseJSON) => {
@@ -475,9 +479,11 @@ export default class StudooAPI {
           })
     }
 
-    /** Adds a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
-     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
-     * @public */
+    /*
+     * API Call, um eine Lerngruppe ins System hinzuzufügen und als Promise zurückzugeben.
+     * @param {LerngruppeBO} lerngruppeBO - LerngruppeBO, das hinzugefügt wird.
+     * @public
+     */
     addLerngruppe(lerngruppeBO) {
     return this.#fetchAdvanced(this.#addLerngruppeURL(), {
         method: 'POST',
@@ -494,9 +500,11 @@ export default class StudooAPI {
     })
     }
 
-    /** Returns a Promise, which resolves to a LerngruppeBO.
-   * @param {Number} lerngruppeID to be retrieved.
-   * @public */
+    /*
+    * API-Call, um eine bestimmte Lerngruppe anhand der ID auszulesen, die in einer Promise zurückgegeben wird.
+    * @param {Number} lerngruppeID der auszulesenden Lerngruppe
+    * @public
+    */
     getLerngruppe(lerngruppeID) {
         return this.#fetchAdvanced(this.#getLerngruppeURL(lerngruppeID)).then((responseJSON) => {
             let responseLerngruppeBO = LerngruppeBO.fromJSON(responseJSON)[0];
@@ -506,9 +514,11 @@ export default class StudooAPI {
         })
       }
 
-    /** Updates a learninggroup and returns a Promise, which resolves to a new LerngruppeBO object.
-     * @param {LerngruppeBO} lerngruppeBO to be added. The ID of the new learninggroup is set by the backend.
-     * @public */
+    /*
+     * API-Call um ein Lerngruppe zu aktualisieren. Wird in einer Promise zurückgegeben.
+     * @param {LerngruppeBO} lerngruppeBO - ID der zu aktualsierenden Lerngruppe.
+     * @public
+     */
     updateLerngruppe(lerngruppeBO) {
     return this.#fetchAdvanced(this.#updateLerngruppeURL(lerngruppeBO.getID()), {
         method: 'PUT',
@@ -525,9 +535,11 @@ export default class StudooAPI {
     })
     }
 
-    /** Returns a Promise, which resolves to an Array of LerngruppeBO
+    /*
+     * API-Call, um ein Lerngruppen-Objekt aus dem System zu löschen und in einer Promise zurückzugeben.
      * @param {Number} lerngruppeID to be deleted.
-     * @public  */
+     * @public
+     */
     deleteLerngruppe(lerngruppeID) {
         return this.#fetchAdvanced(this.#deleteLerngruppeURL(lerngruppeID), {
             method: 'DELETE'
@@ -542,8 +554,7 @@ export default class StudooAPI {
 
     // Konversation-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of KonversationBO
-     *
+     * API Call, um alle Konversationen auszulesen und als Promise zurück zu geben.
      * @public
      */
     getKonversationen() {
@@ -566,7 +577,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Adds a conversation and returns a Promise, which resolves to a new KonversationBO object.
+     * API-Call, um eine Konversation hinzuzufügen.
      *
      * @param {KonversationBO} konversationBO to be added. The ID of the new conversation is set by the backend
      * @public
@@ -587,8 +598,8 @@ export default class StudooAPI {
     })
     }
 
-    /**
-   * Returns a Promise, which resolves to a KonversationBO
+   /*
+   * API-Call, um eine Konversation anhand der ID auszulesen und in einer Promise zurückzugeben.
    *
    * @param {Number} konversationID to be retrieved
    * @public
@@ -602,8 +613,8 @@ export default class StudooAPI {
         })
       }
 
-    /**
-     * Updates a conversation and returns a Promise, which resolves to a new KonversationBO object.
+    /*
+     * APi-Call, um eine Konversation zu aktualisieren
      *
      * @param {KonversationBO} konversationBO to be added. The ID of the new conversation is set by the backend
      * @public
@@ -625,7 +636,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of KonversationBO
+     * API-Call, um ein Konversations-Objekt aus dem System zu löschen und in einer Promise zurückzugeben.
      *
      * @param {Number} konversationID to be deleted
      * @public
@@ -643,8 +654,7 @@ export default class StudooAPI {
 
     // Nachricht-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of NachrichtBO
-     *
+     * API Call, um alle Nachrichten auszulesen und als Promise zurück zu geben.
      * @public
      */
     getNachrichten() {
@@ -667,10 +677,9 @@ export default class StudooAPI {
     }
 
     /**
-     * Adds a message and returns a Promise, which resolves to a new NachrichtBO object.
+     * API-Call, um eine Nachricht aus dem System zu löschen und in einer Promise zurückzugeben.
      *
-     * @param {NachrichtBO} nachrichtBO to be added. The ID of the new message is set by the backend
-     * @public
+     * @param {NachrichtBO} nachrichtBO - Nachricht, die gelsöcht werden soll
      */
     addNachricht(nachrichtBO) {
     return this.#fetchAdvanced(this.#addNachrichtenURL(), {
@@ -688,9 +697,8 @@ export default class StudooAPI {
     })
     }
 
-    /**
-   * Returns a Promise, which resolves to a NachrichtBO
-   *
+   /*
+   * API-Call, um ein Nachrichten-Objekt anhand der ID auszulesen und in einer Promise zurückzugeben.
    * @param {Number} nachrichtID to be retrieved
    * @public
    */
@@ -704,8 +712,7 @@ export default class StudooAPI {
       }
 
     /**
-     * Updates a message and returns a Promise, which resolves to a new NachrichtBO object.
-     *
+     * API-Call, um ein Nachrichten-Objekt zu aktualisieren und in einer Promise zurückzugeben.
      * @param {NachrichtBO} nachrichtBO to be added. The ID of the new message is set by the backend
      * @public
      */
@@ -726,8 +733,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of NachrichtBO
-     *
+     * API-Call, um ein Nachrichten-Objekt aus dem System zu löschen und in einer Promise zurückzugeben.
      * @param {Number} nachrichtID to be deleted
      * @public
      */
@@ -744,8 +750,7 @@ export default class StudooAPI {
 
     // ChatTeilnahme-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO
-     *
+     * API Call, um alle Chat-Teilnahmen auszulesen und als Promise zurück zu geben.
      * @public
      */
     getChatTeilnahmen() {
@@ -757,9 +762,8 @@ export default class StudooAPI {
         })
     }
 
-    /**
-     * Adds a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
-     *
+    /*
+     * API-Call, um ein ChatTeilnahme-Objekt hinzuzufügen und in einer Promise zurückzugeben.
      * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new Chatteilnahme is set by the backend
      * @public
      */
@@ -779,10 +783,10 @@ export default class StudooAPI {
         })
     }
 
-    /**
-     * Returns a Promise, which resolves to a ChatteilnahmeBO
+    /*
+     * API-Call, um ein ChatTeilnahme-Objekt anhand der chatteilnahme ID auszulesen und in einer Promise zurückzugeben.
      *
-     * @param {Number} chatteilnahmeID to be retrieved
+     * @param {Number} chatteilnahmeID - auszulesende ChatTeilnahmeID
      * @public
      */
     getChatTeilnahme(chatteilnahmeID) {
@@ -794,6 +798,13 @@ export default class StudooAPI {
         })
     }
 
+    /*
+     * API-Call, um ein ChatTeilnahme-Objekt anhand der personenID und der konversationsID auszulesen und in einer Promise zurückzugeben.
+     *
+     * @param {Number} person_id - auszulesende PersonID
+     * @param {Number} konversation_id - auszulesende KonversationID
+     * @public
+     */
     getChatTeilnahmeByPersonIDundKonversationID(person_id, konversation_id) {
         return this.#fetchAdvanced(this.#getChatTeilnahmeByPersonIDundKonversationIDURL(person_id, konversation_id))
             .then((responseJSON) => {
@@ -805,8 +816,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Updates a Chatteilnahme and returns a Promise, which resolves to a new ChatteilnahmeBO object.
-     *
+     *  API-Call, um ein ChatTeilnahme-Objektzu aktualisieren und in einer Promise zurückzugeben.
      * @param {ChatTeilnahmeBO} chatteilnahmeBO to be added. The ID of the new conversation is set by the backend
      * @public
      */
@@ -827,7 +837,7 @@ export default class StudooAPI {
     }
 
     /**
-     * Returns a Promise, which resolves to an Array of ChatteilnahmeBO.
+     * API-Call, um ein ChatTeilnahme-Objekt aus dem System zu löschen und in einer Promise zurückzugeben.
      *
      * @param {Number} chatteilnahmeID to be deleted
      * @public
@@ -844,8 +854,10 @@ export default class StudooAPI {
     }
 
     // GruppenTeilnahme-bezogene Methoden
-    /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
-     * @public */
+    /**
+     * API Call, um alle Gruppen_Teilnahmen auszulesen und als Promise zurück zu geben.
+     * @public
+     */
     getGruppenTeilnahmen() {
         return this.#fetchAdvanced(this.#getGruppenTeilnahmenURL()).then((responseJSON) => {
             let gruppenteilnahmenBOs = GruppenTeilnahmeBO.fromJSON(responseJSON);
@@ -855,10 +867,11 @@ export default class StudooAPI {
         })
     }
 
-    /** Adds a groupparticipation and returns a Promise, which resolves to a new GruppenTeilnahmeBO object.
-     * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation
-     * is set by the backend.
-     * @public */
+    /*
+     * API-Call, um ein GruppenTeilnahme-Objekt hinzuzufügen und in einer Promise zurückzugeben.
+     * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO - GruppenTeilnahme-Objekt
+     * @public
+     */
     addGruppenTeilnahme(gruppenteilnahmeBO) {
     return this.#fetchAdvanced(this.#addGruppenTeilnahmeURL(), {
         method: 'POST',
@@ -875,9 +888,11 @@ export default class StudooAPI {
     })
     }
 
-    /** Returns a Promise, which resolves to a GruppenTeilnahmeBO.
-   * @param {Number} gruppenteilnahmeID to be retrieved.
-   * @public */
+    /*
+    * Auslesen der GruppenTeilnahmen anhand der ID.
+    * @param {Number} gruppenteilnahmeID to be retrieved.
+    * @public
+    */
     getGruppenTeilnahme(gruppenteilnahmeID) {
         return this.#fetchAdvanced(this.#getGruppenTeilnahmeURL(gruppenteilnahmeID)).then((responseJSON) => {
             let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
@@ -887,6 +902,11 @@ export default class StudooAPI {
         })
       }
 
+    /*
+    * Auslesen der GruppenTeilnahmen einer bestimmten Gruppe anhand der Gruppen ID.
+    * @param {Number} gruppenteilnahmeID to be retrieved.
+    * @public
+    */
     getGruppenTeilnahmenForGruppenID(gruppenID) {
         return this.#fetchAdvanced(this.#getGruppenTeilnahmenByGruppenIDURL(gruppenID)).then((responseJSON) => {
             let gruppenteilnahmenBOs = GruppenTeilnahmeBO.fromJSON(responseJSON);
@@ -896,6 +916,11 @@ export default class StudooAPI {
         })
     }
 
+    /*
+    * Auslesen der GruppenTeilnahmen anhand der Personen ID und Gruppen ID.
+    * @param {Number} gruppenteilnahmeID to be retrieved.
+    * @public
+    */
     getGruppenTeilnahmeByPersonIDundGruppenID(personID,gruppenID) {
         return this.#fetchAdvanced(this.#getGruppenTeilnahmeByPersonIDundGruppenIDURL(personID,gruppenID)).then((responseJSON) => {
             let responseGruppenTeilnahmeBO = GruppenTeilnahmeBO.fromJSON(responseJSON)[0];
@@ -905,9 +930,11 @@ export default class StudooAPI {
         })
     }
 
-    /** Updates a groupparticipation and returns a Promise, which resolves to a new GruppenTeilnahmeBO object.
-     * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.
-     * @public */
+    /*
+    * Aktualisiert eine Gruppenteilnahme.
+    * @param {GruppenTeilnahmeBO} gruppenteilnahmeBO to be added. The ID of the new groupparticipation is set by the backend.
+    * @public
+    */
     updateGruppenTeilnahme(gruppenteilnahmeBO) {
         return this.#fetchAdvanced(this.#updateGruppenTeilnahmeURL(gruppenteilnahmeBO.getID()), {
             method: 'PUT',
@@ -924,9 +951,11 @@ export default class StudooAPI {
         })
     }
 
-    /** Returns a Promise, which resolves to an Array of GruppenTeilnahmeBO.
-     * @param {Number} gruppenteilnahmeID to be deleted.
-     * @public  */
+    /*
+    * Löschen einer Gruppenteilnahme.
+    * @param {Number} gruppenteilnahmeID to be deleted.
+    * @public
+    */
     deleteGruppenTeilnahme(gruppenteilnahmeID) {
         return this.#fetchAdvanced(this.#deleteGruppenTeilnahmeURL(gruppenteilnahmeID), {
             method: 'DELETE'
@@ -940,8 +969,10 @@ export default class StudooAPI {
 
 
     // GruppenVorschlag-bezogene Methoden
-    /** Returns a Promise, which resolves to an Array of GruppenVorschlaegeBOs.
-     * @public */
+    /**
+     * API Call, um alle Gruppenvorschläge auszulesen und als Promise zurück zu geben.
+     * @public
+     */
     getGruppenVorschlaege() {
         return this.#fetchAdvanced(this.#getGruppenVorschlaegeURL())
             .then((response) => {
@@ -951,6 +982,11 @@ export default class StudooAPI {
             })})
     }
 
+    /**
+     * API Call, um den Gruppenvorschlag einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} personID - to be retrieved.
+     * @public
+     */
     getGruppenVorschlagForPersonID(personID) {
         return this.#fetchAdvanced(this.#getGruppenVorschlagForPersonIDURL(personID))
             .then((response) => {
@@ -963,6 +999,11 @@ export default class StudooAPI {
             })
     }
 
+    /**
+     * API Call, um ausgehende Gruppenvorschläge einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} person_id - Personen ID der auszulesenden Person
+     * @public
+     */
     getAusgehendeGruppenVorschlaegeForPersonID(person_id) {
         return this.#fetchAdvanced(this.#getAusgehendeGruppenAnfragenForPersonIDURL(person_id))
             .then((response) => {
@@ -972,6 +1013,11 @@ export default class StudooAPI {
             })})
     }
 
+    /**
+     * API Call, um eingehende Gruppenvorschläge einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} person_id - Personen ID der auszulesenden Person
+     * @public
+     */
     getEingehendeGruppenVorschlaegeForPersonID(person_id) {
         return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForPersonIDURL(person_id))
             .then((response) => {
@@ -981,6 +1027,11 @@ export default class StudooAPI {
             })})
     }
 
+    /**
+     * API Call, um eingehende Vorschläge einer Gruppen auszulesen und als Promise zurück zu geben.
+     * @param {Number} gruppen_id - Personen ID der auszulesenden Person
+     * @public
+     */
     getEingehendeGruppenVorschlaegeForGruppenID(gruppen_id) {
         return this.#fetchAdvanced(this.#getEingehendeGruppenAnfragenForGruppenIDURL(gruppen_id))
             .then((response) => {
@@ -999,10 +1050,11 @@ export default class StudooAPI {
             })})
     }
 
-    /** Adds a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
-     * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion
-     * is set by the backend.
-     * @public */
+    /*
+    * Hinzufügen eines neuen Gruppenvorschlag-Objektes
+    * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. ID des Gruppenvorschlags wird vom Backend gesetzt.
+    * @public
+    */
     addGruppenVorschlag(gruppenvorschlagBO) {
     return this.#fetchAdvanced(this.#addGruppenVorschlagURL(), {
         method: 'POST',
@@ -1019,9 +1071,11 @@ export default class StudooAPI {
     })
     }
 
-    /** Returns a Promise, which resolves to a GruppenVorschlagBO.
-   * @param {Number} gruppenvorschlagID to be retrieved.
-   * @public */
+    /*
+    * Auslesen eines Gruppenvorschlags anhand der GruppenvorschlagID
+    * @param {Number} gruppenvorschlagID to be retrieved.
+    * @public
+    */
     getGruppenVorschlag(gruppenvorschlagID) {
         return this.#fetchAdvanced(this.#getGruppenVorschlagURL(gruppenvorschlagID)).then((responseJSON) => {
             let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
@@ -1031,6 +1085,12 @@ export default class StudooAPI {
         })
     }
 
+    /*
+    * Auslesen eines Gruppenvorschlags anhand der zugehörigen personenID und gruppenID
+    * @param {Number} personid to be retrieved.
+    * @param {Number} gruppenID to be retrieved.
+    * @public
+    */
     getGruppenVorschlagByPersonIDundGruppenID(personid,gruppenID) {
         return this.#fetchAdvanced(this.#getGruppenVorschlagByPersonIDundGruppenIDURL(personid,gruppenID)).then((responseJSON) => {
             let responseGruppenVorschlagBO = GruppenVorschlagBO.fromJSON(responseJSON)[0];
@@ -1040,9 +1100,11 @@ export default class StudooAPI {
         })
     }
 
-    /** Updates a groupsuggestion and returns a Promise, which resolves to a new GruppenVorschlagBO object.
-     * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. The ID of the new groupsuggestion is set by the backend.
-     * @public */
+    /*
+    * Aktualisiert ein Gruppenvorschlags-Objekt
+    * @param {GruppenVorschlagBO} gruppenvorschlagBO to be added. ID des Vorschlags wird vom Backend gesetzt.
+    * @public
+    */
     updateGruppenVorschlag(gruppenvorschlagBO) {
         return this.#fetchAdvanced(this.#updateGruppenVorschlagURL(gruppenvorschlagBO.getID()), {
             method: 'PUT',
@@ -1059,9 +1121,11 @@ export default class StudooAPI {
         })
     }
 
-    /** Returns a Promise, which resolves to an Array of GruppenVorschlagBO.
-     * @param {Number} gruppenvorschlagID to be deleted.
-     * @public  */
+    /*
+    * Löscht einen Gruppenvorschlag.
+    * @param {Number} gruppenvorschlagID to be deleted.
+    * @public
+    */
     deleteGruppenVorschlag(gruppenvorschlagID) {
         return this.#fetchAdvanced(this.#deleteGruppenVorschlagURL(gruppenvorschlagID), {
             method: 'DELETE'
@@ -1076,8 +1140,7 @@ export default class StudooAPI {
 
     // PartnerVorschlag-bezogene Methoden
     /**
-     * Returns a Promise, which resolves to an Array of PartnervorschlagBO
-     *
+     * API Call, um alle Partnervorschläge auszulesen und als Promise zurück zu geben.
      * @public
      */
     getPartnerVorschlaege() {
@@ -1090,6 +1153,11 @@ export default class StudooAPI {
         })
     }
 
+    /**
+     * API Call, um den Gruppenvorschlag einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} person_id - to be retrieved.
+     * @public
+     */
     getPartnerVorschlagByPersonID(person_id) {
         return this.#fetchAdvanced(this.#getPartnerVorschlagForPersonIDURL(person_id))
             .then((responseJSON) => {
@@ -1103,6 +1171,11 @@ export default class StudooAPI {
         })
     }
 
+    /**
+     * API Call, um eingehende Partnervorschläge einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} person_id - to be retrieved.
+     * @public
+     */
     getEingehendePartnerVorschlaegeForPersonID(person_id) {
         return this.#fetchAdvanced(this.#getEingehendePartnerAnfragenForPersonIDURL(person_id))
             .then((responseJSON) => {
@@ -1113,6 +1186,11 @@ export default class StudooAPI {
         })
     }
 
+    /**
+     * API Call, um ausgehende Partnervorschläge einer Person auszulesen und als Promise zurück zu geben.
+     * @param {Number} person_id - to be retrieved.
+     * @public
+     */
     getAusgehendePartnerVorschlaegeForPersonID(person_id) {
         return this.#fetchAdvanced(this.#getAusgehendePartnerAnfragenForPersonIDURL(person_id))
             .then((responseJSON) => {
@@ -1124,10 +1202,9 @@ export default class StudooAPI {
     }
 
 
-    /**
-     * Adds a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
-     *
-     * @param {PartnerVorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
+    /*
+     * Fügt einen Partnervorschlag hinzu.
+     * @param {PartnerVorschlagBO} partnervorschlagBO to be added. ID des Vorschlags wird vom Backend gesetzt.
      * @public
      */
     addPartnerVorschlaege(partnervorschlagBO) {
@@ -1146,9 +1223,8 @@ export default class StudooAPI {
         })
     }
 
-    /**
-     * Returns a Promise, which resolves to a PartnervorschlagBO
-     *
+    /*
+     * Auslesen des Partnervorschlags anhand der ID.
      * @param {Number} partnervorschlagID to be retrieved
      * @public
      */
@@ -1161,8 +1237,8 @@ export default class StudooAPI {
         })
     }
 
-    /**
-     * Updates a Partnervorschlag and returns a Promise, which resolves to a new PartnervorschlagBO object.
+    /*
+     * Aktualisiert ein PartnerVorschlag-Objekt, welches in einer Promise zurückgegeben wird.
      *
      * @param {PartnerVorschlagBO} partnervorschlagBO to be added. The ID of the new Partnervorschlag is set by the backend
      * @public
@@ -1183,9 +1259,8 @@ export default class StudooAPI {
         })
     }
 
-    /**
-     * Returns a Promise, which resolves to an Array of PartnervorschlagBO
-     *
+    /*
+     * Löscht ein PartnerVorschlag-Objekt anhand der entsprechenden ID.
      * @param {Number} partnervorschlagID to be deleted
      * @public
      */
