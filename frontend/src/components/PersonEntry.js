@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 import ProfilForm from "./dialogs/ProfilForm";
 import StudooAPI from "../api/StudooAPI";
 import LoadingProgress from "./dialogs/LoadingProgress";
+import PersonDeleteDialog from "./dialogs/PersonDeleteDialog";
 
 
 /**
@@ -22,7 +23,7 @@ class PersonEntry extends Component {
       lernvorliebe: props.lernvorliebe,
       profil: props.profil,
       showProfilForm: false,
-      showProfilDeleteDialog: false,
+      showPersonDeleteDialog: false,
     };
   }
 
@@ -74,9 +75,16 @@ class PersonEntry extends Component {
     }
   }
 
-  deletePerson = () => {
-      StudooAPI.getAPI().deletePerson(this.props.person.getID())
+  deleteButtonClicked = () => {
+      this.setState({
+        showPersonDeleteDialog: true
+      })
     }
+
+  personDeleteClosed = () => {
+    this.setState({
+      showPersonDeleteDialog: false
+    })}
 
   /** Verarbeitet das onClose Event der ProfilForm der Lernvorlieben */
   profilFormClosedL = (lernvorliebe) => {
@@ -110,7 +118,7 @@ class PersonEntry extends Component {
 
     const {classes, selfperson, show} = this.props;
     // Use the states customer
-    const {person, profil, lernvorliebe, lerngruppe, showProfilForm, loadingInProgress} = this.state;
+    const {person, profil, lernvorliebe, lerngruppe, showProfilForm, showPersonDeleteDialog, loadingInProgress} = this.state;
 
     return (
            <Card className={classes.root}>
@@ -193,7 +201,7 @@ class PersonEntry extends Component {
                                 <Grid xs={4} className={classes.pers}>
                                   {
                                     selfperson ?
-                                        <Button variant={"contained"} color={"secondary"} onClick={this.deletePerson}>
+                                        <Button variant={"contained"} color={"secondary"} onClick={this.deleteButtonClicked}>
                                             Profil löschen
                                         </Button>: null
                                   }
@@ -256,6 +264,8 @@ class PersonEntry extends Component {
           <ProfilForm show={showProfilForm} profil={profil} person={person} lernvorliebe={lernvorliebe}
                         onClose={this.profilFormClosed} onCloseP={this.profilFormClosedP}
                         onCloseL={this.profilFormClosedL}  />
+          <PersonDeleteDialog show={showPersonDeleteDialog} profil={profil} person={person} lernvorliebe={lernvorliebe}
+                        onClose={this.personDeleteClosed} />
           <LoadingProgress show={loadingInProgress} />
           </CardContent>
           </Card>

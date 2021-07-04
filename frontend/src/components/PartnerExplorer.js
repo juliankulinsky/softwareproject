@@ -58,7 +58,6 @@ class PartnerExplorer extends Component {
                     this.setState({
                         anderePerson: anderePerson
                     })
-                    console.log("andere p", anderePerson)
                 })
 
 
@@ -124,6 +123,10 @@ class PartnerExplorer extends Component {
         //setTimeout(this.refreshPage,100)
     }
 
+    refreshPage = () => {
+        window.location.reload()
+    }
+
     /**
      * Updaten des PartnerVorschlagBO, wobei die Matchpoints abhängig von der Entscheidung um 1 höher gesetzt werden
      * oder so bleiben. Die Entscheidung der "Person" oder des "Partners" (abhängig davon welche "Rolle" die aktuelle
@@ -165,18 +168,14 @@ class PartnerExplorer extends Component {
      * Lifecycle Methode, which is called when the component gets inserted into the browsers DOM.
      * Ruft die Methode auf, welche die Daten aus dem Backend lädt.
      */
-    refreshPage = () => {
-        window.location.reload()
-    }
-
     componentDidMount() {
         this.getBestPartnervorschlag();
-        this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
+        //this.interval = setInterval(() => this.getBestPartnervorschlag(), 3000);
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+    //componentWillUnmount() {
+    //    clearInterval(this.interval);
+    //}
 
     /** Rendert die Komponente */
     render() {
@@ -224,7 +223,7 @@ class PartnerExplorer extends Component {
                                         </Typography>
                                         <Delayed waitBeforeShow={7500}>
                                             <Typography variant="h6">
-                                                Aktuell gibt es wohl keine passenden Lernpartner für dich.
+                                                Erkunde Studoo und schau später wieder für neue Vorschläge vorbei!
                                             </Typography>
                                             <Typography variant="h6">
                                                 Empfehle die App deinen Kommilitonen weiter und freue dich auf deine

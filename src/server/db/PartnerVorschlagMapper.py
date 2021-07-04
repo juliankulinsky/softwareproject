@@ -226,8 +226,6 @@ class PartnerVorschlagMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
-        print(result)
-
         return result
 
     def find_all_offene_for_person_id(self, person_key):

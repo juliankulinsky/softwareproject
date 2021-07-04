@@ -150,7 +150,12 @@ class LerngruppenExplorer extends Component {
      */
     componentDidMount() {
         this.getBestGruppenvorschlag();
+        //this.interval = setInterval(() => this.getBestGruppenvorschlag(), 3000);
     }
+
+    //componentWillUnmount() {
+    //    clearInterval(this.interval);
+    //}
 
     /** Rendert die Komponente */
     render() {
@@ -198,7 +203,7 @@ class LerngruppenExplorer extends Component {
                                         </Typography>
                                         <Delayed waitBeforeShow={7500}>
                                             <Typography variant="h6">
-                                                Aktuell gibt es wohl keine passenden Lerngruppen für dich.
+                                                Erkunde Studoo und schau später wieder für neue Vorschläge vorbei!
                                             </Typography>
                                             <Typography variant="h6">
                                                 Empfehle die App deinen Kommilitonen weiter und freue dich auf deine
